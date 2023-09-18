@@ -1,0 +1,15 @@
+Links
+-----
+https://netbeans.apache.org/kb/docs/ide/git.html
+
+Ideeën
+------
+1. Versienummer hardcoded vastleggen in bijvoordbeeld de config file. Niet meer in de database.
+
+2. Selectie keuzes uitbreiden met kwartalen en jaren. Dus maanden, kwartalen en jaren.
+   In de settings aangeven voor welk onderdeel dit geldt, bijvoorbeeld:
+   - Financiën : maanden
+   - Beleggingen : kwartalen
+   - Crypto : Jaren
+
+3. 
