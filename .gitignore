@@ -1,5 +1,6 @@
 # Test, trash and project    #
 ##############################
+database/
 test/
 trash/
 nbproject/
