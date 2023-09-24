@@ -8,7 +8,7 @@
  * Dependencies: css/index.css
  *
  * Created on Sep 22, 2023
- * Updated on Sep 22, 2023
+ * Updated on Sep 24, 2023
  *
  * Description: Redirect to the start page.
  * 
@@ -19,17 +19,51 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/index.css">
+        <script src="js/chart.js"></script>
+        <script src="js/stats.js"></script>
     </head>
     <body>      
-        
+        <!-- Header -->
+        <header>
+           <h1>Overzicht</h1>
+        </header>
+              
+        <!-- Navigation en content -->
         <div class="content_container">
-            
+            <!-- Left navigation bar -->
             <nav class="content_nav">links</nav>
             
-            <main class="content_main">center</main>
+            <!-- Center main content area -->
+            <main class="content_main">
             
-            <aside class="content_aside">rechts</aside>
+            <!-- Box test -->    
+            <div class="box">
+                <div class="bar_container">
+                    <canvas id="bar_chart"></canvas>
+                </div>
+                <div>Two</div>
+                <div>Three</div>
+                <div>Four</div>
+            </div>   
+           
+            
+            </main>         
+        
+            <!-- Right side bar -->
+            <aside class="content_aside">aa</aside>
+            
+            
         </div>     
         
+        <!-- Footer -->
+        <footer>
+            <h3>&copy;2023 Rizzo Productions</h3>
+        </footer>       
+           
+        
+        <!-- Script -->
+        <script>
+            dummyBarChart();
+        </script>       
     </body>
 </html>

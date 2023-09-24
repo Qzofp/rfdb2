@@ -8,7 +8,7 @@
  * Used in: index.html
  *
  * Created on Sep 22, 2023
- * Updated on Sep 22, 2023
+ * Updated on Sep 24, 2023
  *
  * Description: The index css page.
  *
@@ -18,15 +18,29 @@
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
 
 /* Body and main parts of the page. */
-
 html, body {
-  height:100%;
-  margin:0;
+  height: 100%;
+  margin: 0;
 }
 
 body {
   display: flex;
   flex-direction: column;
+}
+
+header {
+ background: #fff;
+ color: #000;
+ padding: 10px;
+ height: 6em;
+}
+
+
+header h1 {
+ margin: 10px 0 7px 0;
+ font-size: 2em;
+ font-weight: bold;
+ text-align: center;
 }
 
 .content_container {
@@ -36,20 +50,62 @@ body {
 
 .content_nav{
   order: -1;
-  flex: 0 0 6em;
+  flex: 0 0 2em;
   background: green;
 }
 
 .content_main {
   flex: 1;
-  background: orange;
+  background: lightgrey;
 }
+
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  column-gap: 3%;
+  width: 100%;
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+  
+  padding: 40px 0; 
+}
+
+.box div {   
+  width: 45%;
+  height: 45%;
+  background-color:lightblue; 
+}
+
+
 
 .content_aside {
-  flex: 0 0 10em;
-  background: green;
+  flex: 0 0 2em;
+  background: yellow;
 }
 
 
 
 
+/* Chart items */
+.bar_container {
+ position:relative; 
+
+}
+
+
+
+/* Footer */
+footer {
+ background: #fff;
+ color: #000;
+
+}
+
+footer h3 {
+ font-size: 0.9em;
+ font-weight: normal;
+ text-align: center;
+}
