@@ -1,0 +1,141 @@
+@CHARSET "UTF-8";
+/*
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:    sheet.css
+ * Used in: sheet.html
+ *
+ * Created on Oct 01, 2023
+ * Updated on Oct 02, 2023
+ *
+ * Description: The css sheet page.
+ * Build for: Chromium based and Firefox browsers. 
+ *
+ */
+
+/* Tip 1: top, right, bottom, left */
+/* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
+
+/* Body and main parts of the page. */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header part */
+header {
+  background: #f5f5f5; 
+  color: #000;
+  padding: 10px;
+  height: 6.5em; /* FF fix 1 */
+}
+
+h1 {
+  margin: 7px 0 7px 0;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+h2 {
+  margin: 7px 0 7px 0;	
+  text-align: center;
+}
+
+/* Header buttons (tabs) */
+#tab_container{
+  position: absolute;
+  top: 5.65em; /* FF fix 3a */
+  left: 5em;  /* FF fix 3b */
+}
+
+#tab_container button{ 
+  background-color: #ffffe0;
+  border:0;
+  border-radius: 20px 20px 0px 0px;
+  color: #f4ca16;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1em;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  margin-left: -3px;
+  text-align: center;
+}
+
+#tab_container .tab_on{
+  position: sticky;    
+  border: 2px solid #ffef00;
+  border-bottom:0;
+  cursor:default;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-bottom: 8px; /* FF fix 4*/
+  margin-top: -6px;
+}
+
+#tab_container button:hover{
+  position: sticky;    
+  border: 2px solid #ffef00;
+  border-bottom:0;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-bottom: 8px; /* FF fix 5*/
+  margin-top: -6px;    
+}
+
+
+
+/* Content part */
+.content_container {
+  display: flex;
+  flex: 1;
+}
+
+.content_nav {
+  order: -1;
+}
+
+.content_finance {
+  flex: 1;
+  background: #ffffe0;
+  border: 2px solid #ffef00;
+}
+
+.side {
+  flex: 0 0 4em; /* FF fix 2 */
+  background: #f5f5f5;
+}
+
+  
+
+/* Footer */
+footer {
+ background: #f5f5f5; 
+ color: #000;
+
+}
+
+footer h3 {
+ font-size: 0.9em;
+ font-weight: normal;
+ text-align: center;
+}
+
+
+
+/* Firefox fixes */
+@supports (-moz-appearance:none) {
+    header { height: 8em; }  /* fix 1 */
+    .side { flex: 0 0 5em;} /* fix 2 */
+    #tab_container { top: 7.2em; left: 6.5em; } /* fix 3a and 3b */
+    #tab_container .tab_on { padding-bottom: 9px; }; /* fix 4 */
+    #tab_container button:hover { padding-bottom: 9px; }; /* fix 5 */
+}  

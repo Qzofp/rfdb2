@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:         sheet.html
+ * Dependencies: css/sheet.css 
+ *               js/ext/jquery-3.7.1.min.js
+ *               js/config js/sheet.js
+ *
+ * Created on Oct 01, 2023
+ * Updated on Oct 02, 2023
+ *
+ * Description: Show, add, remove and edit the money assets with a bar chart split screen.
+ * 
+--> 
+<html lang="nl">
+    <head>
+        <title>Rizzo's Finances Database 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/sheet.css">
+        <script src="js/ext/jquery-3.7.1.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/sheet.js"></script>
+    </head>
+    <body>      
+        <!-- Header -->
+        <header>
+            <h1>Financïen</h1>
+            <h2>(ontwerp)</h2>
+            
+            <div id="tab_container">
+		   
+	 
+		    <button type="button">Januari</button>
+		    <button type="button">Februari</button>			 
+		    <button type="button">&nbsp;Maart&nbsp;</button>
+		    <button type="button">&nbsp;April&nbsp;</button>
+		    <button type="button">&emsp;Mei&emsp;</button>	
+		    <button type="button">&emsp;Juni&emsp;</button>	
+		    <button type="button">&emsp;Juli&emsp;</button>
+		    <button type="button">Augustus</button>			 
+		    <button type="button">September</button>
+		    <button class="tab_on" type="button">Oktober</button>
+		    <button type="button">November</button>	
+		    <button type="button">December</button>	                    
+                
+                
+            </div>
+            
+        </header>
+              
+        <!-- Navigation en content -->
+        <div class="content_container">
+            <!-- Left navigation bar -->
+            <nav class="content_nav side"></nav>
+            
+            <!-- Center main content area -->
+            <main class="content_finance">
+                
+                <!-- Javascript test -->
+                <div></div>
+                
+            </main>         
+        
+            <!-- Right side bar -->
+            <aside class="side"></aside>
+            
+            
+        </div>     
+        
+        <!-- Footer -->
+        <footer>
+            <h3>&copy;2023 Rizzo Productions (v0.1)</h3>
+        </footer>       
+            
+        <script>
+        $(document).ready(function () {
+            loadSheet();
+        });
+        </script>
+    
+    </body>
+</html>
