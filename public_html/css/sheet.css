@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 01, 2023
- * Updated on Oct 02, 2023
+ * Updated on Oct 07, 2023
  *
  * Description: The css sheet page.
  * Build for: Chromium based and Firefox browsers. 
@@ -50,46 +50,8 @@ h2 {
 }
 
 /* Header buttons (tabs) */
-#tab_container{
-  position: absolute;
-  top: 5.65em; /* FF fix 3a */
-  left: 5em;  /* FF fix 3b */
-}
 
-#tab_container button{ 
-  background-color: #ffffe0;
-  border:0;
-  border-radius: 20px 20px 0px 0px;
-  color: #f4ca16;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1em;
-  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
-  padding: 7px 20px;
-  margin-left: -3px;
-  text-align: center;
-}
 
-#tab_container .tab_on{
-  position: sticky;    
-  border: 2px solid #ffef00;
-  border-bottom:0;
-  cursor:default;
-  font-size: 1.2em;
-  font-weight: bold;
-  padding-bottom: 8px; /* FF fix 4*/
-  margin-top: -6px;
-}
-
-#tab_container button:hover{
-  position: sticky;    
-  border: 2px solid #ffef00;
-  border-bottom:0;
-  font-size: 1.2em;
-  font-weight: bold;
-  padding-bottom: 8px; /* FF fix 5*/
-  margin-top: -6px;    
-}
 
 
 
@@ -105,8 +67,6 @@ h2 {
 
 .content_finance {
   flex: 1;
-  background: #ffffe0;
-  border: 2px solid #ffef00;
 }
 
 .side {
@@ -135,7 +95,4 @@ footer h3 {
 @supports (-moz-appearance:none) {
     header { height: 8em; }  /* fix 1 */
     .side { flex: 0 0 5em;} /* fix 2 */
-    #tab_container { top: 7.2em; left: 6.5em; } /* fix 3a and 3b */
-    #tab_container .tab_on { padding-bottom: 9px; }; /* fix 4 */
-    #tab_container button:hover { padding-bottom: 9px; }; /* fix 5 */
 }  
