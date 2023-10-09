@@ -8,10 +8,13 @@
  * Used in: sheet.html
  *
  * Created on Oct 01, 2023
- * Updated on Oct 07, 2023
+ * Updated on Oct 09, 2023
  *
  * Description: The css sheet page.
  * Build for: Chromium based and Firefox browsers. 
+ *
+ * Links: https://freefrontend.com/css-tab-bars/
+ *        https://codepen.io/abenjamin/pen/XbbdZJ/
  *
  */
 
@@ -22,6 +25,7 @@
 html, body {
   height: 100%;
   margin: 0;
+  font-family: arial, sans-serif
 }
 
 body {
@@ -49,8 +53,100 @@ h2 {
   text-align: center;
 }
 
-/* Header buttons (tabs) */
+/* Slide tabs */
+.clear{
+  clear: both;
+}
 
+.slide-toggle{
+  display: none;
+}
+
+.slidemenu{
+  font-family: arial, sans-serif;
+  margin: 0px 20px;
+  overflow: hidden;
+}
+
+
+.slidemenu label{
+  text-align: center;
+  display: block;
+  float: left;
+  color: #333;
+  opacity: 0.2; 
+}
+
+/* Max 6 bar items (25%) */
+.max6{
+  width: 16.67%;
+}
+
+/* Max 12 bar items (8.33%) */
+.max12{
+  width: 8.33%;
+}
+    
+.slidemenu label:hover{
+  cursor: pointer;
+  color: #666;
+}
+
+.slidemenu label span{
+  display: block;
+  padding: 10px;    
+}
+
+/*Bar Style*/
+.slider{
+  width: 100%;
+  height: 5px;
+  display: block;
+  background: #ccc;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.slider .bar{
+  height: 5px;
+  background: #ffe87c; /* Yellow, finance theme */
+  border-radius: 5px;
+}
+
+/*Animations*/
+.slidemenu label, .slider .bar {
+  transition: all 500ms ease-in-out;
+  -webkit-transition: all 500ms ease-in-out;
+  -moz-transition: all 500ms ease-in-out;
+}
+
+/*Toggle*/
+.slidemenu .slide-toggle:checked + label{
+  opacity: 1;
+}
+
+/* Max 6 bar items (25%) */
+.slidemenu #slide-item-1:checked ~ .slider .max6{ margin-left: 0; }
+.slidemenu #slide-item-2:checked ~ .slider .max6{ margin-left: 16.67%; }
+.slidemenu #slide-item-3:checked ~ .slider .max6{ margin-left: 33.33%; }
+.slidemenu #slide-item-4:checked ~ .slider .max6{ margin-left: 50%; }
+.slidemenu #slide-item-5:checked ~ .slider .max6{ margin-left: 66.67%; }
+.slidemenu #slide-item-6:checked ~ .slider .max6{ margin-left: 83.33%; }
+
+
+/* Max 12 bar items (8.33%) */
+.slidemenu #slide-item-1:checked ~ .slider .max12{ margin-left: 0; }
+.slidemenu #slide-item-2:checked ~ .slider .max12{ margin-left: 8.33%; }
+.slidemenu #slide-item-3:checked ~ .slider .max12{ margin-left: 16.67%; }
+.slidemenu #slide-item-4:checked ~ .slider .max12{ margin-left: 25%; }
+.slidemenu #slide-item-5:checked ~ .slider .max12{ margin-left: 33.33%; }
+.slidemenu #slide-item-6:checked ~ .slider .max12{ margin-left: 41.67%; }
+.slidemenu #slide-item-7:checked ~ .slider .max12{ margin-left: 50%; }
+.slidemenu #slide-item-8:checked ~ .slider .max12{ margin-left: 58.33%; }
+.slidemenu #slide-item-9:checked ~ .slider .max12{ margin-left: 66.67%; }
+.slidemenu #slide-item-10:checked ~ .slider .max12{ margin-left: 75%; }
+.slidemenu #slide-item-11:checked ~ .slider .max12{ margin-left: 83.33%; }
+.slidemenu #slide-item-12:checked ~ .slider .max12{ margin-left: 91.67%; }
 
 
 
