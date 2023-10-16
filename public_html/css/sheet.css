@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 01, 2023
- * Updated on Oct 09, 2023
+ * Updated on Oct 13, 2023
  *
  * Description: The css sheet page.
  * Build for: Chromium based and Firefox browsers. 
@@ -126,27 +126,27 @@ h2 {
 }
 
 /* Max 6 bar items (25%) */
-.slidemenu #slide-item-1:checked ~ .slider .max6{ margin-left: 0; }
-.slidemenu #slide-item-2:checked ~ .slider .max6{ margin-left: 16.67%; }
-.slidemenu #slide-item-3:checked ~ .slider .max6{ margin-left: 33.33%; }
-.slidemenu #slide-item-4:checked ~ .slider .max6{ margin-left: 50%; }
-.slidemenu #slide-item-5:checked ~ .slider .max6{ margin-left: 66.67%; }
-.slidemenu #slide-item-6:checked ~ .slider .max6{ margin-left: 83.33%; }
+.slidemenu #slide-item-0:checked ~ .slider .max6{ margin-left: 0; }
+.slidemenu #slide-item-1:checked ~ .slider .max6{ margin-left: 16.67%; }
+.slidemenu #slide-item-2:checked ~ .slider .max6{ margin-left: 33.33%; }
+.slidemenu #slide-item-3:checked ~ .slider .max6{ margin-left: 50%; }
+.slidemenu #slide-item-4:checked ~ .slider .max6{ margin-left: 66.67%; }
+.slidemenu #slide-item-5:checked ~ .slider .max6{ margin-left: 83.33%; }
 
 
 /* Max 12 bar items (8.33%) */
-.slidemenu #slide-item-1:checked ~ .slider .max12{ margin-left: 0; }
-.slidemenu #slide-item-2:checked ~ .slider .max12{ margin-left: 8.33%; }
-.slidemenu #slide-item-3:checked ~ .slider .max12{ margin-left: 16.67%; }
-.slidemenu #slide-item-4:checked ~ .slider .max12{ margin-left: 25%; }
-.slidemenu #slide-item-5:checked ~ .slider .max12{ margin-left: 33.33%; }
-.slidemenu #slide-item-6:checked ~ .slider .max12{ margin-left: 41.67%; }
-.slidemenu #slide-item-7:checked ~ .slider .max12{ margin-left: 50%; }
-.slidemenu #slide-item-8:checked ~ .slider .max12{ margin-left: 58.33%; }
-.slidemenu #slide-item-9:checked ~ .slider .max12{ margin-left: 66.67%; }
-.slidemenu #slide-item-10:checked ~ .slider .max12{ margin-left: 75%; }
-.slidemenu #slide-item-11:checked ~ .slider .max12{ margin-left: 83.33%; }
-.slidemenu #slide-item-12:checked ~ .slider .max12{ margin-left: 91.67%; }
+.slidemenu #slide-item-0:checked ~ .slider .max12{ margin-left: 0; }
+.slidemenu #slide-item-1:checked ~ .slider .max12{ margin-left: 8.33%; }
+.slidemenu #slide-item-2:checked ~ .slider .max12{ margin-left: 16.67%; }
+.slidemenu #slide-item-3:checked ~ .slider .max12{ margin-left: 25%; }
+.slidemenu #slide-item-4:checked ~ .slider .max12{ margin-left: 33.33%; }
+.slidemenu #slide-item-5:checked ~ .slider .max12{ margin-left: 41.67%; }
+.slidemenu #slide-item-6:checked ~ .slider .max12{ margin-left: 50%; }
+.slidemenu #slide-item-7:checked ~ .slider .max12{ margin-left: 58.33%; }
+.slidemenu #slide-item-8:checked ~ .slider .max12{ margin-left: 66.67%; }
+.slidemenu #slide-item-9:checked ~ .slider .max12{ margin-left: 75%; }
+.slidemenu #slide-item-10:checked ~ .slider .max12{ margin-left: 83.33%; }
+.slidemenu #slide-item-11:checked ~ .slider .max12{ margin-left: 91.67%; }
 
 
 
