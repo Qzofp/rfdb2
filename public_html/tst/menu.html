@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:         menu.html
+ * Dependencies: css/tabs.css 
+ *
+ * Created on Oct 18, 2023
+ * Updated on Oct 18, 2023
+ *
+ * Description: Menu demo 1 page.
+ * 
+--> 
+<html lang="nl">
+    <head>
+        <title>Rizzo's Finances Database 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/menu.css">
+    </head>
+    <body>      
+        <!-- Header -->
+        <header>		
+			<div class="hamburger_menu">
+				<input id="menu_toggle" type="checkbox" />
+				<label class="menu_btn" for="menu_toggle">
+					<span></span>
+				</label>
+
+				<ul class="menu_box">
+					<li><a class="menu_item" href="#">Home</a></li>
+					<li><a class="menu_item" href="#">About</a></li>
+					<li><a class="menu_item" href="#">Team</a></li>
+					<li><a class="menu_item" href="#">Contact</a></li>
+					<li><a class="menu_item" href="#">Twitter</a></li>
+				</ul>
+			</div>		
+			
+            <h1>Hamburger Menu & Sliding Tabs</h1>
+            <h2>Demo 1</h2>     
+        </header>
+              
+        <!-- Navigation en content -->
+        <div class="content_container">
+            <!-- Left navigation bar -->
+            <nav class="content_nav side"></nav>
+            
+            <!-- Center main content area -->
+            <main class="content_finance">
+  
+                <nav class="slidemenu">
+  
+                    <!-- Item 1 -->
+                    <input type="radio" name="slideItem" id="slide-item-1" class="slide-toggle"/>
+                    <label for="slide-item-1"><p></p><span>Januari</span></label>
+  
+                    <!-- Item 2 -->
+                    <input type="radio" name="slideItem" id="slide-item-2" class="slide-toggle"/>
+                    <label for="slide-item-2"><p></p><span>Februari</span></label>
+  
+                    <!-- Item 3 -->
+                    <input type="radio" name="slideItem" id="slide-item-3" class="slide-toggle"/>
+                    <label for="slide-item-3"><p></p><span>Maart</span></label>
+  
+                    <!-- Item 4 -->
+                    <input type="radio" name="slideItem" id="slide-item-4" class="slide-toggle"/>
+                    <label for="slide-item-4"><p></p><span>April</span></label>
+  
+                    <!-- Item 5 -->
+                    <input type="radio" name="slideItem" id="slide-item-5" class="slide-toggle" />
+                    <label for="slide-item-5"><p></p><span>Mei</span></label>
+  
+                    <!-- Item 6 -->
+                    <input type="radio" name="slideItem" id="slide-item-6" class="slide-toggle"/>
+                    <label for="slide-item-6"><p></p><span>Juni</span></label>
+  
+                    <!-- Item 7 -->
+                    <input type="radio" name="slideItem" id="slide-item-7" class="slide-toggle"/>
+                    <label for="slide-item-7"><p></p><span>Juli</span></label>
+  
+                    <!-- Item 8 -->
+                    <input type="radio" name="slideItem" id="slide-item-8" class="slide-toggle"/>
+                    <label for="slide-item-8"><p></p><span>Augustus</span></label>
+  
+                    <!-- Item 9 -->
+                    <input type="radio" name="slideItem" id="slide-item-9" class="slide-toggle"/>
+                    <label for="slide-item-9"><p></p><span>September</span></label>
+  
+                    <!-- Item 10 -->
+                    <input type="radio" name="slideItem" id="slide-item-10" class="slide-toggle" checked/>
+                    <label for="slide-item-10"><p></p><span>October</span></label>
+  
+                    <!-- Item 11 -->
+                    <input type="radio" name="slideItem" id="slide-item-11" class="slide-toggle"/>
+                    <label for="slide-item-11"><p></p><span>November</span></label>
+  
+                    <!-- Item 12 -->
+                    <input type="radio" name="slideItem" id="slide-item-12" class="slide-toggle"/>
+                    <label for="slide-item-12"><p></p><span>December</span></label>  
+  
+                    <div class="clear"></div>
+  
+                    <!-- Bar -->
+                    <div class="slider">
+                        <div class="bar"></div>
+                    </div>
+  
+                </nav>                
+                
+                Dit is een test....
+            
+            </main>         
+        
+            <!-- Right side bar -->
+            <aside class="side"></aside>
+            
+            
+        </div>     
+        
+        <!-- Footer -->
+        <footer>
+            <h3>&copy;2023 Rizzo Productions (v0.1)</h3>
+        </footer>       
+               
+    </body>
+</html>

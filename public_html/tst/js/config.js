@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Oct 22, 2023
+ * Updated on Oct 16, 2023
  *
  * Description: .
  * Dependenties: -
@@ -20,9 +20,9 @@ const cDate = new Date();
 
 
 // Load constants from the database.
-const cMonths   = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
-const cQuarters = ["Jan - Maa","Apr - Jun","Jul - Sept", "Okt - Dec"];
-const cYear     = ["Jan - Dec"];
+const cMonths = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
+const cQuarters = ["Januari - Maart","April - Juni","Juli - September","Oktober - December"];
+
 
 // Test function
 function showConfigs() {
@@ -32,10 +32,10 @@ function showConfigs() {
 }
 
 /*
- * Function:    getContants
+ * Function:    createSlideMenu
  *
  * Created on Oct 15, 2023
- * Updated on Oct 21, 2023
+ * Updated on Oct 16, 2023
  *
  * Description: Get the constants from de database tblConfig table.
  *

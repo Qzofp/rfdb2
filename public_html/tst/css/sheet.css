@@ -8,14 +8,14 @@
  * Used in: sheet.html
  *
  * Created on Oct 01, 2023
- * Updated on Oct 23, 2023
+ * Updated on Oct 20, 2023
  *
  * Description: The css sheet page.
- * Build for: Firefox and Chromium based browsers.
+ * Build for: Chromium based and Firefox browsers. 
  *
  * Links: https://freefrontend.com/css-tab-bars/
  *        https://codepen.io/abenjamin/pen/XbbdZJ/
- *	  https://alvarotrigo.com/blog/hamburger-menu-css/
+ *		  https://alvarotrigo.com/blog/hamburger-menu-css/
  *        https://codepen.io/alvarotrigo/pen/yLzaPVJ
  *
  */
@@ -27,13 +27,12 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: arial, sans-serif;
+  font-family: arial, sans-serif
 }
 
 body {
   display: flex;
-  flex-direction: column;  
-  zoom: 0.8; /* Chromium fix */
+  flex-direction: column;
 }
 
 /* Header part */
@@ -41,7 +40,7 @@ header {
   background: #f5f5f5; 
   color: #000;
   padding: 10px;
-  height: 8em; /* FF fix 1 */
+  height: 6.5em; /* FF fix 1 */
 }
 
 h1 {
@@ -51,18 +50,7 @@ h1 {
   text-align: center;
 }
 
-/* YearPicker */
-:root {
-    --selected-text-color: #ffe87c; /* Yellow, finance theme */
-    --hover-background-color: #ccc;  
-}
-
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-
+/* YearPicker*/
 .picker {
   display: block;
   margin-left: auto;
@@ -71,10 +59,14 @@ h1 {
 }
 
 .yearpicker {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  margin-top: -7px;
+  width:40;
+  height:40;
+  cursor:pointer;
+}
+
+:root {
+    --selected-text-color: #ffe87c; /* Yellow, finance theme */
+    --hover-background-color: #ccc;  
 }
 
 /* Hamburger menu */
@@ -141,8 +133,8 @@ h1 {
   display: block;
   padding: 12px 24px;
   color: #333;
-  font-family: Roboto, sans-serif;
-  font-size: 135%; /* FF fix 2 */
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
   font-weight: 300;
   text-decoration: none;
   transition-duration: .25s;
@@ -167,14 +159,23 @@ h1 {
 }
 
 .slidemenu label{
-  width: 8.33%;  
   text-align: center;
   display: block;
   float: left;
   color: #333;
   opacity: 0.2; 
 }
-   
+
+/* Max 6 bar items (25%) */
+.max6{
+  width: 16.67%;
+}
+
+/* Max 12 bar items (8.33%) */
+.max12{
+  width: 8.33%;
+}
+    
 .slidemenu label:hover{
   cursor: pointer;
   color: #666;
@@ -196,7 +197,6 @@ h1 {
 }
 
 .slider .bar{
-  width: 8.33%;
   height: 5px;
   background: #ffe87c; /* Yellow, finance theme */
   border-radius: 5px;
@@ -214,19 +214,28 @@ h1 {
   opacity: 1;
 }
 
+/* Max 6 bar items (25%) */
+.slidemenu #slide-item-0:checked ~ .slider .max6{ margin-left: 0; }
+.slidemenu #slide-item-1:checked ~ .slider .max6{ margin-left: 16.67%; }
+.slidemenu #slide-item-2:checked ~ .slider .max6{ margin-left: 33.33%; }
+.slidemenu #slide-item-3:checked ~ .slider .max6{ margin-left: 50%; }
+.slidemenu #slide-item-4:checked ~ .slider .max6{ margin-left: 66.67%; }
+.slidemenu #slide-item-5:checked ~ .slider .max6{ margin-left: 83.33%; }
+
+
 /* Max 12 bar items (8.33%) */
-.slidemenu #slide-item-0:checked ~ .slider .bar{ margin-left: 0; }
-.slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 8.33%; }
-.slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 16.67%; }
-.slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 25%; }
-.slidemenu #slide-item-4:checked ~ .slider .bar{ margin-left: 33.33%; }
-.slidemenu #slide-item-5:checked ~ .slider .bar{ margin-left: 41.67%; }
-.slidemenu #slide-item-6:checked ~ .slider .bar{ margin-left: 50%; }
-.slidemenu #slide-item-7:checked ~ .slider .bar{ margin-left: 58.33%; }
-.slidemenu #slide-item-8:checked ~ .slider .bar{ margin-left: 66.67%; }
-.slidemenu #slide-item-9:checked ~ .slider .bar{ margin-left: 75%; }
-.slidemenu #slide-item-10:checked ~ .slider .bar{ margin-left: 83.33%; }
-.slidemenu #slide-item-11:checked ~ .slider .bar{ margin-left: 91.67%; }
+.slidemenu #slide-item-0:checked ~ .slider .max12{ margin-left: 0; }
+.slidemenu #slide-item-1:checked ~ .slider .max12{ margin-left: 8.33%; }
+.slidemenu #slide-item-2:checked ~ .slider .max12{ margin-left: 16.67%; }
+.slidemenu #slide-item-3:checked ~ .slider .max12{ margin-left: 25%; }
+.slidemenu #slide-item-4:checked ~ .slider .max12{ margin-left: 33.33%; }
+.slidemenu #slide-item-5:checked ~ .slider .max12{ margin-left: 41.67%; }
+.slidemenu #slide-item-6:checked ~ .slider .max12{ margin-left: 50%; }
+.slidemenu #slide-item-7:checked ~ .slider .max12{ margin-left: 58.33%; }
+.slidemenu #slide-item-8:checked ~ .slider .max12{ margin-left: 66.67%; }
+.slidemenu #slide-item-9:checked ~ .slider .max12{ margin-left: 75%; }
+.slidemenu #slide-item-10:checked ~ .slider .max12{ margin-left: 83.33%; }
+.slidemenu #slide-item-11:checked ~ .slider .max12{ margin-left: 91.67%; }
 
 /* Content part */
 .content_container {
@@ -243,7 +252,7 @@ h1 {
 }
 
 .side {
-  flex: 0 0 5em;
+  flex: 0 0 4em; /* FF fix 2 */
   background: #f5f5f5;
 }
 
@@ -266,6 +275,6 @@ footer h3 {
 
 /* Firefox fixes */
 @supports (-moz-appearance:none) {
-    header { height: 7.8em;} /* fix 1 */ 
-    .menu_item { font-size: 120%;} /* fix 2 */
-}
+    header { height: 8em; }  /* fix 1 */
+    .side { flex: 0 0 5em;} /* fix 2 */
+}  

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 02, 2023
- * Updated on Oct 16, 2023
+ * Updated on Oct 23, 2023
  *
  * Description: .
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 02, 2023
- * Updated on Oct 16, 2023
+ * Updated on Oct 22, 2023
  *
  * Description: The sheet.html main function.
  *
@@ -31,63 +31,90 @@
 function loadSheet() {
     
     // Show current year in header
-    $("header h2").html(cDate.getFullYear());
+    $("header h1 span").html(cDate.getFullYear());
+   
+    // YearPicker Test
+    $(".yearpicker").yearpicker({
+	year: cDate.getFullYear(),
+	startYear: 1998,
+        endYear: cDate.getFullYear(),
+            onHide:function(value)
+            {
+                $("header h1 span").html(value);
+			
+		let i = $(".slidemenu input[name='slideItem']:checked").val();
+                                
+                fillSlideMenu(cMonths, value, i);
+                
+                $("#tst_text").html("<h1>" + cMonths[i] + " " + value +"</h1>");
+            }
+    });
+  
+
+    // Fill the slide menu.
+    fillSlideMenu(cMonths, cDate.getFullYear(), cDate.getMonth());
     
-    createSlideMenu(cMonths, cDate.getFullYear(), cDate.getMonth());
-    
-    // Test
-    $("#tst_text").html("<h1>" + cMonths[cDate.getMonth()] + "</h1>");
-    
-    // Slide menu item clicked
+    // TEST
+    $("#tst_text").html("<h1>" + cMonths[cDate.getMonth()] + " " + cDate.getFullYear() + "</h1>");
+	
+    // TEST: Slide menu item clicked
     $(".slidemenu input[name='slideItem']").change(function() {
         
         let i = $(".slidemenu input[name='slideItem']:checked").val();
+        let year = $("header h1 span").html();
         
-        // Test
-        $("#tst_text").html("<h1>" + cMonths[i] + "</h1>");
+        // TEST
+        $("#tst_text").html("<h1>" + cMonths[i] + " " + year + "</h1>");
         
         //console.log("Test click:" + i);
     });    
     
     
-    getConstants();
+    //getConstants();
     
     // Debug
     //console.log("Test: " + cDate.getFullYear());
 }
 
 
+
+
+
 /*
- * Function:    createSlideMenu
+ * Function:    fillSlideMenu
  *
- * Created on Oct 13, 2023
- * Updated on Oct 14, 2023
+ * Created on Oct 21, 2023
+ * Updated on Oct 21, 2023
  *
- * Description: Creates and shows the Slidemenu bar with the items.
+ * Description: Fill the Slidemenu bar with the items.
  *
  * In:  items, year, active
  * Out: -
  *
  */
-function createSlideMenu(items, year, active) {
+function fillSlideMenu(items, year, active) {
 
-    var max = items.length;
+    var hide = active;
     if (year >= cDate.getFullYear()) {
-	max = active + 1;
+	hide = cDate.getMonth();
+        
+        if (active > hide) {
+            active = hide;
+        }    
+    }   
+    
+    for (let i = 0; i < 12; i++) {
+        
+        if (active === i) {
+            $("#slide-item-" + i).prop('checked', true);
+        }
+        $("#slide-item-" + i).next().find("span").html(items[i]);
+        
+        if (i > hide && year >= cDate.getFullYear()) {
+            $("#slide-item-" + i).next().hide();
+        }
+        else {
+            $("#slide-item-" + i).next().show();
+        }
     }
-	
-    for (let i = 0; i < max; i++) {
-	
-	if (active === i) {
-            $(".slidemenu .clear").before('<input type="radio" name="slideItem" value="' + i + '" id="slide-item-' + i +'" class="slide-toggle" checked/>');		
-	}
-	else {
-            $(".slidemenu .clear").before('<input type="radio" name="slideItem" value="' + i + '" id="slide-item-' + i +'" class="slide-toggle"/>');
-	}	
-		
-	$(".slidemenu .clear").before('<label class="max12" for="slide-item-' + i + '"><p></p><span>' + items[i] + '</span></label>');
-    }	
-	
-    // max6 en max12 class aanpassen.	
-	
 }

@@ -74,7 +74,6 @@ h2 {
   float: left;
   color: #333;
   opacity: 0.2;
-
 }
 
 .slidemenu label:hover{
@@ -128,7 +127,6 @@ h2 {
 .slidemenu #slide-item-10:checked ~ .slider .bar{ margin-left: 75%; }
 .slidemenu #slide-item-11:checked ~ .slider .bar{ margin-left: 83.33%; }
 .slidemenu #slide-item-12:checked ~ .slider .bar{ margin-left: 91.67%; }
-
 
 
 /* Content part */

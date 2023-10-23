@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:         sheet.html
+ * Dependencies: css/sheet.css 
+ *               js/ext/jquery-3.7.1.min.js
+ *               js/config js/sheet.js
+ *
+ * Created on Oct 01, 2023
+ * Updated on Oct 20, 2023
+ *
+ * Description: Show, add, remove and edit the money assets with a bar chart split screen.
+ * 
+--> 
+<html lang="nl">
+    <head>
+        <title>Rizzo's Finances Database 2</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/ext/yearpicker.css">	
+        <link rel="stylesheet" href="css/sheet.css">
+        <script src="js/ext/jquery-3.7.1.min.js"></script>
+		<script src="js/ext/yearpicker.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/sheet.js"></script>
+    </head>
+    <body>      
+        <!-- Header -->
+        <header>
+			<div class="hamburger_menu">
+				<input id="menu_toggle" type="checkbox" />
+				<label class="menu_btn" for="menu_toggle">
+					<span></span>
+				</label>
+				<ul class="menu_box">
+					<li><a class="menu_item" href="index.html">Overzicht</a></li>
+					<li><a class="menu_item" href="#">Financiën</a></li>
+					<li><a class="menu_item" href="#">Beleggen</a></li>
+					<li><a class="menu_item" href="#">Sparen</a></li>
+					<li><a class="menu_item" href="#">Crypto</a></li>
+					<li><a class="menu_item" href="settings.html">Instellingen</a></li>			
+				</ul>
+			</div>				
+				
+            <h1>Financiën</h1>
+			<div class="picker">
+				<img class="yearpicker" src="img/years.png" alt="years">   
+            </div>
+        </header>
+              
+        <!-- Navigation en content -->
+        <div class="content_container">
+            <!-- Left navigation bar -->
+            <nav class="content_nav side"></nav>
+            
+            <!-- Center main content area -->
+            <main class="content_finance">
+					 
+                <nav class="slidemenu">
+                    <!-- Place slider menu items with JS, before "clear" -->
+                    <div class="clear"></div>
+  
+                    <!-- Bar -->
+                    <div class="slider">
+                        <div class="bar max12"></div>
+                    </div>
+					
+                </nav>                       
+
+                <!-- JS Test-->
+                <div id="tst_text"></div>
+                
+                <!-- Show Finance table with JS -->
+                <table class="tbl_list"></table>
+                
+                <!-- Content Errors -->
+                <div id="error"></div>
+                
+            </main>         
+                    
+            <!-- Right side bar -->
+            <aside class="side"></aside>
+                         
+        </div>     
+        
+        <!-- Footer -->
+        <footer>
+            <h3>&copy;2023 Rizzo Productions</h3>
+        </footer>       
+            
+        <script>
+        $(document).ready(function () {
+            loadSheet();
+        });
+        </script>
+    
+    </body>
+</html>

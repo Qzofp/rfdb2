@@ -4,18 +4,18 @@
  * Author:  Rizzo Productions
  * Version: 0.1
  *
- * File:    sheet.css
- * Used in: sheet.html
+ * File:    menu.css
+ * Used in: menu.html
  *
- * Created on Oct 01, 2023
- * Updated on Oct 23, 2023
+ * Created on Oct 18, 2023
+ * Updated on Oct 18, 2023
  *
- * Description: The css sheet page.
- * Build for: Firefox and Chromium based browsers.
+ * Description: The css tabs demo 1 page.
+ * Build for: Chromium based and Firefox browsers. 
  *
  * Links: https://freefrontend.com/css-tab-bars/
  *        https://codepen.io/abenjamin/pen/XbbdZJ/
- *	  https://alvarotrigo.com/blog/hamburger-menu-css/
+ *		  https://alvarotrigo.com/blog/hamburger-menu-css/
  *        https://codepen.io/alvarotrigo/pen/yLzaPVJ
  *
  */
@@ -27,13 +27,11 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: arial, sans-serif;
 }
 
 body {
   display: flex;
-  flex-direction: column;  
-  zoom: 0.8; /* Chromium fix */
+  flex-direction: column;
 }
 
 /* Header part */
@@ -41,7 +39,7 @@ header {
   background: #f5f5f5; 
   color: #000;
   padding: 10px;
-  height: 8em; /* FF fix 1 */
+  height: 6.5em; /* FF fix 1 */
 }
 
 h1 {
@@ -51,30 +49,9 @@ h1 {
   text-align: center;
 }
 
-/* YearPicker */
-:root {
-    --selected-text-color: #ffe87c; /* Yellow, finance theme */
-    --hover-background-color: #ccc;  
-}
-
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-
-.picker {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 2%;
-}
-
-.yearpicker {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  margin-top: -7px;
+h2 {
+  margin: 7px 0 7px 0;	
+  text-align: center;
 }
 
 /* Hamburger menu */
@@ -102,7 +79,7 @@ h1 {
   width: 26px;
   height: 26px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 1;
 }
 .menu_btn > span,
 .menu_btn > span::before,
@@ -135,15 +112,14 @@ h1 {
   background-color: #ECEFF1;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
   transition-duration: .25s;
-  z-index: 1;
 }
 .menu_item {
   display: block;
   padding: 12px 24px;
   color: #333;
-  font-family: Roboto, sans-serif;
-  font-size: 135%; /* FF fix 2 */
-  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
   text-decoration: none;
   transition-duration: .25s;
 }
@@ -151,7 +127,8 @@ h1 {
   background-color: #CFD8DC;
 }
 
-/* Sliding tabs */
+
+/* Slide tabs */
 .clear{
   clear: both;
 }
@@ -162,19 +139,20 @@ h1 {
 
 .slidemenu{
   font-family: arial, sans-serif;
-  margin: 0px 50px;
+  margin: 0px 20px;
   overflow: hidden;
 }
 
 .slidemenu label{
-  width: 8.33%;  
+  width: 8.33%;
   text-align: center;
   display: block;
   float: left;
   color: #333;
-  opacity: 0.2; 
+  opacity: 0.2;
+
 }
-   
+
 .slidemenu label:hover{
   cursor: pointer;
   color: #666;
@@ -185,7 +163,7 @@ h1 {
   padding: 10px;    
 }
 
-/* Bar Style */
+/*Bar Style*/
 .slider{
   width: 100%;
   height: 5px;
@@ -198,35 +176,36 @@ h1 {
 .slider .bar{
   width: 8.33%;
   height: 5px;
-  background: #ffe87c; /* Yellow, finance theme */
+  background: #333;
   border-radius: 5px;
 }
 
-/* Animations */
+/*Animations*/
 .slidemenu label, .slider .bar {
   transition: all 500ms ease-in-out;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
 }
 
-/* Toggle */
+/*Toggle*/
 .slidemenu .slide-toggle:checked + label{
   opacity: 1;
 }
 
-/* Max 12 bar items (8.33%) */
-.slidemenu #slide-item-0:checked ~ .slider .bar{ margin-left: 0; }
-.slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 8.33%; }
-.slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 16.67%; }
-.slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 25%; }
-.slidemenu #slide-item-4:checked ~ .slider .bar{ margin-left: 33.33%; }
-.slidemenu #slide-item-5:checked ~ .slider .bar{ margin-left: 41.67%; }
-.slidemenu #slide-item-6:checked ~ .slider .bar{ margin-left: 50%; }
-.slidemenu #slide-item-7:checked ~ .slider .bar{ margin-left: 58.33%; }
-.slidemenu #slide-item-8:checked ~ .slider .bar{ margin-left: 66.67%; }
-.slidemenu #slide-item-9:checked ~ .slider .bar{ margin-left: 75%; }
-.slidemenu #slide-item-10:checked ~ .slider .bar{ margin-left: 83.33%; }
-.slidemenu #slide-item-11:checked ~ .slider .bar{ margin-left: 91.67%; }
+.slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 0; }
+.slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 8.33%; }
+.slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 16.67%; }
+.slidemenu #slide-item-4:checked ~ .slider .bar{ margin-left: 25%; }
+.slidemenu #slide-item-5:checked ~ .slider .bar{ margin-left: 33.33%; }
+.slidemenu #slide-item-6:checked ~ .slider .bar{ margin-left: 41.67%; }
+.slidemenu #slide-item-7:checked ~ .slider .bar{ margin-left: 50%; }
+.slidemenu #slide-item-8:checked ~ .slider .bar{ margin-left: 58.33%; }
+.slidemenu #slide-item-9:checked ~ .slider .bar{ margin-left: 66.67%; }
+.slidemenu #slide-item-10:checked ~ .slider .bar{ margin-left: 75%; }
+.slidemenu #slide-item-11:checked ~ .slider .bar{ margin-left: 83.33%; }
+.slidemenu #slide-item-12:checked ~ .slider .bar{ margin-left: 91.67%; }
+
+
 
 /* Content part */
 .content_container {
@@ -240,10 +219,11 @@ h1 {
 
 .content_finance {
   flex: 1;
+
 }
 
 .side {
-  flex: 0 0 5em;
+  flex: 0 0 4em; /* FF fix 2 */
   background: #f5f5f5;
 }
 
@@ -266,6 +246,6 @@ footer h3 {
 
 /* Firefox fixes */
 @supports (-moz-appearance:none) {
-    header { height: 7.8em;} /* fix 1 */ 
-    .menu_item { font-size: 120%;} /* fix 2 */
-}
+    header { height: 8em; }  /* fix 1 */
+    .side { flex: 0 0 5em;}  /* fix 2 */
+}  
