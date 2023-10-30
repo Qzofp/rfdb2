@@ -3,7 +3,7 @@
     --border-color: #ccc;
     --text-color: #555;
     --selected-text-color: rgb(56, 241, 164);
-    --hover-background-color: #ccc; /* changed item, #eee; */
+    --hover-background-color: #eee;
 }
 
 .yearpicker-container {
@@ -17,8 +17,8 @@
     background-color: var(--background-color);
     z-index: 10;
     margin-top: -2rem;  /* 0.2rem */
-    margin-left: -120px; /* added item */
-    font-weight: bold;    /* added item */
+	margin-left: -120px; /* added item */
+	font-weight: bold;    /* added item */
 }
 
 .yearpicker-header {

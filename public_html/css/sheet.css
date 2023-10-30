@@ -4,65 +4,21 @@
  * Author:  Rizzo Productions
  * Version: 0.1
  *
- * File:    sheet.css
- * Used in: sheet.html
+ * File:    menu.css
+ * Used in: menu.html
  *
- * Created on Oct 01, 2023
- * Updated on Oct 26, 2023
+ * Created on Oct 18, 2023
+ * Updated on Oct 30, 2023
  *
- * Description: The css sheet page.
- * Build for: Firefox and Chromium based browsers.
- *
- * Links: https://freefrontend.com/css-tab-bars/
- *        https://codepen.io/abenjamin/pen/XbbdZJ/
- *	  https://alvarotrigo.com/blog/hamburger-menu-css/
- *        https://codepen.io/alvarotrigo/pen/yLzaPVJ
+ * Description: The css tabs demo 1 page.
+ * Build for: Chromium based and Firefox browsers. 
  *
  */
 
 /* Tip 1: top, right, bottom, left */
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
 
-/* Body and main parts of the page. */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: arial, sans-serif;
-}
-
-body {
-  display: flex;
-  flex-direction: column;  
-  /* zoom: 0.8; */ /* Chromium fix */
-}
-
-/* Header part */
-header {
-  background: #f5f5f5; 
-  color: #000;
-  padding: 10px;
-  height: 8em; /* FF fix 1 */
-}
-
-h1 {
-  margin: 7px 0 7px 0;
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-}
-
 /* YearPicker */
-:root {
-    --selected-text-color: #ffe87c; /* Yellow, finance theme */
-    --hover-background-color: #ccc;  
-}
-
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-
 .picker {
   display: block;
   margin-left: auto;
@@ -77,188 +33,11 @@ h1 {
   margin-top: -7px;
 }
 
-/* Hamburger menu */
-#menu_toggle {
-  opacity: 0;
-}
-#menu_toggle:checked + .menu_btn > span {
-  transform: rotate(45deg);
-}
-#menu_toggle:checked + .menu_btn > span::before {
-  top: 0;
-  transform: rotate(0deg);
-}
-#menu_toggle:checked + .menu_btn > span::after {
-  top: 0;
-  transform: rotate(90deg);
-}
-#menu_toggle:checked ~ .menu_box {
-  left: 0 !important;
-}
-.menu_btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  z-index: 3;
-}
-.menu_btn > span,
-.menu_btn > span::before,
-.menu_btn > span::after {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #616161;
-  transition-duration: .25s;
-}
-.menu_btn > span::before {
-  content: '';
-  top: -8px;
-}
-.menu_btn > span::after {
-  content: '';
-  top: 8px;
-}
-.menu_box {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 300px;
-  height: 100%;
-  margin: 0;
-  padding: 80px 0;
-  list-style: none;
-  background-color: #ECEFF1;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
-  transition-duration: .25s;
-  z-index: 2;
-}
-.menu_item {
-  display: block;
-  padding: 12px 24px;
-  color: #333;
-  font-family: Roboto, sans-serif;
-  font-size: 120%;
-  font-weight: 300;
-  text-decoration: none;
-  transition-duration: .25s;
-}
-.menu_item:hover {
-  background-color: #CFD8DC;
-}
+/* Slide menu */
 
-/* Sliding tabs */
-.clear{
-  clear: both;
-}
 
-.slide-toggle{
-  display: none;
-}
 
-.slidemenu{
-  font-family: arial, sans-serif;
-  margin: 0px 50px;
-  overflow: hidden;
-}
-
-.slidemenu label{
-  width: 8.33%;  
-  text-align: center;
-  display: block;
-  float: left;
-  color: #333;
-  opacity: 0.2; 
-}
-   
-.slidemenu label:hover{
-  cursor: pointer;
-  color: #666;
-}
-
-.slidemenu label span{
-  display: block;
-  padding: 10px;    
-}
-
-/* Bar Style */
-.slider{
-  width: 100%;
-  height: 5px;
-  display: block;
-  background: #ccc;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-.slider .bar{
-  width: 8.33%;
-  height: 5px;
-  background: #ffe87c; /* Yellow, finance theme */
-  border-radius: 5px;
-}
-
-/* Animations */
-.slidemenu label, .slider .bar {
-  transition: all 500ms ease-in-out;
-  -webkit-transition: all 500ms ease-in-out;
-  -moz-transition: all 500ms ease-in-out;
-}
-
-/* Toggle */
-.slidemenu .slide-toggle:checked + label{
-  opacity: 1;
-  font-weight:bold;
-}
-
-#slide6 {
-  display:none;	
-}
-
-#slide12 {
-  display:inherit;
-}
-
-/* Slide with 6 bar items (16.67%) */
-.slidemenu #slide6-item-0:checked ~ .slider .bar{ margin-left: 0; }
-.slidemenu #slide6-item-1:checked ~ .slider .bar{ margin-left: 16.67%; }
-.slidemenu #slide6-item-2:checked ~ .slider .bar{ margin-left: 33.33%; }
-.slidemenu #slide6-item-3:checked ~ .slider .bar{ margin-left: 50%; }
-.slidemenu #slide6-item-4:checked ~ .slider .bar{ margin-left: 66.67%; }
-.slidemenu #slide6-item-5:checked ~ .slider .bar{ margin-left: 83.33%; }
-
-/* Slide with 12 bar items (8.33%) */
-.slidemenu #slide12-item-0:checked ~ .slider .bar{ margin-left: 0; }
-.slidemenu #slide12-item-1:checked ~ .slider .bar{ margin-left: 8.33%; }
-.slidemenu #slide12-item-2:checked ~ .slider .bar{ margin-left: 16.67%; }
-.slidemenu #slide12-item-3:checked ~ .slider .bar{ margin-left: 25%; }
-.slidemenu #slide12-item-4:checked ~ .slider .bar{ margin-left: 33.33%; }
-.slidemenu #slide12-item-5:checked ~ .slider .bar{ margin-left: 41.67%; }
-.slidemenu #slide12-item-6:checked ~ .slider .bar{ margin-left: 50%; }
-.slidemenu #slide12-item-7:checked ~ .slider .bar{ margin-left: 58.33%; }
-.slidemenu #slide12-item-8:checked ~ .slider .bar{ margin-left: 66.67%; }
-.slidemenu #slide12-item-9:checked ~ .slider .bar{ margin-left: 75%; }
-.slidemenu #slide12-item-10:checked ~ .slider .bar{ margin-left: 83.33%; }
-.slidemenu #slide12-item-11:checked ~ .slider .bar{ margin-left: 91.67%; }
-
-/* Content part */
-.content_container {
-  display: flex;
-  flex: 1;
-}
-
-.content_nav {
-  order: -1;
-}
-
-.content_main {
-  flex: 1;
-}
-
+/* Sheet buttons */
 #sheet_buttons {
    position: absolute;
    margin-top: 5px;
@@ -269,38 +48,4 @@ h1 {
   width: 32px;
   height: 32px;
   cursor: pointer;
-}
-
-.popup_content {
-  position: fixed;
-  background: #fff;
-  z-index: 1;
-  display: none;
-}
-
-
-
-
-.side {
-  flex: 0 0 5em;
-  background: #f5f5f5;
-}
-
-  
-
-/* Footer */
-footer {
- background: #f5f5f5; 
- color: #000;
-}
-
-footer h3 {
- font-size: 0.9em;
- font-weight: normal;
- text-align: center;
-}
-
-/* Firefox fixes */
-@supports (-moz-appearance:none) {
- header { height: 7.8em;} /* fix 1 */ 
 }

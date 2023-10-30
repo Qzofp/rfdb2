@@ -4,15 +4,15 @@
  * Author:  Rizzo Productions
  * Version: 0.1
  *
- * File:         index.html
+ * File:         settings.html
  * Dependencies: css/common.css
- *               css/index.css
+ *               css/settings.css
  *               js/ext/jquery-3.7.1.min.js
  *               js/config.js
  *               js/common.js 
- *               js/index.js
+ *               js/settings.js
  *
- * Created on Sep 22, 2023
+ * Created on Oct 29, 2023
  * Updated on Oct 29, 2023
  *
  * Description: Redirect to the start page.
@@ -23,12 +23,12 @@
         <title>Rizzo's Finances Database 2</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/common.css">     
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/common.css">        
+        <link rel="stylesheet" href="css/settings.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>        
         <script src="js/config.js"></script>
         <script src="js/common.js"></script>        
-        <script src="js/index.js"></script> 
+        <script src="js/settings.js"></script> 
     </head>
     <body>                   
         <!-- Header -->
@@ -63,13 +63,13 @@
                 <nav class="slidemenu">
   
                     <input type="radio" name="slideItem" id="slide6-item-0" class="slide-toggle" checked/>
-                    <label for="slide6-item-0"><p></p><span>Activa</span></label>
+                    <label for="slide6-item-0"><p></p><span>Algemeen</span></label>
                     <input type="radio" name="slideItem" id="slide6-item-1" class="slide-toggle"/>
-                    <label for="slide6-item-1"><p></p><span></span>Test 1</label>
+                    <label for="slide6-item-1"><p></p><span>Groepen</span></label>
                     <input type="radio" name="slideItem" id="slide6-item-2" class="slide-toggle"/>
-                    <label for="slide6-item-2"><p></p><span></span>Test 2</label>
+                    <label for="slide6-item-2"><p></p><span>Bedrijven</span></label>
                     <input type="radio" name="slideItem" id="slide6-item-3" class="slide-toggle"/>
-                    <label for="slide6-item-3"><p></p><span></span></label>
+                    <label for="slide6-item-3"><p></p><span>Configuraties</span></label>
                     <input type="radio" name="slideItem" id="slide6-item-4" class="slide-toggle" />
                     <label for="slide6-item-4"><p></p><span></span></label>
                     <input type="radio" name="slideItem" id="slide6-item-5" class="slide-toggle"/>
@@ -104,7 +104,7 @@
         <!-- Script -->
         <script>
         $(document).ready(function () {
-            loadMain();
+            loadSettings();
         });
         </script>  
         
