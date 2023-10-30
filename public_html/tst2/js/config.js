@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Oct 27, 2023
+ * Updated on Oct 28, 2023
  *
  * Description: .
  * Dependenties: -
@@ -16,13 +16,15 @@
 
 // Define constants
 const cVersion = "0.1";
-//const cDate = new Date();
-const cDate = new Date('04/19/2023');
+const cDate = new Date();
+//const cDate = new Date('04/19/2023');
 
 // Load constants from the database.
+const cMenu     = ["Overzicht","Financiën","Beleggen","Sparen","Crypto","Instellingen"];
+
 const cMonths   = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
-const cQuarters = ["Januari - Maart","April - Juni","Juli - September", "Oktober - December", "Test 1", "Test 2"];
-const cYear     = ["Januari - December", "Test 1", "Test 2", "Test 3", "Test 4", "Test 5"];
+const cQuarters = ["Januari - Maart","April - Juni","Juli - September","Oktober - December","Test 1","Test 2"];
+const cYear     = ["Januari - December","Test 1","Test 2","Test 3","Test 4","Test 5"];
 
 // Test function
 function showConfigs() {

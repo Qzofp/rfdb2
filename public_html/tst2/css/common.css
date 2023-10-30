@@ -4,14 +4,16 @@
  * Author:  Rizzo Productions
  * Version: 0.1
  *
- * File:    sheet.css
- * Used in: sheet.html
+ * File:    common.css
+ * Used in: index.html
+ *          settings.html
+ *          sheet.html 
  *
- * Created on Oct 01, 2023
- * Updated on Oct 26, 2023
+ * Created on Oct 29, 2023
+ * Updated on Oct 29, 2023
  *
- * Description: The css sheet page.
- * Build for: Firefox and Chromium based browsers.
+ * Description: The css tabs demo 1 page.
+ * Build for: Chromium based and Firefox browsers. 
  *
  * Links: https://freefrontend.com/css-tab-bars/
  *        https://codepen.io/abenjamin/pen/XbbdZJ/
@@ -23,17 +25,24 @@
 /* Tip 1: top, right, bottom, left */
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
 
+/* Needed for the YearPicker */
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+} 
+
 /* Body and main parts of the page. */
 html, body {
   height: 100%;
   margin: 0;
-  font-family: arial, sans-serif;
+  font-family: arial, sans-serif;  
+  display: none; /* For the fade in effect. */  
 }
 
 body {
   display: flex;
-  flex-direction: column;  
-  /* zoom: 0.8; */ /* Chromium fix */
+  flex-direction: column;
 }
 
 /* Header part */
@@ -51,30 +60,9 @@ h1 {
   text-align: center;
 }
 
-/* YearPicker */
-:root {
-    --selected-text-color: #ffe87c; /* Yellow, finance theme */
-    --hover-background-color: #ccc;  
-}
-
-*,
-*::after,
-*::before {
-  box-sizing: border-box;
-}
-
-.picker {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 2%;
-}
-
-.yearpicker {
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  margin-top: -7px;
+h2 {
+  margin: 7px 0 7px 0;	
+  text-align: center;
 }
 
 /* Hamburger menu */
@@ -141,7 +129,7 @@ h1 {
   display: block;
   padding: 12px 24px;
   color: #333;
-  font-family: Roboto, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 120%;
   font-weight: 300;
   text-decoration: none;
@@ -151,7 +139,7 @@ h1 {
   background-color: #CFD8DC;
 }
 
-/* Sliding tabs */
+/* Slide tabs */
 .clear{
   clear: both;
 }
@@ -167,14 +155,15 @@ h1 {
 }
 
 .slidemenu label{
-  width: 8.33%;  
+  width: 16.66%;
   text-align: center;
   display: block;
   float: left;
   color: #333;
-  opacity: 0.2; 
+  opacity: 0.2;
+
 }
-   
+
 .slidemenu label:hover{
   cursor: pointer;
   color: #666;
@@ -185,7 +174,7 @@ h1 {
   padding: 10px;    
 }
 
-/* Bar Style */
+/*Bar Style*/
 .slider{
   width: 100%;
   height: 5px;
@@ -196,31 +185,23 @@ h1 {
 }
 
 .slider .bar{
-  width: 8.33%;
+  width: 16.66%;
   height: 5px;
-  background: #ffe87c; /* Yellow, finance theme */
+  background: #333;
   border-radius: 5px;
 }
 
-/* Animations */
+/*Animations*/
 .slidemenu label, .slider .bar {
   transition: all 500ms ease-in-out;
   -webkit-transition: all 500ms ease-in-out;
   -moz-transition: all 500ms ease-in-out;
 }
 
-/* Toggle */
+/*Toggle*/
 .slidemenu .slide-toggle:checked + label{
   opacity: 1;
-  font-weight:bold;
-}
-
-#slide6 {
-  display:none;	
-}
-
-#slide12 {
-  display:inherit;
+  font-weight:bold;  
 }
 
 /* Slide with 6 bar items (16.67%) */
@@ -255,43 +236,21 @@ h1 {
   order: -1;
 }
 
-.content_main {
+.content_finance {
   flex: 1;
+
 }
-
-#sheet_buttons {
-   position: absolute;
-   margin-top: 5px;
-   margin-left:50px;
-}
-
-#sheet_buttons img {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-}
-
-.popup_content {
-  position: fixed;
-  background: #fff;
-  z-index: 1;
-  display: none;
-}
-
-
-
 
 .side {
   flex: 0 0 5em;
   background: #f5f5f5;
 }
 
-  
-
 /* Footer */
 footer {
  background: #f5f5f5; 
  color: #000;
+
 }
 
 footer h3 {
@@ -300,7 +259,8 @@ footer h3 {
  text-align: center;
 }
 
+
 /* Firefox fixes */
 @supports (-moz-appearance:none) {
- header { height: 7.8em;} /* fix 1 */ 
-}
+    header { height: 7.8em; }  /* fix 1 */
+}  
