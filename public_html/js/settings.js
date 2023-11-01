@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 01, 2023
  *
  * Description: .
  * Dependenties: js/config.js
@@ -21,9 +21,9 @@
  * Function:    loadSettings
  *
  * Created on Oct 29, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 01, 2023
  *
- * Description: The index.html main function.
+ * Description: The settings.js main function.
  *
  * In:  -
  * Out: -
@@ -32,7 +32,7 @@
 function loadSettings() {
     
     // Show title and current year.
-    $("header h1").html(cMenu[5] + " " + cDate.getFullYear());
+    $("header h1").html(cMenu[5]);
     
     // Fill hamburger menu.
     fillHamburgerMenu(cMenu[5]);

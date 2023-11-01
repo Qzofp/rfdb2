@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 01, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -236,9 +236,8 @@ h2 {
   order: -1;
 }
 
-.content_finance {
+.content_main {
   flex: 1;
-
 }
 
 .side {

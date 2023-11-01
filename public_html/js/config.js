@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Oct 28, 2023
+ * Updated on Nov 01, 2023
  *
  * Description: .
  * Dependenties: -
@@ -17,7 +17,7 @@
 // Define constants
 const cVersion = "0.1";
 const cDate = new Date();
-//const cDate = new Date('04/19/2023');
+//const cDate = new Date('02/19/2023');
 
 // Load constants from the database.
 const cMenu     = ["Overzicht","Financiën","Beleggen","Sparen","Crypto","Instellingen"];

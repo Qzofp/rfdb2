@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 01, 2023
  *
  * Description: .
  * Dependenties: js/config.js
@@ -21,9 +21,9 @@
  * Function:    loadMain
  *
  * Created on Oct 28, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 01, 2023
  *
- * Description: The index.html main function.
+ * Description: The index.js main function.
  *
  * In:  -
  * Out: -
@@ -32,7 +32,7 @@
 function loadMain() {
     
     // Show title and current year.
-    $("header h1").html(cMenu[0] + " " + cDate.getFullYear());
+    $("header h1").html(cMenu[0]);
     
     // Fill hamburger menu.
     fillHamburgerMenu(cMenu[0]);
