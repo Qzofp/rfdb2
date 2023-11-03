@@ -258,6 +258,10 @@ footer h3 {
  text-align: center;
 }
 
+#error_container {
+    
+    display:none;
+}
 
 /* Firefox fixes */
 @supports (-moz-appearance:none) {

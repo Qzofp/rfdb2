@@ -7,9 +7,9 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 03, 2023
  *
- * Description: .
+ * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
  *
  *

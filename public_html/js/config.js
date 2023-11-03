@@ -7,9 +7,9 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 03, 2023
  *
- * Description: .
+ * Description: Javascript config functions.
  * Dependenties: -
  *
  */
@@ -21,17 +21,22 @@ const cDate = new Date();
 
 // Load constants from the database.
 const cMenu     = ["Overzicht","Financiën","Beleggen","Sparen","Crypto","Instellingen"];
-
 const cMonths   = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
 const cQuarters = ["Januari - Maart","April - Juni","Juli - September","Oktober - December","Test 1","Test 2"];
 const cYear     = ["Januari - December","Test 1","Test 2","Test 3","Test 4","Test 5"];
+const cErrors   = ["Invalid page","Error 2", "Error 3"];
 
-// Test function
-function showConfigs() {
-    
-    console.log("Test Constant: " + cDate);
-    
-}
+// Load JSON settings from the database.
+var sheets = '{ "sheet" : [' +
+    '{ "name":"dashboard", "page":true,  "scale":"" },' +        
+    '{ "name":"finance",   "page":true,  "scale":"months" },' +
+    '{ "name":"stock",     "page":true,  "scale":"quarters" },' +
+    '{ "name":"savings",   "page":true,  "scale":"year" },' +
+    '{ "name":"crypto",    "page":true,  "scale":"quarters" },' +    
+    '{ "name":"settings",  "page":true,  "scale":"" } ]}';
+
+const cSheets = JSON.parse(sheets); 
+
 
 /*
  * Function:    getContants

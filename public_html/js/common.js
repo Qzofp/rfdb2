@@ -10,7 +10,7 @@
  * Updated on Oct 29, 2023
  *
  * Description: Common functions.
- * Dependenties: .
+ * Dependenties: Javascript common functions.
  *
  *
  */
@@ -22,7 +22,7 @@
  * Function:    fillHamburgerMenu
  *
  * Created on Oct 28, 2023
- * Updated on Oct 29, 2023
+ * Updated on Nov 03, 2023
  *
  * Description: Fill the hamburger menu with the items.
  *
@@ -34,7 +34,7 @@ function fillHamburgerMenu(exclude) {
 
     for(let i = 0; i < cMenu.length; i++) {
         
-        if (cMenu[i] !== exclude) {           
+        if (cMenu[i] !== exclude && cSheets.sheet[i].page) {       
             $(".menu_box li a").eq(i).html(cMenu[i]);
         }
         else {
@@ -42,5 +42,3 @@ function fillHamburgerMenu(exclude) {
         }
     }
 }
-
-

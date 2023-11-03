@@ -7,9 +7,9 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 03, 2023
  *
- * Description: .
+ * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
  *
  */
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 28, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 03, 2023
  *
  * Description: The sheet.js main function.
  *
@@ -29,15 +29,70 @@
  *
  */
 function loadSheet() {
-
-    var $date;
     
     // Get href anchor from URL.
     var anchor = window.location.hash.substring(1);
-           
-    // Show title and current year.
-    var i = showPageTitle(anchor);
     
+    // Check if the page is valid.
+    var i = checkSheetPage(anchor);
+    if (i > 0) {
+       openSheetPage(i);
+    }
+    else {
+       openInvalidPage();
+    }
+               
+    // Fade in the page.
+    $("html").fadeIn("slow");
+}
+
+/*
+ * Function:    checkSheetPage
+ *
+ * Created on Nov 03, 2023
+ * Updated on Nov 03, 2023
+ *
+ * Description: Check the if the sheet page is valid.
+ *
+ * In:  page
+ * Out: chk
+ *
+ */
+function checkSheetPage(page) {
+    
+    var chk = -1; 
+    var max = Object.keys(cSheets.sheet).length;
+    for (let i = 0; i < max; i++) {
+        if (cSheets.sheet[i].name === page && cSheets.sheet[i].page) {
+           chk = i; 
+        }
+    }
+
+    return chk;
+}
+
+/*
+ * Function:    openSheetPage
+ *
+ * Created on Nov 03, 2023
+ * Updated on Nov 03, 2023
+ *
+ * Description: Open the sheet page.
+ *
+ * In:  i
+ * Out:
+ *
+ */
+function openSheetPage(i) {
+    
+    var $date;
+    
+    // Show the sheet title and current year.
+    showSheetTitle(i);
+    
+    // Set the slie menu scale.
+    setSlideMenuScale(i);
+      
     // Add Yearpicker popup box and process year selection (also update the slide menu and the sheet table).
     addYearPicker();
     
@@ -53,14 +108,7 @@ function loadSheet() {
         // Date Test, show the date that will be used to get the table data. 
         $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");        
     });	
-    
-
-    // Temp. solution. Will be fixed when bar scale is red from the database.
-    $("#slide6").hide();
-    $(".slider .bar").css("width", "8.33%");
-    $(".slidemenu label").css("width", "8.33%");
-  
-    
+     
     // Fill hamburger menu.
     fillHamburgerMenu(cMenu[i]);
 
@@ -80,45 +128,104 @@ function loadSheet() {
         // Date Test, show the date that will be used to get the table data. 
         $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");     
     });   
-     
-    
-    
+        
     // Show the page theme for finance, stock, savings and crypto.
-    showPageTheme(anchor);
-      
-    // Fade in the page.
-    $("html").fadeIn("slow");
+    showPageTheme(cSheets.sheet[i].name);    
+}
+
+/*
+ * Function:    openInvalidPage
+ *
+ * Created on Nov 03, 2023
+ * Updated on Nov 03, 2023
+ *
+ * Description: Open the invalid sheet page and show error message.
+ *
+ * In:  
+ * Out:
+ *
+ */
+function openInvalidPage() {
+    
+    // Show title.
+    $("header h1").html(cErrors[0]);
+    
+    // Hide sheet page items.
+    $(".hamburger_menu").hide();
+    $(".picker").hide();
+    $("#slide6").hide();
+    $("#slide12").hide();
+    $("#sheet_buttons").hide();
+    
+    // Error message popup.
+    $("#error_container").show();
 }
 
 /*
  * Function:    showPageTitle
  *
  * Created on Oct 28, 2023
- * Updated on Oct 28, 2023
+ * Updated on Nov 03, 2023
  *
- * Description: Show the title of the page.
+ * Description: Show the sheet title of the page.
  *
- * In:  page
- * Out: i
+ * In:  i
+ * Out: 
  *
  */
-function showPageTitle(page) {
-    
-    var i;
-    switch (page) {
-        case "finance" : i = 1; 
-            break;
-        case "stock"   : i = 2;
-            break;
-        case "savings" : i = 3;
-            break;
-        case "crypto"  : i = 4;
-            break;
-    }
-    
+function showSheetTitle(i) {
+       
     $("header h1").html(cMenu[i] + " <span>" + cDate.getFullYear() + "</span>");
+}
+
+
+/*
+ * Function:    setSlideMenuScale
+ *
+ * Created on Nov 03, 2023
+ * Updated on Nov 03, 2023
+ *
+ * Description: Set the slide menu scale with the settings from the database.
+ *
+ * In:  i
+ * Out: 
+ *
+ */
+function setSlideMenuScale(i) {
     
-    return i;
+    switch(cSheets.sheet[i].scale) {
+	case "quarters" :            
+            $("#slide12").hide();
+            $(".slider .bar").css("width", "16.66%");
+            $(".slidemenu label").css("width", "16.66%");
+            $("#slide6").show();
+                    
+            $("#sheet_buttons img:first-child").attr("src","img/year.png");
+            $("#sheet_buttons img:first-child").attr("alt","year");         
+            break;
+			
+	case "year" :
+            $("#slide12").hide();
+            $(".slider .bar").css("width", "16.66%");
+            $(".slidemenu label").css("width", "16.66%");
+            $("#slide6").show();            
+            
+            $("#sheet_buttons img:first-child").attr("src","img/months.png");
+            $("#sheet_buttons img:first-child").attr("alt","months");					
+            break;
+			
+	case "months" :
+            $("#slide6").hide();
+            $(".slider .bar").css("width", "8.33%");
+            $(".slidemenu label").css("width", "8.33%");
+            $("#slide12").show();
+            
+            $("#sheet_buttons img:first-child").attr("src","img/quarters.png");
+            $("#sheet_buttons img:first-child").attr("alt","quarters");
+            break;
+            
+        default: break;
+    }    
 }
 
 /*
@@ -353,7 +460,7 @@ function fillSheetSlideMenu(active) {
  * Function:    showPageTheme
  *
  * Created on Oct 29, 2023
- * Updated on Oct 30, 2023
+ * Updated on Nov 03, 2023
  *
  * Description: Show the sheet page theme colors.
  *
@@ -364,17 +471,21 @@ function fillSheetSlideMenu(active) {
 function showPageTheme(page) {
     
     switch (page) {
-        case "finance" : $(":root").css("--selected-text-color", "#ffd700"); // #ffe87c
-                         $(".slider .bar").css("background","#ffd700");            
-                         break;
-        case "stock"   : $(":root").css("--selected-text-color", "#228b22"); 
-                         $(".slider .bar").css("background","#228b22");
-                         break;
-        case "savings" : $(":root").css("--selected-text-color", "#4169e1 "); 
-                         $(".slider .bar").css("background","#4169e1");
-                         break;
-        case "crypto"  : $(":root").css("--selected-text-color", "#ff8f00"); 
-                         $(".slider .bar").css("background","#ff8f00");
-                         break;
+        case cSheets.sheet[1].name : 
+            $(":root").css("--selected-text-color", "#ffd700");
+            $(".slider .bar").css("background","#ffd700");            
+            break;
+        case cSheets.sheet[2].name : 
+            $(":root").css("--selected-text-color", "#228b22"); 
+            $(".slider .bar").css("background","#228b22");
+            break;
+        case cSheets.sheet[3].name : 
+            $(":root").css("--selected-text-color", "#4169e1 "); 
+            $(".slider .bar").css("background","#4169e1");
+            break;
+        case cSheets.sheet[4].name : 
+            $(":root").css("--selected-text-color", "#ff8f00"); 
+            $(".slider .bar").css("background","#ff8f00");
+            break;
     }  
 }
