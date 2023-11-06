@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Oct 16, 2023
+ * Updated on Nov 05, 2023
  *
  * Description: Get the constants from de database tblConfig table.
  * Dependenties: config.php
@@ -23,7 +23,7 @@ try
 {
     $db = OpenDatabase();
 
-    $select = $db->prepare("SELECT `name`, `value` FROM `tblConfig`");
+    $select = $db->prepare('SELECT `value` FROM `tbl_config` WHERE language = "-" OR language = "NL";');
     $select->execute();
 
     $data = $select->fetchAll(PDO::FETCH_ASSOC);
@@ -32,8 +32,7 @@ try
     $response['success'] = true;
 }
 catch (PDOException $e) 
-{
-    
+{    
     $response['message'] = $e->getMessage();
     $response['success'] = false;
 }  

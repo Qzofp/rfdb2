@@ -13,7 +13,7 @@
  *               js/index.js
  *
  * Created on Sep 22, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 06, 2023
  *
  * Description: Redirect to the start page.
  * 
@@ -81,10 +81,20 @@
                     <div class="slider">
                         <div class="bar"></div>
                     </div>
-  
+
+                <!-- Table test, show the table data. -->
+                <div id="tst_table"></div>                       
+                    
                 </nav>                
                 
-            
+                <!-- Error popup window. -->
+                <div id="popup_error">
+                    <div id="error"> 
+                        <h2></h2>
+                        <p></p>
+                        <a class="close" href="javascript:void(0)">x</a>      
+                    </div>
+                </div>              
             </main>         
         
             <!-- Right side bar -->
@@ -92,14 +102,12 @@
             
             
         </div>     
-      
-        
+            
         <!-- Footer -->
         <footer>
-            <h3>&copy;2023 Rizzo Productions</h3>
+            <h3></h3>
         </footer>       
-           
-        
+                 
         <!-- Script -->
         <script>
         $(document).ready(function () {

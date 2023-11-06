@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 06, 2023
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadMain
  *
  * Created on Oct 28, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 06, 2023
  *
  * Description: The index.js main function.
  *
@@ -31,11 +31,27 @@
  */
 function loadMain() {
     
+    $("title").html(cProject);
+    
     // Show title and current year.
     $("header h1").html(cMenu[0]);
     
     // Fill hamburger menu.
     fillHamburgerMenu(cMenu[0]);
+
+    $("footer h3").html(cFooter);
+
+    // Close popup error.
+    $(".close").on("click", function () {
+      $("#popup_error").fadeOut("slow");
+    });
+ 
+    // Close popup error when click outside.
+    $("#popup_error").on("click", function () {
+      $("#popup_error").fadeOut("slow");
+    }).children().click(function () {
+      return false;
+    });
 
     // Fade in the page.
     $("html").fadeIn("slow");

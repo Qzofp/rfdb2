@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 04, 2023
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 28, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 04, 2023
  *
  * Description: The sheet.js main function.
  *
@@ -41,7 +41,19 @@ function loadSheet() {
     else {
        openInvalidPage();
     }
-               
+              
+    // Close popup error.
+    $(".close").on("click", function () {
+      $("#popup_error").fadeOut("slow");
+    });
+ 
+    // Close popup error when click outside.
+    $("#popup_error").on("click", function () {
+      $("#popup_error").fadeOut("slow");
+    }).children().click(function () {
+      return false;
+    });        
+    
     // Fade in the page.
     $("html").fadeIn("slow");
 }
@@ -75,7 +87,7 @@ function checkSheetPage(page) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 04, 2023
  *
  * Description: Open the sheet page.
  *
@@ -130,22 +142,25 @@ function openSheetPage(i) {
     });   
         
     // Show the page theme for finance, stock, savings and crypto.
-    showPageTheme(cSheets.sheet[i].name);    
+    showPageTheme(cSheets.sheet[i].name);
+    
 }
 
 /*
  * Function:    openInvalidPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 04, 2023
  *
  * Description: Open the invalid sheet page and show error message.
  *
- * In:  
+ * In:  anchor
  * Out:
  *
  */
 function openInvalidPage() {
+    
+    var $msg = cMessages[0];
     
     // Show title.
     $("header h1").html(cErrors[0]);
@@ -158,7 +173,10 @@ function openInvalidPage() {
     $("#sheet_buttons").hide();
     
     // Error message popup.
-    $("#error_container").show();
+    $("#error h2").html(cErrors[0]);
+    $msg = $msg.replace("[PAGE]", "<u>"+ window.location.href + "</u>");    
+    $("#error p").html($msg);
+    $("#popup_error").fadeIn("slow");
 }
 
 /*
