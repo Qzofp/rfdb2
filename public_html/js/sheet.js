@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 04, 2023
+ * Updated on Nov 08, 2023
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -87,7 +87,7 @@ function checkSheetPage(page) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 04, 2023
+ * Updated on Nov 08, 2023
  *
  * Description: Open the sheet page.
  *
@@ -100,7 +100,7 @@ function openSheetPage(i) {
     var $date;
     
     // Show the sheet title and current year.
-    showSheetTitle(i);
+    showPageTitles(cMenu[i] + " <span>" + cDate.getFullYear() + "</span>");
     
     // Set the slie menu scale.
     setSlideMenuScale(i);
@@ -178,24 +178,6 @@ function openInvalidPage() {
     $("#error p").html($msg);
     $("#popup_error").fadeIn("slow");
 }
-
-/*
- * Function:    showPageTitle
- *
- * Created on Oct 28, 2023
- * Updated on Nov 03, 2023
- *
- * Description: Show the sheet title of the page.
- *
- * In:  i
- * Out: 
- *
- */
-function showSheetTitle(i) {
-       
-    $("header h1").html(cMenu[i] + " <span>" + cDate.getFullYear() + "</span>");
-}
-
 
 /*
  * Function:    setSlideMenuScale
@@ -474,36 +456,4 @@ function fillSheetSlideMenu(active) {
     }
 }
 
-/*
- * Function:    showPageTheme
- *
- * Created on Oct 29, 2023
- * Updated on Nov 03, 2023
- *
- * Description: Show the sheet page theme colors.
- *
- * In:  page
- * Out: -
- *
- */
-function showPageTheme(page) {
-    
-    switch (page) {
-        case cSheets.sheet[1].name : 
-            $(":root").css("--selected-text-color", "#ffd700");
-            $(".slider .bar").css("background","#ffd700");            
-            break;
-        case cSheets.sheet[2].name : 
-            $(":root").css("--selected-text-color", "#228b22"); 
-            $(".slider .bar").css("background","#228b22");
-            break;
-        case cSheets.sheet[3].name : 
-            $(":root").css("--selected-text-color", "#4169e1 "); 
-            $(".slider .bar").css("background","#4169e1");
-            break;
-        case cSheets.sheet[4].name : 
-            $(":root").css("--selected-text-color", "#ff8f00"); 
-            $(".slider .bar").css("background","#ff8f00");
-            break;
-    }  
-}
+

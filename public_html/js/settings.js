@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Nov 03, 2023
+ * Updated on Nov 08, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadSettings
  *
  * Created on Oct 29, 2023
- * Updated on Nov 01, 2023
+ * Updated on Nov 08, 2023
  *
  * Description: The settings.js main function.
  *
@@ -30,12 +30,13 @@
  *
  */
 function loadSettings() {
-    
-    // Show title and current year.
-    $("header h1").html(cMenu[5]);
+
+    showPageTitles(cMenu[5]);
     
     // Fill hamburger menu.
     fillHamburgerMenu(cMenu[5]);
+
+
 
     // Fade in the page.
     $("html").fadeIn("slow");
