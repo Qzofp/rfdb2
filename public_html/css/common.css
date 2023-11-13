@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Nov 04, 2023
+ * Updated on Nov 13, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -142,6 +142,14 @@ h2 {
 /* Slide tabs */
 .clear{
   clear: both;
+}
+
+#slide6 {
+  display: none;
+}
+
+#slide12 {
+  display: none;
 }
 
 .slide-toggle{

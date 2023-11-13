@@ -8,9 +8,9 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Nov 05, 2023
+ * Updated on Nov 11, 2023
  *
- * Description: Get the constants from de database tblConfig table.
+ * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  * Dependenties: config.php
  *
  */
@@ -19,23 +19,38 @@ require_once 'config.php';
 
 $response = [];
 
+// Get the settings.
 try 
 {
     $db = OpenDatabase();
 
-    $select = $db->prepare('SELECT `value` FROM `tbl_config` WHERE language = "-" OR language = "NL";');
+    $select = $db->prepare('SELECT `name`, value FROM `tbl_settings`;');
     $select->execute();
 
-    $data = $select->fetchAll(PDO::FETCH_ASSOC);
-  
-    $response['data']    = $data;
-    $response['success'] = true;
+    $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
+    $response['settings'] = $settings;
+    
+    foreach($settings as $row=>$link) {
+        if ($link['name'] == "misc") 
+        {
+            $json = json_decode($link['value']);
+            $language = $json->language;
+        }     
+    }
+ 
+    $query = "SELECT `value` FROM `tbl_config` WHERE language = \"-\" OR language = \"$language\";";
+    $select = $db->prepare($query);
+    $select->execute();
+
+    $constants = $select->fetchAll(PDO::FETCH_ASSOC);  
+    $response['constants'] = $constants;       
+    $response['success']   = true;
 }
 catch (PDOException $e) 
 {    
     $response['message'] = $e->getMessage();
     $response['success'] = false;
-}  
+} 
 
 echo $json = json_encode($response);
 
