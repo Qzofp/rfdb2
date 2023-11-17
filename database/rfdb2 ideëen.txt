@@ -1,0 +1,87 @@
+RFDB 2 definities
+-----------------
+
+
+Financiën (betaalrekening)
+---------
+Groepen
+    - Huis
+	- Eten & Drinken
+	- Energie
+	- Vervoer
+	- etc.
+Bedrijven
+    - AH
+	- Dirk
+	- Jumbo
+	- Gemeente Emmen
+	- Energie Direct
+	- Shell
+	- etc.
+
+Voorbeeld Financiën:
+																     (maand, kwartaal of jaar)
+																Betaalrekeningen 100   (inkomsten - uitgaven)
+														ING Particulier			 80
+														ABN AMRO Bank		 	 20
+
+datum			bij / afv / afo		bedrag		dienst*				groep				bedrijf				omschrijving
+06-11-2023		afo				    -100		ING Particulier		Banken				ING					Overschrijving naar spaarrekening (LeasePlan Bank)
+06-11-2023		afv					-20			ING Particulier		Eten & Drinken  	Dirk				Boodschappen
+07-11-2023		afo					-30			ABN AMRO Bank		Vervoer				Shell				Benzine
+15-11-2023		bij					50			ABN AMRO Bank		Banken				LeasePlan Bank		Overschrijving van spaarrekening
+21-11-2023		bij					200			ING Particulier		Inkomsten			Belastingen			Teruggave 2022
+
+
+* Weglaten als er maar 1 betaalrekening is (optie voor in de instellingen).
+
+
+Sparen / Beleggen
+-----------------
+Diensten
+	- ING Particulier
+	- LeasePlan Bank 
+	- OAKK Beheerd Beleggen
+Producten
+	- Betaalrekening? Alleen gebruiken in het Overzicht en / of in Fincanciën?
+	- Spaarrekening
+	- Beleggingsrekening
+	- Lijfrenterekening
+
+Voorbeeld Sparen:
+																            (maand, kwartaal of jaar)
+																Spaarrekeningen 130,50  totaal
+														LeasePlan Bank			80,50
+														ING Particulier			50
+
+datum			bij / af		bedrag			dienst*				product*		omschrijving
+07-11-2023		bij				100				LeasePlan Bank		Spaarrekening	Van ING betaalrekening
+08-11-2023		af				-20				LeasePlan Bank		Spaarrekening	Overschrijving naar ING beleggingsrekening
+14-11-2023		bij				50				ING Particulier		Spaarrekening	Van ING betaalrekening	
+01-12-2023		bij				0,50			LeasePlan Bank		Spaarrekening	Rente December
+
+* Weglaten als er maar 1 product is (optie voor in de instellingen).
+
+Voorbeeld Beleggen:
+																          (maand, kwartaal of jaar)
+																Beleggingsrekeningen 150,50  totaal
+														OAKK Beheerd Beleggen		 100,50
+														ING Particulier				 50
+
+datum			bij / af		bedrag			dienst*					product*				omschrijving
+07-11-2023		bij				100				OAKK Beheerd Beleggen	Beleggingsrekening		Van ING betaalrekening
+14-11-2023		bij				50				ING Particulier			Beleggingsrekening		Van ING betaalrekening	
+01-12-2023		bij				0,50			OAKK Beheerd Beleggen	Beleggingsrekening		Divident 
+
+* Weglaten als er maar 1 dienst of product is (optie voor in de instellingen).
+
+
+Crypto
+------
+Crypto
+	- BTC
+	- ETH
+Wallets
+	- BTC Wallet #1
+	- Bitvavo Wallet
+	

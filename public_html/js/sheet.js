@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Open the sheet page.
  *
@@ -131,8 +131,8 @@ function openSheetPage(c, s, i) {
     fillSheetSlideMenu(c, cDate.getMonth());
       
     // Change slide menu scale (months, quarters, year).
-    $("#sheet_buttons").on('click', 'img', function () {
-	changeSlideMenuScale(c, this);
+    $("#page_buttons").on('click', 'img', function() {
+        changeSlideMenuScale(c, s[i].name, this);
         
         $date = getSelectedDateFromPage();
         
@@ -141,10 +141,10 @@ function openSheetPage(c, s, i) {
     });	
     
     // Fill hamburger menu.
-    fillHamburgerMenu(c, s[i], i);
+    fillHamburgerMenu(c, s, i);
 
     // Process menu selection and reload the page.
-    $(".menu_item").click(function () {
+    $(".menu_item").click(function() {
         window.location.href=this;
         window.location.reload(true);
     });
@@ -173,7 +173,7 @@ function openSheetPage(c, s, i) {
  * Function:    openInvalidPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Open the invalid sheet page and show error message.
  *
@@ -193,7 +193,7 @@ function openInvalidPage(c) {
     $(".picker").hide();
     $("#slide6").hide();
     $("#slide12").hide();
-    $("#sheet_buttons").hide();
+    $("#page_buttons").hide();
     
     // Error message popup.
     $("#error h2").html(c.errors[0]);
@@ -206,7 +206,7 @@ function openInvalidPage(c) {
  * Function:    setSlideMenuScale
  *
  * Created on Nov 03, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Set the slide menu scale with the settings from the database.
  *
@@ -225,8 +225,8 @@ function setSlideMenuScale(s) {
             $(".slidemenu label").css("width", "16.66%");
             $("#slide6").show();
                     
-            $("#sheet_buttons img:first-child").attr("src","img/year.png");
-            $("#sheet_buttons img:first-child").attr("alt","year");         
+            $("#page_buttons img:first-child").attr("src","img/year.png");
+            $("#page_buttons img:first-child").attr("alt","year");         
             break;
 			
 	case "year" :
@@ -235,8 +235,8 @@ function setSlideMenuScale(s) {
             $(".slidemenu label").css("width", "16.66%");
             $("#slide6").show();            
             
-            $("#sheet_buttons img:first-child").attr("src","img/months.png");
-            $("#sheet_buttons img:first-child").attr("alt","months");					
+            $("#page_buttons img:first-child").attr("src","img/months.png");
+            $("#page_buttons img:first-child").attr("alt","months");					
             break;
 			
 	case "months" :
@@ -245,8 +245,8 @@ function setSlideMenuScale(s) {
             $(".slidemenu label").css("width", "8.33%");
             $("#slide12").show();
             
-            $("#sheet_buttons img:first-child").attr("src","img/quarters.png");
-            $("#sheet_buttons img:first-child").attr("alt","quarters");
+            $("#page_buttons img:first-child").attr("src","img/quarters.png");
+            $("#page_buttons img:first-child").attr("alt","quarters");
             break;
             
         default: break;
@@ -290,7 +290,7 @@ function addYearPicker(c) {
  * Function:    getSelectedDateFromPage
  *
  * Created on Nov 01, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
@@ -303,7 +303,7 @@ function getSelectedDateFromPage() {
     var $scale;
     var $month, $quarter;
     var $year = $("header h1 span").html();    
-    var $btn = $("#sheet_buttons img:first-child").attr("alt");
+    var $btn = $("#page_buttons img:first-child").attr("alt");
     
     switch ($btn) {
 	case "quarters" : // Month menu, get the month.
@@ -428,16 +428,19 @@ function fillSheetSlideMenu(c, active) {
  * Function:    changeSlideMenuScale
  *
  * Created on Oct 25, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 15, 2023
  *
- * Description: Change the Slide menu scale (months, quarters, year).
+ * Description: Change the Slide menu scale (months, quarters, year) for the page.
  *
- * In:  c, that
+ * In:  c, page, that
  * Out: -
  *
  */
- function changeSlideMenuScale(c, that) {
-	
+ function changeSlideMenuScale(c, page, that) {
+
+    // Change de scale database settings.
+    changeScaleSetting(page, that.alt);
+     
     switch(that.alt) {
 	case "quarters" : 
             // Change month to quarter.

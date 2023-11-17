@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -246,6 +246,19 @@ h2 {
 
 .content_main {
   flex: 1;
+}
+
+/* Page buttons */
+#page_buttons {
+   position: absolute;
+   margin-top: 5px;
+   margin-left:50px;
+}
+
+#page_buttons img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
 .side {

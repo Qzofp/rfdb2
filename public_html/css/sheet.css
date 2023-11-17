@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Nov 05, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -31,19 +31,6 @@
   height: 40px;
   cursor: pointer;
   margin-top: -7px;
-}
-
-/* Sheet buttons */
-#sheet_buttons {
-   position: absolute;
-   margin-top: 5px;
-   margin-left:50px;
-}
-
-#sheet_buttons img {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
 }
 
 /* Popup input window */

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 12, 2023
+ * Updated on Nov 17, 2023
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -21,7 +21,7 @@
  * Function:    fillHamburgerMenu
  *
  * Created on Oct 28, 2023
- * Updated on Nov 12, 2023
+ * Updated on Nov 16, 2023
  *
  * Description: Fill the hamburger menu with the items.
  *
@@ -31,16 +31,48 @@
  */
 function fillHamburgerMenu(c, s, exclude) {
    
-    var tmp = JSON.parse(s.value);
+    var tmp;
     for(let i = 0; i < c.titles.length; i++) {
-        
-        if (i !== exclude && tmp.page) {               
+        tmp = JSON.parse(s[i].value);
+        if (i !== exclude && tmp.page === "true") {               
             $(".menu_box li a").eq(i).attr("href", c.pages[i]).html(c.titles[i]);
         }
         else {
             $(".menu_box li").eq(i).hide();
         }
     }
+}
+
+/*
+ * Function:    fillSheetSlideMenu
+ *
+ * Created on Nov 16, 2023
+ * Updated on Nov 16, 2023
+ *
+ * Description: Fill the Slidemenu bar with the items.
+ *
+ * In:  items, s
+ * Out: -
+ *
+ */
+function fillSlideMenu(items, s) {
+    
+    var tmp;
+    
+    // Add labels.
+    for (let i = 0; i < 6; i++) {
+        tmp = JSON.parse(s[i].value);
+        if (i === 0) {
+            $("#slide6-item-" + i).prop('checked', true);
+        }
+            
+        if (i < items.length && tmp.page === "true") {
+           $("#slide6-item-" + i).next().find("span").html(items[i]); 
+        }
+        else {
+           $("#slide6-item-" + i).next().hide(); 
+        }
+    }    
 }
 
 /*
@@ -146,3 +178,38 @@ function closeErrorMessage() {
       return false;
     });    
 }
+
+/*
+ * Function:    changeScaleSetting
+ *
+ * Created on Nov 15, 2023
+ * Updated on Nov 15, 2023
+ *
+ * Description: Change the scale in the settings database.
+ *
+ * In:  name, scale
+ * Out: -
+ *
+ */
+function changeScaleSetting(name, scale) {
+    
+    var request = $.ajax({
+        url: "php/change_scale.php",
+        method: "POST",
+        dataType: "json",
+        data: { name: name, scale: scale }
+    }); 
+      
+    request.done(function(result) {
+        if (!result.success) {         
+            showDatabaseError(result.message);                    
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
+}
+
