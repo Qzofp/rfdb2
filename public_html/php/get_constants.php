@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Nov 11, 2023
+ * Updated on Nov 18, 2023
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  * Dependenties: config.php
@@ -31,10 +31,10 @@ try
     $response['settings'] = $settings;
     
     foreach($settings as $row=>$link) {
-        if ($link['name'] == "misc") 
+        if ($link['name'] == "language") 
         {
             $json = json_decode($link['value']);
-            $language = $json->language;
+            $language = $json->code;
         }     
     }
  

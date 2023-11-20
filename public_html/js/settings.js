@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Shows the settings page.
  *
@@ -73,96 +73,110 @@ function showSettings(c, s) {
     // Fill the slide menu.
     fillSlideMenu(c.settings, s);
     
-    showSettingsContent(0, s);    
+    showSettingsContent(0, c, s);    
     
     $(".slidemenu input[name='slideItem']").change(function() {               
-        showSettingsContent(Number(this.value), s);     
+        showSettingsContent(Number(this.value), c, s);     
     });      
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
+        showSettingsButton(this);
+        
+        /*
+        // Popup test
+        $("#popup_content h2").html("Taal"); 
+        $("#popup_content p").html("Dit is een test!");
+        $("#popup_container").fadeIn("slow");        
         
         $("#test").html("<h1>" + this.alt + "</h1>");
+        */
     });
     
     
     // Show the page theme.
     showPageTheme(s[5]);
+    
+    // Close popup windows.
+    closePopupWindow();
 }
 
 /*
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 18, 2023
  *
  * Description: Shows the settings content for the chosen slide.
  *
- * In:  slide, s
+ * In:  slide, c, s
  * Out: -
  *
  */
-function showSettingsContent(slide, s) {
+function showSettingsContent(slide, c, s) {
     
     switch(slide) {
-        case 0: ShowGeneralSettings();
-                $("#test").html("<h1>" + slide + "</h1>"); 
+        case 0: ShowGeneralSettings(c);               
             break;
         
-        case 1: ShowFinancesSettings(s[1]);
-                $("#test").html("<h1>" + slide + "</h1>"); 
+        case 1: ShowFinancesSettings(c, s[1]);                
             break;
             
-        case 2: ShowStocksSettings(s[2]);
-                $("#test").html("<h1>" + slide + "</h1>"); 
+        case 2: ShowStocksSettings(c, s[2]);               
             break;
             
-        case 3: ShowSavingsSettings(s[3]);
-                $("#test").html("<h1>" + slide + "</h1>"); 
+        case 3: ShowSavingsSettings(c, s[3]);                
             break;
             
-        case 4: $("#test").html("<h1>" + slide + "</h1>"); 
+        case 4:  
             break;
     }
-    
+       
+    $("#test").html("<h1>" + slide + "</h1>"); 
 }
 
 /*
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
- * In:  slide
- * Out: -
+ * In:  c
+ * Out: 
  *
  */
-function ShowGeneralSettings() {
+function ShowGeneralSettings(c) {
+    
+    if($("#page_buttons img").hasClass("active")) {
+        $("#page_buttons img").removeClass("active");
+    }
     
     $("#page_buttons img").eq(0).attr({src:"img/language.png", alt:"language"}); 
     $("#page_buttons img").eq(1).attr({src:"img/pages.png", alt:"pages"});
     $("#page_buttons img").eq(2).hide(); 
     $("#page_buttons img").eq(3).hide(); 
+    
+    showLanguage(c);
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Shows the settings content for the finances slide.
  *
- * In:  slide
+ * In:  c, s
  * Out: -
  *
  */
-function ShowFinancesSettings(s) {
+function ShowFinancesSettings(c, s) {
     
-    setScaleButton(s.name);   
-    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
+    setScaleButton(c, s.name);   
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active");
     $("#page_buttons img").eq(2).attr({src:"img/groups.png", alt:"groups"}).show();
     $("#page_buttons img").eq(3).attr({src:"img/shops.png", alt:"shops"}).show();
      
@@ -172,17 +186,21 @@ function ShowFinancesSettings(s) {
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Shows the settings content for the stocks slide.
  *
- * In:  slide
+ * In:  c, s
  * Out: -
  *
  */
-function ShowStocksSettings(s) {
+function ShowStocksSettings(c, s) {
+
+    if($("#page_buttons img").hasClass("active")) {
+        $("#page_buttons img").removeClass("active");
+    }    
     
-    setScaleButton(s.name);   
+    setScaleButton(c, s.name);   
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
     $("#page_buttons img").eq(2).hide();
     $("#page_buttons img").eq(3).hide();
@@ -193,17 +211,21 @@ function ShowStocksSettings(s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Nov 20, 2023
  *
  * Description: Shows the settings content for the savings slide.
  *
- * In:  slide
+ * In:  c, s
  * Out: -
  *
  */
-function ShowSavingsSettings(s) {
+function ShowSavingsSettings(c, s) {
     
-    setScaleButton(s.name);   
+    if($("#page_buttons img").hasClass("active")) {
+        $("#page_buttons img").removeClass("active");
+    }    
+    
+    setScaleButton(c, s.name);   
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
     $("#page_buttons img").eq(2).hide();
     $("#page_buttons img").eq(3).hide();
@@ -215,18 +237,89 @@ function ShowSavingsSettings(s) {
 
 
 /*
- * Function:    getScaleSetting
+ * Function:    showSettingsButton
  *
- * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Created on Nov 20, 2023
+ * Updated on Nov 20, 2023
  *
- * Description: Get the scale from the settings database and set the scale button.
+ * Description: Shows the changes when the page button is pressed.
  *
- * In:  s
+ * In:  button
  * Out: -
  *
  */
-function setScaleButton(name) {
+function showSettingsButton(button) {
+
+    // Get the active slide.
+    var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
+    //console.log(slide);
+
+    switch(button.alt) {
+        case "language" :
+            
+            $("#popup_content h2").html("Taal"); 
+            $("#popup_content p").html("Dit is een test!");
+            $("#popup_container").fadeIn("slow");             
+            
+            break;
+            
+        case "pages"    :
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;
+        
+        case "months"   :
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;
+            
+        case "quarters"   :
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break; 
+        
+        case "year"   :
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;        
+        
+        case "accounts" :
+            if (slide === 1) {
+                $("#page_buttons img").removeClass("active");
+                $("#page_buttons img").eq(1).addClass("active");
+            }
+            
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;
+        
+        case "groups"   :
+            
+            $("#page_buttons img").removeClass("active");
+            $("#page_buttons img").eq(2).addClass("active");
+            
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;
+            
+        case "shops"    :
+            
+            $("#page_buttons img").removeClass("active");
+            $("#page_buttons img").eq(3).addClass("active");
+            
+            $("#test").html("<h1>" + button.alt + "</h1>");
+            break;
+    }
+}
+
+
+/*
+ * Function:    setScaleSetting
+ *
+ * Created on Nov 17, 2023
+ * Updated on Nov 18, 2023
+ *
+ * Description: Get the scale from the settings database and set the scale button.
+ *
+ * In:  c, name
+ * Out: -
+ *
+ */
+function setScaleButton(c, name) {
     
     var request = $.ajax({
         url: "php/get_scale.php",
@@ -238,21 +331,67 @@ function setScaleButton(name) {
     request.done(function(result) {
         if (result.success) {         
             
-            var scale = result.data[0].scale.replace(/^"(.*)"$/, '$1');
+            var i, scale = result.data[0].scale.replace(/^"(.*)"$/, '$1');
             switch(scale) {
                 case  "months" :
                     $("#page_buttons img").eq(0).attr({src:"img/quarters.png", alt:"quarters"});
+                    i = 1;
                     break;
                     
                 case "quarters" :
                     $("#page_buttons img").eq(0).attr({src:"img/year.png", alt:"year"});
+                    i = 2;
                     break;
                     
                 case "year" :
+                    i = 3;
                     $("#page_buttons img").eq(0).attr({src:"img/months.png", alt:"months"});
                    break;
-            }            
+            }
+            
+            // Show setting on page.
+            $("#settings u").html(c.scale[0]);
+            $("#settings span").html(c.scale[i]);                        
         }
+        else {
+            showDatabaseError(result.message);  
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
+}
+
+/*
+ * Function:    showLanguage
+ *
+ * Created on Nov 18, 2023
+ * Updated on Nov 18, 2023
+ *
+ * Description: Show the language setting on the general page.
+ *
+ * In:  c
+ * Out: -
+ *
+ */
+function showLanguage(c) {
+    
+    var request = $.ajax({
+        url: "php/get_language.php",
+        method: "POST",
+        dataType: "json"
+    }); 
+      
+    request.done(function(result) {
+        if (result.success) {
+            
+            var language = result.data[0].language.replace(/^"(.*)"$/, '$1');
+            $("#settings u").html(c.language[0]);
+            $("#settings span").html(language);
+        }            
         else {
             showDatabaseError(result.message);  
         }
