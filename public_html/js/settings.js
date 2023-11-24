@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 24, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 22, 2023
  *
  * Description: Shows the settings page.
  *
@@ -81,16 +81,7 @@ function showSettings(c, s) {
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showSettingsButton(this);
-        
-        /*
-        // Popup test
-        $("#popup_content h2").html("Taal"); 
-        $("#popup_content p").html("Dit is een test!");
-        $("#popup_container").fadeIn("slow");        
-        
-        $("#test").html("<h1>" + this.alt + "</h1>");
-        */
+        showSettingsButton(this, c, s);
     });
     
     
@@ -240,27 +231,23 @@ function ShowSavingsSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 22, 2023
  *
  * Description: Shows the changes when the page button is pressed.
  *
- * In:  button
+ * In:  button, c, s
  * Out: -
  *
  */
-function showSettingsButton(button) {
+function showSettingsButton(button, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
     //console.log(slide);
 
     switch(button.alt) {
-        case "language" :
-            
-            $("#popup_content h2").html("Taal"); 
-            $("#popup_content p").html("Dit is een test!");
-            $("#popup_container").fadeIn("slow");             
-            
+        case "language" :           
+            showGeneralPopup(button.alt, c, s);
             break;
             
         case "pages"    :
@@ -305,6 +292,46 @@ function showSettingsButton(button) {
             break;
     }
 }
+
+/*
+ * Function:    showGeneralPopup
+ *
+ * Created on Nov 22, 2023
+ * Updated on Nov 24, 2023
+ *
+ * Description: Shows the popup content for the general page.
+ *
+ * In:  button, c, s
+ * Out: -
+ *
+ */
+function showGeneralPopup(button, c, s) {
+    
+    var setting;
+    switch (button) {
+        case "language" :           
+            $("#popup_content").css("width", "30%");
+                    
+            $("#popup_content h2").html(c.language[0]); 
+            $("#popup_content .options li").remove();
+            
+            setting = JSON.parse(s[6].value);
+            for (i = 1; i < c.language.length; i++) {
+                if(setting.language === c.language[i]) {
+                    var chk = " checked";
+                }
+                $("#popup_content .options").append('<li><input type="radio" id="lng-' + i + '" name="language"' + chk + '><label for="lng-' + i + '">' + c.language[i] + '</label></li>');   
+            }        
+            break;
+            
+        case "pages"    :
+            break;        
+    }
+    
+    
+    $("#popup_container").fadeIn("slow");      
+}
+
 
 
 /*

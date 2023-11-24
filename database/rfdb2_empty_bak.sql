@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 20, 2023 at 03:38 PM
--- Server version: 8.0.35-0ubuntu0.22.04.1
--- PHP Version: 8.1.2-1ubuntu2.14
+-- Host: 127.0.0.1
+-- Generation Time: Nov 22, 2023 at 02:24 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,75 +20,80 @@ SET time_zone = "+00:00";
 --
 -- Database: `rfdb2_empty`
 --
+CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `rfdb2_empty`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tblConfig_old`
+-- Table structure for table `tblconfig_old`
 --
 
-CREATE TABLE `tblConfig_old` (
-  `id` int UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tblconfig_old`;
+CREATE TABLE `tblconfig_old` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(45) NOT NULL,
   `value` varchar(150) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tblFirm`
+-- Table structure for table `tblfirm`
 --
 
-CREATE TABLE `tblFirm` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `tblfirm`;
+CREATE TABLE `tblfirm` (
+  `id` int(11) NOT NULL,
   `firmname` varchar(100) NOT NULL,
-  `id_grp` int DEFAULT NULL,
+  `id_grp` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
   `sumtype` enum('1','2','3') DEFAULT NULL,
-  `hide` tinyint(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+  `hide` tinyint(1) DEFAULT 0
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tblGroup`
+-- Table structure for table `tblgroup`
 --
 
-CREATE TABLE `tblGroup` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `tblgroup`;
+CREATE TABLE `tblgroup` (
+  `id` int(11) NOT NULL,
   `groupname` varchar(100) NOT NULL,
-  `hide` tinyint(1) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+  `hide` tinyint(1) DEFAULT 0
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
-
 --
--- Table structure for table `tblMoney`
+-- Table structure for table `tblmoney`
 --
 
-CREATE TABLE `tblMoney` (
-  `id` int NOT NULL,
+DROP TABLE IF EXISTS `tblmoney`;
+CREATE TABLE `tblmoney` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `costs` decimal(11,2) DEFAULT NULL,
   `fixed` decimal(11,2) DEFAULT NULL,
   `income` decimal(11,2) DEFAULT NULL,
-  `id_frm` int DEFAULT NULL,
+  `id_frm` int(11) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
-
 
 --
 -- Table structure for table `tbl_config`
 --
 
+DROP TABLE IF EXISTS `tbl_config`;
 CREATE TABLE `tbl_config` (
-  `id` int NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `value` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `language` varchar(2) COLLATE utf8mb4_general_ci NOT NULL
+  `id` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `value` varchar(150) NOT NULL,
+  `language` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -109,11 +114,7 @@ INSERT INTO `tbl_config` (`id`, `name`, `value`, `language`) VALUES
 (11, 'Pages', 'index.html,sheet.html#finance,sheet.html#stock,sheet.html#savings,sheet.html#crypto,settings.html', '-'),
 (12, 'Errors', 'Invalid page,Page [PAGE] doesn´t exist!', '-'),
 (13, 'Instellingen', 'Algemeen,Financiën,Beleggen,Sparen,Crypto', 'NL'),
-(14, 'Settings', 'General,Finances,Stocks,Savings,Crypto', 'EN'),
-(15, 'Taal', 'Taal,Engels,Nederlands', 'NL'),
-(16, 'Language', 'Language,Dutch,English', 'EN'),
-(17, 'Schaal', 'Schaal,Maanden,Kwartalen,Jaar', 'NL'),
-(18, 'Scale', 'Scale,Months,Quarters,Year', 'EN');
+(14, 'Settings', 'General,Finances,Stocks,Savings,Crypto', 'EN');
 
 -- --------------------------------------------------------
 
@@ -121,11 +122,12 @@ INSERT INTO `tbl_config` (`id`, `name`, `value`, `language`) VALUES
 -- Table structure for table `tbl_settings`
 --
 
+DROP TABLE IF EXISTS `tbl_settings`;
 CREATE TABLE `tbl_settings` (
-  `id` int NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL
-) ;
+  `id` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`value`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_settings`
@@ -137,25 +139,12 @@ INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 (3, 'stock', '{\"page\": \"true\", \"scale\": \"quarters\", \"theme\": {\"color\": \"#228b22\"}}'),
 (4, 'savings', '{\"page\": \"true\", \"scale\": \"year\", \"theme\": {\"color\": \"#4169e1\"}}'),
 (5, 'crypto', '{\"page\": \"false\", \"scale\": \"year\", \"theme\": {\"color\": \"#ff8f00\"}}'),
-(6, 'settings', '{\"page\": \"true\", \"theme\": {\"color\": \"#536878\"}}'),
-(7, 'language', '{\"language\": \"Nederlands\",\"code\":\"NL\"}');
+(6, 'settings', '{\"page\": \"true\", \"theme\": {\"color\": \"\"}}'),
+(7, 'misc', '{\"language\": \"NL\"}');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `tblConfig_old`
---
-ALTER TABLE `tblConfig_old`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tblFirm`
---
-ALTER TABLE `tblFirm`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_grp` (`id_grp`);
 
 --
 -- Indexes for table `tblfirm`
@@ -165,24 +154,10 @@ ALTER TABLE `tblfirm`
   ADD KEY `id_grp` (`id_grp`);
 
 --
--- Indexes for table `tblGroup`
---
-ALTER TABLE `tblGroup`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `tblgroup`
 --
 ALTER TABLE `tblgroup`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tblMoney`
---
-ALTER TABLE `tblMoney`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `date` (`date`),
-  ADD KEY `id_frm` (`id_frm`);
 
 --
 -- Indexes for table `tblmoney`
@@ -209,58 +184,34 @@ ALTER TABLE `tbl_settings`
 --
 
 --
--- AUTO_INCREMENT for table `tblConfig_old`
---
-ALTER TABLE `tblConfig_old`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
-
---
--- AUTO_INCREMENT for table `tblFirm`
---
-ALTER TABLE `tblFirm`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
-
---
 -- AUTO_INCREMENT for table `tblfirm`
 --
 ALTER TABLE `tblfirm`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
-
---
--- AUTO_INCREMENT for table `tblGroup`
---
-ALTER TABLE `tblGroup`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
 
 --
 -- AUTO_INCREMENT for table `tblgroup`
 --
 ALTER TABLE `tblgroup`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT for table `tblMoney`
---
-ALTER TABLE `tblMoney`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15043;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tblmoney`
 --
 ALTER TABLE `tblmoney`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15043;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15043;
 
 --
 -- AUTO_INCREMENT for table `tbl_config`
 --
 ALTER TABLE `tbl_config`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tbl_settings`
 --
 ALTER TABLE `tbl_settings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 18, 2023
+ * Updated on Nov 24, 2023
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -118,7 +118,7 @@ function showPageTheme(s) {
  * Function:    closePopupWindow
  *
  * Created on Nov 19, 2023
- * Updated on Nov 19, 2023
+ * Updated on Nov 24, 2023
  *
  * Description: Close the Popup window.
  *
@@ -131,14 +131,7 @@ function closePopupWindow() {
     // Close popup error.
     $(".close").on("click", function () {
       $("#popup_container").fadeOut("slow");
-    });
- 
-    // Close popup error when click outside.
-    $("#popup_container").on("click", function () {
-      $("#popup_container").fadeOut("slow");
-    }).children().click(function () {
-      return false;
-    });    
+    });   
 }
 
 /*
