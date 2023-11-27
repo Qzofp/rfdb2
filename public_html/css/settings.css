@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Nov 24, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -20,10 +20,10 @@
 
 /* Body and main parts of the page. */
 
-#page_buttons .active {
- border-bottom: 2px solid #536878; /* Get theme color from database. */
-}
 
+#page_buttons .active {
+ border-bottom: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+}
 
 #settings {
  text-align: center;
@@ -59,22 +59,22 @@
  font-weight: normal;
  font-size: 1.4em;
  text-decoration: underline;
- text-decoration-color: #536878; /* Get theme color from database. */
  color: #000;
 }
  
-#popup_content .options {
+#popup_content ul {
  font-size: 1em;
  display: inline-block;
  text-align: left;
  list-style-type: none;
+ margin: 0px 20px 20px 0px;
 }
 
 #popup_content input, label:hover {
  cursor: pointer;
 }
 
-#popup_content .close {
+#popup_content a {
  position: absolute;
  top: 5px;
  right: 12px;
@@ -97,4 +97,51 @@
 
 #popup_content .close:hover {
  color:darkred;
+}
+
+/* Radio and checkbox buttons */
+#popup_content li {
+  display: inline-block;
+  position: relative;
+  padding: 0 6px;
+  margin: 10px 0 0;
+  display: table; /* Display items vertical */
+}
+
+#popup_content li label {
+  font-weight: normal;
+}
+
+#popup_content li label:before {
+  content: " ";
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  margin: 0 5px 0 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+  background-color: transparent;
+}
+
+.rad input[type='radio'],
+.chk input[type='checkbox'] {
+  display: none;
+}
+
+.rad input[type='radio']:checked + label:after,
+.chk input[type='checkbox']:checked + label:after {
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  content: " ";
+  display: block;
+  background: #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+}
+
+.rad label:before,
+.rad input[type='radio']:checked + label:after {
+  border-radius: 11px;
 }

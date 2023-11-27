@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Nov 16, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -169,7 +169,7 @@ h2 {
   float: left;
   color: #333;
   opacity: 0.2;
-
+  font-size: 1.2em;
 }
 
 .slidemenu label:hover{

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 24, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -98,7 +98,7 @@ function showPageTitles(c, i, add) {
  * Function:    showPageTheme
  *
  * Created on Oct 29, 2023
- * Updated on Nov 12, 2023
+ * Updated on Nov 25, 2023
  *
  * Description: Show the sheet page theme colors.
  *
@@ -112,6 +112,12 @@ function showPageTheme(s) {
     
     $(":root").css("--selected-text-color", tmp.theme.color);
     $(".slider .bar").css("background", tmp.theme.color); 
+    
+    // Theme for the settings page.
+    if (s.name === "settings") {
+        $("#settings u").css("text-decoration-color", tmp.theme.color);
+        $("#popup_content h2").css("text-decoration-color", tmp.theme.color);
+    }
 }
 
 /*

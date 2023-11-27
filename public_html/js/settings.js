@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Nov 24, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Nov 22, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Shows the settings page.
  *
@@ -70,8 +70,9 @@ function showSettings(c, s) {
     // Fill hamburger menu.
     fillHamburgerMenu(c, s, 5);        
     
-    // Fill the slide menu.
-    fillSlideMenu(c.settings, s);
+    // Remove de pages item and fill the slide menu.
+    var items = c.settings.slice();
+    fillSlideMenu(items.slice(1,5), s);
     
     showSettingsContent(0, c, s);    
     
@@ -96,7 +97,7 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Nov 18, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Shows the settings content for the chosen slide.
  *
@@ -107,16 +108,16 @@ function showSettings(c, s) {
 function showSettingsContent(slide, c, s) {
     
     switch(slide) {
-        case 0: ShowGeneralSettings(c);               
+        case 0: ShowGeneralSettings(c, s);               
             break;
         
-        case 1: ShowFinancesSettings(c, s[1]);                
+        case 1: ShowFinancesSettings(c, s, 1);                
             break;
             
-        case 2: ShowStocksSettings(c, s[2]);               
+        case 2: ShowStocksSettings(c, s, 2);               
             break;
             
-        case 3: ShowSavingsSettings(c, s[3]);                
+        case 3: ShowSavingsSettings(c, s, 3);                
             break;
             
         case 4:  
@@ -130,15 +131,15 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 25, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
- * In:  c
+ * In:  c, s
  * Out: 
  *
  */
-function ShowGeneralSettings(c) {
+function ShowGeneralSettings(c, s) {
     
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
@@ -149,49 +150,49 @@ function ShowGeneralSettings(c) {
     $("#page_buttons img").eq(2).hide(); 
     $("#page_buttons img").eq(3).hide(); 
     
-    showLanguage(c);
+    showLanguage(c, s);
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Shows the settings content for the finances slide.
  *
- * In:  c, s
+ * In:  c, s, i
  * Out: -
  *
  */
-function ShowFinancesSettings(c, s) {
+function ShowFinancesSettings(c, s, i) {
     
-    setScaleButton(c, s.name);   
+    setScaleButton(c, s, i);   
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active");
     $("#page_buttons img").eq(2).attr({src:"img/groups.png", alt:"groups"}).show();
     $("#page_buttons img").eq(3).attr({src:"img/shops.png", alt:"shops"}).show();
-     
+  
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Shows the settings content for the stocks slide.
  *
- * In:  c, s
+ * In:  c, s, i
  * Out: -
  *
  */
-function ShowStocksSettings(c, s) {
+function ShowStocksSettings(c, s, i) {
 
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
     }    
     
-    setScaleButton(c, s.name);   
+    setScaleButton(c, s, i);   
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
     $("#page_buttons img").eq(2).hide();
     $("#page_buttons img").eq(3).hide();
@@ -202,21 +203,21 @@ function ShowStocksSettings(c, s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Nov 20, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Shows the settings content for the savings slide.
  *
- * In:  c, s
+ * In:  c, s, i
  * Out: -
  *
  */
-function ShowSavingsSettings(c, s) {
+function ShowSavingsSettings(c, s, i) {
     
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
     }    
     
-    setScaleButton(c, s.name);   
+    setScaleButton(c, s, i);   
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
     $("#page_buttons img").eq(2).hide();
     $("#page_buttons img").eq(3).hide();
@@ -231,7 +232,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Nov 22, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -243,15 +244,12 @@ function showSettingsButton(button, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
-    //console.log(slide);
-
     switch(button.alt) {
-        case "language" :           
-            showGeneralPopup(button.alt, c, s);
+        case "language" :  
+            showGeneralPopupLanguage(c, s);
             break;
-            
         case "pages"    :
-            $("#test").html("<h1>" + button.alt + "</h1>");
+            showGeneralPopupPages(c, s);
             break;
         
         case "months"   :
@@ -294,139 +292,129 @@ function showSettingsButton(button, c, s) {
 }
 
 /*
- * Function:    showGeneralPopup
+ * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Nov 24, 2023
+ * Updated on Nov 27, 2023
  *
- * Description: Shows the popup content for the general page.
+ * Description: Shows the language popup content for the general page.
  *
- * In:  button, c, s
+ * In:  c, s
  * Out: -
  *
  */
-function showGeneralPopup(button, c, s) {
+function showGeneralPopupLanguage(c, s) {
     
     var setting;
-    switch (button) {
-        case "language" :           
-            $("#popup_content").css("width", "30%");
-                    
-            $("#popup_content h2").html(c.language[0]); 
-            $("#popup_content .options li").remove();
-            
-            setting = JSON.parse(s[6].value);
-            for (i = 1; i < c.language.length; i++) {
-                if(setting.language === c.language[i]) {
-                    var chk = " checked";
-                }
-                $("#popup_content .options").append('<li><input type="radio" id="lng-' + i + '" name="language"' + chk + '><label for="lng-' + i + '">' + c.language[i] + '</label></li>');   
-            }        
-            break;
-            
-        case "pages"    :
-            break;        
-    }
     
+    $("#popup_content").css("width", "30%");                   
+    $("#popup_content h2").html(c.language[0]); 
+    $("#popup_content ul li").remove();
+            
+    setting = JSON.parse(s[6].value);
+    for (let i = 1; i < c.language.length; i++) {
+        
+        if(setting.language === c.language[i]) {
+            var chk = " checked";
+        }
+        
+        $("#popup_content ul").append('<li class="rad"><input type="radio" id="lng-' + i + '" name="language"' + 
+           chk + '><label for="lng-' + i + '">' + c.language[i] + '</label></li>');   
+    }        
+  
+    $("#popup_container").fadeIn("slow");      
+}
+
+/*
+ * Function:    showGeneralPopupPages
+ *
+ * Created on Nov 22, 2023
+ * Updated on Nov 27, 2023
+ *
+ * Description: Shows the pages popup content for the general page.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showGeneralPopupPages(c, s) {
     
+    var chk, setting;
+    
+    $("#popup_content").css("width", "30%");                   
+    $("#popup_content h2").html(c.settings[0]); 
+    $("#popup_content ul li").remove();
+ 
+    for (let i = 1; i < c.pages.length - 1; i++) {
+        
+        setting = JSON.parse(s[i].value);
+        if(setting.page === "true") {
+            chk = " checked";
+        }
+        else {
+            chk = "";
+        }
+        
+        $("#popup_content ul").append('<li class="chk"><input type="checkbox" id="pag-' + i + '" name="pages"' + 
+           chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
+    }        
+  
     $("#popup_container").fadeIn("slow");      
 }
 
 
-
 /*
- * Function:    setScaleSetting
+ * Function:    setScaleButton
  *
  * Created on Nov 17, 2023
- * Updated on Nov 18, 2023
+ * Updated on Nov 26, 2023
  *
- * Description: Get the scale from the settings database and set the scale button.
+ * Description: Get the scale from the settings and set the scale button.
  *
- * In:  c, name
+ * In:  c, s, i
  * Out: -
  *
  */
-function setScaleButton(c, name) {
+function setScaleButton(c, s, i) {
     
-    var request = $.ajax({
-        url: "php/get_scale.php",
-        method: "POST",
-        dataType: "json",
-        data: { name: name }
-    }); 
-      
-    request.done(function(result) {
-        if (result.success) {         
-            
-            var i, scale = result.data[0].scale.replace(/^"(.*)"$/, '$1');
-            switch(scale) {
-                case  "months" :
-                    $("#page_buttons img").eq(0).attr({src:"img/quarters.png", alt:"quarters"});
-                    i = 1;
-                    break;
+    var j, set = JSON.parse(s[i].value);   
+    switch(set.scale) {
+        case  "months" :
+            $("#page_buttons img").eq(0).attr({src:"img/quarters.png", alt:"quarters"});
+            j = 1;
+            break;
                     
-                case "quarters" :
-                    $("#page_buttons img").eq(0).attr({src:"img/year.png", alt:"year"});
-                    i = 2;
-                    break;
+        case "quarters" :
+            $("#page_buttons img").eq(0).attr({src:"img/year.png", alt:"year"});
+            j = 2;
+            break;
                     
-                case "year" :
-                    i = 3;
-                    $("#page_buttons img").eq(0).attr({src:"img/months.png", alt:"months"});
-                   break;
-            }
+        case "year" :
+            j = 3;
+            $("#page_buttons img").eq(0).attr({src:"img/months.png", alt:"months"});
+            break;
+        }
             
-            // Show setting on page.
-            $("#settings u").html(c.scale[0]);
-            $("#settings span").html(c.scale[i]);                        
-        }
-        else {
-            showDatabaseError(result.message);  
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-     
-    closeErrorMessage();
+    // Show setting on page.
+    $("#settings u").html(c.scale[0]);
+    $("#settings span").html(c.scale[j]);
 }
 
 /*
  * Function:    showLanguage
  *
  * Created on Nov 18, 2023
- * Updated on Nov 18, 2023
+ * Updated on Nov 26, 2023
  *
  * Description: Show the language setting on the general page.
  *
- * In:  c
+ * In:  c, s
  * Out: -
  *
  */
-function showLanguage(c) {
+function showLanguage(c, s) {
     
-    var request = $.ajax({
-        url: "php/get_language.php",
-        method: "POST",
-        dataType: "json"
-    }); 
-      
-    request.done(function(result) {
-        if (result.success) {
-            
-            var language = result.data[0].language.replace(/^"(.*)"$/, '$1');
-            $("#settings u").html(c.language[0]);
-            $("#settings span").html(language);
-        }            
-        else {
-            showDatabaseError(result.message);  
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-     
-    closeErrorMessage();
+    var set = JSON.parse(s[6].value);
+    $("#settings u").html(c.language[0]);
+    $("#settings span").html(set.language);
 }

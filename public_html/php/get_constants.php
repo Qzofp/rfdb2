@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Nov 18, 2023
+ * Updated on Nov 25, 2023
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  * Dependenties: config.php
@@ -30,15 +30,28 @@ try
     $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
     $response['settings'] = $settings;
     
+    // Get the language code (NL, EN, etc.).
     foreach($settings as $row=>$link) {
         if ($link['name'] == "language") 
         {
             $json = json_decode($link['value']);
-            $language = $json->code;
+            $code = $json->code;
         }     
     }
- 
-    $query = "SELECT `value` FROM `tbl_config` WHERE language = \"-\" OR language = \"$language\";";
+    
+    // Determine the language table.
+    switch ($code) 
+    {
+        case 'NL': $language = "tbl_dutch";
+            break;
+        case 'EN': $language = "tbl_english";
+            break;
+    }
+      
+    $query = "SELECT COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
+             "FROM tbl_config ".
+             "LEFT JOIN $language ON tbl_config.id = $language.id_config;";
+    
     $select = $db->prepare($query);
     $select->execute();
 

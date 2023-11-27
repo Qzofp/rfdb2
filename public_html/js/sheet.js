@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 16, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -347,7 +347,7 @@ function getSelectedDateFromPage() {
  * Function:    fillSheetSlideMenu
  *
  * Created on Oct 21, 2023
- * Updated on Nov 13, 2023
+ * Updated on Nov 27, 2023
  *
  * Description: Fill the Slidemenu bar with the items.
  *
@@ -400,6 +400,7 @@ function fillSheetSlideMenu(c, active) {
             break;
 			
 	case "year" :
+            active = 0;
             max = 6;
             items = c.year;	
             hide = 0;
