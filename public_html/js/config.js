@@ -78,7 +78,7 @@ function processConstants (data) {
 
     var set = [];
     $.each(data.settings, function (i, field) {                   
-        set[i] = field;              
+        set[i] = field; 
     }); 
     
     return [con, set];

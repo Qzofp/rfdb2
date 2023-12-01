@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Nov 27, 2023
+ * Updated on Dec 01, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Nov 26, 2023
+ * Updated on Nov 30, 2023
  *
  * Description: Shows the settings page.
  *
@@ -70,9 +70,9 @@ function showSettings(c, s) {
     // Fill hamburger menu.
     fillHamburgerMenu(c, s, 5);        
     
-    // Remove de pages item and fill the slide menu.
+    // Remove de "Pages" item and fill the slide menu.
     var items = c.settings.slice();
-    fillSlideMenu(items.slice(1,5), s);
+    fillSlideMenu(items.slice(1,6), s);
     
     showSettingsContent(0, c, s);    
     
@@ -84,6 +84,11 @@ function showSettings(c, s) {
     $("#page_buttons").on('click', 'img', function() {   
         showSettingsButton(this, c, s);
     });
+    
+    // Settings popup Ok button is pressed.
+    $("#popup_content .choice").on('click', 'img', function() {
+        setPopupChoice(this, c, s);      
+    });    
     
     
     // Show the page theme.
@@ -97,7 +102,7 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Nov 26, 2023
+ * Updated on Dec 01, 2023
  *
  * Description: Shows the settings content for the chosen slide.
  *
@@ -120,10 +125,11 @@ function showSettingsContent(slide, c, s) {
         case 3: ShowSavingsSettings(c, s, 3);                
             break;
             
-        case 4:  
+        case 4: ShowCryptoSettings(c, s, 4);
             break;
     }
-       
+    
+    // Debug.
     $("#test").html("<h1>" + slide + "</h1>"); 
 }
 
@@ -224,9 +230,29 @@ function ShowSavingsSettings(c, s, i) {
      
 }
 
-
-// function ShowCryptoSettings(s)
-
+/*
+ * Function:    ShowCryptoSettings
+ *
+ * Created on Dec 01, 2023
+ * Updated on Dec 01, 2023
+ *
+ * Description: Shows the settings content for the crypto slide.
+ *
+ * In:  c, s, i
+ * Out: -
+ *
+ */
+function ShowCryptoSettings(c, s, i) {
+    
+    if($("#page_buttons img").hasClass("active")) {
+        $("#page_buttons img").removeClass("active");
+    }    
+    
+    setScaleButton(c, s, i);   
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
+    $("#page_buttons img").eq(2).hide();
+    $("#page_buttons img").eq(3).hide();    
+}
 
 /*
  * Function:    showSettingsButton
@@ -295,7 +321,7 @@ function showSettingsButton(button, c, s) {
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Nov 27, 2023
+ * Updated on Nov 28, 2023
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -307,7 +333,7 @@ function showGeneralPopupLanguage(c, s) {
     
     var setting;
     
-    $("#popup_content").css("width", "30%");                   
+    $("#popup_content").removeClass().addClass("gen_language");
     $("#popup_content h2").html(c.language[0]); 
     $("#popup_content ul li").remove();
             
@@ -316,6 +342,9 @@ function showGeneralPopupLanguage(c, s) {
         
         if(setting.language === c.language[i]) {
             var chk = " checked";
+        }
+        else {
+            chk = "";
         }
         
         $("#popup_content ul").append('<li class="rad"><input type="radio" id="lng-' + i + '" name="language"' + 
@@ -329,7 +358,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Nov 27, 2023
+ * Updated on Nov 28, 2023
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -341,7 +370,7 @@ function showGeneralPopupPages(c, s) {
     
     var chk, setting;
     
-    $("#popup_content").css("width", "30%");                   
+    $("#popup_content").removeClass().addClass("gen_pages");                   
     $("#popup_content h2").html(c.settings[0]); 
     $("#popup_content ul li").remove();
  
@@ -356,7 +385,7 @@ function showGeneralPopupPages(c, s) {
         }
         
         $("#popup_content ul").append('<li class="chk"><input type="checkbox" id="pag-' + i + '" name="pages"' + 
-           chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
+           'value="' + i + '" ' + chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
     }        
   
     $("#popup_container").fadeIn("slow");      
@@ -417,4 +446,178 @@ function showLanguage(c, s) {
     var set = JSON.parse(s[6].value);
     $("#settings u").html(c.language[0]);
     $("#settings span").html(set.language);
+}
+
+/*
+ * Function:    setPopupChoice
+ *
+ * Created on Nov 28, 2023
+ * Updated on Nov 30, 2023
+ *
+ * Description: Set the choice made in the settings popup window.
+ *
+ * In:  that, c, s
+ * Out: -
+ *
+ */
+function setPopupChoice(that, c, s) {
+
+    var popup  = $('#popup_content').attr('class');
+    if (that.alt === "ok") {
+        
+        var choice;
+        switch (popup) {
+            case "gen_language" :
+                choice = $('input[name="language"]:checked').parent().text();
+                setLanguage(choice, s);
+                break;
+            
+            case "gen_pages"    :
+                var result = [false,false,false,false];
+                $('input[name="pages"]:checked').each(function() {
+                    result[this.value - 1] = true;                 
+                });
+               
+                //console.log(result);
+                setPages(result, s);
+                break;
+                
+            case "fin_accounts" :
+                choice = "TEST";
+                break;
+                
+                
+        }
+    }    
+    
+}
+
+/*
+ * Function:    setLanguage
+ *
+ * Created on Nov 29, 2023
+ * Updated on Nov 30, 2023
+ *
+ * Description: Set the language in the database en reload the settings page.
+ *
+ * In:  language, s
+ * Out: -
+ *
+ */
+function setLanguage(language, s) {
+    
+    var set = JSON.parse(s[6].value);
+    if (set.language !== language) {
+        
+        var request = $.ajax({
+            url: "php/change_language.php",
+            method: "POST",
+            dataType: "json",
+            data: { language: language }
+        }); 
+      
+        request.done(function(result) {
+            if (result.success) {         
+                                 
+                // Reload the page.
+                setTimeout(function(){
+                    window.location.reload();
+                }, 600);
+            }
+            else {
+               showDatabaseError(result.message); 
+            }
+        });
+    
+        request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+        });  
+     
+        closeErrorMessage();
+    } 
+    
+    // Close popup window.
+    $("#popup_container").fadeOut("slow");    
+}
+
+/*
+ * Function:    setPages
+ *
+ * Created on Nov 30, 2023
+ * Updated on Dec 01, 2023
+ *
+ * Description: Set the pages (true, false) in the database en reload the settings page.
+ *
+ * In:  p, s
+ * Out: -
+ *
+ */
+function setPages(p, s) {
+       
+    var changes = checkChangedPages(p, s);
+    if (changes) {
+        
+        //console.log(changes);
+        
+        var pages = JSON.stringify(p);
+       
+        var request = $.ajax({
+            url: "php/change_pages.php",
+            method: "POST",
+            dataType: "json",
+            data: { pages: pages }
+        }); 
+      
+        request.done(function(result) {
+            if (result.success) {         
+                             
+                // Reload the page.         
+                setTimeout(function(){
+                    window.location.reload();
+                }, 600);          
+            }
+            else {
+               showDatabaseError(result.message); 
+            }
+        });
+    
+        request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+        });  
+     
+        closeErrorMessage();
+      
+    }     
+    // Close popup window.
+    $("#popup_container").fadeOut("slow");    
+}
+
+/*
+ * Function:    checkChangedPages
+ *
+ * Created on Nov 30, 2023
+ * Updated on Dec 01, 2023
+ *
+ * Description: Check if there are any page changes.
+ *
+ * In:  p, s
+ * Out: check
+ *
+ */
+function checkChangedPages(p, s) {
+    
+    var check = false;
+         
+    var set, tmp;
+    for(let i = 1; i <= 4; i++) {
+        
+        tmp = JSON.parse(s[i].value);
+        set = (tmp.page === "true");  // Convert to boolean.
+        
+        if (set !== p[i-1]) {
+            check = true;
+        }
+    }
+    
+    return check;
 }

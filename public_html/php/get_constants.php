@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Nov 25, 2023
+ * Updated on Nov 29, 2023
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  * Dependenties: config.php
@@ -24,7 +24,7 @@ try
 {
     $db = OpenDatabase();
 
-    $select = $db->prepare('SELECT `name`, value FROM `tbl_settings`;');
+    $select = $db->prepare('SELECT `name`, `value` FROM `tbl_settings`;');
     $select->execute();
 
     $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
@@ -50,7 +50,8 @@ try
       
     $query = "SELECT COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
              "FROM tbl_config ".
-             "LEFT JOIN $language ON tbl_config.id = $language.id_config;";
+             "LEFT JOIN $language ON tbl_config.id = $language.id_config ".
+             "ORDER BY tbl_config.id;";
     
     $select = $db->prepare($query);
     $select->execute();

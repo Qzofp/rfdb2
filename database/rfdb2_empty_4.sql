@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `rfdb2_empty`
 --
-CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `rfdb2_empty`;
 
 -- --------------------------------------------------------
@@ -80,7 +80,7 @@ CREATE TABLE `tbl_config` (
   `id` int NOT NULL,
   `name` varchar(45) NOT NULL,
   `value` varchar(150) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_config`
@@ -148,7 +148,7 @@ CREATE TABLE `tbl_dutch` (
   `id` int NOT NULL,
   `id_config` int NOT NULL,
   `value` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_dutch`
@@ -175,7 +175,7 @@ CREATE TABLE `tbl_english` (
   `id` int NOT NULL,
   `id_config` int NOT NULL,
   `value` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_english`
@@ -203,7 +203,7 @@ CREATE TABLE `tbl_language` (
   `language` varchar(45) NOT NULL,
   `native` varchar(45) NOT NULL,
   `code` varchar(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_language`

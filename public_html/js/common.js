@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 26, 2023
+ * Updated on Dec 01, 2023
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -44,12 +44,12 @@ function fillHamburgerMenu(c, s, exclude) {
 }
 
 /*
- * Function:    fillSheetSlideMenu
+ * Function:    fillSlideMenu
  *
  * Created on Nov 16, 2023
- * Updated on Nov 16, 2023
+ * Updated on Dec 01, 2023
  *
- * Description: Fill the Slidemenu bar with the items.
+ * Description: Fill the Slidemenu bar with the items for the index and settings pages.
  *
  * In:  items, s
  * Out: -
@@ -58,7 +58,30 @@ function fillHamburgerMenu(c, s, exclude) {
 function fillSlideMenu(items, s) {
     
     var tmp;
+
+    // Add labels.
+    var j = 0;
+    for (let i = 0; i < 6; i++) {
+        tmp = JSON.parse(s[i].value);
+        if (i === 0) {
+            $("#slide6-item-" + i).prop('checked', true);
+        }
+            
+        if (i < items.length) {         
+            if (tmp.page === "true") {
+                $("#slide6-item-" + j).val(i).next().find("span").html(items[i]);             
+                j++;
+            }                        
+        }
+    }
     
+    while (j < 6) {        
+        $("#slide6-item-" + j).next().hide(); 
+        j++;
+    }
+
+
+/*    
     // Add labels.
     for (let i = 0; i < 6; i++) {
         tmp = JSON.parse(s[i].value);
@@ -72,7 +95,8 @@ function fillSlideMenu(items, s) {
         else {
            $("#slide6-item-" + i).next().hide(); 
         }
-    }    
+    }
+*/    
 }
 
 /*

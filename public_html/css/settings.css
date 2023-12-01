@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Nov 27, 2023
+ * Updated on Nov 28, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -97,6 +97,11 @@
 
 #popup_content .close:hover {
  color:darkred;
+}
+
+#popup_container .gen_language, 
+#popup_container .gen_pages {
+ width: 30% !important;
 }
 
 /* Radio and checkbox buttons */
