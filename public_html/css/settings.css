@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Nov 28, 2023
+ * Updated on Dec 04, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -30,6 +30,24 @@
  padding-top: 10px;
  font-size: 0.9em;
 }
+
+/* Settings Table */
+#tbl_settings{
+ width: calc(100% - 100px);
+ margin: auto;
+ border-collapse:collapse;
+ font-size:1.1em;
+ cursor:default;
+}
+
+#tbl_settings th{
+ padding:1px 2px 0 2px;
+ text-align:left;
+ vertical-align:bottom;
+ /* border-bottom:2px solid #536878; /* Must be the same as settings theme from database. Fixed it! */
+}
+
+
 
 /* Popup window */
 #popup_container {

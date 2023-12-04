@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Dec 01, 2023
+ * Updated on Dec 04, 2023
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -47,7 +47,7 @@ function fillHamburgerMenu(c, s, exclude) {
  * Function:    fillSlideMenu
  *
  * Created on Nov 16, 2023
- * Updated on Dec 01, 2023
+ * Updated on Dec 02, 2023
  *
  * Description: Fill the Slidemenu bar with the items for the index and settings pages.
  *
@@ -78,25 +78,7 @@ function fillSlideMenu(items, s) {
     while (j < 6) {        
         $("#slide6-item-" + j).next().hide(); 
         j++;
-    }
-
-
-/*    
-    // Add labels.
-    for (let i = 0; i < 6; i++) {
-        tmp = JSON.parse(s[i].value);
-        if (i === 0) {
-            $("#slide6-item-" + i).prop('checked', true);
-        }
-            
-        if (i < items.length && tmp.page === "true") {
-           $("#slide6-item-" + i).next().find("span").html(items[i]); 
-        }
-        else {
-           $("#slide6-item-" + i).next().hide(); 
-        }
-    }
-*/    
+    }   
 }
 
 /*
@@ -122,7 +104,7 @@ function showPageTitles(c, i, add) {
  * Function:    showPageTheme
  *
  * Created on Oct 29, 2023
- * Updated on Nov 25, 2023
+ * Updated on Dec 04, 2023
  *
  * Description: Show the sheet page theme colors.
  *
@@ -141,6 +123,7 @@ function showPageTheme(s) {
     if (s.name === "settings") {
         $("#settings u").css("text-decoration-color", tmp.theme.color);
         $("#popup_content h2").css("text-decoration-color", tmp.theme.color);
+        //$("#tbl_settings th").css("border-bottom", "2px solid " + tmp.theme.color);
     }
 }
 
