@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 17, 2023
- * Updated on Nov 17, 2023
+ * Updated on Dec 05, 2023
  *
  * Description: Get the scale from the tbl_settings table.
  * Dependenties: config.php
@@ -27,7 +27,7 @@ try
 {
     $db = OpenDatabase();
 
-    $query = "SELECT JSON_EXTRACT(`value`, '$.scale') AS scale FROM `tbl_settings` WHERE `name` = \"$name\";"; 
+    $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`value`, '$.scale')) AS scale FROM `tbl_settings` WHERE `name` = \"$name\";"; 
                       
     $select = $db->prepare($query);
     $select->execute();    
