@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Dec 08, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -172,7 +172,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 06, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -193,6 +193,7 @@ function ShowFinancesSettings(c, s) {
     // Temporary
     $("#tbl_settings thead tr").remove(); 
     $("#tbl_settings tbody td").remove();
+    $("#tbl_settings tfoot tr").remove();
     $("#label span").css("border-left","3px solid " + set.theme.color);
     
 }
@@ -201,7 +202,7 @@ function ShowFinancesSettings(c, s) {
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 06, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -226,6 +227,7 @@ function ShowStocksSettings(c, s) {
     // Temporary
     $("#tbl_settings thead tr").remove(); 
     $("#tbl_settings tbody td").remove(); 
+    $("#tbl_settings tfoot tr").remove();
     $("#label span").css("border-left","3px solid " + set.theme.color);    
      
 }
@@ -234,7 +236,7 @@ function ShowStocksSettings(c, s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 06, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -257,7 +259,8 @@ function ShowSavingsSettings(c, s) {
     
     // Temporary
     $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove(); 
+    $("#tbl_settings tbody td").remove();
+    $("#tbl_settings tfoot tr").remove();
     $("#label span").css("border-left","3px solid " + set.theme.color);     
      
 }
@@ -266,7 +269,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Dec 06, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -290,7 +293,8 @@ function ShowCryptoSettings(c, s) {
     
     // Temporary
     $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove();     
+    $("#tbl_settings tbody td").remove();
+    $("#tbl_settings tfoot tr").remove();    
     $("#label span").css("border-left","3px solid " + set.theme.color); 
 }
 
@@ -527,7 +531,7 @@ function showLanguage(c, s) {
  * Function:    showConfigsTable
  *
  * Created on Dec 04, 2023
- * Updated on Dec 05, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Show the configs setting table in the general page.
  *
@@ -537,23 +541,31 @@ function showLanguage(c, s) {
  */
 function showConfigsTable(c, s) {
 
+    var set = JSON.parse(s[5].value);
+    
     // Fill the table header.
     $("#tbl_settings thead tr").remove();      
-    $("#tbl_settings thead").append("<tr><th>" + c.tables[1] + "</th><th>" + c.tables[2] + "</th></tr>");
+    $("#tbl_settings thead").append("<tr><th></th><th>" + c.tables[1] + "</th><th>" + c.tables[2] + "</th></tr>");
     
     // Fill the table body.
     $("#tbl_settings tbody tr").remove(); 
     fillConfigsTable(s);
     
+    // Fill the table footer.
+    $("#tbl_settings tfoot tr").remove();      
+    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp;</td></tr>');   
     
     
+    // Set theme.
+    $("#tbl_settings th").css("border-bottom", "2px solid " + set.theme.color);
+    $("#tbl_settings tfoot").css("border-bottom", "2px solid " + set.theme.color);    
 }
 
 /*
  * Function:    fillConfigsTable
  *
  * Created on Dec 04, 2023
- * Updated on Dec 05, 2023
+ * Updated on Dec 11, 2023
  *
  * Description: Get the configs from the database and fill the table with that data.
  *
@@ -563,8 +575,7 @@ function showConfigsTable(c, s) {
  */
 function fillConfigsTable(s) {
     
-    var set = JSON.parse(s[5].value);
-    
+    var set = JSON.parse(s[5].value);    
     var request = $.ajax({
         url: "php/get_configs.php",
         method: "POST",
@@ -574,10 +585,16 @@ function fillConfigsTable(s) {
     request.done(function(result) {
         if (result.success) {         
             
-            $.each(result.configs, function (i, field) {  
-                
-                $("#tbl_settings thead").append("<tr><td>" + field.name + "</td><td>" + field.value + "</td></tr>");              
-            });            
+            let i = 0; 
+            $.each(result.configs, function (n, field) {  
+                i++;
+                $("#tbl_settings tbody").append("<tr><td></td><td>" + field.name + "</td><td>" + field.value + "</td></tr>");              
+            });  
+
+            // Add empty rows.
+            for (let j = i; j < set.rows; j++) {
+               $("#tbl_settings tbody").append('<tr><td colspan="3">&nbsp;</td></tr>');
+            }
         }
         else {
             showDatabaseError(result.message); 
@@ -588,9 +605,6 @@ function fillConfigsTable(s) {
         showAjaxError(jqXHR, textStatus);
     });  
     
-    // Set theme.
-    $("#tbl_settings th").css("border-bottom", "2px solid " + set.theme.color);
-     
     closeErrorMessage();
 }  
     
