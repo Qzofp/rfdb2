@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 15, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -44,32 +44,74 @@
  /* border-left: 3px solid maroon; /* #536878 */
 }
 
-/* Settings Table */
+/* Settings Table, see also: https://codepen.io/paulobrien/pen/LBrMxa */
 #tbl_settings {
+ position: relative;
+ width:100%;
+ z-index: 1;
+ margin: auto;
+ overflow: auto;
+ height: 350px;
+ scrollbar-color: #808080 #dcdcdc;
+ scrollbar-width: thin;
+}
+
+/* Works on Chrome, Edge, and Safari */
+#tbl_settings::-webkit-scrollbar {
+  width: 12px;
+}
+
+#tbl_settings::-webkit-scrollbar-track {
+  background: #dcdcdc;
+  border-radius: 20px;
+}
+
+#tbl_settings::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 20px;
+  border: 3px solid #dcdcdc;
+}
+
+#tbl_settings table {
  width: calc(100% - 100px);
  margin: auto;
- border-collapse:collapse;
- font-size:1.0em;
- cursor:default;
+ border-collapse: separate;
+ border-spacing: 0;
 }
 
-#tbl_settings th {
-/* padding:1px 2px 0 2px; */
- text-align:left;
-/* vertical-align:bottom; */
+#tbl_settings td {
+ padding: 2px;
+ background: #fff;
+ vertical-align: top;
+}
+#tbl_settings thead th {
+ text-align:left;   
+ background: #fff;
+ position: -webkit-sticky;
+ position: sticky;
+ top: 0;
 }
 
-#tbl_settings tbody tr{
+#tbl_settings tbody td{
  border-bottom:1px solid #afdcec; 
 }
 
-#tbl_settings tbody tr:hover{
+#tbl_settings tbody tr:last-child td,
+#tbl_settings tbody tr:last-child:hover td {
+ border-bottom:0px; 
+}
+
+#tbl_settings tbody tr:hover td{
  border-bottom:1px solid #f6358a; 
 }
 
-#tbl_settings tfoot {
-/* padding:1px 2px 0 2px; */
-/* border-bottom:2px solid #536878;  /* Must be the same as settings theme from database. */
+/* safari and ios need the tfoot itself to be position:sticky also */
+#tbl_settings tfoot,
+#tbl_settings tfoot td {
+ position: -webkit-sticky;
+ position: sticky;
+ bottom: 0;
+ z-index:4;
 }
 
 /* Popup window */
@@ -80,6 +122,7 @@
  width: 100%;
  height: 100%;
  display: none;
+ z-index: 5
 }
 
 #popup_content {

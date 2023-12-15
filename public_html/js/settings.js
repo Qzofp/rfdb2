@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 15, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -138,7 +138,7 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 08, 2023
+ * Updated on Dec 13, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -161,7 +161,7 @@ function ShowGeneralSettings(c, s) {
     
     showLanguage(c, s);
     
-    $("#label span").html(c.tables[0]); 
+    $("#label span").html(c.tables[0]);
     $("#label span").css("border-left","3px solid " + set.theme.color);
     //$("#label span").css("border-left","3px solid maroon");
     showConfigsTable(c, s);
@@ -531,7 +531,7 @@ function showLanguage(c, s) {
  * Function:    showConfigsTable
  *
  * Created on Dec 04, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 16, 2023
  *
  * Description: Show the configs setting table in the general page.
  *
@@ -542,7 +542,12 @@ function showLanguage(c, s) {
 function showConfigsTable(c, s) {
 
     var set = JSON.parse(s[5].value);
+        
+    // Height tabel test.
+    var y = $(".content_main").height() - 190;
+    $("#tbl_settings").css("height", y);
     
+        
     // Fill the table header.
     $("#tbl_settings thead tr").remove();      
     $("#tbl_settings thead").append("<tr><th></th><th>" + c.tables[1] + "</th><th>" + c.tables[2] + "</th></tr>");
@@ -553,12 +558,12 @@ function showConfigsTable(c, s) {
     
     // Fill the table footer.
     $("#tbl_settings tfoot tr").remove();      
-    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp;</td></tr>');   
+    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp; FOOTER</td></tr>');   
     
     
     // Set theme.
-    $("#tbl_settings th").css("border-bottom", "2px solid " + set.theme.color);
-    $("#tbl_settings tfoot").css("border-bottom", "2px solid " + set.theme.color);    
+    $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);
+    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color); 
 }
 
 /*
