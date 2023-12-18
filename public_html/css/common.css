@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 17, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -90,7 +90,7 @@ h2 {
   width: 26px;
   height: 26px;
   cursor: pointer;
-  z-index: 3;
+  z-index: 15;
 }
 .menu_btn > span,
 .menu_btn > span::before,
@@ -123,7 +123,7 @@ h2 {
   background-color: #ECEFF1;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
   transition-duration: .25s;
-  z-index: 2;
+  z-index: 10;
 }
 .menu_item {
   display: block;

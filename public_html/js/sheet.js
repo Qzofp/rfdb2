@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 27, 2023
+ * Updated on Dec 18, 2023
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 16, 2023
+ * Updated on Dec 18, 2023
  *
  * Description: Open the sheet page.
  *
@@ -132,12 +132,7 @@ function openSheetPage(c, s, i) {
       
     // Change slide menu scale (months, quarters, year).
     $("#page_buttons").on('click', 'img', function() {
-        changeSlideMenuScale(c, s[i].name, this);
-        
-        $date = getSelectedDateFromPage();
-        
-        // Date Test, show the date that will be used to get the table data. 
-        $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");        
+        changeSheetContent(c, s[i], this);
     });	
     
     // Fill hamburger menu.
@@ -167,6 +162,10 @@ function openSheetPage(c, s, i) {
         
     // Show the page theme for finance, stock, savings and crypto.
     showPageTheme(s[i]);
+    
+    
+    
+    closeChartWindow(); 
 }
 
 /*
@@ -426,6 +425,44 @@ function fillSheetSlideMenu(c, active) {
 }
 
 /*
+ * Function:    changeSheetContent
+ *
+ * Created on Dec 17, 2023
+ * Updated on Dec 17, 2023
+ *
+ * Description: Change sheet content for the page.
+ *
+ * In:  c, page, that
+ * Out: -
+ *
+ */
+function changeSheetContent(c, s, that) {
+    
+    switch (that.alt) {
+        case "months" :
+        case "quarters" :
+        case "year"     :    
+            changeSlideMenuScale(c, s.name, that);
+            var $date = getSelectedDateFromPage();
+            
+            // Date Test, show the date that will be used to get the table data. 
+            $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>"); 
+            break;
+            
+        case "edit" :
+            break;
+            
+        case "chart" : 
+            let bottom = "-100%";
+            if ($("#chart_slider").css("bottom") !== "0px") {
+                bottom = "0";
+            }
+            $("#chart_slider").animate({"bottom":bottom}, 300);
+            break;
+    }    
+}
+
+/*
  * Function:    changeSlideMenuScale
  *
  * Created on Oct 25, 2023
@@ -485,4 +522,27 @@ function fillSheetSlideMenu(c, active) {
     }
 }
 
-
+/*
+ * Function:    changeSlideMenuScale
+ *
+ * Created on Dec 18, 2023
+ * Updated on Dec 18, 2023
+ *
+ * Description: Close the chart window.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function closeChartWindow() {
+    
+    // Close chart slider when the hamburger menu is pressed.
+    $(".hamburger_menu").click(function(){
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+    });
+    
+    // Close chart slider when the close button is pressed.
+    $("#chart_content .close").click(function(){
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+    }); 
+}

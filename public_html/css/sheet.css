@@ -8,10 +8,12 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Nov 16, 2023
+ * Updated on Dec 17, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
+ *
+ * Links: https://jsfiddle.net/7pttcgvw/
  *
  */
 
@@ -34,4 +36,42 @@
 }
 
 /* Popup input window */
+.close {
+ position: absolute;
+ top: 5px;
+ right: 12px;
+ font-size: 17px;
+ color: #000;
+ text-decoration: none;
+}
+
+.close:hover {
+ color:darkred;
+}
+
+
+
+/* Chart slider */
+#chart_slider{
+ position: fixed;
+ bottom: -100%;
+ left: 0%;
+ height: 55%; 
+ background-color: #fff;
+ box-shadow: 2px 0px 8px rgba(0, 0, 0, .4);
+ width: 100%;
+ display: block;
+ z-index: 5;
+}
+
+#chart_content {
+ position: absolute;
+ width: 100%;
+ top: 0px;
+ bottom: 0px;
+/* 
+ overflow: scroll;
+ -webkit-overflow-scrolling: touch;
+*/ 
+}
 

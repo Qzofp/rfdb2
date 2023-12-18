@@ -91,7 +91,6 @@ function showSettings(c, s) {
         setPopupChoice(this, c, s);      
     });    
     
-    
     // Show the page theme.
     showPageTheme(s[5]);
     
@@ -314,6 +313,7 @@ function showSettingsButton(button, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
+    //var set = JSON.parse(s[5].value);
     switch(button.alt) {
         case "language" :  
             showGeneralPopupLanguage(c, s);
@@ -333,6 +333,7 @@ function showSettingsButton(button, c, s) {
             if (slide === 1) {
                 $("#page_buttons img").removeClass("active");
                 $("#page_buttons img").eq(1).addClass("active");
+                //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
             }
             
             // Test.
@@ -343,6 +344,7 @@ function showSettingsButton(button, c, s) {
             
             $("#page_buttons img").removeClass("active");
             $("#page_buttons img").eq(2).addClass("active");
+            //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test.
             $("#label span").html(button.alt);
@@ -352,6 +354,7 @@ function showSettingsButton(button, c, s) {
             
             $("#page_buttons img").removeClass("active");
             $("#page_buttons img").eq(3).addClass("active");
+            //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test
             $("#label span").html(button.alt);

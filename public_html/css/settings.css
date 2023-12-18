@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 15, 2023
+ * Updated on Dec 18, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -47,13 +47,13 @@
 /* Settings Table, see also: https://codepen.io/paulobrien/pen/LBrMxa */
 #tbl_settings {
  position: relative;
- width:100%;
+ width:calc(100% - 10px);
  z-index: 1;
  margin: auto;
  overflow: auto;
  height: 350px;
  scrollbar-color: #808080 #dcdcdc;
- scrollbar-width: thin;
+ /*scrollbar-width: thin; */
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -73,7 +73,7 @@
 }
 
 #tbl_settings table {
- width: calc(100% - 100px);
+ width: calc(100% - 90px);
  margin: auto;
  border-collapse: separate;
  border-spacing: 0;
@@ -105,7 +105,7 @@
  border-bottom:1px solid #f6358a; 
 }
 
-/* safari and ios need the tfoot itself to be position:sticky also */
+/* Safari and ios need the tfoot itself to be position:sticky also */
 #tbl_settings tfoot,
 #tbl_settings tfoot td {
  position: -webkit-sticky;
@@ -209,7 +209,7 @@
   margin: 0 5px 0 0;
   width: 20px;
   height: 20px;
-  border: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+  border: 2px solid #808080; /*#536878; */
   background-color: transparent;
 }
 
@@ -227,7 +227,7 @@
   left: 10px;
   content: " ";
   display: block;
-  background: #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+  background: #808080; /* #536878; */
 }
 
 .rad label:before,
