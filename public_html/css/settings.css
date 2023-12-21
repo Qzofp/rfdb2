@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 18, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -20,10 +20,11 @@
 
 /* Body and main parts of the page. */
 
-
+/*
 #page_buttons .active {
- border-bottom: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. */
+/* border-bottom: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. 
 }
+*/
 
 #settings {
  text-align: center;
@@ -53,7 +54,7 @@
  overflow: auto;
  height: 350px;
  scrollbar-color: #808080 #dcdcdc;
- /*scrollbar-width: thin; */
+ scrollbar-width: thin;
 }
 
 /* Works on Chrome, Edge, and Safari */

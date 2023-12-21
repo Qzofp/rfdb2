@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:         sheet.html
+ * Dependencies: css/common.css
+ *               css/login.css 
+ *               js/ext/jquery-3.7.1.min.js
+ *               js/common.js
+ *               js/login.js
+ *
+ * Created on Dec 20, 2023
+ * Updated on Dec 21, 2023
+ *
+ * Description: Login page.
+ * 
+ * Links:
+ * - https://www.javatpoint.com/php-mysql-login-system
+ * - https://www.phpzag.com/ajax-login-script-with-php-and-jquery/
+ * - https://codingstatus.com/login-with-ajax-in-php-mysql/
+ * - https://www.wdb24.com/how-to-create-simple-login-form-using-php-mysql-and-jquery/
+-->
+<html>  
+    <head>  
+        <title></title>  
+        <link rel = "stylesheet" type = "text/css" href = "css/common.css">   
+        <link rel = "stylesheet" type = "text/css" href = "css/login.css">   
+        <script src="js/ext/jquery-3.7.1.min.js"></script>    
+	<script src="js/common.js"></script>          
+	<script src="js/login.js"></script>            
+        
+    </head>  
+    <body>  
+        <div id="login_box">  
+            <h1>Login Test</h1>  
+            <form id="login" method="POST">
+                <p>  
+                    <label></label>  
+                    <input type="text" id="user" name="user" />  
+                </p>  
+                <p>  
+                    <label></label>  
+                    <input type="password" id ="pass" name="pass" />  
+                </p>  
+                <p>     
+                    <input type="submit" id="login_btn" value="" />
+                </p>  
+            </form>  
+        </div>  
+
+        <!-- Error popup window. -->
+        <div id="popup_error">
+            <div id="error"> 
+                <h2></h2>
+                <p></p>
+                <a class="close" href="javascript:void(0)">x</a>      
+            </div>
+        </div>          
+        
+        <!-- Footer -->
+        <footer>                        
+            <h3></h3>
+        </footer>         
+        
+        <!-- Script -->        
+        <script>
+        $(document).ready(function() {
+            loadLoginPage();
+        });
+        </script>    
+    </body>     
+</html>

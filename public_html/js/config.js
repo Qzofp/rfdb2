@@ -48,13 +48,13 @@ const cDate = new Date();
  * Created on Nov 12, 2023
  * Updated on Dec 04, 2023
  *
- * Description: Process the constants and settings from de database tblConfig table.
+ * Description: Process the constants and settings from the database tblConfig table.
  *
  * In:  data
  * Out: [con, set]
  *
  */
-function processConstants (data) {
+function processConstants(data) {
     
     var tmp = [];
     $.each(data.constants, function (i, field) {                   

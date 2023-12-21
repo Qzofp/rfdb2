@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Dec 15, 2023
+ * Updated on Dec 21, 2023
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Dec 02, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings page.
  *
@@ -72,7 +72,7 @@ function showSettings(c, s) {
     
     // Remove de "Pages" item and fill the slide menu.
     var items = c.settings.slice();
-    fillSlideMenu(items.slice(1,6), s);
+    fillSlideMenu(items.slice(1, 6), s);
     
     showSettingsContent(0, c, s);    
     
@@ -137,7 +137,7 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 13, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -152,6 +152,8 @@ function ShowGeneralSettings(c, s) {
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
     }
+    $("#page_buttons img").css("border-bottom", "");
+    
     
     $("#page_buttons img").eq(0).attr({src:"img/language.png", alt:"language"}); 
     $("#page_buttons img").eq(1).attr({src:"img/pages.png", alt:"pages"});
@@ -171,7 +173,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -181,11 +183,11 @@ function ShowGeneralSettings(c, s) {
  */
 function ShowFinancesSettings(c, s) {
     
-    var set = JSON.parse(s[1].value);
-    
+    var set = JSON.parse(s[5].value);    
     getAndSetScaleButton(c, s[1].name);
     
-    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active");
+    $("#page_buttons img").css("border-bottom", "");
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
     $("#page_buttons img").eq(2).attr({src:"img/groups.png", alt:"groups"}).show();
     $("#page_buttons img").eq(3).attr({src:"img/shops.png", alt:"shops"}).show();
  
@@ -193,6 +195,8 @@ function ShowFinancesSettings(c, s) {
     $("#tbl_settings thead tr").remove(); 
     $("#tbl_settings tbody td").remove();
     $("#tbl_settings tfoot tr").remove();
+    
+    set = JSON.parse(s[1].value);
     $("#label span").css("border-left","3px solid " + set.theme.color);
     
 }
@@ -201,7 +205,7 @@ function ShowFinancesSettings(c, s) {
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -216,6 +220,7 @@ function ShowStocksSettings(c, s) {
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
     }    
+    $("#page_buttons img").css("border-bottom", "");
     
     getAndSetScaleButton(c, s[2].name);
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
@@ -235,7 +240,7 @@ function ShowStocksSettings(c, s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -249,7 +254,8 @@ function ShowSavingsSettings(c, s) {
     
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
-    }    
+    } 
+    $("#page_buttons img").css("border-bottom", "");
      
     getAndSetScaleButton(c, s[3].name);
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
@@ -268,7 +274,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Dec 11, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -282,7 +288,8 @@ function ShowCryptoSettings(c, s) {
     
     if($("#page_buttons img").hasClass("active")) {
         $("#page_buttons img").removeClass("active");
-    }    
+    }
+    $("#page_buttons img").css("border-bottom", "");
      
     getAndSetScaleButton(c, s[4].name);
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
@@ -301,7 +308,7 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Dec 05, 2023
+ * Updated on Dec 19, 2023
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -313,7 +320,7 @@ function showSettingsButton(button, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
-    //var set = JSON.parse(s[5].value);
+    var set = JSON.parse(s[5].value);
     switch(button.alt) {
         case "language" :  
             showGeneralPopupLanguage(c, s);
@@ -331,9 +338,9 @@ function showSettingsButton(button, c, s) {
       
         case "accounts" :
             if (slide === 1) {
+                $("#page_buttons .active").css("border-bottom", "");
                 $("#page_buttons img").removeClass("active");
-                $("#page_buttons img").eq(1).addClass("active");
-                //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
+                $("#page_buttons img").eq(1).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
             }
             
             // Test.
@@ -341,20 +348,18 @@ function showSettingsButton(button, c, s) {
             break;
         
         case "groups"   :
-            
+            $("#page_buttons .active").css("border-bottom", "");
             $("#page_buttons img").removeClass("active");
-            $("#page_buttons img").eq(2).addClass("active");
-            //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
+            $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test.
             $("#label span").html(button.alt);
             break;
             
         case "shops"    :
-            
+            $("#page_buttons .active").css("border-bottom", "");
             $("#page_buttons img").removeClass("active");
-            $("#page_buttons img").eq(3).addClass("active");
-            //$("#page_buttons .active").css("border-bottom", "2px solid " + set.theme.color);
+            $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test
             $("#label span").html(button.alt);
@@ -366,7 +371,7 @@ function showSettingsButton(button, c, s) {
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Nov 28, 2023
+ * Updated on Dec 21, 2023
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -382,7 +387,7 @@ function showGeneralPopupLanguage(c, s) {
     $("#popup_content h2").html(c.language[0]); 
     $("#popup_content ul li").remove();
             
-    setting = JSON.parse(s[6].value);
+    setting = JSON.parse(s[7].value);
     for (let i = 1; i < c.language.length; i++) {
         
         if(setting.language === c.language[i]) {
@@ -403,7 +408,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Nov 28, 2023
+ * Updated on Dec 21, 2023
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -419,7 +424,7 @@ function showGeneralPopupPages(c, s) {
     $("#popup_content h2").html(c.settings[0]); 
     $("#popup_content ul li").remove();
  
-    for (let i = 1; i < c.pages.length - 1; i++) {
+    for (let i = 1; i < c.pages.length - 2; i++) {
         
         setting = JSON.parse(s[i].value);
         if(setting.page === "true") {
@@ -515,7 +520,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    showLanguage
  *
  * Created on Nov 18, 2023
- * Updated on Nov 26, 2023
+ * Updated on Dec 21, 2023
  *
  * Description: Show the language setting on the general page.
  *
@@ -525,7 +530,7 @@ function getAndSetScaleButton(c, name) {
  */
 function showLanguage(c, s) {
     
-    var set = JSON.parse(s[6].value);
+    var set = JSON.parse(s[7].value);
     $("#settings u").html(c.language[0]);
     $("#settings span").html(set.language);
 }
@@ -664,7 +669,7 @@ function setPopupChoice(that, c, s) {
  * Function:    setLanguage
  *
  * Created on Nov 29, 2023
- * Updated on Nov 30, 2023
+ * Updated on Dec 21, 2023
  *
  * Description: Set the language in the database en reload the settings page.
  *
@@ -674,7 +679,7 @@ function setPopupChoice(that, c, s) {
  */
 function setLanguage(language, s) {
     
-    var set = JSON.parse(s[6].value);
+    var set = JSON.parse(s[7].value);
     if (set.language !== language) {
         
         var request = $.ajax({

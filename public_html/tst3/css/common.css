@@ -10,9 +10,9 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Dec 21, 2023
+ * Updated on Dec 17, 2023
  *
- * Description: The css common page.
+ * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
  *
  * Links: https://freefrontend.com/css-tab-bars/
@@ -275,6 +275,7 @@ h2 {
 footer {
  background: #f5f5f5; 
  color: #000;
+
 }
 
 footer h3 {
@@ -291,7 +292,6 @@ footer h3 {
  width: 100%;
  height: 100%;
  display: none;
- z-index: 2;
 }
 
 #error {
