@@ -75,7 +75,7 @@ function showLoginPage(c) {
     
     // Login button is pressed.
     $(document).on("submit","#login",function(e) {
-       validateLogin(e, this); 
+       validateLogin(e, this, c); 
     });        
     
     $("footer h3").html(c.footer);
@@ -85,7 +85,7 @@ function showLoginPage(c) {
  * Function:    validateLogin
  *
  * Created on Dec 22, 2023
- * Updated on Dec 22, 2023
+ * Updated on Dec 23, 2023
  *
  * Description: Validate the login and redirect on success.
  *
@@ -93,7 +93,7 @@ function showLoginPage(c) {
  * Out: -
  *
  */
-function validateLogin(e, that) {
+function validateLogin(e, that, c) {
     
     e.preventDefault();
        
@@ -106,10 +106,10 @@ function validateLogin(e, that) {
     request.done(function(result) {
         if (result.success) {   
             if (result.login) {
-                window.location.href="welcome.php";
+                window.location.href=c.pages[0];
             }
             else {
-                $("#msg").html("Login failed!");
+                $("#msg").html(c.login[3]);
             }
         }
         else {
@@ -151,7 +151,7 @@ function validateLogin(e, that) {
  * Function:    processLoginContants
  *
  * Created on Dec 22, 2023
- * Updated on Dec 22, 2023
+ * Updated on Dec 23, 2023
  *
  * Description: Process the login constants the database tblConfig table.
  *
@@ -169,7 +169,8 @@ function processLoginConstants(data) {
     var con = {
        project:  tmp[0],
        footer :  tmp[1],
-       login  :  tmp[2].split(",")
+       pages:    tmp[2].split(","),
+       login  :  tmp[3].split(",")
     };
 
     return con;

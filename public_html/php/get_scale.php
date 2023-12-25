@@ -8,42 +8,67 @@
  * Used in: js\settings.js
  *
  * Created on Nov 17, 2023
- * Updated on Dec 05, 2023
+ * Updated on Dec 24, 2023
  *
- * Description: Get the scale from the tbl_settings table.
+ * Description: Check if the user is signed in and get the scale from the tbl_settings table.
  * Dependenties: config.php
  *
  */
-header("Content-Type:application/json");
 require_once 'config.php';
-
-// Get data from ajax call.
-$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-
-$response = [];
-
-// Change the scale setting.
-try 
+session_start();
+$user = $_SESSION['user'];
+if(!$user) 
 {
-    $db = OpenDatabase();
-
-    $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`value`, '$.scale')) AS scale FROM `tbl_settings` WHERE `name` = \"$name\";"; 
-                      
-    $select = $db->prepare($query);
-    $select->execute();    
-    
-    $data = $select->fetchAll(PDO::FETCH_ASSOC);  
-    $response['data'] = $data;
-    
-    $response['success'] = true;
+    header("location:info.php");
 }
-catch (PDOException $e) 
-{    
-    $response['message'] = $e->getMessage();
-    $response['success'] = false;
-} 
+else 
+{
+    header("Content-Type:application/json"); 
+    GetScale();
+}
 
-echo $json = json_encode($response);
+/*
+ * Function:    GetScale
+ *
+ * Created on Dec 24, 2023
+ * Updated on Dec 24, 2023
+ *
+ * Description: Get the scale from the tbl_settings table.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function GetScale()
+{
+    // Get data from ajax call.
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 
-// Close database connection
-$db = null;
+    $response = [];
+
+    // Change the scale setting.
+    try 
+    {
+        $db = OpenDatabase();
+
+        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`value`, '$.scale')) AS scale FROM `tbl_settings` WHERE `name` = \"$name\";"; 
+                      
+        $select = $db->prepare($query);
+        $select->execute();    
+    
+        $data = $select->fetchAll(PDO::FETCH_ASSOC);  
+        $response['data'] = $data;
+    
+        $response['success'] = true;
+    }
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
+
+    echo $json = json_encode($response);
+
+    // Close database connection
+    $db = null;    
+}

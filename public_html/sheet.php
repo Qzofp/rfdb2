@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<!--
+<?php
+/*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
  * Version: 0.1
  *
- * File:         sheet.html
+ * File:         sheet.php
  * Dependencies: css/common.css
  *               css/ext/yearpicker.css
  *               css/sheet.css 
@@ -15,11 +15,19 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Dec 21, 2023
+ * Updated on Dec 25, 2023
  *
  * Description: Sheet framework test page.
- * 
---> 
+ *
+ */
+session_start();
+$user = $_SESSION['user'];
+if(!$user){
+    header("location:index.php");
+}
+?>
+
+<!DOCTYPE html>
 <html>
     <head>
         <title></title>
@@ -42,15 +50,19 @@
 		<label class="menu_btn" for="menu_toggle">
                     <span></span>
 		</label>
-		<ul class="menu_box">
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-                    <li><a class="menu_item" href=""></a></li>
-		</ul>
+                <div class="menu_box">                    
+                    <div class="user"><img src="img/user.png" alt="user"><span><?php echo $user; ?></span></div>
+                    <hr>
+                    <ul>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                        <li><a class="menu_item" href=""></a></li>
+                    </ul>                    
+                </div>
             </div>		
 			
             <h1></h1>

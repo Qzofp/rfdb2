@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Dec 21, 2023
+ * Updated on Dec 24, 2023
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -52,6 +52,14 @@ header {
   padding: 10px;
   height: 8em; /* FF fix 1 */
 }
+
+/*
+header #user {
+ position: absolute;
+ top: 10px;
+ right: 5px;
+}
+*/
 
 h1 {
   margin: 7px 0 7px 0;
@@ -118,13 +126,34 @@ h2 {
   width: 300px;
   height: 100%;
   margin: 0;
-  padding: 80px 0;
-  list-style: none;
+  padding: 80px 0;  
   background-color: #ECEFF1;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
   transition-duration: .25s;
   z-index: 10;
 }
+
+.menu_box .user {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;  
+}
+
+.menu_box img {
+  width: 32px;
+  height: 32px;    
+}
+
+.menu_box span {
+ padding-top: 7px;
+ padding-left: 3px;
+}
+
+.menu_box ul {
+  padding: 20px 0;    
+  list-style: none;    
+}
+
 .menu_item {
   display: block;
   padding: 12px 24px;

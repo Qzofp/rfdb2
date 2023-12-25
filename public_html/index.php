@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<!--
+
+<?php
+/*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
  * Version: 0.1
@@ -12,7 +13,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Dec 23, 2023
+ * Updated on Dec 24, 2023
  *
  * Description: Login page.
  * 
@@ -21,7 +22,15 @@
  * - https://www.phpzag.com/ajax-login-script-with-php-and-jquery/
  * - https://codingstatus.com/login-with-ajax-in-php-mysql/
  * - https://www.wdb24.com/how-to-create-simple-login-form-using-php-mysql-and-jquery/
--->
+ */ 
+session_start();
+$user = $_SESSION['user'];
+if($user){
+    header("location:dashboard.php");
+}
+?>
+
+<!DOCTYPE html>
 <html>  
     <head>  
         <title></title>  
@@ -42,7 +51,7 @@
                 </p>  
                 <p>  
                     <label></label>  
-                    <input type="password" id ="pass" name="pass" />  
+                    <input type="password" id="pass" name="pass" />  
                 </p>  
                 <p>     
                     <button type="submit"></button>
