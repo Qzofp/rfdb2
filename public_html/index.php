@@ -13,7 +13,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Dec 24, 2023
+ * Updated on Dec 27, 2023
  *
  * Description: Login page.
  * 
@@ -21,11 +21,9 @@
  * - https://www.javatpoint.com/php-mysql-login-system
  * - https://www.phpzag.com/ajax-login-script-with-php-and-jquery/
  * - https://codingstatus.com/login-with-ajax-in-php-mysql/
- * - https://www.wdb24.com/how-to-create-simple-login-form-using-php-mysql-and-jquery/
  */ 
 session_start();
-$user = $_SESSION['user'];
-if($user){
+if(isset($_SESSION['user'])) {
     header("location:dashboard.php");
 }
 ?>
