@@ -13,7 +13,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Dec 27, 2023
+ * Updated on Jan 01, 2023
  *
  * Description: Login page.
  * 
@@ -41,15 +41,15 @@ if(isset($_SESSION['user'])) {
     </head>  
     <body>  
         <div id="login_box">  
-            <h1>Login Test</h1>  
+            <h1>Login</h1>  
             <form id="login" method="POST">
                 <p>  
-                    <label></label>  
-                    <input type="text" id="user" name="user" />  
+                    <img src="img/user.png" alt="user">
+                    <input id="user" type="text" name="user" placeholder="" />   
                 </p>  
                 <p>  
-                    <label></label>  
-                    <input type="password" id="pass" name="pass" />  
+                    <img src="img/key.png" alt="key">
+                    <input id="pass" type="password" name="pass" placeholder="" />  
                 </p>  
                 <p>     
                     <button type="submit"></button>
