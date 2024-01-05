@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Dec 21, 2023
+ * Updated on Jan 05, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -137,7 +137,7 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 05, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -157,16 +157,17 @@ function ShowGeneralSettings(c, s) {
     
     $("#page_buttons img").eq(0).attr({src:"img/language.png", alt:"language"}); 
     $("#page_buttons img").eq(1).attr({src:"img/pages.png", alt:"pages"});
-    $("#page_buttons img").eq(2).attr({src:"img/configs.png", alt:"configs"}).show(); 
-    $("#page_buttons img").eq(3).hide(); 
+    $("#page_buttons img").eq(2).attr({src:"img/users.png", alt:"users"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color).show();  
+    $("#page_buttons img").eq(3).attr({src:"img/configs.png", alt:"configs"}).show();
     
     showLanguage(c, s);
     
-    $("#label span").html(c.tables[0]);
+    $("#label span").html(c.users[0]);
     $("#label span").css("border-left","3px solid " + set.theme.color);
     //$("#label span").css("border-left","3px solid maroon");
-    showConfigsTable(c, s);
+    //showConfigsTable(c, s);
     
+    showUsersTable(c, s);   
 }
 
 /*
@@ -308,32 +309,69 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 05, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
- * In:  button, c, s
+ * In:  that, c, s
  * Out: -
  *
  */
-function showSettingsButton(button, c, s) {
+function showSettingsButton(that, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
     var set = JSON.parse(s[5].value);
-    switch(button.alt) {
+    switch(that.alt) {
         case "language" :  
             showGeneralPopupLanguage(c, s);
             break;
         case "pages"    :
             showGeneralPopupPages(c, s);
             break;
-        
+            
+        case "users"    : 
+            if (that.className === 'active') 
+            {
+                console.log(that.className); // debug
+
+            }
+            else 
+            {
+                $("#page_buttons .active").css("border-bottom", "");
+                $("#page_buttons img").removeClass("active");                
+                $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+                
+                $("#label span").html(c.users[0]);
+                $("#label span").css("border-left","3px solid " + set.theme.color);
+                
+                showUsersTable(c, s);
+            }
+            break;
+            
+        case "configs"  :
+            if (that.className === 'active') 
+            {
+                console.log(that.className); // debug
+            }
+            else 
+            {
+                $("#page_buttons .active").css("border-bottom", "");
+                $("#page_buttons img").removeClass("active");                
+                $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);   
+                
+                $("#label span").html(c.configs[0]);
+                $("#label span").css("border-left","3px solid " + set.theme.color);
+                
+                showConfigsTable(c, s);
+            }
+            break;
+            
         case "months"   :   
         case "quarters" : 
         case "year"     :                      
-            changeScaleSetting(s[slide].name, button.alt);    
-            setScaleButton(c, button.alt);
+            changeScaleSetting(s[slide].name, that.alt);    
+            setScaleButton(c, that.alt);
             break;               
       
         case "accounts" :
@@ -344,7 +382,7 @@ function showSettingsButton(button, c, s) {
             }
             
             // Test.
-            $("#label span").html(button.alt);
+            $("#label span").html(that.alt);
             break;
         
         case "groups"   :
@@ -353,7 +391,7 @@ function showSettingsButton(button, c, s) {
             $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test.
-            $("#label span").html(button.alt);
+            $("#label span").html(that.alt);
             break;
             
         case "shops"    :
@@ -362,7 +400,7 @@ function showSettingsButton(button, c, s) {
             $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
             
             // Test
-            $("#label span").html(button.alt);
+            $("#label span").html(that.alt);
             break;
     }
 }
@@ -536,12 +574,97 @@ function showLanguage(c, s) {
 }
 
 /*
+ * Function:    showUsersTable
+ *
+ * Created on Jan 05, 2024
+ * Updated on Jan 05, 2024
+ *
+ * Description: Show the users table in the general page.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showUsersTable(c, s) {
+
+    var set = JSON.parse(s[5].value);
+        
+    // Height tabel test.
+    var y = $(".content_main").height() - 190;
+    $("#tbl_settings").css("height", y);   
+        
+    // Fill the table header.
+    $("#tbl_settings thead tr").remove();      
+    $("#tbl_settings thead").append("<tr><th></th><th>" + c.users[1] + "</th><th>" + c.users[2] + "</th><th>" + c.users[3] + "</th><th>" + c.users[4] + "</th></tr>");
+    
+    // Fill the table body.
+    $("#tbl_settings tbody tr").remove(); 
+    fillUsersTable(s);
+    
+    // Fill the table footer.
+    $("#tbl_settings tfoot tr").remove();      
+    $("#tbl_settings tfoot").append('<tr><td colspan="5">&nbsp; FOOTER</td></tr>');
+    
+    // Set theme.
+    $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);
+    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color);     
+    
+}
+
+/*
+ * Function:    fillUsersTable
+ *
+ * Created on Jan 05, 2024
+ * Updated on Jan 05, 2024
+ *
+ * Description: Get the users from the database and fill the table with that data.
+ *
+ * In:  s
+ * Out: -
+ *
+ */
+function fillUsersTable(s) {
+    
+    var set = JSON.parse(s[5].value);    
+    var request = $.ajax({
+        url: "php/get_users.php",
+        method: "POST",
+        dataType: "json"
+    }); 
+      
+    request.done(function(result) {
+        if (result.success) {         
+            
+            let i = 0; 
+            $.each(result.users, function (n, field) {  
+                i++;
+                $("#tbl_settings tbody").append("<tr><td></td><td>" + field.user + "</td><td>" + field.password + "</td><td>" + field.time + "</td><td>" + field.last + "</td></tr>");              
+            });  
+
+            // Add empty rows.
+            for (let j = i; j < set.rows; j++) {
+               $("#tbl_settings tbody").append('<tr><td colspan="5">&nbsp;</td></tr>');
+            }
+        }
+        else {
+            showDatabaseError(result.message); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();
+} 
+
+/*
  * Function:    showConfigsTable
  *
  * Created on Dec 04, 2023
- * Updated on Dec 16, 2023
+ * Updated on Jan 05, 2024
  *
- * Description: Show the configs setting table in the general page.
+ * Description: Show the configs settings table in the general page.
  *
  * In:  c, s
  * Out: -
@@ -553,12 +676,11 @@ function showConfigsTable(c, s) {
         
     // Height tabel test.
     var y = $(".content_main").height() - 190;
-    $("#tbl_settings").css("height", y);
-    
+    $("#tbl_settings").css("height", y);   
         
     // Fill the table header.
     $("#tbl_settings thead tr").remove();      
-    $("#tbl_settings thead").append("<tr><th></th><th>" + c.tables[1] + "</th><th>" + c.tables[2] + "</th></tr>");
+    $("#tbl_settings thead").append("<tr><th></th><th>" + c.configs[1] + "</th><th>" + c.configs[2] + "</th></tr>");
     
     // Fill the table body.
     $("#tbl_settings tbody tr").remove(); 
@@ -566,8 +688,7 @@ function showConfigsTable(c, s) {
     
     // Fill the table footer.
     $("#tbl_settings tfoot tr").remove();      
-    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp; FOOTER</td></tr>');   
-    
+    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp; FOOTER</td></tr>');     
     
     // Set theme.
     $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);

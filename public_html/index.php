@@ -13,7 +13,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Jan 01, 2023
+ * Updated on Jan 02, 2023
  *
  * Description: Login page.
  * 
@@ -40,9 +40,10 @@ if(isset($_SESSION['user'])) {
 	<script src="js/login.js"></script>                    
     </head>  
     <body>  
-        <div id="login_box">  
-            <h1>Login</h1>  
-            <form id="login" method="POST">
+        <h1></h1>
+        <h2>&nbsp;</h2>
+        <div id="login_box">
+            <form method="POST">
                 <p>  
                     <img src="img/user.png" alt="user">
                     <input id="user" type="text" name="user" placeholder="" />   
@@ -57,9 +58,6 @@ if(isset($_SESSION['user'])) {
             </form>  
         </div>  
         
-        <!-- Login failed message. -->
-        <p id="msg"></p>
-
         <!-- Error popup window. -->
         <div id="popup_error">
             <div id="error"> 

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Jan 01, 2024
+ * Updated on Jan 02, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -56,7 +56,7 @@ function loadLoginPage() {
  * Function:    showLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Jan 01, 2024
+ * Updated on Jan 02, 2024
  *
  * Description: Shows the login page.
  *
@@ -66,18 +66,19 @@ function loadLoginPage() {
  */
 function showLoginPage(c) {
 
-    $("title").html(c.project);  
+    $("title").html(c.project);
+    $("h1").html(c.project);  
     
-    $("#login").find('input').val(''); 
+    $("form").find('input').val(''); 
     //$("#login label").first().html(c.login[1]); 
     //$("#login label").last().html(c.login[2]);   
     $("#user").attr("placeholder", c.login[1]);
     $("#pass").attr("placeholder", c.login[2]);
     
-    $("#login button").html(c.login[0]);
+    $("form button").html(c.login[0]);
     
     // Login button is pressed.
-    $(document).on("submit","#login",function(e) {
+    $(document).on("submit","form",function(e) {
        validateLogin(e, this, c); 
     });        
     
@@ -88,7 +89,7 @@ function showLoginPage(c) {
  * Function:    validateLogin
  *
  * Created on Dec 22, 2023
- * Updated on Dec 23, 2023
+ * Updated on Jan 02, 2024
  *
  * Description: Validate the login and redirect on success.
  *
@@ -112,7 +113,7 @@ function validateLogin(e, that, c) {
                 window.location.href=c.pages[0];
             }
             else {
-                $("#msg").html(c.login[3]);
+                $("h2").html(c.login[3]);
             }
         }
         else {

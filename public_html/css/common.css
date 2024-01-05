@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Dec 24, 2023
+ * Updated on Jan 02, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -52,14 +52,6 @@ header {
   padding: 10px;
   height: 8em; /* FF fix 1 */
 }
-
-/*
-header #user {
- position: absolute;
- top: 10px;
- right: 5px;
-}
-*/
 
 h1 {
   margin: 7px 0 7px 0;

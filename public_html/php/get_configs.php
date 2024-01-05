@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Dec 04, 2023
- * Updated on Dec 24, 2023
+ * Updated on Jan 05, 2024
  *
  * Description: Check if the user is signed in and get the configs from the databases tbl_config table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    GetConfigs
  *
  * Created on Dec 23, 2023
- * Updated on Dec 23, 2023
+ * Updated on Jan 03, 2023
  *
  * Description: Get the configs from the databases tbl_config table.
  *
@@ -49,7 +49,7 @@ function GetConfigs()
         $db = OpenDatabase();
 
         $select = $db->prepare("SELECT JSON_UNQUOTE(JSON_EXTRACT(`value`, '$.code')) AS `code` ".
-                           "FROM `tbl_settings` WHERE `name` = \"language\";");
+                               "FROM `tbl_settings` WHERE `name` = \"language\";");
         $select->execute();
     
         // Get the language code (NL, EN, etc.).
@@ -67,7 +67,7 @@ function GetConfigs()
         $query = "SELECT tbl_config.`name`, COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
                  "FROM tbl_config ".
                  "LEFT JOIN $language ON tbl_config.id = $language.id_config ".
-                 "WHERE tbl_config.id NOT IN (13) ".
+            //     "WHERE tbl_config.id NOT IN (13) ".
                  "ORDER BY tbl_config.id;";
     
         $select = $db->prepare($query);
@@ -76,7 +76,7 @@ function GetConfigs()
         $constants = $select->fetchAll(PDO::FETCH_ASSOC);  
         $response['configs'] = $constants;       
  
-        $response['success']   = true;
+        $response['success'] = true;
     }
     catch (PDOException $e) 
     {    

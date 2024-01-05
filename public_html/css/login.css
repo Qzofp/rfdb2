@@ -8,7 +8,7 @@
  * Used in: index.html
  *
  * Created on Dec 21, 2023
- * Updated on Jan 01, 2024
+ * Updated on Jan 02, 2024
  *
  * Description: The css for the login page.
  *
@@ -21,20 +21,30 @@ body{
  background: #f5f5f5;  
 }
 
-#login_box{  
+h1 {
+ margin-top:37px;
+}
+
+h2 {
+ color: maroon;
+}
+
+#login_box {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+form {
  border: solid gray 1px;  
- width:25%;  
  border-radius: 2px;  
- margin: 120px auto;  
+ margin: 2px auto;     
  background: white;  
- padding: 50px;
+ padding: 30px 50px;
+ width: 22%;
 }
 
-#login_box h1 {
- font-size: 1.4em;
-}
-
-#login p{
+form p{
  display: flex;
  align-items: center; 
 }
