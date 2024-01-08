@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Jan 05, 2024
+ * Updated on Jan 08, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -137,7 +137,7 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 05, 2023
+ * Updated on Jan 06, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -154,7 +154,6 @@ function ShowGeneralSettings(c, s) {
     }
     $("#page_buttons img").css("border-bottom", "");
     
-    
     $("#page_buttons img").eq(0).attr({src:"img/language.png", alt:"language"}); 
     $("#page_buttons img").eq(1).attr({src:"img/pages.png", alt:"pages"});
     $("#page_buttons img").eq(2).attr({src:"img/users.png", alt:"users"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color).show();  
@@ -162,12 +161,11 @@ function ShowGeneralSettings(c, s) {
     
     showLanguage(c, s);
     
-    $("#label span").html(c.users[0]);
-    $("#label span").css("border-left","3px solid " + set.theme.color);
-    //$("#label span").css("border-left","3px solid maroon");
-    //showConfigsTable(c, s);
+    //$("#label span").html(c.users[0]);
+    //$("#label span").css("border-left","3px solid " + set.theme.color);
     
-    showUsersTable(c, s);   
+    //showUsersTable(c, s); 
+    showTable(c.users, s, "get_users.php");
 }
 
 /*
@@ -309,7 +307,7 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Jan 05, 2024
+ * Updated on Jan 08, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -342,10 +340,12 @@ function showSettingsButton(that, c, s) {
                 $("#page_buttons img").removeClass("active");                
                 $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
                 
-                $("#label span").html(c.users[0]);
-                $("#label span").css("border-left","3px solid " + set.theme.color);
+                //$("#label span").html(c.users[0]);
+                //$("#label span").css("border-left","3px solid " + set.theme.color);
                 
-                showUsersTable(c, s);
+                showTable(c.users, s, "get_users.php");
+                
+                //showUsersTable(c, s);
             }
             break;
             
@@ -360,10 +360,13 @@ function showSettingsButton(that, c, s) {
                 $("#page_buttons img").removeClass("active");                
                 $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);   
                 
-                $("#label span").html(c.configs[0]);
-                $("#label span").css("border-left","3px solid " + set.theme.color);
+                //$("#label span").html(c.configs[0]);
+                //$("#label span").css("border-left","3px solid " + set.theme.color);
                 
-                showConfigsTable(c, s);
+                showTable(c.configs, s, "get_configs.php");
+                
+                
+                //showConfigsTable(c, s);
             }
             break;
             
@@ -520,7 +523,7 @@ function setScaleButton(c, scale) {
  * Function:    getAndSetScaleButton
  *
  * Created on Dec 02, 2023
- * Updated on Dec 05, 2023
+ * Updated on Jan 08, 2024
  *
  * Description: Get the scale from the settings database and set the scale button.
  *
@@ -539,7 +542,6 @@ function getAndSetScaleButton(c, name) {
       
     request.done(function(result) {
         if (result.success) { 
-
             setScaleButton(c, result.data[0].scale);            
         }
         else {
@@ -574,76 +576,91 @@ function showLanguage(c, s) {
 }
 
 /*
- * Function:    showUsersTable
+ * Function:    showTable
  *
- * Created on Jan 05, 2024
- * Updated on Jan 05, 2024
+ * Created on Jan 06, 2024
+ * Updated on Jan 08, 2024
  *
- * Description: Show the users table in the general page.
+ * Description: Show the table.
  *
- * In:  c, s
+ * In:  items, s, page
  * Out: -
  *
  */
-function showUsersTable(c, s) {
+function showTable(items, s, page) {
 
     var set = JSON.parse(s[5].value);
-        
-    // Height tabel test.
-    var y = $(".content_main").height() - 190;
-    $("#tbl_settings").css("height", y);   
-        
-    // Fill the table header.
-    $("#tbl_settings thead tr").remove();      
-    $("#tbl_settings thead").append("<tr><th></th><th>" + c.users[1] + "</th><th>" + c.users[2] + "</th><th>" + c.users[3] + "</th><th>" + c.users[4] + "</th></tr>");
     
+    // Set the table label.
+    $("#label span").html(items[0]);
+    $("#label span").css("border-left","3px solid " + set.theme.color);
+    
+    // Calculate table height.
+    var y = $(".content_main").height() - 190;
+    $("#tbl_settings").css("height", y);
+    
+    // Fill the table header.
+    $("#tbl_settings thead tr").remove(); 
+    $("#tbl_settings thead").append("<tr><th></th>");     
+    
+    for (let i = 1; i < items.length; i++) {
+        $("#tbl_settings thead tr").append("<th>" + items[i] + "</th>");
+    } 
+    
+    $("#tbl_settings thead").append("</tr>");
+ 
     // Fill the table body.
     $("#tbl_settings tbody tr").remove(); 
-    fillUsersTable(s);
+    fillTable(s, page, items.length);
     
     // Fill the table footer.
     $("#tbl_settings tfoot tr").remove();      
-    $("#tbl_settings tfoot").append('<tr><td colspan="5">&nbsp; FOOTER</td></tr>');
+    $("#tbl_settings tfoot").append('<tr><td colspan="' + items.length + '">&nbsp;</td></tr>');
     
     // Set theme.
     $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);
-    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color);     
-    
+    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color);       
 }
 
 /*
- * Function:    fillUsersTable
+ * Function:    fillTable
  *
- * Created on Jan 05, 2024
- * Updated on Jan 05, 2024
+ * Created on Jan 08, 2024
+ * Updated on Jan 08, 2024
  *
- * Description: Get the users from the database and fill the table with that data.
+ * Description: Get the data from the database and fill the table with that data.
  *
- * In:  s
+ * In:  s, page, l
  * Out: -
  *
  */
-function fillUsersTable(s) {
+function fillTable(s, page, l) {
     
     var set = JSON.parse(s[5].value);    
     var request = $.ajax({
-        url: "php/get_users.php",
+        url: "php/" + page,
         method: "POST",
         dataType: "json"
-    }); 
-      
+    });     
+    
     request.done(function(result) {
         if (result.success) {         
             
-            let i = 0; 
-            $.each(result.users, function (n, field) {  
+            let i = 0;             
+            $.each(result.data, function (n, field) {  
                 i++;
-                $("#tbl_settings tbody").append("<tr><td></td><td>" + field.user + "</td><td>" + field.password + "</td><td>" + field.time + "</td><td>" + field.last + "</td></tr>");              
+                $("#tbl_settings tbody").append("<tr><td></td>"); 
+                
+                $.each(field, function(key, value){
+                    $("#tbl_settings tbody tr").last().append("<td>" + value + "</td>");
+                });
+                
+                $("#tbl_settings tbody").append("</tr>");   
             });  
 
             // Add empty rows.
             for (let j = i; j < set.rows; j++) {
-               $("#tbl_settings tbody").append('<tr><td colspan="5">&nbsp;</td></tr>');
+               $("#tbl_settings tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
             }
         }
         else {
@@ -655,92 +672,8 @@ function fillUsersTable(s) {
         showAjaxError(jqXHR, textStatus);
     });  
     
-    closeErrorMessage();
-} 
-
-/*
- * Function:    showConfigsTable
- *
- * Created on Dec 04, 2023
- * Updated on Jan 05, 2024
- *
- * Description: Show the configs settings table in the general page.
- *
- * In:  c, s
- * Out: -
- *
- */
-function showConfigsTable(c, s) {
-
-    var set = JSON.parse(s[5].value);
-        
-    // Height tabel test.
-    var y = $(".content_main").height() - 190;
-    $("#tbl_settings").css("height", y);   
-        
-    // Fill the table header.
-    $("#tbl_settings thead tr").remove();      
-    $("#tbl_settings thead").append("<tr><th></th><th>" + c.configs[1] + "</th><th>" + c.configs[2] + "</th></tr>");
-    
-    // Fill the table body.
-    $("#tbl_settings tbody tr").remove(); 
-    fillConfigsTable(s);
-    
-    // Fill the table footer.
-    $("#tbl_settings tfoot tr").remove();      
-    $("#tbl_settings tfoot").append('<tr><td colspan="3">&nbsp; FOOTER</td></tr>');     
-    
-    // Set theme.
-    $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);
-    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color); 
+    closeErrorMessage();      
 }
-
-/*
- * Function:    fillConfigsTable
- *
- * Created on Dec 04, 2023
- * Updated on Dec 11, 2023
- *
- * Description: Get the configs from the database and fill the table with that data.
- *
- * In:  s
- * Out: -
- *
- */
-function fillConfigsTable(s) {
-    
-    var set = JSON.parse(s[5].value);    
-    var request = $.ajax({
-        url: "php/get_configs.php",
-        method: "POST",
-        dataType: "json"
-    }); 
-      
-    request.done(function(result) {
-        if (result.success) {         
-            
-            let i = 0; 
-            $.each(result.configs, function (n, field) {  
-                i++;
-                $("#tbl_settings tbody").append("<tr><td></td><td>" + field.name + "</td><td>" + field.value + "</td></tr>");              
-            });  
-
-            // Add empty rows.
-            for (let j = i; j < set.rows; j++) {
-               $("#tbl_settings tbody").append('<tr><td colspan="3">&nbsp;</td></tr>');
-            }
-        }
-        else {
-            showDatabaseError(result.message); 
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-    
-    closeErrorMessage();
-}  
     
 /*
  * Function:    setPopupChoice

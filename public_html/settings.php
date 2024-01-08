@@ -13,7 +13,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Dec 25, 2023
+ * Updated on Jan 06, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -128,10 +128,7 @@ if(!$user){
                         </tfoot>
                     </table>
                 </div>    
-
-                
-                
-                
+                            
                 <!-- Settings popup window. -->
                 <div id="popup_container"> 
                     <div id="popup_content"> 
@@ -144,8 +141,7 @@ if(!$user){
                         </div>  
                     </div>                    
                 </div>                
-                
-                
+                              
                 <!-- Error popup window. -->
                 <div id="popup_error">
                     <div id="error"> 

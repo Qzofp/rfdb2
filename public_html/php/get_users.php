@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 05, 2024
- * Updated on Jan 05, 2024
+ * Updated on Jan 08, 2024
  *
  * Description: Check if the user is signed in and get the users from the databases tbl_users table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    GetUsers
  *
  * Created on Jan 05, 2024
- * Updated on Jan 05, 2024
+ * Updated on Jan 08, 2024
  *
  * Description: Get the users from the databases tbl_users table.
  *
@@ -56,7 +56,7 @@ function GetUsers()
         $select->execute();
 
         $users = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['users'] = $users;       
+        $response['data'] = $users;       
  
         $response['success'] = true;
     }
