@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Jan 02, 2024
+ * Updated on Jan 10, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -56,7 +56,7 @@ function loadLoginPage() {
  * Function:    showLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Jan 02, 2024
+ * Updated on Jan 10, 2024
  *
  * Description: Shows the login page.
  *
@@ -69,9 +69,7 @@ function showLoginPage(c) {
     $("title").html(c.project);
     $("h1").html(c.project);  
     
-    $("form").find('input').val(''); 
-    //$("#login label").first().html(c.login[1]); 
-    //$("#login label").last().html(c.login[2]);   
+    $("form").find('input').val('');   
     $("#user").attr("placeholder", c.login[1]);
     $("#pass").attr("placeholder", c.login[2]);
     

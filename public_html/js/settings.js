@@ -7,7 +7,7 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Jan 08, 2024
+ * Updated on Jan 12, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -307,7 +307,7 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Jan 08, 2024
+ * Updated on Jan 09, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -331,8 +331,7 @@ function showSettingsButton(that, c, s) {
         case "users"    : 
             if (that.className === 'active') 
             {
-                console.log(that.className); // debug
-
+                showGeneralPopupUsers(c, s);
             }
             else 
             {
@@ -412,7 +411,7 @@ function showSettingsButton(that, c, s) {
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Dec 21, 2023
+ * Updated on Jan 12, 2024
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -425,8 +424,10 @@ function showGeneralPopupLanguage(c, s) {
     var setting;
     
     $("#popup_content").removeClass().addClass("gen_language");
-    $("#popup_content h2").html(c.language[0]); 
+    $("#popup_content h2").html(c.language[0]);
     $("#popup_content ul li").remove();
+    $("#popup_content ul").show();
+    $("#popup_content table").hide(); 
             
     setting = JSON.parse(s[7].value);
     for (let i = 1; i < c.language.length; i++) {
@@ -449,7 +450,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Dec 21, 2023
+ * Updated on Jan 12, 2024
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -464,6 +465,8 @@ function showGeneralPopupPages(c, s) {
     $("#popup_content").removeClass().addClass("gen_pages");                   
     $("#popup_content h2").html(c.settings[0]); 
     $("#popup_content ul li").remove();
+    $("#popup_content ul").show();
+    $("#popup_content table").hide(); 
  
     for (let i = 1; i < c.pages.length - 2; i++) {
         
@@ -479,6 +482,41 @@ function showGeneralPopupPages(c, s) {
            'value="' + i + '" ' + chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
     }        
   
+    $("#popup_container").fadeIn("slow");      
+}
+
+/*
+ * Function:    showGeneralPopupUsers
+ *
+ * Created on Jan 09, 2024
+ * Updated on Jan 12, 2024
+ *
+ * Description: Shows the users popup content for the general page.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showGeneralPopupUsers(c, s) {
+    
+    var chk, setting;
+    
+    $("#popup_content").removeClass().addClass("gen_users");                   
+    $("#popup_content h2").html(c.users[0]); 
+    $("#popup_content ul").hide();
+    $("#popup_content table").show().empty();
+
+    $("#popup_content table").append('<tr><th></th><th></th><th></th><th></th></tr>' +
+                                     '<tr>' +
+                                         '<td><input id="user" type="text" name="user" placeholder="Gebruikersnaam" /></td>' +
+                                         '<td><input id="pass1" type="password" name="pass1" placeholder="Wachtwoord" /></td>' + 
+                                         '<td><input id="pass2" type="password" name="pass2" placeholder="Wachtwoord Controle" /></td>' +
+                                         '<td><img src="img/add.png" alt="add"/></td>' +
+                                     '</tr>' +
+                                     '<tr><td class="msg" colspan="4">Meldingen!<td></tr>');
+    
+
+
     $("#popup_container").fadeIn("slow");      
 }
 

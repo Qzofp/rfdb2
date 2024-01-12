@@ -13,7 +13,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Jan 06, 2024
+ * Updated on Jan 12, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -129,19 +129,20 @@ if(!$user){
                     </table>
                 </div>    
                             
-                <!-- Settings popup window. -->
+                <!-- Settings popup window for language and pages. -->
                 <div id="popup_container"> 
                     <div id="popup_content"> 
-                        <h2></h2>                                                
+                        <h2></h2>                                               
                         <ul></ul>
+                        <table></table>
                         <a class="close" href="javascript:void(0)">x</a>   
                         <div class="choice">
                             <img src="img/ok.png" alt="ok"/>
                             <img class="close" src="img/cancel.png" alt="cancel"/>
-                        </div>  
+                        </div>
                     </div>                    
-                </div>                
-                              
+                </div>
+                                                           
                 <!-- Error popup window. -->
                 <div id="popup_error">
                     <div id="error"> 

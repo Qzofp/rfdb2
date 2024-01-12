@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 12, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -155,8 +155,33 @@
  margin: 0px 20px 20px 0px;
 }
 
-#popup_content input, label:hover {
+#popup_content table {
+ width: calc(90% - 90px);
+ margin: auto;
+ border-collapse: separate;
+ border-spacing: 0;
+}
+
+#popup_content table th, td {
+ text-align:left;
+ font-size: 0.9em;
+}
+
+#popup_content table .msg {
+ text-align: center;
+ color: maroon;
+ font-weight: bold;
+}
+
+#popup_content input {
+ font-size: 1em;  
  cursor: pointer;
+}
+
+#popup_content img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 #popup_content a {
@@ -187,6 +212,10 @@
 #popup_container .gen_language, 
 #popup_container .gen_pages {
  width: 30% !important;
+}
+
+#popup_container .gen_users {
+ width: 50% !important;
 }
 
 /* Radio and checkbox buttons */
