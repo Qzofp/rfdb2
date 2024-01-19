@@ -7,11 +7,12 @@
  * Used in: settings.html
  *
  * Created on Oct 29, 2023
- * Updated on Jan 12, 2024
+ * Updated on Jan 19, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
  *
+ * Links: https://dev.to/fromwentzitcame/username-and-password-validation-using-regex-2175
  *
  */
 
@@ -55,7 +56,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 17, 2024
  *
  * Description: Shows the settings page.
  *
@@ -87,7 +88,7 @@ function showSettings(c, s) {
     });
     
     // Settings popup Ok button is pressed.
-    $("#popup_content .choice").on('click', 'img', function() {
+    $("#popup_content").on('click', 'img', function() {
         setPopupChoice(this, c, s);      
     });    
     
@@ -489,7 +490,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Jan 12, 2024
+ * Updated on Jan 17, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -499,7 +500,7 @@ function showGeneralPopupPages(c, s) {
  */
 function showGeneralPopupUsers(c, s) {
     
-    var chk, setting;
+    //var chk, setting;
     
     $("#popup_content").removeClass().addClass("gen_users");                   
     $("#popup_content h2").html(c.users[0]); 
@@ -508,9 +509,9 @@ function showGeneralPopupUsers(c, s) {
 
     $("#popup_content table").append('<tr><th></th><th></th><th></th><th></th></tr>' +
                                      '<tr>' +
-                                         '<td><input id="user" type="text" name="user" placeholder="Gebruikersnaam" /></td>' +
-                                         '<td><input id="pass1" type="password" name="pass1" placeholder="Wachtwoord" /></td>' + 
-                                         '<td><input id="pass2" type="password" name="pass2" placeholder="Wachtwoord Controle" /></td>' +
+                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" /></td>' +
+                                         '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
+                                         '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
                                          '<td><img src="img/add.png" alt="add"/></td>' +
                                      '</tr>' +
                                      '<tr><td class="msg" colspan="4">Meldingen!<td></tr>');
@@ -717,7 +718,7 @@ function fillTable(s, page, l) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Nov 30, 2023
+ * Updated on Jan 17, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -728,13 +729,13 @@ function fillTable(s, page, l) {
 function setPopupChoice(that, c, s) {
 
     var popup  = $('#popup_content').attr('class');
-    if (that.alt === "ok") {
+    if (that.alt === "ok" || that.alt === "add") {
         
-        var choice;
+        var data;
         switch (popup) {
             case "gen_language" :
-                choice = $('input[name="language"]:checked').parent().text();
-                setLanguage(choice, s);
+                data = $('input[name="language"]:checked').parent().text();
+                setLanguage(data, s);
                 break;
             
             case "gen_pages"    :
@@ -743,17 +744,25 @@ function setPopupChoice(that, c, s) {
                     result[this.value - 1] = true;                 
                 });
                
-                //console.log(result);
                 setPages(result, s);
                 break;
                 
+            case "gen_users" :                
+                data = [];
+                data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());
+                
+                addUser(c, s, that.alt, data);            
+                break;
+                
+                
+                
             case "fin_accounts" :
-                choice = "TEST";
+                data = "TEST";
                 break;
                 
                 
         }
-    }    
+    }
    
 }
 
@@ -854,6 +863,62 @@ function setPages(p, s) {
     // Close popup window.
     $("#popup_container").fadeOut("slow");    
 }
+
+/*
+ * Function:    addUser
+ *
+ * Created on Jan 17, 2024
+ * Updated on Jan 19, 2024
+ *
+ * Description: Check the user input and add the user in the database.
+ *
+ * In:  c, s, btn, data
+ * Out: -
+ *
+ */
+function addUser(c, s, btn, data) {
+    
+    var check = true;
+    const isValidUsername = /^[0-9A-Za-z]{5,16}$/;
+    const isStrongPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/;
+        
+    // Check username, password strength and conformation.    
+    if (isValidUsername.test(data[0]) ? true : false) 
+    {         
+        if (isStrongPassword.test(data[1]) ? true : false) 
+        {                        
+            if (data[1] !== data[2]) 
+            {
+                console.log("Password is not the same!"); 
+                check = false;
+            }              
+        }
+        else 
+        {       
+            console.log("Password is not strong enough!"); 
+            check = false;
+        }     
+    }
+    else 
+    {
+       console.log("Username is invalid!"); 
+       check = false;
+    }
+
+    // Check if username doesn't exist and add it to the user table.
+    if (check) {
+        console.log("Username and password are OKAY!");
+    }
+    
+         
+    // Clear input fields.
+
+    // Close popup window.
+    if (check && btn === 'ok') {
+        $("#popup_container").fadeOut("slow");
+    }
+}
+
 
 /*
  * Function:    checkChangedPages

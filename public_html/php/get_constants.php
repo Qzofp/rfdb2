@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Jan 03, 2024
+ * Updated on Jan 17, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -79,7 +79,6 @@ function GetConstants()
         $query = "SELECT COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
                  "FROM tbl_config ".
                  "LEFT JOIN $language ON tbl_config.id = $language.id_config ".
-                 "WHERE tbl_config.id NOT IN (13) ".
                  "ORDER BY tbl_config.id;";
     
         $select = $db->prepare($query);
