@@ -56,7 +56,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 17, 2024
  *
  * Description: Shows the settings page.
  *
@@ -87,13 +87,10 @@ function showSettings(c, s) {
         showSettingsButton(this, c, s);
     });
     
-    // Settings popup Ok button is pressed.  
-    $("#popup_content").on("submit","form",function(e) {  
-       setPopupChoice(this, e, c, s);
-          
-       //console.log($(this).serialize());
-    });       
-    
+    // Settings popup Ok button is pressed.
+    $("#popup_content").on('click', 'img', function() {
+        setPopupChoice(this, c, s);      
+    });    
     
     // Show the page theme.
     showPageTheme(s[5]);
@@ -415,7 +412,7 @@ function showSettingsButton(that, c, s) {
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 12, 2024
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -430,8 +427,7 @@ function showGeneralPopupLanguage(c, s) {
     $("#popup_content").removeClass().addClass("gen_language");
     $("#popup_content h2").html(c.language[0]);
     $("#popup_content ul li").remove();
-    $("#popup_content ul").show();    
-    $("#popup_content table tr").remove(); 
+    $("#popup_content ul").show();
     $("#popup_content table").hide(); 
             
     setting = JSON.parse(s[7].value);
@@ -455,7 +451,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 12, 2024
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -471,7 +467,6 @@ function showGeneralPopupPages(c, s) {
     $("#popup_content h2").html(c.settings[0]); 
     $("#popup_content ul li").remove();
     $("#popup_content ul").show();
-    $("#popup_content table tr").remove();     
     $("#popup_content table").hide(); 
  
     for (let i = 1; i < c.pages.length - 2; i++) {
@@ -495,7 +490,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Jan 24, 2024
+ * Updated on Jan 23, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -509,7 +504,6 @@ function showGeneralPopupUsers(c, s) {
     
     $("#popup_content").removeClass().addClass("gen_users");                   
     $("#popup_content h2").html(c.users[0]); 
-    $("#popup_content ul li").remove();
     $("#popup_content ul").hide();
     $("#popup_content table").show().empty();
 
@@ -517,7 +511,7 @@ function showGeneralPopupUsers(c, s) {
                                          '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" /></td>' +
                                          '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
                                          '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
-                                         '<td><input type="image" name="submit" src="img/add.png" alt="add" /></td>' +
+                                         '<td><img src="img/add.png" alt="add"/></td>' +
                                      '</tr>' +
                                      '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
     
@@ -721,21 +715,18 @@ function fillTable(s, page, l) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 17, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
- * In:  that, e, c, s
+ * In:  that, c, s
  * Out: -
  *
  */
-function setPopupChoice(that, e, c, s) {
+function setPopupChoice(that, c, s) {
 
-    e.preventDefault();
-    
-    var btn = e.originalEvent.submitter.alt;
     var popup  = $('#popup_content').attr('class');
-    if (btn === "ok" || btn === "add") {
+    if (that.alt === "ok" || that.alt === "add") {
         
         var data;
         switch (popup) {
@@ -754,7 +745,10 @@ function setPopupChoice(that, e, c, s) {
                 break;
                 
             case "gen_users" :                
-                addUser(c, btn, that);           
+                data = [];
+                data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());
+                
+                addUser(c, s, that.alt, data);            
                 break;
                 
                 
@@ -901,22 +895,19 @@ function checkChangedPages(p, s) {
  * Function:    addUser
  *
  * Created on Jan 17, 2024
- * Updated on Jan 24, 2024
+ * Updated on Jan 23, 2024
  *
  * Description: Check the user input and add the user in the database.
  *
- * In:  c, btn, that
+ * In:  c, s, btn, data
  * Out: -
  *
  */
-function addUser(c, btn, that) {
+function addUser(c, s, btn, data) {
     
     var check = true;
     const isValidUsername = /^[0-9A-Za-z]{5,16}$/;
     const isStrongPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/;
-        
-    var data = [];
-    data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());       
         
     // Check username, password strength and conformation.    
     if (isValidUsername.test(data[0]) ? true : false) 
@@ -946,20 +937,31 @@ function addUser(c, btn, that) {
 
     // Add the user input to user table and check if the user exists.
     if (check) {
+        //console.log("Username and password are OKAY!");      
+        var user = JSON.stringify(data);
+        
+        console.log(user, data[0]);
+        
         
         var request = $.ajax({
             url: "php/add_user.php",
             method: "POST",
             dataType: "json",
-            data: $(that).serialize()
+            data: { user: user }
         }); 
       
         request.done(function(result) {
             if (result.success) {         
                 
-                console.log(result.user, result.pass);
+                console.log(result.user, result.pass1, result.pass2);
                 
-                  
+                
+            /*    
+                // Reload the page.         
+                setTimeout(function(){
+                    window.location.reload();
+                }, 600);    
+            */    
             }
             else {
                showDatabaseError(result.message); 

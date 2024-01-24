@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Jan 17, 2024
+ * Updated on Jan 23, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -77,7 +77,7 @@ function showLoginPage(c) {
     
     // Login button is pressed.
     $(document).on("submit","form",function(e) {
-       validateLogin(e, this, c); 
+       validateLogin(e, this, c);
     });        
     
     $("footer h3").html(c.footer);
@@ -87,7 +87,7 @@ function showLoginPage(c) {
  * Function:    validateLogin
  *
  * Created on Dec 22, 2023
- * Updated on Jan 17, 2024
+ * Updated on Jan 23, 2024
  *
  * Description: Validate the login and redirect on success.
  *
@@ -111,7 +111,7 @@ function validateLogin(e, that, c) {
                 window.location.href=c.pages[0];
             }
             else {
-                $("h2").html(c.login[4]);
+                $("h2").html(c.login[0] + " " + c.login[4]);
             }
         }
         else {

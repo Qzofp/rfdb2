@@ -8,7 +8,7 @@
  * Used in: js\login.js
  *
  * Created on Dec 22, 2023
- * Updated on Dec 22, 2023
+ * Updated on Jan 24, 2024
  *
  * Description: Check the credentails in the database en return the login results (success of failed).
  * Dependenties: config.php
@@ -20,7 +20,6 @@ require_once 'php/config.php';
 // Get data from ajax call.
 $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
 $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
-
 
 $response = [];
 
