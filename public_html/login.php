@@ -8,7 +8,7 @@
  * Used in: js\login.js
  *
  * Created on Dec 22, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Check the credentails in the database en return the login results (success of failed).
  * Dependenties: config.php
@@ -35,9 +35,15 @@ try
     $login = $select->fetchColumn();  
     if ($login == 1) 
     {
+        $date = date('Y-m-d H:i:s');        
+        $query = "UPDATE tbl_users SET `last` = `time`, `time` = '$date' WHERE `user` = '$user';";
+      
+        $select = $db->prepare($query);
+        $select->execute();        
+        
         session_start();
         $_SESSION['user'] = $user;
-        $response['login'] = true;
+        $response['login'] = true;        
     }
     else     {
         $response['login'] = false;        

@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 29, 2023
- * Updated on Dec 24, 2023
+ * Updated on Jan 26, 2024
  *
  * Description: Check if the user is signed in and change the language in the tbl_settings table.
  * Dependenties: config.php
@@ -46,7 +46,7 @@ function ChangeLanguage()
 
     $response = [];
 
-    // Change the langauge setting.
+    // Change the language setting.
     try 
     {
         $db = OpenDatabase();

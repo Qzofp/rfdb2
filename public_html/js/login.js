@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Jan 23, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -35,7 +35,7 @@ function loadLoginPage() {
     $.when(getLoginConstants()).done(function(result) {
 
         if (result.success) {         
-            var c = processLoginConstants(result);           
+            var c = processLoginConstants(result);        
             showLoginPage(c);
         }
         else {
@@ -56,7 +56,7 @@ function loadLoginPage() {
  * Function:    showLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Jan 10, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Shows the login page.
  *
@@ -77,7 +77,7 @@ function showLoginPage(c) {
     
     // Login button is pressed.
     $(document).on("submit","form",function(e) {
-       validateLogin(e, this, c);
+       validateLogin(e, c);
     });        
     
     $("footer h3").html(c.footer);
@@ -87,7 +87,7 @@ function showLoginPage(c) {
  * Function:    validateLogin
  *
  * Created on Dec 22, 2023
- * Updated on Jan 23, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Validate the login and redirect on success.
  *
@@ -95,19 +95,24 @@ function showLoginPage(c) {
  * Out: -
  *
  */
-function validateLogin(e, that, c) {
+function validateLogin(e, c) {
     
     e.preventDefault();
-       
+    
+    var user=$('#user').val();
+    var pass=$('#pass').val(); 
+    
+    var data = 'user='+ user + '&pass='+ hashPassword(pass, c.salt);
+    
     var request = $.ajax({
         method:"POST",
         url: "login.php",
-        data:$(that).serialize()
+        data: data
     });
         
     request.done(function(result) {
         if (result.success) {   
-            if (result.login) {
+            if (result.login) {              
                 window.location.href=c.pages[0];
             }
             else {
@@ -153,7 +158,7 @@ function validateLogin(e, that, c) {
  * Function:    processLoginContants
  *
  * Created on Dec 22, 2023
- * Updated on Dec 23, 2023
+ * Updated on Jan 27, 2024
  *
  * Description: Process the login constants the database tblConfig table.
  *
@@ -171,8 +176,9 @@ function processLoginConstants(data) {
     var con = {
        project:  tmp[0],
        footer :  tmp[1],
-       pages:    tmp[2].split(","),
-       login  :  tmp[3].split(",")
+       pages  :  tmp[2].split(","),
+       login  :  tmp[3].split(","),
+       salt   :  tmp[4]
     };
 
     return con;

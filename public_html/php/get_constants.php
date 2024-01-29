@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Jan 17, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -57,14 +57,20 @@ function GetConstants()
         $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
         $response['settings'] = $settings;
     
-        // Get the language code (NL, EN, etc.).
+        // Get the language code (NL, EN, etc.) and the salt pharse.
         foreach($settings as $row=>$link) 
         {
             if ($link['name'] == "language") 
             {
                 $json = json_decode($link['value']);
                 $code = $json->code;
-            }     
+            } 
+            
+            if ($link['name'] == "salt") 
+            {
+                $json = json_decode($link['value']);
+                $phrase = $json->phrase;
+            }             
         }
     
         // Determine the language table.
@@ -84,8 +90,10 @@ function GetConstants()
         $select = $db->prepare($query);
         $select->execute();
 
-        $constants = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['constants'] = $constants;       
+        $constants = $select->fetchAll(PDO::FETCH_ASSOC);
+        $constants[count($constants)]['value'] = $phrase;
+        
+        $response['constants'] = $constants;
         $response['success']   = true;
     }
     catch (PDOException $e) 

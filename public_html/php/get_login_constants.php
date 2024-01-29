@@ -8,7 +8,7 @@
  * Used in: js\login.js
  *
  * Created on Dec 20, 2023
- * Updated on Dec 23, 2023
+ * Updated on Jan 27, 2024
  *
  * Description: Get the login constants from de databases tbl_config table.
  * Dependenties: config.php
@@ -30,13 +30,19 @@ try
     $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
     //$response['settings'] = $settings;
     
-    // Get the language code (NL, EN, etc.).
+    // Get the language code (NL, EN, etc.) and the salt pharse.
     foreach($settings as $row=>$link) {
         if ($link['name'] == "language") 
         {
             $json = json_decode($link['value']);
             $code = $json->code;
-        }     
+        }
+        
+        if ($link['name'] == "salt") 
+        {
+            $json = json_decode($link['value']);
+            $phrase = $json->phrase;
+        }       
     }
     
     // Determine the language table.
@@ -57,8 +63,10 @@ try
     $select = $db->prepare($query);
     $select->execute();
 
-    $constants = $select->fetchAll(PDO::FETCH_ASSOC);  
-    $response['constants'] = $constants;       
+    $constants = $select->fetchAll(PDO::FETCH_ASSOC);
+    $constants[count($constants)]['value'] = $phrase;
+    
+    $response['constants'] = $constants;    
     $response['success']   = true;
 }
 catch (PDOException $e) 

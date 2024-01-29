@@ -8,12 +8,14 @@
  * Dependencies: css/common.css
  *               css/settings.css
  *               js/ext/jquery-3.7.1.min.js
+ *               js/ext/sha256.js
  *               js/config.js
  *               js/common.js 
+ *               js/settings_general.js
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 29, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -34,8 +36,10 @@ if(!$user){
         <link rel="stylesheet" href="css/common.css">        
         <link rel="stylesheet" href="css/settings.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script> 
+        <script src="js/ext/sha256.js"></script>        
         <script src="js/config.js"></script> 
-        <script src="js/common.js"></script>        
+        <script src="js/common.js"></script>    
+        <script src="js/settings_general.js"></script>         
         <script src="js/settings.js"></script> 
     </head>
     <body>                   

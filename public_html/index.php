@@ -9,11 +9,13 @@
  * Dependencies: css/common.css
  *               css/login.css 
  *               js/ext/jquery-3.7.1.min.js
+ *               js/ext/sha256-min.js,
+                 js/ext/aes-min.js,
  *               js/common.js
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Jan 02, 2023
+ * Updated on Jan 27, 2024
  *
  * Description: Login page.
  * 
@@ -35,7 +37,8 @@ if(isset($_SESSION['user'])) {
         <meta charset="UTF-8">        
         <link rel = "stylesheet" type = "text/css" href = "css/common.css">   
         <link rel = "stylesheet" type = "text/css" href = "css/login.css">   
-        <script src="js/ext/jquery-3.7.1.min.js"></script>    
+        <script src="js/ext/jquery-3.7.1.min.js"></script>  
+        <script src="js/ext/sha256.js"></script>
 	<script src="js/common.js"></script>          
 	<script src="js/login.js"></script>                    
     </head>  

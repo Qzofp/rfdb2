@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Jan 24, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Check if the user is signed in and add the user data to the tbl_users table.
  * Dependenties: config.php
@@ -31,9 +31,9 @@ else
  * Function:    ChangePages
  *
  * Created on Jan 23, 2024
- * Updated on Jan 24, 2024
+ * Updated on Jan 27, 2024
  *
- * Description: Add the user data to the tbl_users table.
+ * Description: Add the user data to the tbl_users table if the user doesn exists.
  *
  * In:  -
  * Out: -
@@ -43,7 +43,7 @@ function AddUser()
 {
     // Get data from ajax call.
     $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
-    $pass = filter_input(INPUT_POST, 'pass1', FILTER_SANITIZE_STRING);
+    $hash = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_STRING);
 
     $response = [];
 
@@ -51,34 +51,27 @@ function AddUser()
     try 
     {    
         $db = OpenDatabase();
-    
         
-        // Test
-        $response['user'] = $user;
-        $response['pass'] = $pass;
-        //$response['pass2'] = $data[2];
-        
-        
-/*        
-        $query = "";
-        for($i = 0; $i < 4; $i++) 
-        { 
-            if ($aPages[$i]) {
-                $value = "true";
-            }
-            else {
-                $value = "false";
-            }
-        
-            // Update the settings table.
-            $query .= "UPDATE `tbl_settings` ".
-                      "SET `value` = JSON_REPLACE(`value`,'$.page','$value') ".
-                      "WHERE `name` = \"$name[$i]\";";
-        }
-                        
+        // Check if user aleready exists in the tbl_users table.
+        $query = "SELECT count(0) FROM tbl_users WHERE user = '$user';";        
         $select = $db->prepare($query);
-        $select->execute();
-*/
+        $select->execute();        
+        $result = $select->fetchColumn();
+        
+        $response['exists'] = false; 
+        if ($result == 1) {
+            $response['exists'] = true; 
+        } 
+        else 
+        {            
+            $query = "INSERT INTO tbl_users (`user`, `password`) VALUES ('$user', '$hash');";
+            
+            $select = $db->prepare($query);
+            $select->execute();
+            
+            $response['user'] = $user;
+            $response['hash'] = $hash;
+        }
         
         $response['success'] = true;  
     }

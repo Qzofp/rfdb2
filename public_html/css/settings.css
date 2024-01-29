@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 29, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -19,12 +19,6 @@
 /* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
 
 /* Body and main parts of the page. */
-
-/*
-#page_buttons .active {
-/* border-bottom: 2px solid #536878; /* Must be the same as settings theme from database. Doesn work with JS. 
-}
-*/
 
 #settings {
  text-align: center;
@@ -78,6 +72,7 @@
  margin: auto;
  border-collapse: separate;
  border-spacing: 0;
+ cursor: default;
 }
 
 #tbl_settings td {
@@ -85,6 +80,7 @@
  background: #fff;
  vertical-align: top;
 }
+
 #tbl_settings thead th {
  text-align:left;   
  background: #fff;
@@ -97,6 +93,11 @@
  border-bottom:1px solid #afdcec; 
 }
 
+#tbl_settings tbody td:first-child {
+ color:#fff;
+ max-width: 5px;
+}
+
 #tbl_settings tbody tr:last-child td,
 #tbl_settings tbody tr:last-child:hover td {
  border-bottom:0px; 
@@ -104,6 +105,10 @@
 
 #tbl_settings tbody tr:hover td{
  border-bottom:1px solid #f6358a; 
+}
+
+#tbl_settings .marked td{
+ background-color: #ffc87c; /* Temporary color, change it to: #fffdd0; */
 }
 
 /* Safari and ios need the tfoot itself to be position:sticky also */
@@ -178,14 +183,6 @@
  cursor: pointer;
  width: 100%;
 }
-
-/*
-#popup_content img {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
-*/
 
 #popup_content a {
  position: absolute;

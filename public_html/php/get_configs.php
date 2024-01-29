@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Dec 04, 2023
- * Updated on Jan 08, 2024
+ * Updated on Jan 28, 2024
  *
  * Description: Check if the user is signed in and get the configs from the databases tbl_config table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    GetConfigs
  *
  * Created on Dec 23, 2023
- * Updated on Jan 08, 2023
+ * Updated on Jan 28, 2023
  *
  * Description: Get the configs from the databases tbl_config table.
  *
@@ -64,7 +64,7 @@ function GetConfigs()
                 break;
         }
      
-        $query = "SELECT tbl_config.`name`, COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
+        $query = "SELECT tbl_config.id, tbl_config.`name`, COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
                  "FROM tbl_config ".
                  "LEFT JOIN $language ON tbl_config.id = $language.id_config ".
                  "ORDER BY tbl_config.id;";

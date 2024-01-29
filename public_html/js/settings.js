@@ -4,15 +4,14 @@
  * Version: 0.1
  *
  * File:    settings.js
- * Used in: settings.html
+ * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 29, 2024
  *
- * Description: Javascript functions for the settings page.
+ * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
- *
- * Links: https://dev.to/fromwentzitcame/username-and-password-validation-using-regex-2175
+ *               js/settings_general.js
  *
  */
 
@@ -56,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 28, 2024
  *
  * Description: Shows the settings page.
  *
@@ -87,14 +86,23 @@ function showSettings(c, s) {
         showSettingsButton(this, c, s);
     });
     
+    // Table row is pressed.
+    $("#tbl_settings").on('click', 'tbody tr', function(){
+        
+        // Debug & test        
+        $(this).addClass("marked");
+                    
+        var rowid = $(this).closest('tr').find('td:first').text();
+        var tst = $("#page_buttons .active").attr("alt");
+       
+        console.log(rowid, tst);     
+    });
+    
     // Settings popup Ok button is pressed.  
     $("#popup_content").on("submit","form",function(e) {  
-       setPopupChoice(this, e, c, s);
-          
-       //console.log($(this).serialize());
+       setPopupChoice(e, c, s);
     });       
-    
-    
+        
     // Show the page theme.
     showPageTheme(s[5]);
     
@@ -141,7 +149,7 @@ function showSettingsContent(slide, c, s) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 06, 2023
+ * Updated on Jan 28, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -164,11 +172,6 @@ function ShowGeneralSettings(c, s) {
     $("#page_buttons img").eq(3).attr({src:"img/configs.png", alt:"configs"}).show();
     
     showLanguage(c, s);
-    
-    //$("#label span").html(c.users[0]);
-    //$("#label span").css("border-left","3px solid " + set.theme.color);
-    
-    //showUsersTable(c, s); 
     showTable(c.users, s, "get_users.php");
 }
 
@@ -411,118 +414,6 @@ function showSettingsButton(that, c, s) {
     }
 }
 
-/*
- * Function:    showGeneralPopupLanguage
- *
- * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
- *
- * Description: Shows the language popup content for the general page.
- *
- * In:  c, s
- * Out: -
- *
- */
-function showGeneralPopupLanguage(c, s) {
-    
-    var setting;
-    
-    $("#popup_content").removeClass().addClass("gen_language");
-    $("#popup_content h2").html(c.language[0]);
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").show();    
-    $("#popup_content table tr").remove(); 
-    $("#popup_content table").hide(); 
-            
-    setting = JSON.parse(s[7].value);
-    for (let i = 1; i < c.language.length; i++) {
-        
-        if(setting.language === c.language[i]) {
-            var chk = " checked";
-        }
-        else {
-            chk = "";
-        }
-        
-        $("#popup_content ul").append('<li class="rad"><input type="radio" id="lng-' + i + '" name="language"' + 
-           chk + '><label for="lng-' + i + '">' + c.language[i] + '</label></li>');   
-    }        
-  
-    $("#popup_container").fadeIn("slow");      
-}
-
-/*
- * Function:    showGeneralPopupPages
- *
- * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
- *
- * Description: Shows the pages popup content for the general page.
- *
- * In:  c, s
- * Out: -
- *
- */
-function showGeneralPopupPages(c, s) {
-    
-    var chk, setting;
-    
-    $("#popup_content").removeClass().addClass("gen_pages");                   
-    $("#popup_content h2").html(c.settings[0]); 
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").show();
-    $("#popup_content table tr").remove();     
-    $("#popup_content table").hide(); 
- 
-    for (let i = 1; i < c.pages.length - 2; i++) {
-        
-        setting = JSON.parse(s[i].value);
-        if(setting.page === "true") {
-            chk = " checked";
-        }
-        else {
-            chk = "";
-        }
-        
-        $("#popup_content ul").append('<li class="chk"><input type="checkbox" id="pag-' + i + '" name="pages"' + 
-           'value="' + i + '" ' + chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
-    }        
-  
-    $("#popup_container").fadeIn("slow");      
-}
-
-/*
- * Function:    showGeneralPopupUsers
- *
- * Created on Jan 09, 2024
- * Updated on Jan 24, 2024
- *
- * Description: Shows the users popup content for the general page.
- *
- * In:  c, s
- * Out: -
- *
- */
-function showGeneralPopupUsers(c, s) {
-    
-    //var chk, setting;
-    
-    $("#popup_content").removeClass().addClass("gen_users");                   
-    $("#popup_content h2").html(c.users[0]); 
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").hide();
-    $("#popup_content table").show().empty();
-
-    $("#popup_content table").append('<tr>' +
-                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" /></td>' +
-                                         '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
-                                         '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
-                                         '<td><input type="image" name="submit" src="img/add.png" alt="add" /></td>' +
-                                     '</tr>' +
-                                     '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
-    
-    $("#popup_container").fadeIn("slow");      
-}
 
 /*
  * Function:    setScaleButton
@@ -599,25 +490,6 @@ function getAndSetScaleButton(c, name) {
 }
 
 /*
- * Function:    showLanguage
- *
- * Created on Nov 18, 2023
- * Updated on Dec 21, 2023
- *
- * Description: Show the language setting on the general page.
- *
- * In:  c, s
- * Out: -
- *
- */
-function showLanguage(c, s) {
-    
-    var set = JSON.parse(s[7].value);
-    $("#settings u").html(c.language[0]);
-    $("#settings span").html(set.language);
-}
-
-/*
  * Function:    showTable
  *
  * Created on Jan 06, 2024
@@ -668,7 +540,7 @@ function showTable(items, s, page) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Jan 08, 2024
+ * Updated on Jan 28, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -691,7 +563,7 @@ function fillTable(s, page, l) {
             let i = 0;             
             $.each(result.data, function (n, field) {  
                 i++;
-                $("#tbl_settings tbody").append("<tr><td></td>"); 
+                $("#tbl_settings tbody").append('<tr>');
                 
                 $.each(field, function(key, value){
                     $("#tbl_settings tbody tr").last().append("<td>" + value + "</td>");
@@ -721,7 +593,7 @@ function fillTable(s, page, l) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Jan 24, 2024
+ * Updated on Jan 27, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -729,7 +601,7 @@ function fillTable(s, page, l) {
  * Out: -
  *
  */
-function setPopupChoice(that, e, c, s) {
+function setPopupChoice(e, c, s) {
 
     e.preventDefault();
     
@@ -754,7 +626,7 @@ function setPopupChoice(that, e, c, s) {
                 break;
                 
             case "gen_users" :                
-                addUser(c, btn, that);           
+                addUser(c, btn);           
                 break;
                 
                 
@@ -768,217 +640,3 @@ function setPopupChoice(that, e, c, s) {
     }
    
 }
-
-/*
- * Function:    setLanguage
- *
- * Created on Nov 29, 2023
- * Updated on Dec 21, 2023
- *
- * Description: Set the language in the database en reload the settings page.
- *
- * In:  language, s
- * Out: -
- *
- */
-function setLanguage(language, s) {
-    
-    var set = JSON.parse(s[7].value);
-    if (set.language !== language) {
-        
-        var request = $.ajax({
-            url: "php/change_language.php",
-            method: "POST",
-            dataType: "json",
-            data: { language: language }
-        }); 
-      
-        request.done(function(result) {
-            if (result.success) {         
-                                 
-                // Reload the page.
-                setTimeout(function(){
-                    window.location.reload();
-                }, 600);
-            }
-            else {
-               showDatabaseError(result.message); 
-            }
-        });
-    
-        request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-        });  
-     
-        closeErrorMessage();
-    } 
-        
-    // Close popup window.
-    $("#popup_container").fadeOut("slow");    
-}
-
-/*
- * Function:    setPages
- *
- * Created on Nov 30, 2023
- * Updated on Dec 01, 2023
- *
- * Description: Set the pages (true, false) in the database en reload the settings page.
- *
- * In:  p, s
- * Out: -
- *
- */
-function setPages(p, s) {
-       
-    var changes = checkChangedPages(p, s);
-    if (changes) {
-        
-        var pages = JSON.stringify(p);
-       
-        var request = $.ajax({
-            url: "php/change_pages.php",
-            method: "POST",
-            dataType: "json",
-            data: { pages: pages }
-        }); 
-      
-        request.done(function(result) {
-            if (result.success) {         
-                             
-                // Reload the page.         
-                setTimeout(function(){
-                    window.location.reload();
-                }, 600);          
-            }
-            else {
-               showDatabaseError(result.message); 
-            }
-        });
-    
-        request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-        });  
-     
-        closeErrorMessage();
-      
-    }     
-    // Close popup window.
-    $("#popup_container").fadeOut("slow");    
-}
-
-/*
- * Function:    checkChangedPages
- *
- * Created on Nov 30, 2023
- * Updated on Dec 01, 2023
- *
- * Description: Check if there are any page changes.
- *
- * In:  p, s
- * Out: check
- *
- */
-function checkChangedPages(p, s) {
-    
-    var check = false;
-         
-    var set, tmp;
-    for(let i = 1; i <= 4; i++) {
-        
-        tmp = JSON.parse(s[i].value);
-        set = (tmp.page === "true");  // Convert to boolean.
-        
-        if (set !== p[i-1]) {
-            check = true;
-        }
-    }
-    
-    return check;
-}
-
-/*
- * Function:    addUser
- *
- * Created on Jan 17, 2024
- * Updated on Jan 24, 2024
- *
- * Description: Check the user input and add the user in the database.
- *
- * In:  c, btn, that
- * Out: -
- *
- */
-function addUser(c, btn, that) {
-    
-    var check = true;
-    const isValidUsername = /^[0-9A-Za-z]{5,16}$/;
-    const isStrongPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/;
-        
-    var data = [];
-    data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());       
-        
-    // Check username, password strength and conformation.    
-    if (isValidUsername.test(data[0]) ? true : false) 
-    {         
-        if (isStrongPassword.test(data[1]) ? true : false) 
-        {                        
-            if (data[1] !== data[2]) 
-            {
-                //console.log("Password is not the same!");
-                $(".msg").html(c.login[2] + " " + c.login[5]);
-                check = false;
-            }              
-        }
-        else 
-        {       
-            //console.log("Password is not strong enough!"); 
-            $(".msg").html(c.login[2] + " " + c.login[6]);
-            check = false;
-        }     
-    }
-    else 
-    {
-       //console.log("Username is invalid!"); 
-       $(".msg").html(c.login[1] + " " + c.login[7]);
-       check = false;
-    }
-
-    // Add the user input to user table and check if the user exists.
-    if (check) {
-        
-        var request = $.ajax({
-            url: "php/add_user.php",
-            method: "POST",
-            dataType: "json",
-            data: $(that).serialize()
-        }); 
-      
-        request.done(function(result) {
-            if (result.success) {         
-                
-                console.log(result.user, result.pass);
-                
-                  
-            }
-            else {
-               showDatabaseError(result.message); 
-            }
-        });
-    
-        request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-        });  
-     
-        closeErrorMessage();               
-    }
-    
-         
-    // Clear input fields.
-
-    // Close popup window.
-    if (check && btn === 'ok') {
-        $("#popup_container").fadeOut("slow");
-    }
-}
-

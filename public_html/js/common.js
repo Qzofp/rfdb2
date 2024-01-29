@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Dec 04, 2023
+ * Updated on Jan 29, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -244,5 +244,28 @@ function changeScaleSetting(name, scale) {
     });  
      
     closeErrorMessage();
+}
+
+/*
+ * Function:    hashPassword
+ *
+ * Created on Jan 27, 2024
+ * Updated on Jan 27, 2024
+ *
+ * Description: Hash the password with salt.
+ *
+ * In:  string, salt
+ * Out: password
+ *
+ */
+function hashPassword(string, salt)
+{
+    var password = string;
+    
+    if ($.trim(string).length) {    
+        password = CryptoJS.SHA256(CryptoJS.SHA256(string) + salt).toString(CryptoJS.enc.Hex);
+    }
+    
+    return password;
 }
 
