@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jan 29, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -131,7 +131,7 @@ function showPageTheme(s) {
  * Function:    closePopupWindow
  *
  * Created on Nov 19, 2023
- * Updated on Nov 24, 2023
+ * Updated on Feb 02, 2024
  *
  * Description: Close the Popup window.
  *
@@ -141,10 +141,25 @@ function showPageTheme(s) {
  */
 function closePopupWindow() {
     
+    var mark;
+    
     // Close popup error.
     $(".close").on("click", function () {
-      $("#popup_container").fadeOut("slow");
-    });   
+        $("#popup_container").fadeOut("slow");     
+          
+        if ($("#table_container tbody .marked").length) {
+            mark = $("#table_container tbody .marked").toggleClass("marked unmark");
+        }
+        
+        if ($("#table_container tbody .delete").length) {
+            mark = $("#table_container tbody .delete").toggleClass("delete unmark");
+        }        
+    
+        setTimeout(function() {
+            mark.removeClass("unmark");
+        }, 1000);
+          
+    });
 }
 
 /*
@@ -269,3 +284,102 @@ function hashPassword(string, salt)
     return password;
 }
 
+/*
+ * Function:    showTable
+ *
+ * Created on Jan 06, 2024
+ * Updated on Jan 31, 2024
+ *
+ * Description: Show the table.
+ *
+ * In:  items, s, page
+ * Out: -
+ *
+ */
+function showTable(items, s, page) {
+
+    var set = JSON.parse(s[5].value);
+    
+    // Set the table label.
+    $("#label span").html(items[0]);
+    $("#label span").css("border-left","3px solid " + set.theme.color);
+    
+    // Calculate table height.
+    var y = $(".content_main").height() - 190;
+    $("#table_container").css("height", y);
+    
+    // Fill the table header.
+    $("#table_container thead tr").remove(); 
+    $("#table_container thead").append("<tr><th></th>");     
+    
+    for (let i = 1; i < items.length; i++) {
+        $("#table_container thead tr").append("<th>" + items[i] + "</th>");
+    } 
+    
+    $("#table_container thead").append("</tr>");
+ 
+    // Fill the table body.
+    $("#table_container tbody tr").remove(); 
+    fillTable(s, page, items.length);
+    
+    // Fill the table footer.
+    $("#table_container tfoot tr").remove();      
+    $("#table_container tfoot").append('<tr><td colspan="' + items.length + '">&nbsp;</td></tr>');
+    
+    // Set theme.
+    $("#table_container thead th").css("border-bottom", "2px solid " + set.theme.color);
+    $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);       
+}
+
+/*
+ * Function:    fillTable
+ *
+ * Created on Jan 08, 2024
+ * Updated on Jan 31, 2024
+ *
+ * Description: Get the data from the database and fill the table with that data.
+ *
+ * In:  s, page, l
+ * Out: -
+ *
+ */
+function fillTable(s, page, l) {
+    
+    var set = JSON.parse(s[5].value);    
+    var request = $.ajax({
+        url: "php/" + page,
+        method: "POST",
+        dataType: "json"
+    });     
+    
+    request.done(function(result) {
+        if (result.success) {         
+            
+            let i = 0;             
+            $.each(result.data, function (n, field) {  
+                i++;
+                $("#table_container tbody").append('<tr>');
+                
+                $.each(field, function(key, value){
+                    $("#table_container tbody tr").last().append("<td>" + value + "</td>");
+                });
+                
+                $("#table_container tbody").append("</tr>");   
+            });  
+
+            // Add empty rows.
+            for (let j = i; j < set.rows; j++) {
+               $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
+            }
+        }
+        else {
+            showDatabaseError(result.message); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();      
+}

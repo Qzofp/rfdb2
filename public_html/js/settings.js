@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jan 29, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Jan 28, 2024
+ * Updated on Jan 31, 2024
  *
  * Description: Shows the settings page.
  *
@@ -87,15 +87,8 @@ function showSettings(c, s) {
     });
     
     // Table row is pressed.
-    $("#tbl_settings").on('click', 'tbody tr', function(){
-        
-        // Debug & test        
-        $(this).addClass("marked");
-                    
-        var rowid = $(this).closest('tr').find('td:first').text();
-        var tst = $("#page_buttons .active").attr("alt");
-       
-        console.log(rowid, tst);     
+    $("#table_container").on('click', 'tbody tr', function(){        
+        editSettingsTableRow(c, this);    
     });
     
     // Settings popup Ok button is pressed.  
@@ -179,7 +172,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 31, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -198,9 +191,9 @@ function ShowFinancesSettings(c, s) {
     $("#page_buttons img").eq(3).attr({src:"img/shops.png", alt:"shops"}).show();
  
     // Temporary
-    $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove();
-    $("#tbl_settings tfoot tr").remove();
+    $("#table_container thead tr").remove(); 
+    $("#table_container tbody td").remove();
+    $("#table_container tfoot tr").remove();
     
     set = JSON.parse(s[1].value);
     $("#label span").css("border-left","3px solid " + set.theme.color);
@@ -211,7 +204,7 @@ function ShowFinancesSettings(c, s) {
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 31, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -235,9 +228,9 @@ function ShowStocksSettings(c, s) {
     
     
     // Temporary
-    $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove(); 
-    $("#tbl_settings tfoot tr").remove();
+    $("#table_container thead tr").remove(); 
+    $("#table_container tbody td").remove(); 
+    $("#table_container tfoot tr").remove();
     $("#label span").css("border-left","3px solid " + set.theme.color);    
      
 }
@@ -246,7 +239,7 @@ function ShowStocksSettings(c, s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 31, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -269,9 +262,9 @@ function ShowSavingsSettings(c, s) {
     $("#page_buttons img").eq(3).hide();
     
     // Temporary
-    $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove();
-    $("#tbl_settings tfoot tr").remove();
+    $("#table_container thead tr").remove(); 
+    $("#table_container tbody td").remove();
+    $("#table_container tfoot tr").remove();
     $("#label span").css("border-left","3px solid " + set.theme.color);     
      
 }
@@ -280,7 +273,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Dec 19, 2023
+ * Updated on Jan 31, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -304,9 +297,9 @@ function ShowCryptoSettings(c, s) {
     
     
     // Temporary
-    $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings tbody td").remove();
-    $("#tbl_settings tfoot tr").remove();    
+    $("#table_container thead tr").remove(); 
+    $("#table_container tbody td").remove();
+    $("#table_container tfoot tr").remove();    
     $("#label span").css("border-left","3px solid " + set.theme.color); 
 }
 
@@ -338,7 +331,7 @@ function showSettingsButton(that, c, s) {
         case "users"    : 
             if (that.className === 'active') 
             {
-                showGeneralPopupUsers(c, s);
+                showGeneralPopupUsers(c);
             }
             else 
             {
@@ -488,112 +481,12 @@ function getAndSetScaleButton(c, name) {
      
     closeErrorMessage();    
 }
-
-/*
- * Function:    showTable
- *
- * Created on Jan 06, 2024
- * Updated on Jan 08, 2024
- *
- * Description: Show the table.
- *
- * In:  items, s, page
- * Out: -
- *
- */
-function showTable(items, s, page) {
-
-    var set = JSON.parse(s[5].value);
-    
-    // Set the table label.
-    $("#label span").html(items[0]);
-    $("#label span").css("border-left","3px solid " + set.theme.color);
-    
-    // Calculate table height.
-    var y = $(".content_main").height() - 190;
-    $("#tbl_settings").css("height", y);
-    
-    // Fill the table header.
-    $("#tbl_settings thead tr").remove(); 
-    $("#tbl_settings thead").append("<tr><th></th>");     
-    
-    for (let i = 1; i < items.length; i++) {
-        $("#tbl_settings thead tr").append("<th>" + items[i] + "</th>");
-    } 
-    
-    $("#tbl_settings thead").append("</tr>");
- 
-    // Fill the table body.
-    $("#tbl_settings tbody tr").remove(); 
-    fillTable(s, page, items.length);
-    
-    // Fill the table footer.
-    $("#tbl_settings tfoot tr").remove();      
-    $("#tbl_settings tfoot").append('<tr><td colspan="' + items.length + '">&nbsp;</td></tr>');
-    
-    // Set theme.
-    $("#tbl_settings thead th").css("border-bottom", "2px solid " + set.theme.color);
-    $("#tbl_settings tfoot td").css("border-top", "2px solid " + set.theme.color);       
-}
-
-/*
- * Function:    fillTable
- *
- * Created on Jan 08, 2024
- * Updated on Jan 28, 2024
- *
- * Description: Get the data from the database and fill the table with that data.
- *
- * In:  s, page, l
- * Out: -
- *
- */
-function fillTable(s, page, l) {
-    
-    var set = JSON.parse(s[5].value);    
-    var request = $.ajax({
-        url: "php/" + page,
-        method: "POST",
-        dataType: "json"
-    });     
-    
-    request.done(function(result) {
-        if (result.success) {         
-            
-            let i = 0;             
-            $.each(result.data, function (n, field) {  
-                i++;
-                $("#tbl_settings tbody").append('<tr>');
-                
-                $.each(field, function(key, value){
-                    $("#tbl_settings tbody tr").last().append("<td>" + value + "</td>");
-                });
-                
-                $("#tbl_settings tbody").append("</tr>");   
-            });  
-
-            // Add empty rows.
-            for (let j = i; j < set.rows; j++) {
-               $("#tbl_settings tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
-            }
-        }
-        else {
-            showDatabaseError(result.message); 
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-    
-    closeErrorMessage();      
-}
     
 /*
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Jan 27, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -607,7 +500,10 @@ function setPopupChoice(e, c, s) {
     
     var btn = e.originalEvent.submitter.alt;
     var popup  = $('#popup_content').attr('class');
-    if (btn === "ok" || btn === "add") {
+    
+    console.log(btn);
+    
+    if (btn !== "cancel") {
         
         var data;
         switch (popup) {
@@ -625,8 +521,8 @@ function setPopupChoice(e, c, s) {
                 setPages(result, s);
                 break;
                 
-            case "gen_users" :                
-                addUser(c, btn);           
+            case "gen_users" :
+                modifyUser(c, btn);      
                 break;
                 
                 
@@ -638,5 +534,44 @@ function setPopupChoice(e, c, s) {
                 
         }
     }
-   
+      
+}
+
+/*
+ * Function:    editSettingsTableRow
+ *
+ * Created on Jan 31, 2024
+ * Updated on Feb 02, 2024
+ *
+ * Description: Edit or delete the settings table row that was pressed.
+ *
+ * In:  c, that
+ * Out: -
+ *
+ */
+function editSettingsTableRow(c, that) {
+    
+    // Get active button.
+    var btn = $("#page_buttons .active").attr("alt");
+    var rowid = $(that).closest('tr').find('td:first').text();
+    
+    if (btn !== "configs" && rowid > 0) {
+       $(that).addClass("marked");
+    }
+    
+    switch(btn) {
+        case "users" :           
+            showGeneralPopupUsers(c);
+            break;
+        
+        case "accounts" :
+            break;
+        
+    }
+    
+        
+    // Debug & test                               
+    //var rowid = $(that).closest('tr').find('td:first').text();
+    //console.log(rowid, btn);     
+    
 }

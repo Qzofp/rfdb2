@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Jan 29, 2024
+ * Updated on Jan 31, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -37,87 +37,6 @@
  background-color: #f5f5f5;
  padding: 3px;
  /* border-left: 3px solid maroon; /* #536878 */
-}
-
-/* Settings Table, see also: https://codepen.io/paulobrien/pen/LBrMxa */
-#tbl_settings {
- position: relative;
- width:calc(100% - 10px);
- z-index: 1;
- margin: auto;
- overflow: auto;
- height: 350px;
- scrollbar-color: #808080 #dcdcdc;
- scrollbar-width: thin;
-}
-
-/* Works on Chrome, Edge, and Safari */
-#tbl_settings::-webkit-scrollbar {
-  width: 12px;
-}
-
-#tbl_settings::-webkit-scrollbar-track {
-  background: #dcdcdc;
-  border-radius: 20px;
-}
-
-#tbl_settings::-webkit-scrollbar-thumb {
-  background-color: #808080;
-  border-radius: 20px;
-  border: 3px solid #dcdcdc;
-}
-
-#tbl_settings table {
- width: calc(100% - 90px);
- margin: auto;
- border-collapse: separate;
- border-spacing: 0;
- cursor: default;
-}
-
-#tbl_settings td {
- padding: 2px;
- background: #fff;
- vertical-align: top;
-}
-
-#tbl_settings thead th {
- text-align:left;   
- background: #fff;
- position: -webkit-sticky;
- position: sticky;
- top: 0;
-}
-
-#tbl_settings tbody td{
- border-bottom:1px solid #afdcec; 
-}
-
-#tbl_settings tbody td:first-child {
- color:#fff;
- max-width: 5px;
-}
-
-#tbl_settings tbody tr:last-child td,
-#tbl_settings tbody tr:last-child:hover td {
- border-bottom:0px; 
-}
-
-#tbl_settings tbody tr:hover td{
- border-bottom:1px solid #f6358a; 
-}
-
-#tbl_settings .marked td{
- background-color: #ffc87c; /* Temporary color, change it to: #fffdd0; */
-}
-
-/* Safari and ios need the tfoot itself to be position:sticky also */
-#tbl_settings tfoot,
-#tbl_settings tfoot td {
- position: -webkit-sticky;
- position: sticky;
- bottom: 0;
- z-index:4;
 }
 
 /* Popup window */

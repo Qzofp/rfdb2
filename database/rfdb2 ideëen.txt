@@ -84,4 +84,11 @@ Crypto
 Wallets
 	- BTC Wallet #1
 	- Bitvavo Wallet
-	
+
+
+Voorbeeld Betaalrekening:
+
+datum			dienst				rekeningnummer					omschrijving
+25-03-1982		ING Particulier		NL86 INGB 000x xxxx xx			ING betaalrekening van ...
+10-07-2007		ABN AMRO Bank		NL02 ABNA 000x xxxx xx			ABN AMRO betaalrekening van ...
+

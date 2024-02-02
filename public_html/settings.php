@@ -15,7 +15,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Jan 29, 2024
+ * Updated on Jan 31, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -122,7 +122,7 @@ if(!$user){
                 <div id="label"><span></span></div>
                 
                 <!-- Settings table -->
-                <div id="tbl_settings">
+                <div id="table_container">  <!-- was tbl_settings -->
                     <table>
                         <thead>                        
                         </thead>

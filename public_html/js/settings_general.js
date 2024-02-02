@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Jan 29, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -104,29 +104,42 @@ function showGeneralPopupPages(c, s) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Jan 24, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
- * In:  c, s
+ * In:  c
  * Out: -
  *
  */
-function showGeneralPopupUsers(c, s) {
-    
-    //var chk, setting;
-    
+function showGeneralPopupUsers(c) {
+     
+    var user = "";
+    var btn = 'img/add.png" alt="add';  
+      
     $("#popup_content").removeClass().addClass("gen_users");                   
     $("#popup_content h2").html(c.users[0]); 
     $("#popup_content ul li").remove();
     $("#popup_content ul").hide();
     $("#popup_content table").show().empty();
+     
+    // Show update popup.    
+    if ($("#table_container tbody .marked").length) 
+    {         
+        let cells = []; // Fill cells with row values.
+        $("#table_container tbody .marked").find("td").each(function(){
+            cells.push($(this).html());
+        });
+        
+        user = cells[1];
+        btn = 'img/del.png" alt="del';
+    }
 
     $("#popup_content table").append('<tr>' +
-                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" /></td>' +
+                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + user + '" /></td>' +
                                          '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
                                          '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
-                                         '<td><input type="image" name="submit" src="img/add.png" alt="add" /></td>' +
+                                         '<td><input type="image" name="submit" src="' + btn + '" /></td>' +
                                      '</tr>' +
                                      '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
     
@@ -281,69 +294,89 @@ function checkChangedPages(p, s) {
 }
 
 /*
- * Function:    addUser
+ * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Jan 29, 2024
+ * Updated on Feb 02, 2024
  *
- * Description: Check the user input and add the user in the database.
+ * Description: Check the user input and add, edit or remove the user in the database.
  *
  * In:  c, btn
  * Out: -
  *
  */
-function addUser(c, btn) {
+function modifyUser(c, btn) {
     
-    var data = [];
-    data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());    
+    if (btn === "del") {
+        
+        $("#table_container tbody .marked").toggleClass("marked delete");
+        $(".msg").html(c.login[9]); 
+    }
+    else {
     
-    // Add the user input to user table if the user doesn´t exists.
-    if (validateUser(c, data))
-    {    
-        let send = 'user='+ data[0] + '&pass='+ hashPassword(data[1], c.salt);        
-        var request = $.ajax({
-            url: "php/add_user.php",
-            method: "POST",
-            dataType: "json",
-            data: send
-        }); 
+        var data = [];        
+        data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());    
+     
+        // Add the user input to user table if the user doesn´t exists.
+        if (validateUser(c, data))
+        {    
+            var id, action = "add";
+            if ($("#table_container tbody .marked").length) {  
+                id = $("#table_container tbody .marked").closest('tr').find('td:first').text();
+                action = "update";
+            }
+    
+            if ($("#table_container tbody .delete").length) {
+                id = $("#table_container tbody .delete").closest('tr').find('td:first').text();
+                action = "delete";
+            }            
+                        
+            let send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
+                              + '&id=' + id;        
+            var request = $.ajax({
+                url: "php/add_user.php",
+                method: "POST",
+                dataType: "json",
+                data: send
+            }); 
       
-        request.done(function(result) {
-            if (result.success) {         
-                if (result.exists) {
-                    $(".msg").html(c.login[1] + " " + c.login[8]);                    
-                }
-                else 
-                {                    
-                    $("#tbl_settings tbody").prepend('<tr><td></td>' +
-                                                         '<td>' + result.user + '</td>' +
-                                                         '<td>' + result.hash + '</td>' +
-                                                         '<td></td><td></td></tr>');
-                                                 
-                    $("#tbl_settings tbody").children('tr:first').css("font-weight","bold");
-                                       
-                    // Close popup window or clear input fields.
-                    if (btn === 'ok') {
-                        $("#popup_container").fadeOut("slow");
+            request.done(function(result) {
+                if (result.success) {         
+                    if (result.exists) {
+                        $(".msg").html(c.login[1] + " " + c.login[8]);                    
                     }
                     else 
-                    {
-                        $("#user").val("");
-                        $("#pass1").val("");
-                        $("#pass2").val("");
-                    }
-                }     
-            }
-            else {
-               showDatabaseError(result.message); 
-            }
-        });
+                    {                    
+                        $("#table_container tbody").prepend('<tr><td></td>' +
+                                                             '<td>' + result.user + '</td>' +
+                                                             '<td>' + result.hash + '</td>' +
+                                                             '<td></td><td></td></tr>');
+                                                 
+                        $("#table_container tbody").children('tr:first').css("font-weight","bold");
+                     
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            $("#popup_container").fadeOut("slow");
+                        }
+                        else 
+                        {
+                            $("#user").val("");
+                            $("#pass1").val("");
+                            $("#pass2").val("");
+                        }
+                    }     
+                }
+                else {
+                showDatabaseError(result.message); 
+                }
+            });
     
-        request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-        });  
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
      
-        closeErrorMessage();               
+            closeErrorMessage();               
+        }
     }
 }
 

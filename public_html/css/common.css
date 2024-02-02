@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Jan 22, 2024
+ * Updated on Feb 02, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -287,10 +287,108 @@ h2 {
   background: #f5f5f5;
 }
 
-/* Tables */
+/* Tables container, see also: https://codepen.io/paulobrien/pen/LBrMxa */
+#table_container {
+ position: relative;
+ width:calc(100% - 10px);
+ z-index: 1;
+ margin: auto;
+ overflow: auto;
+ height: 350px;
+ scrollbar-color: #808080 #dcdcdc;
+ scrollbar-width: thin;
+}
 
+/* Works on Chrome, Edge, and Safari */
+#table_container::-webkit-scrollbar {
+  width: 12px;
+}
 
+#table_container::-webkit-scrollbar-track {
+  background: #dcdcdc;
+  border-radius: 20px;
+}
 
+#table_container::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 20px;
+  border: 3px solid #dcdcdc;
+}
+
+#table_container table {
+ width: calc(100% - 90px);
+ margin: auto;
+ border-collapse: separate;
+ border-spacing: 0;
+ cursor: default;
+}
+
+#table_container td {
+ padding: 2px;
+ background: #fff;
+ vertical-align: top;
+}
+
+#table_container thead th {
+ text-align:left;   
+ background: #fff;
+ position: -webkit-sticky;
+ position: sticky;
+ top: 0;
+}
+
+#table_container tbody td{
+ border-bottom:1px solid #afdcec; 
+}
+
+#table_container tbody td:first-child {
+ color:#fff;
+ max-width: 5px;
+}
+
+#table_container tbody tr:last-child td,
+#table_container tbody tr:last-child:hover td {
+ border-bottom:0px; 
+}
+
+#table_container tbody tr:hover td{
+ border-bottom:1px solid #f6358a; 
+}
+
+#table_container .marked td {
+ background-color: #fffdd0; /* Test #ffc87c*/
+ transition-property: all;
+ transition-duration: 1s;
+}
+
+#table_container .marked td:first-child {
+ color: #fffdd0;
+}
+
+#table_container .unmark td {
+ background-color: #fff;
+ transition-property: all;
+ transition-duration: 1s;
+}
+
+#table_container .delete td {
+ background-color: #ff8585;
+ transition-property: all;
+ transition-duration: 1s;
+}
+
+#table_container .delete td:first-child {
+ color: #ff8585;
+}
+
+/* Safari and ios need the tfoot itself to be position:sticky also */
+#table_container tfoot,
+#table_container tfoot td {
+ position: -webkit-sticky;
+ position: sticky;
+ bottom: 0;
+ z-index:4;
+}
 
 /* Footer */
 footer {
