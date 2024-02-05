@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 02, 2024
+ * Updated on Feb 04, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -131,7 +131,7 @@ function showPageTheme(s) {
  * Function:    closePopupWindow
  *
  * Created on Nov 19, 2023
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Close the Popup window.
  *
@@ -140,26 +140,24 @@ function showPageTheme(s) {
  *
  */
 function closePopupWindow() {
-    
-    var mark;
-    
-    // Close popup error.
-    $(".close").on("click", function () {
-        $("#popup_container").fadeOut("slow");     
-          
-        if ($("#table_container tbody .marked").length) {
-            mark = $("#table_container tbody .marked").toggleClass("marked unmark");
-        }
+       
+    var mark = "";
         
-        if ($("#table_container tbody .delete").length) {
-            mark = $("#table_container tbody .delete").toggleClass("delete unmark");
-        }        
+    $("#popup_container").fadeOut("slow");     
+          
+    if ($("#table_container tbody .marked").length) {
+        mark = $("#table_container tbody .marked").toggleClass("marked unmark");
+    }
+        
+    if ($("#table_container tbody .delete").length) {
+        mark = $("#table_container tbody .delete").toggleClass("delete unmark");
+    }        
     
+    if ($("#table_container tbody .unmark").length) {
         setTimeout(function() {
             mark.removeClass("unmark");
         }, 1000);
-          
-    });
+    }  
 }
 
 /*
@@ -382,4 +380,121 @@ function fillTable(s, page, l) {
     });  
     
     closeErrorMessage();      
+}
+
+
+/*
+ * Function:    checkEditDelete
+ *
+ * Created on Feb 03, 2024
+ * Updated on Feb 03, 2024
+ *
+ * Description: Check if the edit or delete button is pressed in de popup choice window.
+ *
+ * In:  btn, msg
+ * Out: check
+ * 
+ */
+function checkEditDelete(btn, msg) {
+    
+    var check = false;
+    
+    if (btn === "del") {
+        
+        $("#popup_content .btn").attr({
+            src: "img/edit.png",
+            alt: "edit"
+        });
+        
+        $("#table_container tbody .marked").toggleClass("marked delete");
+        $(".msg").html(msg);
+        
+        check = true;
+    }  
+    else if (btn === "edit") {
+        
+        $("#popup_content .btn").attr({
+            src: "img/del.png",
+            alt: "del"
+        });
+        
+        $("#table_container tbody .delete").toggleClass("delete marked");
+        $(".msg").html("&nbsp;");         
+              
+        check = true;
+    }
+      
+    return check;
+}
+
+/*
+ * Function:    getRowIdAndAction
+ *
+ * Created on Feb 04, 2024
+ * Updated on Feb 04, 2024
+ *
+ * Description: Get the row id from the table and determine the table action.
+ *
+ * In:  -
+ * Out: action
+ * 
+ */
+function getRowIdAndAction() {
+    
+    var id, action = "add";
+    
+    if ($("#table_container tbody .marked").length) {  
+        id = $("#table_container tbody .marked").closest('tr').find('td:first').text();
+        action = "edit";
+    }
+    
+    if ($("#table_container tbody .delete").length) {
+        id = $("#table_container tbody .delete").closest('tr').find('td:first').text();
+        action = "delete";
+    } 
+    
+    return [id, action];
+}
+
+/*
+ * Function:    showDeleteRow
+ *
+ * Created on Feb 04, 2024
+ * Updated on Feb 04, 2024
+ *
+ * Description: Show the result of a row deletion.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function showDeleteRow() { 
+    
+    $("#table_container tbody .delete").fadeOut("slow");
+}
+
+/*
+ * Function:    removeAddRowMarker
+ *
+ * Created on Feb 05, 2024
+ * Updated on Feb 05, 2024
+ *
+ * Description: Remove add marker if a new row(s) was added.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function removeAddRowMarker() {
+    
+    var mark = "";
+    
+    if ($("#table_container tbody .add").length) {
+        mark = $("#table_container tbody .add").toggleClass("add unmark");  
+        if ($("#table_container tbody .unmark").length) {
+            setTimeout(function() {
+                mark.removeClass("unmark");
+            }, 1000);
+        }  
+    }
 }

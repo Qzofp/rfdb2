@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Shows the settings page.
  *
@@ -92,15 +92,28 @@ function showSettings(c, s) {
     });
     
     // Settings popup Ok button is pressed.  
-    $("#popup_content").on("submit","form",function(e) {  
-       setPopupChoice(e, c, s);
-    });       
+    $("#popup_content").on("submit","form",function(e) {        
+        setPopupChoice(e, c, s);
+    });    
+  
+    // Settings popup <enter> button is pressed.  
+    $("#popup_content").on("keypress","form",function(e) {       
+       
+        // Note: When adding a row then the ADD button needs to be pressed instead of de Ok button.
         
+        if(e.which === 13){          
+            e.preventDefault();          
+            $("#popup_content .okay").click();
+        }     
+    });
+            
     // Show the page theme.
     showPageTheme(s[5]);
     
     // Close popup windows.
-    closePopupWindow();
+    $(".close").on("click", function () {        
+        closePopupWindow();
+    });    
 }
 
 /*
@@ -486,7 +499,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -495,13 +508,11 @@ function getAndSetScaleButton(c, name) {
  *
  */
 function setPopupChoice(e, c, s) {
-
+      
     e.preventDefault();
-    
+   
     var btn = e.originalEvent.submitter.alt;
     var popup  = $('#popup_content').attr('class');
-    
-    console.log(btn);
     
     if (btn !== "cancel") {
         

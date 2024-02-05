@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -369,6 +369,16 @@ h2 {
  background-color: #fff;
  transition-property: all;
  transition-duration: 1s;
+}
+
+#table_container .add td {
+ background-color: #d0f0c0;
+ transition-property: all;
+ transition-duration: 1s;
+}
+
+#table_container .add td:first-child {
+ color: #d0f0c0;
 }
 
 #table_container .delete td {

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -104,7 +104,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -122,7 +122,10 @@ function showGeneralPopupUsers(c) {
     $("#popup_content ul li").remove();
     $("#popup_content ul").hide();
     $("#popup_content table").show().empty();
-     
+    
+    // Remove add marker if a new row was added.
+    removeAddRowMarker();
+        
     // Show update popup.    
     if ($("#table_container tbody .marked").length) 
     {         
@@ -139,7 +142,7 @@ function showGeneralPopupUsers(c) {
                                          '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + user + '" /></td>' +
                                          '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
                                          '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
-                                         '<td><input type="image" name="submit" src="' + btn + '" /></td>' +
+                                         '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
                                      '</tr>' +
                                      '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
     
@@ -297,7 +300,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 02, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -306,35 +309,22 @@ function checkChangedPages(p, s) {
  *
  */
 function modifyUser(c, btn) {
-    
-    if (btn === "del") {
         
-        $("#table_container tbody .marked").toggleClass("marked delete");
-        $(".msg").html(c.login[9]); 
-    }
-    else {
-    
-        var data = [];        
-        data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());    
-     
+    var data = [];        
+    data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());       
+    var msg = c.login[9].replace("#", c.login[1] + " " + data[0]);
+        
+    if(!checkEditDelete(btn, msg)) {
+      
         // Add the user input to user table if the user doesn´t exists.
         if (validateUser(c, data))
         {    
-            var id, action = "add";
-            if ($("#table_container tbody .marked").length) {  
-                id = $("#table_container tbody .marked").closest('tr').find('td:first').text();
-                action = "update";
-            }
-    
-            if ($("#table_container tbody .delete").length) {
-                id = $("#table_container tbody .delete").closest('tr').find('td:first').text();
-                action = "delete";
-            }            
-                        
-            let send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
-                              + '&id=' + id;        
+            var [id, action] = getRowIdAndAction();                        
+            var send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
+                              + '&id=' + id;    
+                      
             var request = $.ajax({
-                url: "php/add_user.php",
+                url: "php/modify_user.php",
                 method: "POST",
                 dataType: "json",
                 data: send
@@ -347,16 +337,23 @@ function modifyUser(c, btn) {
                     }
                     else 
                     {                    
-                        $("#table_container tbody").prepend('<tr><td></td>' +
-                                                             '<td>' + result.user + '</td>' +
-                                                             '<td>' + result.hash + '</td>' +
-                                                             '<td></td><td></td></tr>');
-                                                 
-                        $("#table_container tbody").children('tr:first').css("font-weight","bold");
-                     
+                        switch (action) {
+                            case "add"    :
+                                showAddUser(result);
+                                break;
+                                
+                            case "edit"   :
+                                showEditUser(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
                         // Close popup window or clear input fields.
                         if (btn === 'ok') {
-                            $("#popup_container").fadeOut("slow");
+                            closePopupWindow();                           
                         }
                         else 
                         {
@@ -367,7 +364,7 @@ function modifyUser(c, btn) {
                     }     
                 }
                 else {
-                showDatabaseError(result.message); 
+                    showDatabaseError(result.message);
                 }
             });
     
@@ -384,7 +381,7 @@ function modifyUser(c, btn) {
  * Function:    validateUser
  *
  * Created on Jan 29, 2024
- * Updated on Jan 29, 2024
+ * Updated on Frb 03, 2024
  *
  * Description: Validate the user input (username and password).
  *
@@ -398,30 +395,76 @@ function validateUser(c, data) {
     var isValidUsername = /^[0-9A-Za-z]{5,16}$/;
     var isStrongPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/;   
     
-    $(".msg").html("&nbsp;");
+    // Only validate when the data isn't marked for deletion.
+    if (!$("#table_container tbody .delete").length) {
     
-    // Check username, password strength and conformation.    
-    if (isValidUsername.test(data[0]) ? true : false) 
-    {         
-        if (isStrongPassword.test(data[1]) ? true : false) 
-        {                        
-            if (data[1] !== data[2]) 
-            {
-                $(".msg").html(c.login[2] + " " + c.login[5]);
+        $(".msg").html("&nbsp;");
+    
+        // Check username, password strength and conformation.    
+        if (isValidUsername.test(data[0]) ? true : false) 
+        {         
+            if (isStrongPassword.test(data[1]) ? true : false) 
+            {                        
+                if (data[1] !== data[2]) 
+                {
+                    $(".msg").html(c.login[2] + " " + c.login[5]);
+                    check = false;
+                }              
+            }
+            else 
+            {       
+                $(".msg").html(c.login[2] + " " + c.login[6]);
                 check = false;
-            }              
+            }     
         }
         else 
-        {       
-            $(".msg").html(c.login[2] + " " + c.login[6]);
-            check = false;
-        }     
+        {
+        $(".msg").html(c.login[1] + " " + c.login[7]);
+        check = false;
+        } 
     }
-    else 
-    {
-       $(".msg").html(c.login[1] + " " + c.login[7]);
-       check = false;
-    }    
     
     return check;
+}
+
+/*
+ * Function:    showAddUser
+ *
+ * Created on Feb 04, 2024
+ * Updated on Feb 05, 2024
+ *
+ * Description: Show the result of add user.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showAddUser(result) {
+    
+    $("#table_container").scrollTop(0);
+  
+    $("#table_container tbody").prepend('<tr><td>' + result.id + '</td>' +
+                                            '<td>' + result.user + '</td>' +
+                                            '<td>' + result.hash + '</td>' +
+                                            '<td></td><td></td></tr>');
+                                                 
+    $("#table_container tbody").children("tr:first").addClass("add");  
+}
+
+/*
+ * Function:    showEditUser
+ *
+ * Created on Feb 04, 2024
+ * Updated on Feb 04, 2024
+ *
+ * Description: Show the result of edit user.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showEditUser(result) {  
+    
+    $("#table_container tbody .marked td").eq(1).html(result.user);
+    $("#table_container tbody .marked td").eq(2).html(result.hash);    
 }

@@ -15,7 +15,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 05, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -122,7 +122,7 @@ if(!$user){
                 <div id="label"><span></span></div>
                 
                 <!-- Settings table -->
-                <div id="table_container">  <!-- was tbl_settings -->
+                <div id="table_container">
                     <table>
                         <thead>                        
                         </thead>
@@ -142,7 +142,7 @@ if(!$user){
                             <table></table>
                             <a class="close" href="javascript:void(0)">x</a>   
                             <div class="choice">
-                                <input type="image" name="submit" src="img/ok.png" alt="ok" />
+                                <input class="okay" type="image" name="submit" src="img/ok.png" alt="ok" />
                                 <input class="close" type="image" name="cancel" src="img/cancel.png" alt="cancel" />                         
                             </div>                        
                        </form>
