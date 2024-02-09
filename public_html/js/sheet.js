@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Dec 18, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 28, 2023
- * Updated on Nov 13, 2023
+ * Updated on Feb 09 , 2024
  *
  * Description: The sheet.js main function.
  *
@@ -30,7 +30,7 @@
  */
 function loadSheet() {
     
-    $.when(getConstants()).done(function(result) {
+    $.when(getAjaxRequest("get_constants", "")).done(function(result) {
 
         if (result.success) {         
             var [c, s] = processConstants(result);           

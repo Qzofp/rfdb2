@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Jan 27, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -22,7 +22,7 @@ const cDate = new Date();
  * Function:    loadLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Dec 20, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: The login.js main function.
  *
@@ -32,7 +32,7 @@ const cDate = new Date();
  */
 function loadLoginPage() {
     
-    $.when(getLoginConstants()).done(function(result) {
+    $.when(getAjaxRequest("get_login_constants", "")).done(function(result) {
 
         if (result.success) {         
             var c = processLoginConstants(result);        
@@ -132,23 +132,24 @@ function validateLogin(e, c) {
 }
 
 /*
- * Function:    getLoginContants
+ * Function:    getAjaxRequest
  *
- * Created on Dec 22, 2023
- * Updated on Dec 22, 2023
+ * Created on Feb 09, 2024
+ * Updated on Feb 09, 2024
  *
- * Description: Get the constants and settings from de database tblConfig table.
+ * Description: Get the Ajax request with send data for the PHP page.
  *
- * In:  -
+ * In:  page, send
  * Out: request
  *
  */
- function getLoginConstants() {
+ function getAjaxRequest(page, send) {
      
     var request = $.ajax({
-        url: "php/get_login_constants.php",
+        url: "php/" + page + ".php",
         method: "POST",
-        dataType: "json"
+        dataType: "json",
+        data : send
     }); 
       
     return request;

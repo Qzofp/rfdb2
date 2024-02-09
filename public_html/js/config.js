@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Jan 27, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -31,12 +31,36 @@ const cDate = new Date();
  * Out: request
  *
  */
- function getConstants() {
+ /*function getConstants() {   // Oud, vervang deze door getAjaxRequest(page, send)
      
     var request = $.ajax({
         url: "php/get_constants.php",
         method: "POST",
         dataType: "json"
+    }); 
+      
+    return request;
+} */
+
+/*
+ * Function:    getAjaxRequest
+ *
+ * Created on Feb 09, 2024
+ * Updated on Feb 09, 2024
+ *
+ * Description: Get the Ajax request with send data for the PHP page.
+ *
+ * In:  page, send
+ * Out: request
+ *
+ */
+ function getAjaxRequest(page, send) {
+     
+    var request = $.ajax({
+        url: "php/" + page + ".php",
+        method: "POST",
+        dataType: "json",
+        data : send
     }); 
       
     return request;

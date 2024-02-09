@@ -15,7 +15,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Jan 27, 2024
+ * Updated on Feb 06, 2024
  *
  * Description: Login page.
  * 
@@ -23,8 +23,9 @@
  * - https://www.javatpoint.com/php-mysql-login-system
  * - https://www.phpzag.com/ajax-login-script-with-php-and-jquery/
  * - https://codingstatus.com/login-with-ajax-in-php-mysql/
+ * - https://stackoverflow.com/questions/63297970/cookie-phpsessid-will-be-soon-treated-as-cross-site-cookie-against-file-beca
  */ 
-session_start();
+session_start(['cookie_samesite' => 'Lax',]);
 if(isset($_SESSION['user'])) {
     header("location:dashboard.php");
 }

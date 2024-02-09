@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 04, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -104,7 +104,7 @@ function showPageTitles(c, i, add) {
  * Function:    showPageTheme
  *
  * Created on Oct 29, 2023
- * Updated on Dec 04, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Show the sheet page theme colors.
  *
@@ -123,7 +123,6 @@ function showPageTheme(s) {
     if (s.name === "settings") {
         $("#settings u").css("text-decoration-color", tmp.theme.color);
         $("#popup_content h2").css("text-decoration-color", tmp.theme.color);
-        //$("#tbl_settings th").css("border-bottom", "2px solid " + tmp.theme.color);
     }
 }
 
@@ -229,7 +228,7 @@ function closeErrorMessage() {
  * Function:    changeScaleSetting
  *
  * Created on Nov 15, 2023
- * Updated on Nov 15, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Change the scale in the settings database.
  *
@@ -239,13 +238,8 @@ function closeErrorMessage() {
  */
 function changeScaleSetting(name, scale) {
     
-    var request = $.ajax({
-        url: "php/change_scale.php",
-        method: "POST",
-        dataType: "json",
-        data: { name: name, scale: scale }
-    }); 
-      
+    var send = "name=" + name + "&scale=" + scale;
+    var request = getAjaxRequest("change_scale", send);      
     request.done(function(result) {
         if (!result.success) {         
             showDatabaseError(result.message);                    
@@ -280,6 +274,31 @@ function hashPassword(string, salt)
     }
     
     return password;
+}
+
+/*
+ * Function:    setPageButton
+ *
+ * Created on Feb 06, 2024
+ * Updated on Feb 07, 2024
+ *
+ * Description: Set the line under the page button image.
+ *
+ * In:  s, n, h
+ * Out: -
+ *
+ */
+function setPageButton(s, n, h) {
+    
+     var set = JSON.parse(s.value);
+    
+     $("#page_buttons .active").css("border-bottom", "");
+     $("#page_buttons img").removeClass("active");                
+     $("#page_buttons img").eq(n).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+     
+     if (h > 0) {
+         $("#page_buttons img").eq(h).hide();
+     }
 }
 
 /*
@@ -333,7 +352,7 @@ function showTable(items, s, page) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Jan 31, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -343,13 +362,8 @@ function showTable(items, s, page) {
  */
 function fillTable(s, page, l) {
     
-    var set = JSON.parse(s[5].value);    
-    var request = $.ajax({
-        url: "php/" + page,
-        method: "POST",
-        dataType: "json"
-    });     
-    
+    var set = JSON.parse(s[5].value);     
+    var request = getAjaxRequest(page, ""); 
     request.done(function(result) {
         if (result.success) {         
             
@@ -497,4 +511,32 @@ function removeAddRowMarker() {
             }, 1000);
         }  
     }
+}
+
+/*
+ * Function:   getPopupEnterKey
+ *
+ * Created on Feb 06, 2024
+ * Updated on Feb 06, 2024
+ *
+ * Description: When the <enter> key is pressed get the right button and click it.
+ *
+ * In:  e
+ * Out: -
+ *
+ */
+function getPopupEnterKey(e) {
+    
+    if(e.which === 13){     
+            
+        e.preventDefault();  
+            
+        let btn = $("#popup_content table .btn").attr('alt');            
+        if (btn === "add") {
+            $("#popup_content .btn").click();
+        }
+        else {     
+            $("#popup_content .ok").click();
+        }
+    }      
 }

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 05, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -172,7 +172,7 @@ function showLanguage(c, s) {
  * Function:    setLanguage
  *
  * Created on Nov 29, 2023
- * Updated on Dec 21, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Set the language in the database en reload the settings page.
  *
@@ -185,13 +185,8 @@ function setLanguage(language, s) {
     var set = JSON.parse(s[7].value);
     if (set.language !== language) {
         
-        var request = $.ajax({
-            url: "php/change_language.php",
-            method: "POST",
-            dataType: "json",
-            data: { language: language }
-        }); 
-      
+        var send = "language=" + language;
+        var request = getAjaxRequest("change_language", send);      
         request.done(function(result) {
             if (result.success) {         
                                  
@@ -220,7 +215,7 @@ function setLanguage(language, s) {
  * Function:    setPages
  *
  * Created on Nov 30, 2023
- * Updated on Dec 01, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Set the pages (true, false) in the database en reload the settings page.
  *
@@ -233,15 +228,8 @@ function setPages(p, s) {
     var changes = checkChangedPages(p, s);
     if (changes) {
         
-        var pages = JSON.stringify(p);
-       
-        var request = $.ajax({
-            url: "php/change_pages.php",
-            method: "POST",
-            dataType: "json",
-            data: { pages: pages }
-        }); 
-      
+        var send = "pages=" + JSON.stringify(p);
+        var request = getAjaxRequest("change_pages", send);
         request.done(function(result) {
             if (result.success) {         
                              
@@ -259,8 +247,7 @@ function setPages(p, s) {
             showAjaxError(jqXHR, textStatus);
         });  
      
-        closeErrorMessage();
-      
+        closeErrorMessage();      
     }     
     // Close popup window.
     $("#popup_container").fadeOut("slow");    
@@ -300,7 +287,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 05, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -323,13 +310,7 @@ function modifyUser(c, btn) {
             var send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
                               + '&id=' + id;    
                       
-            var request = $.ajax({
-                url: "php/modify_user.php",
-                method: "POST",
-                dataType: "json",
-                data: send
-            }); 
-      
+            var request = getAjaxRequest("modify_user", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {

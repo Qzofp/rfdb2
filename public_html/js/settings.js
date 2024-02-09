@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 05, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadSettings
  *
  * Created on Oct 29, 2023
- * Updated on Nov 15, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: The settings.js main function.
  *
@@ -31,7 +31,7 @@
  */
 function loadSettings() {
     
-    $.when(getConstants()).done(function(result) {
+    $.when(getAjaxRequest("get_constants", "")).done(function(result) {
 
         if (result.success) {         
             var [c, s] = processConstants(result);           
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Feb 05, 2024
+ * Updated on Feb 06, 2024
  *
  * Description: Shows the settings page.
  *
@@ -98,13 +98,7 @@ function showSettings(c, s) {
   
     // Settings popup <enter> button is pressed.  
     $("#popup_content").on("keypress","form",function(e) {       
-       
-        // Note: When adding a row then the ADD button needs to be pressed instead of de Ok button.
-        
-        if(e.which === 13){          
-            e.preventDefault();          
-            $("#popup_content .okay").click();
-        }     
+        getPopupEnterKey(e);   
     });
             
     // Show the page theme.
@@ -120,42 +114,55 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Dec 05, 2023
+ * Updated on Feb 09, 2024
  *
  * Description: Shows the settings content for the chosen slide.
  *
- * In:  slide, c, s
+ * In:  slide, c
  * Out: -
  *
  */
-function showSettingsContent(slide, c, s) {
+function showSettingsContent(slide, c) {
     
-    switch(slide) {
-        case 0: ShowGeneralSettings(c, s);               
-            break;
+    var request = getAjaxRequest("get_settings", "");    
+    request.done(function(result) {
+        if (result.success) {         
+            
+            var s = result.settings;
+            switch(slide) {
+                case 0: ShowGeneralSettings(c, s);               
+                    break;
         
-        case 1: ShowFinancesSettings(c, s);                
-            break;
+                case 1: ShowFinancesSettings(c, s);                
+                    break;
             
-        case 2: ShowStocksSettings(c, s);               
-            break;
+                case 2: ShowStocksSettings(c, s);               
+                    break;
             
-        case 3: ShowSavingsSettings(c, s);                
-            break;
+                case 3: ShowSavingsSettings(c, s);                
+                    break;
             
-        case 4: ShowCryptoSettings(c, s);
-            break;
-    }
+                case 4: ShowCryptoSettings(c, s);
+                    break;
+            }            
+        }
+        else {
+            showDatabaseError(result.message); 
+        }
+    });
     
-    // Debug.
-    //$("#test").html("<h1>" + slide + "</h1>"); 
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
 }
 
 /*
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 28, 2023
+ * Updated on Feb 09, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -175,17 +182,24 @@ function ShowGeneralSettings(c, s) {
     $("#page_buttons img").eq(0).attr({src:"img/language.png", alt:"language"}); 
     $("#page_buttons img").eq(1).attr({src:"img/pages.png", alt:"pages"});
     $("#page_buttons img").eq(2).attr({src:"img/users.png", alt:"users"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color).show();  
-    $("#page_buttons img").eq(3).attr({src:"img/configs.png", alt:"configs"}).show();
+    $("#page_buttons img").eq(3).attr({src:"img/services.png", alt:"services"}).show();
+    $("#page_buttons img").eq(4).attr({src:"img/configs.png", alt:"configs"}).show();
+    
+    var show = "show";
+    if (set.show !== "true") {
+        show = "hide";
+    }
+    $("#page_buttons img").eq(5).attr({src:"img/" + show + ".png", alt:"" + show + ""}).hide();
     
     showLanguage(c, s);
-    showTable(c.users, s, "get_users.php");
+    showTable(c.users, s, "get_users");
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 07, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -195,13 +209,20 @@ function ShowGeneralSettings(c, s) {
  */
 function ShowFinancesSettings(c, s) {
     
-    var set = JSON.parse(s[5].value);    
+    var set = JSON.parse(s[1].value);    
     getAndSetScaleButton(c, s[1].name);
     
     $("#page_buttons img").css("border-bottom", "");
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
     $("#page_buttons img").eq(2).attr({src:"img/groups.png", alt:"groups"}).show();
     $("#page_buttons img").eq(3).attr({src:"img/shops.png", alt:"shops"}).show();
+    
+    var show = "show";
+    if (set.show !== "true") {
+        show = "hide";
+    }
+    $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();    
+    $("#page_buttons img").eq(5).hide();
  
     // Temporary
     $("#table_container thead tr").remove(); 
@@ -217,7 +238,7 @@ function ShowFinancesSettings(c, s) {
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 07, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -235,9 +256,16 @@ function ShowStocksSettings(c, s) {
     $("#page_buttons img").css("border-bottom", "");
     
     getAndSetScaleButton(c, s[2].name);
-    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
-    $("#page_buttons img").eq(2).hide();
-    $("#page_buttons img").eq(3).hide();
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+     
+    var show = "show";
+    if (set.show !== "true") {
+        show = "hide";
+    }
+    $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
+    $("#page_buttons img").eq(3).hide();    
+    $("#page_buttons img").eq(4).hide();
+    $("#page_buttons img").eq(5).hide();
     
     
     // Temporary
@@ -252,7 +280,7 @@ function ShowStocksSettings(c, s) {
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 07, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -270,9 +298,16 @@ function ShowSavingsSettings(c, s) {
     $("#page_buttons img").css("border-bottom", "");
      
     getAndSetScaleButton(c, s[3].name);
-    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
-    $("#page_buttons img").eq(2).hide();
-    $("#page_buttons img").eq(3).hide();
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+    
+    var show = "show";
+    if (set.show !== "true") {
+        show = "hide";
+    }
+    $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
+    $("#page_buttons img").eq(3).hide();    
+    $("#page_buttons img").eq(4).hide();
+    $("#page_buttons img").eq(5).hide();
     
     // Temporary
     $("#table_container thead tr").remove(); 
@@ -286,7 +321,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Jan 31, 2024
+ * Updated on Feb 07, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -304,11 +339,17 @@ function ShowCryptoSettings(c, s) {
     $("#page_buttons img").css("border-bottom", "");
      
     getAndSetScaleButton(c, s[4].name);
-    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"});
-    $("#page_buttons img").eq(2).hide();
+    $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+    
+    var show = "show";
+    if (set.show !== "true") {
+        show = "hide";
+    }
+    $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();    
     $("#page_buttons img").eq(3).hide();    
-    
-    
+    $("#page_buttons img").eq(4).hide();
+    $("#page_buttons img").eq(5).hide(); 
+        
     // Temporary
     $("#table_container thead tr").remove(); 
     $("#table_container tbody td").remove();
@@ -320,7 +361,7 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Jan 09, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -332,7 +373,6 @@ function showSettingsButton(that, c, s) {
 
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
-    var set = JSON.parse(s[5].value);
     switch(that.alt) {
         case "language" :  
             showGeneralPopupLanguage(c, s);
@@ -342,43 +382,41 @@ function showSettingsButton(that, c, s) {
             break;
             
         case "users"    : 
-            if (that.className === 'active') 
-            {
+            if (that.className === 'active') {
                 showGeneralPopupUsers(c);
             }
             else 
             {
-                $("#page_buttons .active").css("border-bottom", "");
-                $("#page_buttons img").removeClass("active");                
-                $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
-                
-                //$("#label span").html(c.users[0]);
-                //$("#label span").css("border-left","3px solid " + set.theme.color);
-                
-                showTable(c.users, s, "get_users.php");
-                
-                //showUsersTable(c, s);
+                setPageButton(s[5], 2, 5);
+                showTable(c.users, s, "get_users");
             }
             break;
             
+        case "services" :
+            if (that.className === 'active') {                
+                console.log("services");
+            }
+            else 
+            {            
+                $("#page_buttons img").eq(5).show();
+                setPageButton(s[5], 3, -1);
+                //showTable(c.services, s, "get_services");
+            
+            
+                // Test.
+                $("#label span").html(that.alt);
+            }
+            break;              
+            
+            
         case "configs"  :
-            if (that.className === 'active') 
-            {
+            if (that.className === 'active') {
                 console.log(that.className); // debug
             }
             else 
-            {
-                $("#page_buttons .active").css("border-bottom", "");
-                $("#page_buttons img").removeClass("active");                
-                $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);   
-                
-                //$("#label span").html(c.configs[0]);
-                //$("#label span").css("border-left","3px solid " + set.theme.color);
-                
-                showTable(c.configs, s, "get_configs.php");
-                
-                
-                //showConfigsTable(c, s);
+            {               
+                setPageButton(s[5], 4, 5);
+                showTable(c.configs, s, "get_configs");
             }
             break;
             
@@ -388,35 +426,35 @@ function showSettingsButton(that, c, s) {
             changeScaleSetting(s[slide].name, that.alt);    
             setScaleButton(c, that.alt);
             break;               
-      
-        case "accounts" :
-            if (slide === 1) {
-                $("#page_buttons .active").css("border-bottom", "");
-                $("#page_buttons img").removeClass("active");
-                $("#page_buttons img").eq(1).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
-            }
-            
+              
+        case "accounts" :         
+                setPageButton(s[slide], 1, -1);
+                     
             // Test.
             $("#label span").html(that.alt);
             break;
         
         case "groups"   :
-            $("#page_buttons .active").css("border-bottom", "");
-            $("#page_buttons img").removeClass("active");
-            $("#page_buttons img").eq(2).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+            setPageButton(s[1], 2, -1);
             
             // Test.
             $("#label span").html(that.alt);
             break;
             
         case "shops"    :
-            $("#page_buttons .active").css("border-bottom", "");
-            $("#page_buttons img").removeClass("active");
-            $("#page_buttons img").eq(3).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+            setPageButton(s[1], 3, -1);
             
             // Test
             $("#label span").html(that.alt);
             break;
+        
+        case "show"     :
+            setShowRows(that, slide, false);
+            break;
+            
+        case "hide"     :
+            setShowRows(that, slide, true);
+            break; 
     }
 }
 
@@ -462,7 +500,7 @@ function setScaleButton(c, scale) {
  * Function:    getAndSetScaleButton
  *
  * Created on Dec 02, 2023
- * Updated on Jan 08, 2024
+ * Updated on Feb 09, 2024
  *
  * Description: Get the scale from the settings database and set the scale button.
  *
@@ -471,14 +509,9 @@ function setScaleButton(c, scale) {
  *
  */
 function getAndSetScaleButton(c, name) {
-    
-    var request = $.ajax({
-        url: "php/get_scale.php",
-        method: "POST",
-        dataType: "json",
-        data: { name: name }
-    }); 
-      
+   
+    var send = "name=" + name;    
+    var request = getAjaxRequest("get_scale", send);     
     request.done(function(result) {
         if (result.success) { 
             setScaleButton(c, result.data[0].scale);            
@@ -544,15 +577,14 @@ function setPopupChoice(e, c, s) {
                 
                 
         }
-    }
-      
+    }     
 }
 
 /*
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Feb 02, 2024
+ * Updated on Feb 07, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -574,15 +606,48 @@ function editSettingsTableRow(c, that) {
         case "users" :           
             showGeneralPopupUsers(c);
             break;
+
+        case "services" :
+            break;        
         
         case "accounts" :
             break;
         
+    } 
+}
+
+/*
+ * Function:   setShowRow
+ *
+ * Created on Feb 07, 2024
+ * Updated on Feb 09, 2024
+ *
+ * Description: Set the show rows (true, false) in the database and show or hide the hidden rows. 
+ *
+ * In:  that, slide, show (true | false)
+ * Out: -
+ *
+ */
+function setShowRows(that, slide, show) {
+    
+    if (show) {
+        $(that).attr({src:"img/show.png", alt:"show"});     
     }
+    else {
+        $(that).attr({src:"img/hide.png", alt:"hide"});
+    }
+     
+    var send = 'slide=' + slide + '&show=' + show; 
+    var request = getAjaxRequest("change_showrows", send);
+    request.done(function(result) {
+        if (!result.success) {         
+            showDatabaseError(result.message); 
+        }
+    });
     
-        
-    // Debug & test                               
-    //var rowid = $(that).closest('tr').find('td:first').text();
-    //console.log(rowid, btn);     
-    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();     
 }
