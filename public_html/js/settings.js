@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -83,7 +83,7 @@ function showSettings(c, s) {
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showSettingsButton(this, c, s);
+        showSettingsButton(c, this);    
     });
     
     // Table row is pressed.
@@ -114,7 +114,7 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the settings content for the chosen slide.
  *
@@ -127,8 +127,8 @@ function showSettingsContent(slide, c) {
     var request = getAjaxRequest("get_settings", "");    
     request.done(function(result) {
         if (result.success) {         
-            
-            var s = result.settings;
+                
+            var s = result.settings;            
             switch(slide) {
                 case 0: ShowGeneralSettings(c, s);               
                     break;
@@ -162,7 +162,7 @@ function showSettingsContent(slide, c) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 09, 2023
+ * Updated on Feb 12, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -191,6 +191,12 @@ function ShowGeneralSettings(c, s) {
     }
     $("#page_buttons img").eq(5).attr({src:"img/" + show + ".png", alt:"" + show + ""}).hide();
     
+    
+    if($("#page_buttons img").hasClass("show")) {
+        $("#page_buttons img").removeClass("show");
+    }   
+    $("#page_buttons img").eq(5).addClass("show");
+    
     showLanguage(c, s);
     showTable(c.users, s, "get_users");
 }
@@ -199,7 +205,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 07, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -221,24 +227,25 @@ function ShowFinancesSettings(c, s) {
     if (set.show !== "true") {
         show = "hide";
     }
-    $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();    
+    $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(5).hide();
- 
+    
+
+    
     // Temporary
     $("#table_container thead tr").remove(); 
     $("#table_container tbody td").remove();
     $("#table_container tfoot tr").remove();
     
     set = JSON.parse(s[1].value);
-    $("#label span").css("border-left","3px solid " + set.theme.color);
-    
+    $("#label span").css("border-left","3px solid " + set.theme.color); 
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 07, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -266,21 +273,21 @@ function ShowStocksSettings(c, s) {
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide();
+ 
     
     
     // Temporary
     $("#table_container thead tr").remove(); 
     $("#table_container tbody td").remove(); 
     $("#table_container tfoot tr").remove();
-    $("#label span").css("border-left","3px solid " + set.theme.color);    
-     
+    $("#label span").css("border-left","3px solid " + set.theme.color);        
 }
 
 /*
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 07, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -308,20 +315,21 @@ function ShowSavingsSettings(c, s) {
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide();
+      
+
     
     // Temporary
     $("#table_container thead tr").remove(); 
     $("#table_container tbody td").remove();
     $("#table_container tfoot tr").remove();
-    $("#label span").css("border-left","3px solid " + set.theme.color);     
-     
+    $("#label span").css("border-left","3px solid " + set.theme.color);         
 }
 
 /*
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Feb 07, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -349,7 +357,9 @@ function ShowCryptoSettings(c, s) {
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide(); 
-        
+
+
+    
     // Temporary
     $("#table_container thead tr").remove(); 
     $("#table_container tbody td").remove();
@@ -361,16 +371,50 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
- * In:  that, c, s
+ * In:  c, that
  * Out: -
  *
  */
-function showSettingsButton(that, c, s) {
+function showSettingsButton(c, that) {
 
+    var request = getAjaxRequest("get_settings", "");    
+    request.done(function(result) {
+        if (result.success) {         
+                
+            var s = result.settings;
+            showSettingButtonAction(c, s, that);
+           
+        }
+        else {
+            showDatabaseError(result.message); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();  
+}
+
+/*
+ * Function:    showSettingButtonAction
+ *
+ * Created on Feb 12, 2024
+ * Updated on Feb 12, 2024
+ *
+ * Description: Shows the action when the page button is pressed.
+ *
+ * In:  c, s, that
+ * Out: -
+ *
+ */
+function showSettingButtonAction(c, s, that) {
+    
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
     switch(that.alt) {
@@ -397,14 +441,12 @@ function showSettingsButton(that, c, s) {
                 console.log("services");
             }
             else 
-            {            
-                $("#page_buttons img").eq(5).show();
+            {                          
+                $("#page_buttons img").eq(5).show();                
                 setPageButton(s[5], 3, -1);
-                //showTable(c.services, s, "get_services");
-            
-            
-                // Test.
-                $("#label span").html(that.alt);
+                
+                let services = setServices(c, s);
+                showTable(services, s, "get_services");               
             }
             break;              
             
@@ -455,9 +497,8 @@ function showSettingsButton(that, c, s) {
         case "hide"     :
             setShowRows(that, slide, true);
             break; 
-    }
+    }    
 }
-
 
 /*
  * Function:    setScaleButton
@@ -494,6 +535,38 @@ function setScaleButton(c, scale) {
     // Show setting on page.
     $("#settings u").html(c.scale[0]);
     $("#settings span").html(c.scale[j]);
+}
+
+/*
+ * Function:    setServices
+ *
+ * Created on Feb 10, 2024
+ * Updated on Feb 12, 2024
+ *
+ * Description: Set the services which depends if the page is hidden or not.
+ *
+ * In:  c, s
+ * Out: srv
+ *
+ */
+function setServices(c, s) {
+    
+    var set, srv = [];
+    
+    srv.push(c.services[0]);
+    srv.push(c.services[1]);
+    
+    for (let i = 1; i < c.pages.length - 2; i++) {
+        
+        set = JSON.parse(s[i].value);
+        if(set.page === "true") {
+            srv.push(c.services[i+1]);
+        } 
+    }     
+    
+    srv.push(c.services[6]);
+    
+    return srv;
 }
 
 /*
@@ -620,7 +693,7 @@ function editSettingsTableRow(c, that) {
  * Function:   setShowRow
  *
  * Created on Feb 07, 2024
- * Updated on Feb 09, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Set the show rows (true, false) in the database and show or hide the hidden rows. 
  *
@@ -631,10 +704,12 @@ function editSettingsTableRow(c, that) {
 function setShowRows(that, slide, show) {
     
     if (show) {
-        $(that).attr({src:"img/show.png", alt:"show"});     
+        $(that).attr({src:"img/show.png", alt:"show"});
+        $("#table_container tbody .hide").fadeIn("slow");
     }
     else {
         $(that).attr({src:"img/hide.png", alt:"hide"});
+        $("#table_container tbody .hide").fadeOut("slow");
     }
      
     var send = 'slide=' + slide + '&show=' + show; 

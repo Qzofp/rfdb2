@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 11, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -305,7 +305,7 @@ function setPageButton(s, n, h) {
  * Function:    showTable
  *
  * Created on Jan 06, 2024
- * Updated on Jan 31, 2024
+ * Updated on Feb 11, 2024
  *
  * Description: Show the table.
  *
@@ -352,7 +352,7 @@ function showTable(items, s, page) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Feb 09, 2024
+ * Updated on Feb 12, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -361,27 +361,50 @@ function showTable(items, s, page) {
  *
  */
 function fillTable(s, page, l) {
-    
-    var set = JSON.parse(s[5].value);     
+         
+    var setting = JSON.parse(s[5].value);     
     var request = getAjaxRequest(page, ""); 
     request.done(function(result) {
         if (result.success) {         
             
             let i = 0;             
             $.each(result.data, function (n, field) {  
+                
+                var hclass = "";
+                if (field.hide !== undefined && field.hide === 1) {
+                    hclass = 'class="hide"';
+                }
+                                         
                 i++;
-                $("#table_container tbody").append('<tr>');
-                
-                $.each(field, function(key, value){
-                    $("#table_container tbody tr").last().append("<td>" + value + "</td>");
+                $("#table_container tbody").append('<tr ' + hclass + '>');
+          
+                $.each(field, function(key, value){                    
+                    if (key !== "hide") {
+                        $("#table_container tbody tr").last().append("<td>" + value + "</td>");
+                    }    
                 });
-                
+                               
                 $("#table_container tbody").append("</tr>");   
             });  
 
             // Add empty rows.
-            for (let j = i; j < set.rows; j++) {
+            for (let j = i; j < setting.rows; j++) {
                $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
+            }
+            
+            // Hide or show the hidden rows.            
+            if($("#table_container tbody tr").hasClass("hide")) {
+                
+                let slide = Number($('input[name="slideItem"]:checked').val());
+                if (slide === 0) { slide = 5; }
+
+                let set = JSON.parse(s[slide].value);                
+                if (set.show === "true") {
+                    $("#table_container tbody .hide").show();
+                }
+                else {
+                    $("#table_container tbody .hide").hide(); 
+                }                
             }
         }
         else {

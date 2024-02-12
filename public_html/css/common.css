@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Feb 05, 2024
+ * Updated on Feb 11, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -389,6 +389,11 @@ h2 {
 
 #table_container .delete td:first-child {
  color: #ff8585;
+}
+
+#table_container .hide td {
+ color:gainsboro;
+ font-style: italic;
 }
 
 /* Safari and ios need the tfoot itself to be position:sticky also */
