@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 09, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -24,7 +24,7 @@
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
+ * Updated on Feb 14, 2024
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -34,20 +34,12 @@
  */
 function showGeneralPopupLanguage(c, s) {
     
-    var setting;
+    var chk, setting = JSON.parse(s[7].value);    
+    setPopupList("gen_language", c.language[0]);        
     
-    $("#popup_content").removeClass().addClass("gen_language");
-    $("#popup_content h2").html(c.language[0]);
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").show();    
-    $("#popup_content table tr").remove(); 
-    $("#popup_content table").hide(); 
-            
-    setting = JSON.parse(s[7].value);
-    for (let i = 1; i < c.language.length; i++) {
-        
+    for (let i = 1; i < c.language.length; i++) {        
         if(setting.language === c.language[i]) {
-            var chk = " checked";
+            chk = " checked";
         }
         else {
             chk = "";
@@ -75,16 +67,9 @@ function showGeneralPopupLanguage(c, s) {
 function showGeneralPopupPages(c, s) {
     
     var chk, setting;
-    
-    $("#popup_content").removeClass().addClass("gen_pages");                   
-    $("#popup_content h2").html(c.settings[0]); 
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").show();
-    $("#popup_content table tr").remove();     
-    $("#popup_content table").hide(); 
- 
-    for (let i = 1; i < c.pages.length - 2; i++) {
-        
+    setPopupList("gen_pages", c.settings[0]);
+
+    for (let i = 1; i < c.pages.length - 2; i++) {        
         setting = JSON.parse(s[i].value);
         if(setting.page === "true") {
             chk = " checked";
@@ -101,10 +86,32 @@ function showGeneralPopupPages(c, s) {
 }
 
 /*
+ * Function:    setPopupList
+ *
+ * Created on Feb 14, 2024
+ * Updated on Feb 14, 2024
+ *
+ * Description: Set (prepare) the popup list.
+ *
+ * In:  popclass, title
+ * Out: -
+ *
+ */
+function setPopupList(popclass, title) {
+    
+    $("#popup_content").removeClass().addClass(popclass);
+    $("#popup_content h2").html(title);
+    $("#popup_content ul li").remove();
+    $("#popup_content ul").show();    
+    $("#popup_content table tr").remove(); 
+    $("#popup_content table").hide();     
+}
+
+/*
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Feb 05, 2024
+ * Updated on Feb 14, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -114,32 +121,11 @@ function showGeneralPopupPages(c, s) {
  */
 function showGeneralPopupUsers(c) {
      
-    var user = "";
-    var btn = 'img/add.png" alt="add';  
-      
-    $("#popup_content").removeClass().addClass("gen_users");                   
-    $("#popup_content h2").html(c.users[0]); 
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").hide();
-    $("#popup_content table").show().empty();
-    
-    // Remove add marker if a new row was added.
-    removeAddRowMarker();
-        
-    // Show update popup.    
-    if ($("#table_container tbody .marked").length) 
-    {         
-        let cells = []; // Fill cells with row values.
-        $("#table_container tbody .marked").find("td").each(function(){
-            cells.push($(this).html());
-        });
-        
-        user = cells[1];
-        btn = 'img/del.png" alt="del';
-    }
+    var btn, cells;
+    [btn, cells] = setPopupTable("gen_users", c.users[0], 5);
 
     $("#popup_content table").append('<tr>' +
-                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + user + '" /></td>' +
+                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + cells[1] + '" /></td>' +
                                          '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
                                          '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
                                          '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
@@ -147,6 +133,125 @@ function showGeneralPopupUsers(c) {
                                      '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
     
     $("#popup_container").fadeIn("slow");      
+}
+
+/*
+ * Function:    showGeneralPopupServices
+ *
+ * Created on Feb 14, 2024
+ * Updated on Feb 16, 2024
+ *
+ * Description: Shows the services popup content for the general page.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showGeneralPopupServices(c, s) {
+    
+    var chk, setting, items = "";
+    var btn, cells;
+    [btn, cells] = setPopupTable("gen_services", c.services[0], 7); 
+    
+    for (let i = 1; i < c.pages.length - 2; i++) {        
+        setting = JSON.parse(s[i].value);
+        if(setting.page === "true") {  
+            
+            chk = "";
+            if ((cells[i+1]) === "☑") {
+                chk = " checked";
+            }
+            
+            items += '<td class="chk"><li><input type="checkbox" id="srv-' + i + '" name="services"' + 
+                     'value="' + i + '" ' + chk + '><label for="srv-' + i + '">' + c.services[i+1] + 
+                     '</label></li></td>';   
+        }
+    } 
+    
+    $("#popup_content table").append('<tr>' +
+                                        '<td><input id="user" type="text" name="user" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
+                                        items +
+                                        '<td><input id="website" type="text" name="website" placeholder="' + c.services.slice(-1) + '" value="' + cells.slice(-1) + '" /></td>' +
+                                        '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
+                                     '</tr>' +
+                                     '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
+    
+    $("#popup_container").fadeIn("slow");    
+}
+
+/*
+ * Function:    setServices
+ *
+ * Created on Feb 10, 2024
+ * Updated on Feb 12, 2024
+ *
+ * Description: Set the services which depends if the page is hidden or not.
+ *
+ * In:  c, s
+ * Out: srv
+ *
+ */
+function setServices(c, s) {
+    
+    var set, srv = [];
+    
+    srv.push(c.services[0]);
+    srv.push(c.services[1]);
+    
+    for (let i = 1; i < c.pages.length - 2; i++) {
+        
+        set = JSON.parse(s[i].value);
+        if(set.page === "true") {
+            srv.push(c.services[i+1]);
+        } 
+    }     
+    
+    srv.push(c.services[6]);
+    
+    return srv;
+}
+
+/*
+ * Function:    setPopupTable
+ *
+ * Created on Feb 14, 2024
+ * Updated on Feb 14, 2024
+ *
+ * Description: Set (prepare) the popup table, return the add or delete button and the cell values.
+ *
+ * In:  popclass, title, n
+ * Out: btn, cells
+ *
+ */
+function setPopupTable(popclass, title, n) {
+
+    var btn = 'img/add.png" alt="add'; 
+    var cells = [];
+      
+    $("#popup_content").removeClass().addClass(popclass);                   
+    $("#popup_content h2").html(title); 
+    $("#popup_content ul li").remove();
+    $("#popup_content ul").hide();
+    $("#popup_content table").show().empty();
+    
+    // Remove add marker if a new row was added.
+    removeAddRowMarker();
+        
+    // Show update popup and get the cell values.    
+    if ($("#table_container tbody .marked").length) 
+    {         
+        $("#table_container tbody .marked").find("td").each(function(){
+            cells.push($(this).html());
+        });        
+        btn = 'img/del.png" alt="del';
+    }
+    else {  // Fill the cells with empty values.
+        for (let i = 0; i < n; i++) {
+            cells.push("");
+        }
+    }
+    
+    return [btn, cells];
 }
 
 /*

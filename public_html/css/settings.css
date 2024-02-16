@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Feb 03, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -37,6 +37,15 @@
  background-color: #f5f5f5;
  padding: 3px;
  /* border-left: 3px solid maroon; /* #536878 */
+}
+
+/* Settings tables */
+.tbl_services tbody td:nth-child(2) {
+ width: 25%;
+}
+
+.tbl_services tbody td:last-child {
+ width: 45%;
 }
 
 /* Popup window */
@@ -144,6 +153,10 @@
  width: 50% !important;
 }
 
+#popup_container .gen_services {
+ width: 70% !important;
+}
+
 /* Radio and checkbox buttons */
 #popup_content li {
   display: inline-block;
@@ -153,6 +166,10 @@
   display: table; /* Display items vertical */
 }
 
+#popup_content td li {
+  margin: -6.5px 0 0;
+}
+    
 #popup_content li label {
   font-weight: normal;
 }

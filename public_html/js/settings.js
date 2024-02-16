@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 12, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Feb 06, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: Shows the settings page.
  *
@@ -88,7 +88,7 @@ function showSettings(c, s) {
     
     // Table row is pressed.
     $("#table_container").on('click', 'tbody tr', function(){        
-        editSettingsTableRow(c, this);    
+        editSettingsTableRow(c, s, this);    
     });
     
     // Settings popup Ok button is pressed.  
@@ -162,7 +162,7 @@ function showSettingsContent(slide, c) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 12, 2023
+ * Updated on Feb 14, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -198,7 +198,7 @@ function ShowGeneralSettings(c, s) {
     $("#page_buttons img").eq(5).addClass("show");
     
     showLanguage(c, s);
-    showTable(c.users, s, "get_users");
+    showTable("tbl_users", c.users, s, "get_users");
 }
 
 /*
@@ -405,7 +405,7 @@ function showSettingsButton(c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Feb 12, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -432,13 +432,13 @@ function showSettingButtonAction(c, s, that) {
             else 
             {
                 setPageButton(s[5], 2, 5);
-                showTable(c.users, s, "get_users");
+                showTable("tbl_users", c.users, s, "get_users");
             }
             break;
             
         case "services" :
-            if (that.className === 'active') {                
-                console.log("services");
+            if (that.className === 'active') {
+                showGeneralPopupServices(c, s);
             }
             else 
             {                          
@@ -446,19 +446,19 @@ function showSettingButtonAction(c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable(services, s, "get_services");               
+                showTable("tbl_services", services, s, "get_services");               
             }
             break;              
             
             
         case "configs"  :
             if (that.className === 'active') {
-                console.log(that.className); // debug
+                console.log(that.className); // debug   
             }
             else 
             {               
                 setPageButton(s[5], 4, 5);
-                showTable(c.configs, s, "get_configs");
+                showTable("tbl_config", c.configs, s, "get_configs");
             }
             break;
             
@@ -535,38 +535,6 @@ function setScaleButton(c, scale) {
     // Show setting on page.
     $("#settings u").html(c.scale[0]);
     $("#settings span").html(c.scale[j]);
-}
-
-/*
- * Function:    setServices
- *
- * Created on Feb 10, 2024
- * Updated on Feb 12, 2024
- *
- * Description: Set the services which depends if the page is hidden or not.
- *
- * In:  c, s
- * Out: srv
- *
- */
-function setServices(c, s) {
-    
-    var set, srv = [];
-    
-    srv.push(c.services[0]);
-    srv.push(c.services[1]);
-    
-    for (let i = 1; i < c.pages.length - 2; i++) {
-        
-        set = JSON.parse(s[i].value);
-        if(set.page === "true") {
-            srv.push(c.services[i+1]);
-        } 
-    }     
-    
-    srv.push(c.services[6]);
-    
-    return srv;
 }
 
 /*
@@ -657,15 +625,15 @@ function setPopupChoice(e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Feb 07, 2024
+ * Updated on Feb 16, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
- * In:  c, that
+ * In:  c, s, that
  * Out: -
  *
  */
-function editSettingsTableRow(c, that) {
+function editSettingsTableRow(c, s, that) {
     
     // Get active button.
     var btn = $("#page_buttons .active").attr("alt");
@@ -681,6 +649,7 @@ function editSettingsTableRow(c, that) {
             break;
 
         case "services" :
+             showGeneralPopupServices(c, s);
             break;        
         
         case "accounts" :

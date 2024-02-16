@@ -109,8 +109,8 @@ Tabel Diensten
 --------------
 tbl_services
 
-id		service							hide	finance   	stock   	savings		crypto
-1		ING Particulier					0		1			1			1			0
+id		service							hide	finance   	stock   	savings		crypto		website
+1		ING Particulier					0		1			1			1			0			https://ing.nl/particulier
 2		ABN AMRO Bank					0		1			0			0			0
 3		LeasePlan Bank 					0		0			1			0			0
 4		OAKK Beheerd Beleggen			0		0			0			1			0
