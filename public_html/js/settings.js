@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 16, 2024
+ * Updated on Feb 18, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -573,7 +573,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Feb 05, 2024
+ * Updated on Feb 19, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -600,7 +600,7 @@ function setPopupChoice(e, c, s) {
             case "gen_pages"    :
                 var result = [false,false,false,false];
                 $('input[name="pages"]:checked').each(function() {
-                    result[this.value - 1] = true;                 
+                    result[this.value - 1] = true;      
                 });
                
                 setPages(result, s);
@@ -610,7 +610,12 @@ function setPopupChoice(e, c, s) {
                 modifyUser(c, btn);      
                 break;
                 
+            case "gen_services" :
+                //console.log(btn, "Services");
                 
+                modifyServices(c, btn); 
+                
+                break;
                 
             case "fin_accounts" :
                 data = "TEST";
@@ -625,7 +630,7 @@ function setPopupChoice(e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Feb 16, 2024
+ * Updated on Feb 17, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -639,6 +644,11 @@ function editSettingsTableRow(c, s, that) {
     var btn = $("#page_buttons .active").attr("alt");
     var rowid = $(that).closest('tr').find('td:first').text();
     
+    var hide = false;
+    if ($(that).hasClass("hide")) {
+        hide = true;
+    } 
+    
     if (btn !== "configs" && rowid > 0) {
        $(that).addClass("marked");
     }
@@ -649,7 +659,7 @@ function editSettingsTableRow(c, s, that) {
             break;
 
         case "services" :
-             showGeneralPopupServices(c, s);
+             showGeneralPopupServices(c, s, hide);
             break;        
         
         case "accounts" :

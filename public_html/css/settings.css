@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Feb 16, 2024
+ * Updated on Feb 17, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -127,17 +127,16 @@
  right: 7px;
 }
 
-#popup_content .btn {
-  width: 24px;
-  height: 24px;
-  margin-top: 3px;
-  cursor: pointer;    
+#popup_content .btn,
+#popup_content .shw,
+#popup_content .choice input[type=image] {
+ width: 24px;
+ height: 24px;
+ cursor: pointer;    
 }
 
-#popup_content .choice input[type=image] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;    
+#popup_content .btn {
+ margin-top: 3px;    
 }
 
 #popup_content .close:hover {

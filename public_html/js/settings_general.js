@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 16, 2024
+ * Updated on Feb 19, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -139,42 +139,56 @@ function showGeneralPopupUsers(c) {
  * Function:    showGeneralPopupServices
  *
  * Created on Feb 14, 2024
- * Updated on Feb 16, 2024
+ * Updated on Feb 19, 2024
  *
  * Description: Shows the services popup content for the general page.
  *
- * In:  c, s
+ * In:  c, s, h
  * Out: -
  *
  */
-function showGeneralPopupServices(c, s) {
+function showGeneralPopupServices(c, s, h) {
     
     var chk, setting, items = "";
-    var btn, cells;
-    [btn, cells] = setPopupTable("gen_services", c.services[0], 7); 
+    var shw, btn, cells, col = 3;
+    [btn, cells] = setPopupTable("gen_services", c.services[0], 7);     
     
-    for (let i = 1; i < c.pages.length - 2; i++) {        
+    // Create show or hide button.
+    shw = 'img/show.png" alt="show';
+    if (h) { 
+        shw = 'img/hide.png" alt="hide';
+    }
+      
+    // Generate the checkboxes for the pages.
+    for (let i = 1, j = 2; i < c.pages.length - 2; i++) {        
         setting = JSON.parse(s[i].value);
         if(setting.page === "true") {  
             
             chk = "";
-            if ((cells[i+1]) === "☑") {
+            if ((cells[j]) === "☑") {
                 chk = " checked";
             }
-            
+            j++;
+            col++;
             items += '<td class="chk"><li><input type="checkbox" id="srv-' + i + '" name="services"' + 
                      'value="' + i + '" ' + chk + '><label for="srv-' + i + '">' + c.services[i+1] + 
                      '</label></li></td>';   
         }
-    } 
+    }
     
     $("#popup_content table").append('<tr>' +
-                                        '<td><input id="user" type="text" name="user" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
+                                        '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
+                                        '<td><input id="service" type="text" name="user" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
                                         items +
                                         '<td><input id="website" type="text" name="website" placeholder="' + c.services.slice(-1) + '" value="' + cells.slice(-1) + '" /></td>' +
                                         '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
                                      '</tr>' +
-                                     '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
+                                     '<tr><td class="msg" colspan="' + col + '">&nbsp;<td></tr>');
+    
+    $("#popup_content .shw").hide();
+    if ($("#table_container tbody .marked").length) {        
+        $("#popup_content .shw").show();
+    }      
     
     $("#popup_container").fadeIn("slow");    
 }
@@ -392,7 +406,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 09, 2024
+ * Updated on Feb 19, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -404,7 +418,7 @@ function modifyUser(c, btn) {
         
     var data = [];        
     data.push($("#user").val(), $("#pass1").val(), $("#pass2").val());       
-    var msg = c.login[9].replace("#", c.login[1] + " " + data[0]);
+    var msg = c.messages[2].replace("#", c.login[1] + " " + data[0]);
         
     if(!checkEditDelete(btn, msg)) {
       
@@ -419,7 +433,7 @@ function modifyUser(c, btn) {
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
-                        $(".msg").html(c.login[1] + " " + c.login[8]);                    
+                        $(".msg").html(c.login[1] + " " + c.messages[1]);                    
                     }
                     else 
                     {                    
@@ -467,7 +481,7 @@ function modifyUser(c, btn) {
  * Function:    validateUser
  *
  * Created on Jan 29, 2024
- * Updated on Frb 03, 2024
+ * Updated on Feb 19, 2024
  *
  * Description: Validate the user input (username and password).
  *
@@ -499,13 +513,13 @@ function validateUser(c, data) {
             }
             else 
             {       
-                $(".msg").html(c.login[2] + " " + c.login[6]);
+                $(".msg").html(c.login[2] + " " + c.messages[1]);
                 check = false;
             }     
         }
         else 
         {
-        $(".msg").html(c.login[1] + " " + c.login[7]);
+        $(".msg").html(c.login[1] + " " + c.messages[0]);
         check = false;
         } 
     }
@@ -553,4 +567,77 @@ function showEditUser(result) {
     
     $("#table_container tbody .marked td").eq(1).html(result.user);
     $("#table_container tbody .marked td").eq(2).html(result.hash);    
+}
+
+
+/*
+ * Function:    modifyServices
+ *
+ * Created on Feb 18, 2024
+ * Updated on Feb 19, 2024
+ *
+ * Description: Check the services input and add, edit or remove the services in the database.
+ *
+ * In:  c, btn
+ * Out: -
+ *
+ */
+function modifyServices(c, btn) {
+    
+    var input = [];  
+    var options = [];
+    var msg;
+    
+    // Get the input values.
+    input.push($("#service").val(), $("#website").val());
+    $('input[name="services"]').each(function() {
+        
+        if ($(this).is(":checked")) {
+            options[this.value-1] = true;
+        }
+        else {
+            options[this.value-1] = false;
+        }                 
+    });
+    
+    input.push(options); 
+    msg = c.messages[2].replace("#", input[0]);
+   
+    if(!checkEditDelete(btn, msg)) {
+        
+        // Add the user input to user table if the user doesn´t exists.
+        if (validateName(c.messages, c.services[1], input[0])) 
+        {        
+            var [id, action] = getRowIdAndAction();                        
+            var send = 'srv='+ input[0] + '&web=' + input[1] + '&opt=' + JSON.stringify(input[2]) + 
+                       '&action=' + action + '&id=' + id;  
+            
+        
+            console.log(send);
+        }
+    }  
+}
+
+/*
+ * Function:    validateName
+ *
+ * Created on Feb 19, 2024
+ * Updated on Feb 19, 2024
+ *
+ * Description: Validate the name, check if it is not empty.
+ *
+ * In:  c, name, value
+ * Out: check
+ *
+ */
+function validateName(msg, name, value) {
+
+    var check = true;
+    
+    if (!value) {
+        $(".msg").html(name + " " + msg[0]);
+        check = false;        
+    }
+    
+    return check;
 }
