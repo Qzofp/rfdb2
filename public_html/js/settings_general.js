@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 19, 2024
+ * Updated on Feb 21, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -406,7 +406,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 19, 2024
+ * Updated on Feb 21, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -433,7 +433,7 @@ function modifyUser(c, btn) {
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
-                        $(".msg").html(c.login[1] + " " + c.messages[1]);                    
+                        $(".msg").html(data[0] + " " + c.messages[1]);                    
                     }
                     else 
                     {                    
@@ -569,12 +569,11 @@ function showEditUser(result) {
     $("#table_container tbody .marked td").eq(2).html(result.hash);    
 }
 
-
 /*
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Feb 19, 2024
+ * Updated on Feb 21, 2024
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -603,8 +602,8 @@ function modifyServices(c, btn) {
     input.push(options); 
     msg = c.messages[2].replace("#", input[0]);
    
-    if(!checkEditDelete(btn, msg)) {
-        
+    if(!checkEditDelete(btn, msg)) 
+    {     
         // Add the user input to user table if the user doesn´t exists.
         if (validateName(c.messages, c.services[1], input[0])) 
         {        
@@ -612,9 +611,52 @@ function modifyServices(c, btn) {
             var send = 'srv='+ input[0] + '&web=' + input[1] + '&opt=' + JSON.stringify(input[2]) + 
                        '&action=' + action + '&id=' + id;  
             
-        
-            console.log(send);
-        }
+            var request = getAjaxRequest("modify_services", send);
+            request.done(function(result) {
+                if (result.success) {         
+                    if (result.exists) {
+                        $(".msg").html(input[0] + " " + c.messages[1]);                    
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :
+                                showAddService(result);
+                                break;
+                                
+                            case "edit"   :
+                                showEditService(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {   
+                            // Reset input.
+                            $("#service").val("");                        
+                            $('input[name="services"]').prop('checked', false);
+                            $("#website").val("");   
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
+    
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+     
+            closeErrorMessage();               
+        }                        
     }  
 }
 
@@ -640,4 +682,66 @@ function validateName(msg, name, value) {
     }
     
     return check;
+}
+
+/*
+ * Function:    showAddService
+ *
+ * Created on Feb 21, 2024
+ * Updated on Feb 21, 2024
+ *
+ * Description: Show the result of add servce.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showAddService(result) {
+    
+    var items = ""; 
+    var options = [];
+    if (result.opt) {
+        options = result.opt.split(",");          
+        options.forEach((item) => {
+            items += '<td>' + item + '</td>';
+        }); 
+    }
+        
+    $("#table_container").scrollTop(0);
+  
+    $("#table_container tbody").prepend('<tr><td>' + result.id + '</td>' +
+                                            '<td>' + result.srv + '</td>' +                                            
+                                            items +
+                                            '<td>' + result.web + '</td>');
+                                                 
+    $("#table_container tbody").children("tr:first").addClass("add"); 
+}
+
+/*
+ * Function:    showEditService
+ *
+ * Created on Feb 12, 2024
+ * Updated on Feb 12, 2024
+ *
+ * Description: Show the result of edit service.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showEditService(result) {  
+    
+    //console.log(result.opt);
+    
+    var options = [];
+    if (result.opt) {
+        options = result.opt.split(",");
+        
+        options.forEach(function(item, i) {            
+            $("#table_container tbody .marked td").eq(i+2).html(item); 
+        });     
+    }
+    
+    $("#table_container tbody .marked td").eq(1).html(result.srv);
+    $("#table_container tbody .marked td:last-child").html(result.web);    
 }

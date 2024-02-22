@@ -4,11 +4,11 @@
  * Author: Rizzo Productions
  * Version: 0.1
  *
- * File:    modify_user .php
+ * File:    modify_user.php
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Feb 04, 2024
+ * Updated on Feb 21, 2024
  *
  * Description: Check if the user is signed in and modify the user in the tbl_users table.
  * Dependenties: config.php
@@ -115,7 +115,7 @@ function ModifyUser()
  * Function:    EditUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 03, 2024
+ * Updated on Feb 21, 2024
  *
  * Description: Edit the user in the tbl_users table if the user doesn't exists.
  *
@@ -126,27 +126,25 @@ function ModifyUser()
  function EditUser($id, $user, $hash)
  {   
     $response = CheckUser($user);    
-    if ($response['success'] && !$response['exists'])
-    {        
-        try 
-        {    
-            $db = OpenDatabase();
+       
+    try 
+    {    
+        $db = OpenDatabase();
                  
-            $query = "UPDATE tbl_users SET `user` = '$user', `password` = '$hash' WHERE `id` = $id";          
-            $select = $db->prepare($query);
-            $select->execute();
+        $query = "UPDATE tbl_users SET `user` = '$user', `password` = '$hash' WHERE `id` = $id";          
+        $select = $db->prepare($query);
+        $select->execute();
             
-            $response['user'] = $user;
-            $response['hash'] = $hash;
+        $response['user'] = $user;
+        $response['hash'] = $hash;
             
-            $response['success'] = true;  
-        }
-        catch (PDOException $e) 
-        {    
-            $response['message'] = $e->getMessage();
-            $response['success'] = false;
-        } 
+        $response['success'] = true;  
     }
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
 
     // Close database connection.
     $db = null;   
@@ -158,9 +156,9 @@ function ModifyUser()
  * Function:    DeleteUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 03, 2024
+ * Updated on Feb 20, 2024
  *
- * Description: Delete the user in the tbl_users table if the user doesn't exists.
+ * Description: Delete the user in the tbl_users table.
  *
  * In:  $user, $hash
  * Out: $response
@@ -196,7 +194,7 @@ function ModifyUser()
  * Function:    CheckUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 03, 2024
+ * Updated on Feb 20, 2024
  *
  * Description: Check if the user exists in the user table.
  *
@@ -213,7 +211,7 @@ function CheckUser($user)
         $db = OpenDatabase();
         
         // Check if user aleready exists in the tbl_users table.
-        $query = "SELECT count(0) FROM tbl_users WHERE user = '$user';";        
+        $query = "SELECT count(0) FROM `tbl_users` WHERE `user` = '$user';";        
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();
