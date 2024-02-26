@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 18, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -198,14 +198,14 @@ function ShowGeneralSettings(c, s) {
     $("#page_buttons img").eq(5).addClass("show");
     
     showLanguage(c, s);
-    showTable("tbl_users", c.users, s, "get_users");
+    showTable("tbl_users", c.users, s, 5, "get_users");
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 12, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -215,6 +215,7 @@ function ShowGeneralSettings(c, s) {
  */
 function ShowFinancesSettings(c, s) {
     
+    var items = [];
     var set = JSON.parse(s[1].value);    
     getAndSetScaleButton(c, s[1].name);
     
@@ -230,22 +231,18 @@ function ShowFinancesSettings(c, s) {
     $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(5).hide();
     
-
-    
-    // Temporary
-    $("#table_container thead tr").remove(); 
-    $("#table_container tbody td").remove();
-    $("#table_container tfoot tr").remove();
-    
-    set = JSON.parse(s[1].value);
-    $("#label span").css("border-left","3px solid " + set.theme.color); 
+    items.push(c.accounts[5] + c.accounts[0]);
+    for (let i = 1; i <= 4; i++) {
+       items.push(c.accounts[i]); 
+    }    
+    showTable("tbl_accounts", items, s, 1, "get_accounts_finance");
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 12, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -255,6 +252,7 @@ function ShowFinancesSettings(c, s) {
  */
 function ShowStocksSettings(c, s) {
 
+    var items = [];
     var set = JSON.parse(s[2].value);
     
     if($("#page_buttons img").hasClass("active")) {
@@ -275,19 +273,19 @@ function ShowStocksSettings(c, s) {
     $("#page_buttons img").eq(5).hide();
  
     
+    items.push(c.accounts[6] + c.accounts[0]);
+    for (let i = 1; i <= 4; i++) {
+       items.push(c.accounts[i]); 
+    }   
     
-    // Temporary
-    $("#table_container thead tr").remove(); 
-    $("#table_container tbody td").remove(); 
-    $("#table_container tfoot tr").remove();
-    $("#label span").css("border-left","3px solid " + set.theme.color);        
+    showTable("tbl_accounts", items, s, 2, "get_accounts_stock");   
 }
 
 /*
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 12, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -297,6 +295,7 @@ function ShowStocksSettings(c, s) {
  */
 function ShowSavingsSettings(c, s) {
     
+    var items = [];
     var set = JSON.parse(s[3].value);
     
     if($("#page_buttons img").hasClass("active")) {
@@ -316,13 +315,12 @@ function ShowSavingsSettings(c, s) {
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide();
       
-
+    items.push(c.accounts[7] + c.accounts[0]);
+    for (let i = 1; i <= 4; i++) {
+       items.push(c.accounts[i]); 
+    }   
     
-    // Temporary
-    $("#table_container thead tr").remove(); 
-    $("#table_container tbody td").remove();
-    $("#table_container tfoot tr").remove();
-    $("#label span").css("border-left","3px solid " + set.theme.color);         
+    showTable("tbl_accounts", items, s, 3, "get_accounts_savings");       
 }
 
 /*
@@ -339,6 +337,7 @@ function ShowSavingsSettings(c, s) {
  */
 function ShowCryptoSettings(c, s) {
     
+    var items = [];
     var set = JSON.parse(s[4].value);
     
     if($("#page_buttons img").hasClass("active")) {
@@ -358,13 +357,12 @@ function ShowCryptoSettings(c, s) {
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide(); 
 
-
+    items.push(c.accounts[8] + c.accounts[0]);
+    for (let i = 1; i <= 4; i++) {
+       items.push(c.accounts[i]); 
+    }    
     
-    // Temporary
-    $("#table_container thead tr").remove(); 
-    $("#table_container tbody td").remove();
-    $("#table_container tfoot tr").remove();    
-    $("#label span").css("border-left","3px solid " + set.theme.color); 
+    showTable("tbl_accounts", items, s, 4, "get_accounts_savings");
 }
 
 /*
@@ -405,7 +403,7 @@ function showSettingsButton(c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Feb 16, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -432,7 +430,7 @@ function showSettingButtonAction(c, s, that) {
             else 
             {
                 setPageButton(s[5], 2, 5);
-                showTable("tbl_users", c.users, s, "get_users");
+                showTable("tbl_users", c.users, s, 5, "get_users");
             }
             break;
             
@@ -446,7 +444,7 @@ function showSettingButtonAction(c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable("tbl_services", services, s, "get_services");               
+                showTable("tbl_services", services, s, 5, "get_services");               
             }
             break;              
             
@@ -458,7 +456,7 @@ function showSettingButtonAction(c, s, that) {
             else 
             {               
                 setPageButton(s[5], 4, 5);
-                showTable("tbl_config", c.configs, s, "get_configs");
+                showTable("tbl_config", c.configs, s, 5, "get_configs");
             }
             break;
             

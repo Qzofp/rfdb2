@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Javascript functions for the settings page.
  * Dependenties: js/config.js
@@ -406,7 +406,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 25, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -432,10 +432,7 @@ function modifyUser(c, btn) {
             var request = getAjaxRequest("modify_user", send);
             request.done(function(result) {
                 if (result.success) {         
-                    if (result.exists) {
-                        $(".msg").html(data[0] + " " + c.messages[1]);                    
-                    }
-                    else 
+                    if (!checkLastUserOrExists(result, data[0], c))
                     {                    
                         switch (action) {
                             case "add"    :
@@ -481,7 +478,7 @@ function modifyUser(c, btn) {
  * Function:    validateUser
  *
  * Created on Jan 29, 2024
- * Updated on Feb 19, 2024
+ * Updated on Feb 25, 2024
  *
  * Description: Validate the user input (username and password).
  *
@@ -513,7 +510,7 @@ function validateUser(c, data) {
             }
             else 
             {       
-                $(".msg").html(c.login[2] + " " + c.messages[1]);
+                $(".msg").html(c.login[2] + " " + c.messages[0]);
                 check = false;
             }     
         }
@@ -525,6 +522,36 @@ function validateUser(c, data) {
     }
     
     return check;
+}
+
+/*
+ * Function:    checkLastUserOrExists
+ *
+ * Created on Feb 25, 2024
+ * Updated on Feb 26, 2024
+ *
+ * Description: Check if it is the last user or uf the user exists.
+ *
+ * In:  result, user, c
+ * Out: -
+ *
+ */
+function checkLastUserOrExists(result, user, c) {
+    
+   var check = false;
+   
+   if (result.exists) {
+       
+       $(".msg").html(user + " " + c.messages[1]);
+       check = true;
+   }
+   else if (result.last) {
+       
+       $(".msg").html(user + " " + c.messages[3]);
+       check = true;
+   }
+   
+   return check; 
 }
 
 /*
@@ -573,7 +600,7 @@ function showEditUser(result) {
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 23, 2024
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -602,14 +629,15 @@ function modifyServices(c, btn) {
     input.push(options); 
     msg = c.messages[2].replace("#", input[0]);
    
-    if(!checkEditDelete(btn, msg)) 
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the user input to user table if the user doesn´t exists.
         if (validateName(c.messages, c.services[1], input[0])) 
         {        
-            var [id, action] = getRowIdAndAction();                        
+            var [id, action] = getRowIdAndAction();
+            var hide = getShowHideRow();
             var send = 'srv='+ input[0] + '&web=' + input[1] + '&opt=' + JSON.stringify(input[2]) + 
-                       '&action=' + action + '&id=' + id;  
+                       '&action=' + action + '&id=' + id + '&hide=' + hide; 
             
             var request = getAjaxRequest("modify_services", send);
             request.done(function(result) {
@@ -720,8 +748,8 @@ function showAddService(result) {
 /*
  * Function:    showEditService
  *
- * Created on Feb 12, 2024
- * Updated on Feb 12, 2024
+ * Created on Feb 21, 2024
+ * Updated on Feb 23, 2024
  *
  * Description: Show the result of edit service.
  *
@@ -729,11 +757,17 @@ function showAddService(result) {
  * Out: -
  *
  */
-function showEditService(result) {  
-    
-    //console.log(result.opt);
+function showEditService(result) {
     
     var options = [];
+    
+    if (result.hide === "true") {
+        $("#table_container tbody .marked").addClass("hide");
+    }
+    else {
+        $("#table_container tbody .marked").removeClass("hide");
+    }
+    
     if (result.opt) {
         options = result.opt.split(",");
         
@@ -744,4 +778,69 @@ function showEditService(result) {
     
     $("#table_container tbody .marked td").eq(1).html(result.srv);
     $("#table_container tbody .marked td:last-child").html(result.web);    
+}
+
+/*
+ * Function:    checkShowHide
+ *
+ * Created on Feb 23, 2024
+ * Updated on Feb 23, 2024
+ *
+ * Description: Check if the show or hide button is pressed in de popup choice window.
+ *
+ * In:  btn
+ * Out: check
+ * 
+ */
+function checkShowHide(btn) {  
+    
+    var check = false;
+      
+    if (btn === "show" || btn === "hide") {
+        
+        if (btn === "show") {
+            
+            $("#popup_content .shw").attr({
+                src: "img/hide.png",
+                alt: "hide"
+            });           
+        }
+        else {
+            
+            $("#popup_content .shw").attr({
+                src: "img/show.png",
+                alt: "show"
+            });                            
+        }
+        
+        check = true;
+    }
+    
+    return check;
+}
+
+/*
+ * Function:    getShowHideRow
+ *
+ * Created on Feb 23, 2024
+ * Updated on Feb 23, 2024
+ *
+ * Description: Get the show or hide button.
+ *
+ * In:  -
+ * Out: hide
+ * 
+ */
+function getShowHideRow() {
+    
+    var hide = false;
+ 
+    if ($("#popup_content .shw").length) {
+             
+        if ($("#popup_content .shw").attr("alt") === "hide") {
+            hide = true;
+        }
+    }
+    
+    return hide;
 }

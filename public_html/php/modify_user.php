@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Check if the user is signed in and modify the user in the tbl_users table.
  * Dependenties: config.php
@@ -71,7 +71,7 @@ function ModifyUser()
  * Function:    AddUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 04, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Add the user in the tbl_users table if the user doesn't exists.
  *
@@ -81,7 +81,7 @@ function ModifyUser()
  */    
  function AddUser($user, $hash)
  {   
-    $response = CheckUser($user);    
+    $response = CheckUser(0, $user);    
     if ($response['success'] && !$response['exists'])
     {        
         try 
@@ -115,7 +115,7 @@ function ModifyUser()
  * Function:    EditUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Edit the user in the tbl_users table if the user doesn't exists.
  *
@@ -125,27 +125,29 @@ function ModifyUser()
  */    
  function EditUser($id, $user, $hash)
  {   
-    $response = CheckUser($user);    
-       
-    try 
-    {    
-        $db = OpenDatabase();
+    $response = CheckUser($id, $user);    
+    if ($response['success'] && !$response['exists'])
+    {
+        try 
+        {    
+            $db = OpenDatabase();
                  
-        $query = "UPDATE tbl_users SET `user` = '$user', `password` = '$hash' WHERE `id` = $id";          
-        $select = $db->prepare($query);
-        $select->execute();
+            $query = "UPDATE tbl_users SET `user` = '$user', `password` = '$hash' WHERE `id` = $id";          
+            $select = $db->prepare($query);
+            $select->execute();
             
-        $response['user'] = $user;
-        $response['hash'] = $hash;
+            $response['user'] = $user;
+            $response['hash'] = $hash;
             
-        $response['success'] = true;  
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        } 
     }
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-
+    
     // Close database connection.
     $db = null;   
       
@@ -156,7 +158,7 @@ function ModifyUser()
  * Function:    DeleteUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 20, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Delete the user in the tbl_users table.
  *
@@ -166,24 +168,28 @@ function ModifyUser()
  */    
  function DeleteUser($id)
  {   
-    $response = [];  
-       
-    try 
-    {    
-        $db = OpenDatabase();
+    //$response = [];  
+    
+    $response = CheckLastUser(); 
+    if ($response['success'] && !$response['last'])
+    {        
+        try 
+        {    
+            $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_users WHERE `id` = $id";          
-        $select = $db->prepare($query);
-        $select->execute();
+            $query = "DELETE FROM tbl_users WHERE `id` = $id";          
+            $select = $db->prepare($query);
+            $select->execute();
                     
-        $response['success'] = true;  
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        }
     }
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-
+    
     // Close database connection.
     $db = null;   
       
@@ -194,15 +200,15 @@ function ModifyUser()
  * Function:    CheckUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 20, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Check if the user exists in the user table.
  *
- * In:  $user
+ * In:  $id, $user
  * Out: $response
  *
  */
-function CheckUser($user)
+function CheckUser($id, $user)
 {
     $response = [];
     
@@ -210,8 +216,13 @@ function CheckUser($user)
     { 
         $db = OpenDatabase();
         
+        $edit = "";
+        if ($id > 0) {
+            $edit = "AND `id` <> $id";
+        }
+            
         // Check if user aleready exists in the tbl_users table.
-        $query = "SELECT count(0) FROM `tbl_users` WHERE `user` = '$user';";        
+        $query = "SELECT count(0) FROM `tbl_users` WHERE `user` = '$user' $edit;";       
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();
@@ -233,4 +244,50 @@ function CheckUser($user)
     $db = null;        
     
     return $response;
+}
+
+/*
+ * Function:    CheckLastUser
+ *
+ * Created on Feb 24, 2024
+ * Updated on Feb 24, 2024
+ *
+ * Description: Check if the user is not the last user in the table.
+ *
+ * In:  -
+ * Out: $response
+ *
+ */
+function CheckLastUser() 
+{
+    $response = [];
+
+    try 
+    { 
+        $db = OpenDatabase();
+        
+            
+        // Check if user aleready exists in the tbl_users table.
+        $query = "SELECT count(0) FROM `tbl_users`;";       
+        $select = $db->prepare($query);
+        $select->execute();        
+        $result = $select->fetchColumn();
+
+        $response['last'] = false; 
+        if ($result == 1) {
+            $response['last'] = true; 
+        }  
+
+        $response['success'] = true;         
+    }    
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
+    
+    // Close database connection.
+    $db = null;       
+    
+    return $response;    
 }

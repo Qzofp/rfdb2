@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    ModifyServices
  *
  * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 23, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_services table if the service doesn't exists.
  *
@@ -47,6 +47,7 @@ function ModifyService()
     $opt    = filter_input(INPUT_POST, 'opt'    , FILTER_SANITIZE_STRING);    
     $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_STRING);
     $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_STRING);
+    $hide   = filter_input(INPUT_POST, 'hide'   , FILTER_SANITIZE_STRING);
 
     $aNames   = ["finance","stock","savings","crypto"];
     $aOptions = json_decode($opt);
@@ -59,7 +60,7 @@ function ModifyService()
             break;
             
         case "edit" :
-            $response = EditService($id, $srv, $web, $aNames, $aOptions);
+            $response = EditService($id, $hide, $srv, $web, $aNames, $aOptions);
             break;
             
         case "delete" :
@@ -74,7 +75,7 @@ function ModifyService()
  * Function:    AddService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Add the input to the tbl_services table if the service doesn't exists.
  *
@@ -87,7 +88,7 @@ function ModifyService()
     $options    = "";
     $opt_values = "";
        
-    $response = CheckService($srv);   
+    $response = CheckService(0, $srv);   
     if ($response['success'] && !$response['exists'])
     {  
         list($options, $opt_values) = CreateInsertNamesAndValues($aNames, $aOptions);
@@ -124,45 +125,48 @@ function ModifyService()
  * Function:    EditService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Edit the tbl_services table with the input if the service doesn't exists.
  *
- * In:  $id, $srv, $web, $aNames, $aOptions
+ * In:  $id, $hide, $srv, $web, $aNames, $aOptions
  * Out: $response
  *
  */    
- function EditService($id, $srv, $web, $aNames, $aOptions)
+ function EditService($id, $hide, $srv, $web, $aNames, $aOptions)
  {   
     $options    = "";
     $opt_values = "";
-           
-    try 
+    
+    
+    $response = CheckService($id, $srv);    
+    if ($response['success'] && !$response['exists'])
     {    
-        list($options, $opt_values) = CreateUpdateNamesAndValues($aNames, $aOptions);
+        try 
+        {    
+            list($options, $opt_values) = CreateUpdateNamesAndValues($aNames, $aOptions);
             
-        $db = OpenDatabase();
+            $db = OpenDatabase();
                 
-        $query = "UPDATE tbl_services SET `service`='$srv',`website`='$web'$options WHERE `id`=$id";          
-        $select = $db->prepare($query);
-        $select->execute();
+            $query = "UPDATE tbl_services SET `hide`=$hide, `service`='$srv',`website`='$web'$options WHERE `id`=$id";        
+            $select = $db->prepare($query);
+            $select->execute();
             
-        $response['id']  = $db->lastInsertId();            
-        $response['srv'] = $srv;
-        $response['web'] = $web;
-        $response['opt'] = $opt_values;
+            $response['id']   = $db->lastInsertId();
+            $response['hide'] = $hide;       
+            $response['srv']  = $srv;
+            $response['web']  = $web;
+            $response['opt']  = $opt_values;
             
-        // Debug
-        $response['query'] = $query;
-            
-        $response['success'] = true;  
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        } 
     }
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-
+    
     // Close database connection.
     $db = null;   
       
@@ -211,15 +215,15 @@ function ModifyService()
  * Function:    CheckService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 20, 2024
+ * Updated on Feb 24, 2024
  *
  * Description: Check if the service exists in the tbl_services table.
  *
- * In:  $srv
+ * In:  $id, $srv
  * Out: $response
  *
  */
-function CheckService($srv)
+function CheckService($id, $srv)
 {
     $response = [];
     
@@ -227,8 +231,13 @@ function CheckService($srv)
     { 
         $db = OpenDatabase();
         
+        $edit = "";
+        if ($id > 0) {
+            $edit = "AND `id` <> $id";
+        }
+        
         // Check if user aleready exists in the tbl_users table.
-        $query = "SELECT count(0) FROM `tbl_services` WHERE `service` = '$srv';";        
+        $query = "SELECT count(0) FROM `tbl_services` WHERE `service` = '$srv' $edit;";        
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();

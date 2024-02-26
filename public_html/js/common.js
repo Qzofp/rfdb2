@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 14, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -305,17 +305,17 @@ function setPageButton(s, n, h) {
  * Function:    showTable
  *
  * Created on Jan 06, 2024
- * Updated on Feb 14, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Show the table.
  *
- * In:  tblclass, items, s, page
+ * In:  tblclass, items, s, n, page
  * Out: -
  *
  */
-function showTable(tblclass, items, s, page) {
+function showTable(tblclass, items, s, n, page) {
 
-    var set = JSON.parse(s[5].value);
+    var set = JSON.parse(s[n].value);
     
     // Set the table label.
     $("#label span").html(items[0]);

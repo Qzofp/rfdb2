@@ -1,0 +1,46 @@
+Links
+-----
+https://netbeans.apache.org/kb/docs/ide/git.html
+https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+
+Password:       P@ssw0rd
+Hash:           9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e
+
+Ideeën
+------
+1.  Versienummer hardcoded vastleggen in bijvoordbeeld de config file. Niet meer in de database.
+
+2.  Selectie keuzes uitbreiden met kwartalen en jaren. Dus maanden, kwartalen en jaren.
+    In de settings aangeven voor welk onderdeel dit geldt, bijvoorbeeld:
+    - Financiën : maanden
+    - Beleggingen : kwartalen
+    - Sparen : kwartalen
+    - Crypto : Jaren
+
+3.  Thema kleuren gebruiken in overzicht grafiek, bv.
+    - Overzicht : ? 
+    - Financiën : geel
+    - Beleggingen : (OAKK) groen
+    - Sparen : blauw 
+    - Crypto : (Bitcoin) oranje
+
+4.  Sheet split screen maken, zodat in de onderste helft de bar grafiek kan worden geplaatst.
+
+5.  Voor elk onderdeel een eigen html en css pagina maken, bv. financien, beleggen, sparen, crypto, instellingen, etc.
+
+6.  Config tabel combineren met settings, bv.
+   
+    id   name        value       config  language
+    1    title       Rizzo's...  true    NL
+    2    fin_bar     12          false   null
+
+7. Zorg ervoor dat een rij met afhankelijkheden in andere tabellen niet kan worden verwijderd.
+
+ToDo
+----
+1. Fix: Zorg ervoor dat de laatste User in de Settings tbl_user tabel niet weggegooid kan worden.
+    - Gereed.
+
+2. Configuraties aanpassen. Door nogmaals op het config icon te klikken en dat dan de instellingen verschijnen
+   die aangepast kunnen worden. Bv. door het in beeld schuiven van deze instellingen, net zoals de grafieken.
+
