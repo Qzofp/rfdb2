@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 10, 2024
- * Updated on Feb 12, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Check if the user is signed in and get the services from the databases tbl_services table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    GetServices
  *
  * Created on Feb 10, 2024
- * Updated on Feb 12, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Get the services from the databases tbl_services table.
  *
@@ -41,6 +41,8 @@ else
  */
 function GetServices()
 {   
+    $sort = filter_input(INPUT_POST, 'sort' , FILTER_SANITIZE_STRING);
+
     $response = [];
 
     try 
@@ -66,7 +68,7 @@ function GetServices()
 
         $query = "SELECT `id`,`hide`,`service`$pages,`website`".
                  "FROM `tbl_services` ".
-                 "ORDER BY `service`;";
+                 "ORDER BY `$sort`;";
     
         $select = $db->prepare($query);
         $select->execute();

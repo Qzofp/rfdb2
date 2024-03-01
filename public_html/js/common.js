@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 26, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -305,15 +305,15 @@ function setPageButton(s, n, h) {
  * Function:    showTable
  *
  * Created on Jan 06, 2024
- * Updated on Feb 26, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Show the table.
  *
- * In:  tblclass, items, s, n, page
+ * In:  tblclass, items, s, n, page, send
  * Out: -
  *
  */
-function showTable(tblclass, items, s, n, page) {
+function showTable(tblclass, items, s, n, page, send) {
 
     var set = JSON.parse(s[n].value);
     
@@ -340,7 +340,7 @@ function showTable(tblclass, items, s, n, page) {
  
     // Fill the table body.
     $("#table_container tbody tr").remove(); 
-    fillTable(s, page, items.length);
+    fillTable(s, page, items.length, send);
     
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
@@ -355,7 +355,7 @@ function showTable(tblclass, items, s, n, page) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Feb 12, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -363,10 +363,10 @@ function showTable(tblclass, items, s, n, page) {
  * Out: -
  *
  */
-function fillTable(s, page, l) {
+function fillTable(s, page, l, send) {
          
     var setting = JSON.parse(s[5].value);     
-    var request = getAjaxRequest(page, ""); 
+    var request = getAjaxRequest(page, send);
     request.done(function(result) {
         if (result.success) {         
             

@@ -1,6 +1,11 @@
 RFDB 2 definities
 -----------------
 
+Links
+-----
+https://github.com/GramThanos/jsCalendar
+https://www.jqueryscript.net/time-clock/Super-Tiny-jQuery-HTML5-Date-Picker-Plugin.html
+https://www.jqueryscript.net/time-clock/Simple-Clean-Date-Picker-Plugin-with-jQuery-Air-Datepicker.html
 
 Financiën (betaalrekening)
 ---------

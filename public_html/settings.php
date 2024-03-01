@@ -7,15 +7,18 @@
  * File:         settings.php
  * Dependencies: css/common.css
  *               css/settings.css
+ *               css/ext/jquery.datepicker2.css
  *               js/ext/jquery-3.7.1.min.js
+ *               js/ext/jquery.datepicker2.min.js
  *               js/ext/sha256.js
  *               js/config.js
  *               js/common.js 
  *               js/settings_general.js
+ *               js/settings_finances.js
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Feb 06, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -35,11 +38,14 @@ if(!$user){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/common.css">        
         <link rel="stylesheet" href="css/settings.css">
-        <script src="js/ext/jquery-3.7.1.min.js"></script> 
+        <link rel="stylesheet" href="css/ext/jquery.datepicker2.css">      
+        <script src="js/ext/jquery-3.7.1.min.js"></script>
+        <script src="js/ext/jquery.datepicker2.min.js"></script>     
         <script src="js/ext/sha256.js"></script>        
         <script src="js/config.js"></script> 
         <script src="js/common.js"></script>    
-        <script src="js/settings_general.js"></script>         
+        <script src="js/settings_general.js"></script>     
+        <script src="js/settings_finances.js"></script>            
         <script src="js/settings.js"></script> 
     </head>
     <body>                   
@@ -64,7 +70,7 @@ if(!$user){
                     </ul>                    
                 </div>
             </div>		
-			
+                        
             <h1></h1>
             <h2></h2>     
         </header>
@@ -136,9 +142,25 @@ if(!$user){
                 <div id="popup_container"> 
                     <div id="popup_content"> 
                         <h2></h2>                        
-                        <form method="POST">                      
+                        <form method="POST">                           
                             <ul></ul>                    
-                            <table></table>
+                            <table class="table_general"></table>
+                            
+                            <!-- This table is needed for the datepicker. -->
+                            <table class="table_finance">
+                                <tr>
+                                    <td><input class="shw" type="image" name="submit" src="" /></td>
+                                    <td><input id="date" type="text" name="date" placeholder="" value="" data-select="datepicker" /></td>
+                                    <td><input id="serv" type="text" name="serv" placeholder="" value="" /></td>
+                                    <td><input id="acct" type="text" name="account" placeholder="" value="" /></td>
+                                    <td><input id="desc" type="text" name="desc" placeholder="" value="" /></td>
+                                    <td><input class="btn" type="image" name="submit" src="" /></td>                 
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="5">&nbsp;<td>
+                                </tr>
+                            </table>
+                            
                             <a class="close" href="javascript:void(0)">x</a>   
                             <div class="choice">
                                 <input class="ok" type="image" name="submit" src="img/ok.png" alt="ok" />

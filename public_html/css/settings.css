@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -151,7 +151,8 @@
  width: 50% !important;
 }
 
-#popup_container .gen_services {
+#popup_container .gen_services,
+#popup_container .fin_accounts {
  width: 70% !important;
 }
 

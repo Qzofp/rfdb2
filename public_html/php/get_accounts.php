@@ -4,13 +4,13 @@
  * Author: Rizzo Productions
  * Version: 0.1
  *
- * File:    get_accounts_crypto.php
+ * File:    get_accounts_finance.php
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Feb 26, 2024
+ * Updated on Feb 28, 2024
  *
- * Description: Check if the user is signed in and get the crypto accounts from the databases tbl_accounts table.
+ * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
  *
  */
@@ -24,14 +24,14 @@ if(!$user)
 else 
 {
     header("Content-Type:application/json"); 
-    GetAccounts("crypto");
+    GetAccounts();
 }
 
 /*
  * Function:    GetServices
  *
  * Created on Feb 26, 2024
- * Updated on Feb 26, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -39,8 +39,11 @@ else
  * Out: -
  *
  */
-function GetAccounts($type)
+function GetAccounts()
 {   
+    $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
+    $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+    
     $response = [];
 
     try 
@@ -51,7 +54,7 @@ function GetAccounts($type)
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`serviceid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".
-                 "ORDER BY `date`;";
+                 "ORDER BY `$sort`;";
     
         $select = $db->prepare($query);
         $select->execute();

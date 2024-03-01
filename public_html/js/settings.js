@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -162,7 +162,7 @@ function showSettingsContent(slide, c) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 14, 2023
+ * Updated on Feb 28, 2023
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -190,22 +190,21 @@ function ShowGeneralSettings(c, s) {
         show = "hide";
     }
     $("#page_buttons img").eq(5).attr({src:"img/" + show + ".png", alt:"" + show + ""}).hide();
-    
-    
+        
     if($("#page_buttons img").hasClass("show")) {
         $("#page_buttons img").removeClass("show");
     }   
     $("#page_buttons img").eq(5).addClass("show");
     
     showLanguage(c, s);
-    showTable("tbl_users", c.users, s, 5, "get_users");
+    showTable("tbl_users", c.users, s, 5, "get_users", "sort=user");
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -228,21 +227,19 @@ function ShowFinancesSettings(c, s) {
     if (set.show !== "true") {
         show = "hide";
     }
+    
     $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(5).hide();
     
-    items.push(c.accounts[5] + c.accounts[0]);
-    for (let i = 1; i <= 4; i++) {
-       items.push(c.accounts[i]); 
-    }    
-    showTable("tbl_accounts", items, s, 1, "get_accounts_finance");
+    items = setAccountItems(c, 1);
+    showTable("tbl_accounts", items, s, 1, "get_accounts","type=finance&sort=date");
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -267,25 +264,21 @@ function ShowStocksSettings(c, s) {
     if (set.show !== "true") {
         show = "hide";
     }
+    
     $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide();
- 
-    
-    items.push(c.accounts[6] + c.accounts[0]);
-    for (let i = 1; i <= 4; i++) {
-       items.push(c.accounts[i]); 
-    }   
-    
-    showTable("tbl_accounts", items, s, 2, "get_accounts_stock");   
+   
+    items = setAccountItems(c, 2);
+    showTable("tbl_accounts", items, s, 2, "get_accounts", "type=stock&sort=date");   
 }
 
 /*
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -310,24 +303,21 @@ function ShowSavingsSettings(c, s) {
     if (set.show !== "true") {
         show = "hide";
     }
+    
     $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide();
-      
-    items.push(c.accounts[7] + c.accounts[0]);
-    for (let i = 1; i <= 4; i++) {
-       items.push(c.accounts[i]); 
-    }   
-    
-    showTable("tbl_accounts", items, s, 3, "get_accounts_savings");       
+
+    items = setAccountItems(c, 3);
+    showTable("tbl_accounts", items, s, 3, "get_accounts", "type=savings&sort=date");       
 }
 
 /*
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Feb 12, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -352,24 +342,21 @@ function ShowCryptoSettings(c, s) {
     if (set.show !== "true") {
         show = "hide";
     }
+    
     $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();    
     $("#page_buttons img").eq(3).hide();    
     $("#page_buttons img").eq(4).hide();
     $("#page_buttons img").eq(5).hide(); 
-
-    items.push(c.accounts[8] + c.accounts[0]);
-    for (let i = 1; i <= 4; i++) {
-       items.push(c.accounts[i]); 
-    }    
-    
-    showTable("tbl_accounts", items, s, 4, "get_accounts_savings");
+      
+    items = setAccountItems(c, 4);
+    showTable("tbl_accounts", items, s, 4, "get_accounts", "type=crypto&sort=date");
 }
 
 /*
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Feb 12, 2024
+ * Updated on Feb 28, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -384,8 +371,7 @@ function showSettingsButton(c, that) {
         if (result.success) {         
                 
             var s = result.settings;
-            showSettingButtonAction(c, s, that);
-           
+            showSettingButtonAction(c, s, that);           
         }
         else {
             showDatabaseError(result.message); 
@@ -403,7 +389,7 @@ function showSettingsButton(c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -425,18 +411,18 @@ function showSettingButtonAction(c, s, that) {
             
         case "users"    : 
             if (that.className === 'active') {
-                showGeneralPopupUsers(c);
+                showGeneralPopupUsers(c, s);
             }
             else 
             {
                 setPageButton(s[5], 2, 5);
-                showTable("tbl_users", c.users, s, 5, "get_users");
+                showTable("tbl_users", c.users, s, 5, "get_users", "sort=user");
             }
             break;
             
         case "services" :
             if (that.className === 'active') {
-                showGeneralPopupServices(c, s);
+                showGeneralPopupServices(c, s, false);
             }
             else 
             {                          
@@ -444,7 +430,7 @@ function showSettingButtonAction(c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable("tbl_services", services, s, 5, "get_services");               
+                showTable("tbl_services", services, s, 5, "get_services", "sort=service");               
             }
             break;              
             
@@ -456,7 +442,7 @@ function showSettingButtonAction(c, s, that) {
             else 
             {               
                 setPageButton(s[5], 4, 5);
-                showTable("tbl_config", c.configs, s, 5, "get_configs");
+                showTable("tbl_config", c.configs, s, 5, "get_configs", "");
             }
             break;
             
@@ -467,11 +453,20 @@ function showSettingButtonAction(c, s, that) {
             setScaleButton(c, that.alt);
             break;               
               
-        case "accounts" :         
+        case "accounts" :    
+            
+            // Debug
+            //console.log(s[slide].name);
+            
+            if (that.className === 'active') {   
+                showFinancesPopupAccounts(c, s, slide, false);
+            }
+            else 
+            {     
+                let items = setAccountItems(c, slide);
+                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=date");
                 setPageButton(s[slide], 1, -1);
-                     
-            // Test.
-            $("#label span").html(that.alt);
+            }      
             break;
         
         case "groups"   :
@@ -571,7 +566,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Feb 19, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -608,11 +603,8 @@ function setPopupChoice(e, c, s) {
                 modifyUser(c, btn);      
                 break;
                 
-            case "gen_services" :
-                //console.log(btn, "Services");
-                
+            case "gen_services" :                
                 modifyServices(c, btn); 
-                
                 break;
                 
             case "fin_accounts" :
@@ -628,7 +620,7 @@ function setPopupChoice(e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Feb 17, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -642,6 +634,9 @@ function editSettingsTableRow(c, s, that) {
     var btn = $("#page_buttons .active").attr("alt");
     var rowid = $(that).closest('tr').find('td:first').text();
     
+    // Get the active slide.
+    var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
+    
     var hide = false;
     if ($(that).hasClass("hide")) {
         hide = true;
@@ -653,7 +648,7 @@ function editSettingsTableRow(c, s, that) {
     
     switch(btn) {
         case "users" :           
-            showGeneralPopupUsers(c);
+            showGeneralPopupUsers(c, s);
             break;
 
         case "services" :
@@ -661,6 +656,7 @@ function editSettingsTableRow(c, s, that) {
             break;        
         
         case "accounts" :
+            showFinancesPopupAccounts(c, s, slide, hide);
             break;
         
     } 

@@ -9,9 +9,9 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 26, 2024
+ * Updated on Mar 01, 2024
  *
- * Description: Javascript functions for the settings page.
+ * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
  *
  * Links: https://dev.to/fromwentzitcame/username-and-password-validation-using-regex-2175
@@ -111,7 +111,7 @@ function setPopupList(popclass, title) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Feb 14, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -119,12 +119,17 @@ function setPopupList(popclass, title) {
  * Out: -
  *
  */
-function showGeneralPopupUsers(c) {
+function showGeneralPopupUsers(c, s) {
      
-    var btn, cells;
+    var btn, cells, set;
     [btn, cells] = setPopupTable("gen_users", c.users[0], 5);
+    
+    $("#popup_content .table_finance").hide();
+    
+    set = JSON.parse(s[5].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);      
 
-    $("#popup_content table").append('<tr>' +
+    $("#popup_content .table_general").append('<tr>' +
                                          '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + cells[1] + '" /></td>' +
                                          '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
                                          '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
@@ -139,7 +144,7 @@ function showGeneralPopupUsers(c) {
  * Function:    showGeneralPopupServices
  *
  * Created on Feb 14, 2024
- * Updated on Feb 19, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Shows the services popup content for the general page.
  *
@@ -150,14 +155,19 @@ function showGeneralPopupUsers(c) {
 function showGeneralPopupServices(c, s, h) {
     
     var chk, setting, items = "";
-    var shw, btn, cells, col = 3;
+    var shw, btn, cells, set, col = 3;
     [btn, cells] = setPopupTable("gen_services", c.services[0], 7);     
+    
+    $("#popup_content .table_finance").hide();
     
     // Create show or hide button.
     shw = 'img/show.png" alt="show';
     if (h) { 
         shw = 'img/hide.png" alt="hide';
     }
+    
+    set = JSON.parse(s[5].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);    
       
     // Generate the checkboxes for the pages.
     for (let i = 1, j = 2; i < c.pages.length - 2; i++) {        
@@ -176,9 +186,9 @@ function showGeneralPopupServices(c, s, h) {
         }
     }
     
-    $("#popup_content table").append('<tr>' +
+    $("#popup_content .table_general").append('<tr>' +
                                         '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
-                                        '<td><input id="service" type="text" name="user" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
+                                        '<td><input id="service" type="text" name="service" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
                                         items +
                                         '<td><input id="website" type="text" name="website" placeholder="' + c.services.slice(-1) + '" value="' + cells.slice(-1) + '" /></td>' +
                                         '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
@@ -229,7 +239,7 @@ function setServices(c, s) {
  * Function:    setPopupTable
  *
  * Created on Feb 14, 2024
- * Updated on Feb 14, 2024
+ * Updated on Mar 01, 2024
  *
  * Description: Set (prepare) the popup table, return the add or delete button and the cell values.
  *
@@ -246,7 +256,7 @@ function setPopupTable(popclass, title, n) {
     $("#popup_content h2").html(title); 
     $("#popup_content ul li").remove();
     $("#popup_content ul").hide();
-    $("#popup_content table").show().empty();
+    $("#popup_content .table_general").show().empty();
     
     // Remove add marker if a new row was added.
     removeAddRowMarker();
