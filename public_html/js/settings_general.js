@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -24,7 +24,7 @@
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Feb 14, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -34,11 +34,15 @@
  */
 function showGeneralPopupLanguage(c, s) {
     
-    var chk, setting = JSON.parse(s[7].value);    
-    setPopupList("gen_language", c.language[0]);        
+    var chk, set;   
+    setPopupList("gen_language", c.language[0]);       
     
+    set = JSON.parse(s[5].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
+    
+    set = JSON.parse(s[7].value);    
     for (let i = 1; i < c.language.length; i++) {        
-        if(setting.language === c.language[i]) {
+        if(set.language === c.language[i]) {
             chk = " checked";
         }
         else {
@@ -56,7 +60,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Jan 24, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -66,12 +70,17 @@ function showGeneralPopupLanguage(c, s) {
  */
 function showGeneralPopupPages(c, s) {
     
-    var chk, setting;
+    var chk, set;
     setPopupList("gen_pages", c.settings[0]);
 
+    set = JSON.parse(s[5].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
+    
+    set = JSON.parse(s[7].value);   
+
     for (let i = 1; i < c.pages.length - 2; i++) {        
-        setting = JSON.parse(s[i].value);
-        if(setting.page === "true") {
+        set = JSON.parse(s[i].value);
+        if(set.page === "true") {
             chk = " checked";
         }
         else {
@@ -89,7 +98,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    setPopupList
  *
  * Created on Feb 14, 2024
- * Updated on Feb 14, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Set (prepare) the popup list.
  *
@@ -103,7 +112,7 @@ function setPopupList(popclass, title) {
     $("#popup_content h2").html(title);
     $("#popup_content ul li").remove();
     $("#popup_content ul").show();    
-    $("#popup_content table tr").remove(); 
+    $("#popup_content .popup_table_setting tr").remove(); 
     $("#popup_content table").hide();     
 }
 
@@ -111,7 +120,7 @@ function setPopupList(popclass, title) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -124,18 +133,20 @@ function showGeneralPopupUsers(c, s) {
     var btn, cells, set;
     [btn, cells] = setPopupTable("gen_users", c.users[0], 5);
     
-    $("#popup_content .table_finance").hide();
+    $("#popup_content .popup_table_finance").hide();
     
     set = JSON.parse(s[5].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
 
-    $("#popup_content .table_general").append('<tr>' +
-                                         '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + cells[1] + '" /></td>' +
-                                         '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
-                                         '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
-                                         '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
-                                     '</tr>' +
-                                     '<tr><td class="msg" colspan="4">&nbsp;<td></tr>');
+    $("#popup_content .popup_table_setting").append(
+        '<tr>' +
+            '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + cells[1] + '" /></td>' +
+            '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
+            '<td><input id="pass2" type="password" name="pass2" placeholder="' + c.login[2] + " " + c.login[3] + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +    
+        '</tr>' +
+        '<tr><td class="msg" colspan="4">&nbsp;<td></tr>'
+    );
     
     $("#popup_container").fadeIn("slow");      
 }
@@ -144,7 +155,7 @@ function showGeneralPopupUsers(c, s) {
  * Function:    showGeneralPopupServices
  *
  * Created on Feb 14, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Shows the services popup content for the general page.
  *
@@ -158,7 +169,7 @@ function showGeneralPopupServices(c, s, h) {
     var shw, btn, cells, set, col = 3;
     [btn, cells] = setPopupTable("gen_services", c.services[0], 7);     
     
-    $("#popup_content .table_finance").hide();
+    $("#popup_content .popup_table_finance").hide();
     
     // Create show or hide button.
     shw = 'img/show.png" alt="show';
@@ -186,14 +197,16 @@ function showGeneralPopupServices(c, s, h) {
         }
     }
     
-    $("#popup_content .table_general").append('<tr>' +
-                                        '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
-                                        '<td><input id="service" type="text" name="service" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
-                                        items +
-                                        '<td><input id="website" type="text" name="website" placeholder="' + c.services.slice(-1) + '" value="' + cells.slice(-1) + '" /></td>' +
-                                        '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
-                                     '</tr>' +
-                                     '<tr><td class="msg" colspan="' + col + '">&nbsp;<td></tr>');
+    $("#popup_content .popup_table_setting").append(
+        '<tr>' +
+            '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
+            '<td><input id="service" type="text" name="service" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
+            items +
+            '<td><input id="website" type="text" name="website" placeholder="' + c.services.slice(-1) + '" value="' + cells.slice(-1) + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +    
+        '</tr>' +
+        '<tr><td class="msg" colspan="' + col + '">&nbsp;<td></tr>'
+    );
     
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
@@ -239,7 +252,7 @@ function setServices(c, s) {
  * Function:    setPopupTable
  *
  * Created on Feb 14, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Set (prepare) the popup table, return the add or delete button and the cell values.
  *
@@ -249,14 +262,14 @@ function setServices(c, s) {
  */
 function setPopupTable(popclass, title, n) {
 
-    var btn = 'img/add.png" alt="add'; 
+    var btn = "add"; 
     var cells = [];
       
     $("#popup_content").removeClass().addClass(popclass);                   
     $("#popup_content h2").html(title); 
     $("#popup_content ul li").remove();
     $("#popup_content ul").hide();
-    $("#popup_content .table_general").show().empty();
+    $("#popup_content .popup_table_setting").show().empty();
     
     // Remove add marker if a new row was added.
     removeAddRowMarker();
@@ -267,7 +280,7 @@ function setPopupTable(popclass, title, n) {
         $("#table_container tbody .marked").find("td").each(function(){
             cells.push($(this).html());
         });        
-        btn = 'img/del.png" alt="del';
+        btn = "del";
     }
     else {  // Fill the cells with empty values.
         for (let i = 0; i < n; i++) {

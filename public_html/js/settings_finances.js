@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 04, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 04, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -58,34 +58,35 @@ function showFinancesPopupAccounts(c, s, n, h) {
     var shw, btn, cells, set;
     [btn, cells] = setPopupTable("fin_accounts", c.accounts[n+4] + c.accounts[0], 5);    
   
-    $("#popup_content .table_finance").show();
+    $("#popup_content .popup_table_finance").show();
   
-    // Create show or hide button.
-    shw = 'img/show.png" alt="show';
-    if (h) { 
-        shw = 'img/hide.png" alt="hide';
-    }
-       
     set = JSON.parse(s[n].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);
-
-/*    
-    $("#popup_content table").append('<tr>' +
-                                         '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
-                                         
-                                         '<td><input type="text" class="form-control" name="date" id="date" data-select="datepicker"></td>' +
-                                         
-                                     //    '<td><input id="date" type="text" name="date" placeholder="' + c.accounts[1] + '" value="' + cells[1] + '" data-select="datepicker" /></td>' +
-                                         
-                                         '<td><input id="serv" type="text" name="service" placeholder="' + c.accounts[2] + '" value="' + cells[2] + '" /></td>' +
-                                         '<td><input id="acct" type="text" name="account" placeholder="' + c.accounts[3] + '" value="' + cells[3] + '" /></td>' +
-                                         '<td><input id="desc" type="text" name="description" placeholder="' + c.accounts[4] + '" value="' + cells[4] + '" /></td>' +
-                                         '<td><input class="btn" type="image" name="submit" src="' + btn + '" /></td>' +    
-                                     '</tr>' +
-                                     '<tr><td class="msg" colspan="5">&nbsp;<td></tr>');
+  
+    // Create show or hide button.
+    shw = "show";
+    if (h) { 
+        shw = "hide";
+    }
+       
+    $("#popup_content .popup_table_finance .shw").attr({
+                src: "img/" + shw + ".png",
+                alt: shw
+    });    
     
-*/
-    
+    // Debug
+    //cells[1] = "19-06-2000";
+       
+    $("#popup_content .popup_table_finance #date").attr("placeholder", c.accounts[1]).val(cells[1]);
+    $("#popup_content .popup_table_finance #serv").attr("placeholder", c.accounts[2]).val(cells[2]);   
+    $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
+    $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
+           
+    $("#popup_content .popup_table_finance .btn").attr({
+                src: "img/" + btn + ".png",
+                alt: btn
+    });
+        
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
         $("#popup_content .shw").show();

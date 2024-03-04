@@ -18,7 +18,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Mar 01, 2024
+ * Updated on Mar 02, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -144,10 +144,10 @@ if(!$user){
                         <h2></h2>                        
                         <form method="POST">                           
                             <ul></ul>                    
-                            <table class="table_general"></table>
+                            <table class="popup_table_setting"></table>
                             
                             <!-- This table is needed for the datepicker. -->
-                            <table class="table_finance">
+                            <table class="popup_table_finance">
                                 <tr>
                                     <td><input class="shw" type="image" name="submit" src="" /></td>
                                     <td><input id="date" type="text" name="date" placeholder="" value="" data-select="datepicker" /></td>

@@ -180,6 +180,7 @@
 }
 .jquery-datepicker.theme-light .datepicker-box .box-row.row-days {
   color: #7b7b7b;
+  text-transform: lowercase;  /* Fix for rfdb2 */
 }
 .jquery-datepicker.theme-light .datepicker-box .box-row.row-week .box-cell:hover {
   background: #EEEEEE;

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 28, 2024
+ * Updated on Mar 04, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -565,4 +565,98 @@ function getPopupEnterKey(e) {
             $("#popup_content .ok").click();
         }
     }      
+}
+
+/*
+ * Function:   initDatePicker
+ *
+ * Created on Mar 02, 2024
+ * Updated on Mar 04, 2024
+ *
+ * Description: Initialize the date picker.
+ *
+ * In:  c, header
+ * Out: -
+ *
+ */
+function initDatePicker(c, header) {
+    
+    var set;
+    
+    //set = JSON.parse(s[7].value);   
+    //console.log(set.code); // debug.
+
+    // Change template, no header. Only needed for the months scale.
+    if (!header) {
+        $.extend(true, $.datePicker.defaults.templates, { header: '' });
+    }
+    
+    /*
+    $.extend(true, $.datePicker.defaults, {
+        restrictDates: 'custom'  
+    });
+    */
+    
+    // Only show the quarter months or year months.
+    
+    //debug
+    //var test = new Date("2024-03-25");
+    
+    $.extend(true, $.datePicker.defaults.views, { 
+        decade: {
+            show: null,
+            selected: [],
+            disabled: [],
+            forbidden: [],
+            enabled: [],
+            marked: []
+        },
+        year: {
+            show: null,
+            selected: [],
+            disabled: [],
+            forbidden: [],
+            enabled: [],
+            marked: []
+        },
+        month: {
+            show: null,
+            selected: [],
+            disabled: [],
+            forbidden: [],
+            enabled: [],
+            marked: [],
+            firstDayOfWeek: 1
+        }        
+    });
+   
+   
+    // Change date format to dd-MM-yyyy (example: 02-03-2024).
+    $.extend(true, $.datePicker.defaults, {
+        dateFormat: function(date) {
+            return $.datePicker.defaults.pad(date.getDate(), 2) + '-' + $.datePicker.defaults.pad(date.getMonth() + 1, 2) + '-' + date.getFullYear();
+        },
+        dateParse: function(string) {
+            var date = new Date();
+            if (string instanceof Date) {
+                date = new Date(string);
+            } else {
+                var parts = string.match(/(\d{1,2})\-(\d{1,2})\-(\d{4})/);
+                if ( parts && parts.length === 4 ) {
+                    date = new Date( parts[3], parts[2] - 1, parts[1] );
+                }
+            }
+            return date;
+        }
+    });
+   
+ 
+ 
+    $.extend(true, $.datePicker.defaults.strings, {
+        months: [c.months[0], c.months[1], c.months[2], c.months[3], c.months[4],  c.months[5], 
+                 c.months[6], c.months[7], c.months[8], c.months[9], c.months[10], c.months[11]],
+        days: [c.days[0],c.days[1],c.days[2],c.days[3],c.days[4],c.days[5],c.days[6]]
+    });  
+         
+    
 }

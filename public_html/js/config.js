@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 04, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -104,8 +104,9 @@ function processConstants(data) {
        services: tmp[14].split(","),
        messages: tmp[15].split(","),
        accounts: tmp[16].split(","),
+       days:     tmp[17].split(","),
        
-       salt:     tmp[17]      
+       salt:     tmp[18]      
     };
 
     var set = [];
