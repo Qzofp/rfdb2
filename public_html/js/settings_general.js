@@ -98,7 +98,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    setPopupList
  *
  * Created on Feb 14, 2024
- * Updated on Mar 02, 2024
+ * Updated on Mar 08, 2024
  *
  * Description: Set (prepare) the popup list.
  *
@@ -252,7 +252,7 @@ function setServices(c, s) {
  * Function:    setPopupTable
  *
  * Created on Feb 14, 2024
- * Updated on Mar 02, 2024
+ * Updated on Mar 08, 2024
  *
  * Description: Set (prepare) the popup table, return the add or delete button and the cell values.
  *

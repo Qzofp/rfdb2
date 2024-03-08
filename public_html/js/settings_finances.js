@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 04, 2024
+ * Updated on Mar 08, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 04, 2024
+ * Updated on Mar 08, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -91,6 +91,12 @@ function showFinancesPopupAccounts(c, s, n, h) {
     if ($("#table_container tbody .marked").length) {        
         $("#popup_content .shw").show();
     }     
+    
+    // Test select box
+    NiceSelect.bind(document.getElementById("serv"));
+    //$('#serv').NiceSelect();
+
+
     
     $("#popup_container").fadeIn("slow");
 }

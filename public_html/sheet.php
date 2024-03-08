@@ -7,15 +7,17 @@
  * File:         sheet.php
  * Dependencies: css/common.css
  *               css/ext/yearpicker.css
+ *               css/ext/air-datepicker.css
  *               css/sheet.css 
  *               js/ext/jquery-3.7.1.min.js
  *               js/ext/yearpicker.js
+ *               js/ext/air-datepicker.js
  *               js/config.js
  *               js/common.js
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Dec 25, 2023
+ * Updated on Mar 06, 2024
  *
  * Description: Sheet framework test page.
  *
@@ -34,10 +36,12 @@ if(!$user){
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/common.css">
-        <link rel="stylesheet" href="css/ext/yearpicker.css">	        
+        <link rel="stylesheet" href="css/ext/yearpicker.css">	
+        <link rel="stylesheet" href="css/ext/air-datepicker.css">         
         <link rel="stylesheet" href="css/sheet.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>      
-	<script src="js/ext/yearpicker.js"></script>        
+	<script src="js/ext/yearpicker.js"></script>  
+        <script src="js/ext/air-datepicker.js"></script>           
         <script src="js/config.js"></script>  
         <script src="js/common.js"></script>   
         <script src="js/sheet.js"></script>
@@ -147,7 +151,10 @@ if(!$user){
 		</div>
             
                 <!-- Date Test, show the date that will be used to get the table data. -->
-                <div id="tst_date"></div>                
+                <div id="tst_date"></div>
+                
+                <!-- Test datepicker -->
+                <input id="date" type="text" name="serv" placeholder="" value="" />
                 
                 <!-- Chart slider  -->
                 <div id="chart_slider">

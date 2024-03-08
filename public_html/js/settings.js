@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 03, 2024
+ * Updated on Mar 06, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Feb 16, 2024
+ * Updated on Mar 06, 2024
  *
  * Description: Shows the settings page.
  *
@@ -101,6 +101,9 @@ function showSettings(c, s) {
         getPopupEnterKey(e);   
     });
             
+    // Initialize the datepicker.
+    initAirDatePicker(c);  
+    
     // Show the page theme.
     showPageTheme(s[5]);
     
@@ -204,7 +207,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Mar 03, 2024
+ * Updated on Mar 06, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -217,9 +220,7 @@ function ShowFinancesSettings(c, s) {
     var items = [];
     var set = JSON.parse(s[1].value);    
     getAndSetScaleButton(c, s[1].name);
-    
-    initDatePicker(c, true);
-    
+     
     $("#page_buttons img").css("border-bottom", "");
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
     $("#page_buttons img").eq(2).attr({src:"img/groups.png", alt:"groups"}).show();

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 09, 2024
+ * Updated on Mar 08, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Dec 18, 2023
+ * Updated on Mar 08, 2024
  *
  * Description: Open the sheet page.
  *
@@ -116,16 +116,19 @@ function checkSheetPage(page, s) {
  */
 function openSheetPage(c, s, i) {
     
-    var $date;
+    var $date, $adp;
     
     // Show the sheet title and current year.
     showPageTitles(c, i, " <span>" + cDate.getFullYear() + "</span>");
     
     // Set the slie menu scale.
     setSlideMenuScale(s[i]);
+
+    // Initialize the datepicker.
+    $adp = initAirDatePicker(c);      
     
     // Add Yearpicker popup box and process year selection (also update the slide menu and the sheet table).
-    addYearPicker(c);
+    addYearPicker(c, $adp);
          
     // Fill the slide menu.
     fillSheetSlideMenu(c, cDate.getMonth());
@@ -133,6 +136,12 @@ function openSheetPage(c, s, i) {
     // Change slide menu scale (months, quarters, year).
     $("#page_buttons").on('click', 'img', function() {
         changeSheetContent(c, s[i], this);
+        
+        // Date Test, show the date that will be used to get the table data.
+        $date = getSelectedDateFromPage();
+        updateAirDataPicker($adp, $date);  
+        $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");             
+        
     });	
     
     // Fill hamburger menu.
@@ -143,28 +152,26 @@ function openSheetPage(c, s, i) {
         window.location.href=this;
         window.location.reload(true);
     });
-    
-    // Date Test, show the date that will be used to get the table data.   
-    $date = getSelectedDateFromPage();   
+        
+    // Begin date Test, show the date that will be used to get the table data.   
+    $date = getSelectedDateFromPage();
+    updateAirDataPicker($adp, $date);   
     $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");   
+    // End date Test.
   
     $(".slidemenu input[name='slideItem']").change(function() {
-        $date = getSelectedDateFromPage();   
         
-        // Date Test, show the date that will be used to get the table data. 
+        // Date Test, show the date that will be used to get the table data.
+        $date = getSelectedDateFromPage();
+        updateAirDataPicker($adp, $date);  
         $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");     
-    });   
+    });               
         
-        
-        
-        
-        
-        
+    
+            
     // Show the page theme for finance, stock, savings and crypto.
     showPageTheme(s[i]);
-    
-    
-    
+     
     closeChartWindow(); 
 }
 
@@ -256,15 +263,15 @@ function setSlideMenuScale(s) {
  * Function:    addYearPicker
  *
  * Created on Oct 30, 2023
- * Updated on Nov 13, 2023
+ * Updated on Mar 08, 2024
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
- * In:  -
+ * In:  c, adp
  * Out: -
  *
  */
-function addYearPicker(c) {
+function addYearPicker(c, adp) {
     var $date;
     
     $(".yearpicker").yearpicker({
@@ -278,6 +285,7 @@ function addYearPicker(c) {
                 let $chk = $(".slidemenu input[name='slideItem']:checked").val();
                 fillSheetSlideMenu(c, $chk);            
                 $date = getSelectedDateFromPage();
+                 updateAirDataPicker(adp, $date);
                 
                 // Date Test, show the date that will be used to get the table data.
                 $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>"); 
@@ -341,6 +349,74 @@ function getSelectedDateFromPage() {
     
     return $date;
 }
+
+
+/*
+ * Function:    updateAirDataPicker
+ *
+ * Created on Mar 08, 2024
+ * Updated on Mar 08, 2024
+ *
+ * Description: Update the Air datapicker.
+ *
+ * In:  adp, date
+ * Out: -
+ *
+ */
+function updateAirDataPicker(adp, date) {
+    
+    var mindate, maxdate;
+    var month, minmonth, maxmonth;
+    var day;
+    
+    switch(date.scale) {
+        case "months" :
+            month = Number(date.month) + 1;            
+            if (month < 10) {
+               minmonth = "0" + month;
+               maxmonth = "0" + month;
+            }
+            else {
+               minmonth = month;
+               maxmonth = month;                
+            }
+            
+            day = new Date(date.year, month, 0);            
+            mindate = date.year + "-" + minmonth + "-01";
+            maxdate = date.year + "-" + maxmonth + "-" + day.getDate();             
+            break;
+            
+        case "quarters" :
+            month = 3*date.quarter + 1;
+            if (date.quarter < 3) {
+                minmonth = "0" + month;
+                maxmonth = "0" + Number(month + 2);
+            }
+            else {
+                minmonth = month;
+                maxmonth = month + 2;
+            }
+            
+            day = new Date(date.year, maxmonth, 0); 
+            mindate = date.year + "-" + minmonth + "-01";
+            maxdate = date.year + "-" + maxmonth + "-" + day.getDate();           
+            break;            
+        
+        case "year" :
+            mindate = date.year + "-01-01";
+            maxdate = date.year + "-12-31";
+            break;        
+    }
+    
+    // debug
+    //console.log(mindate, maxdate);
+    
+    adp.update({
+        minDate: mindate,
+        maxDate: maxdate
+    });                   
+}
+
 
 /*
  * Function:    fillSheetSlideMenu
