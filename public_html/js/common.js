@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 08, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -573,7 +573,7 @@ function getPopupEnterKey(e) {
  * Function:   initAirDatePicker
  *
  * Created on Mar 06, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Initialize the Air datepicker.
  *
@@ -588,7 +588,7 @@ function initAirDatePicker(c) {
         daysShort: [c.days[0].slice(0,2),c.days[1].slice(0,2),c.days[2].slice(0,2),c.days[3].slice(0,2),c.days[4].slice(0,2),c.days[5].slice(0,2),c.days[6].slice(0,2)],
         daysMin: [c.days[0].slice(0,2),c.days[1].slice(0,2),c.days[2].slice(0,2),c.days[3].slice(0,2),c.days[4].slice(0,2),c.days[5].slice(0,2),c.days[6].slice(0,2)],
         months: [c.months[0],c.months[1],c.months[2],c.months[3],c.months[4], c.months[5],c.months[6],c.months[7],c.months[8],c.months[9],c.months[10],c.months[11]],
-        monthsShort: [c.months[0].slice(0,3),c.months[1].slice(0,3),c.months[2].slice(0,3),c.months[3].slice(0,3),c.months[4].slice(0,3),c.months[5].slice(0,3),c.months[6].slice(0,3),c.months[7].slice(0,3),c.months[8].slice(0,3),c.months[9].slice(0,3),c.months[10].slice(0,3),c.months[11].slice(0,3)],
+        monthsShort: [c.smonths[0].slice(0,3),c.smonths[1].slice(0,3),c.smonths[2].slice(0,3),c.smonths[3].slice(0,3),c.smonths[4].slice(0,3),c.smonths[5].slice(0,3),c.smonths[6].slice(0,3),c.smonths[7].slice(0,3),c.smonths[8].slice(0,3),c.smonths[9].slice(0,3),c.smonths[10].slice(0,3),c.smonths[11].slice(0,3)],
         today: 'Today',
         clear: 'Clear',
         dateFormat: 'dd-MM-yyyy',
@@ -602,11 +602,67 @@ function initAirDatePicker(c) {
         
         disableNavWhenOutOfRange: true,
         minView: "days"
-        
-        // debug
-        //,inline: true
-        
     });   
     
     return adp;
+}
+
+/*
+ * Function:   addSelectMenu
+ *
+ * Created on Mar 11, 2024
+ * Updated on Mar 11, 2024
+ *
+ * Description: Add the select menu.
+ *
+ * In:  c, page, send id, name, value
+ * Out: -
+ *
+ */
+function addSelectMenu(c, page, send, id, name, value) {
+    
+    var options;
+    var request = getAjaxRequest(page, send);      
+    request.done(function(result) {
+        
+        $("#" + id + " option").remove();
+        
+        if (result.success) {         
+            let sel = "";
+            $.each(result.data, function (n, field) {  
+                                
+                if (field.id === value) {
+                    sel = " selected";
+                }
+                else {
+                    sel = "";
+                }
+
+                $("#" + id).append('<option value="'+ field.id + '"' + sel + '>'+ field.service+'</option>');               
+            });
+          
+            // Remove nice-select menu if it exists.
+            if ($("#popup_content .nice-select").length) {
+                $("#popup_content .nice-select").remove();
+            }    
+    
+            // Set the nice-select menu.
+            options = { searchable: true, searchtext: c.misc[0], placeholder: name };
+            var db = NiceSelect.bind(document.getElementById(id), options);
+            
+            // Select placeholder fix.
+            if (!value) {
+                db.clear();
+            }
+        }
+        else {
+               showDatabaseError(result.message); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
 }

@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Mar 04, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -18,29 +18,6 @@
 const cVersion = "0.1";
 const cDate = new Date();
 //const cDate = new Date('02/19/2023');
-
-/*
- * Function:    getContants
- *
- * Created on Oct 15, 2023
- * Updated on Nov 11, 2023
- *
- * Description: Get the constants and settings from de database tblConfig table.
- *
- * In:  -
- * Out: request
- *
- */
- /*function getConstants() {   // Oud, vervang deze door getAjaxRequest(page, send)
-     
-    var request = $.ajax({
-        url: "php/get_constants.php",
-        method: "POST",
-        dataType: "json"
-    }); 
-      
-    return request;
-} */
 
 /*
  * Function:    getAjaxRequest
@@ -70,7 +47,7 @@ const cDate = new Date();
  * Function:    processContants
  *
  * Created on Nov 12, 2023
- * Updated on Feb 26, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table.
  *
@@ -105,6 +82,10 @@ function processConstants(data) {
        messages: tmp[15].split(","),
        accounts: tmp[16].split(","),
        days:     tmp[17].split(","),
+       smonths:  tmp[18].split(","),
+       misc:     tmp[19].split(","),
+       
+       // next item.
        
        salt:     tmp[18]      
     };

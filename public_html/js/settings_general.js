@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 02, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -24,7 +24,7 @@
  * Function:    showGeneralPopupLanguage
  *
  * Created on Nov 22, 2023
- * Updated on Mar 02, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Shows the language popup content for the general page.
  *
@@ -49,7 +49,7 @@ function showGeneralPopupLanguage(c, s) {
             chk = "";
         }
         
-        $("#popup_content ul").append('<li class="rad"><input type="radio" id="lng-' + i + '" name="language"' + 
+        $(".popup_list").append('<li class="rad"><input type="radio" id="lng-' + i + '" name="language"' + 
            chk + '><label for="lng-' + i + '">' + c.language[i] + '</label></li>');   
     }        
   
@@ -60,7 +60,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Mar 02, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -87,7 +87,7 @@ function showGeneralPopupPages(c, s) {
             chk = "";
         }
         
-        $("#popup_content ul").append('<li class="chk"><input type="checkbox" id="pag-' + i + '" name="pages"' + 
+        $(".popup_list").append('<li class="chk"><input type="checkbox" id="pag-' + i + '" name="pages"' + 
            'value="' + i + '" ' + chk + '><label for="pag-' + i + '">' + c.titles[i] + '</label></li>');   
     }        
   
@@ -98,7 +98,7 @@ function showGeneralPopupPages(c, s) {
  * Function:    setPopupList
  *
  * Created on Feb 14, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Set (prepare) the popup list.
  *
@@ -110,9 +110,9 @@ function setPopupList(popclass, title) {
     
     $("#popup_content").removeClass().addClass(popclass);
     $("#popup_content h2").html(title);
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").show();    
-    $("#popup_content .popup_table_setting tr").remove(); 
+    $(".popup_list li").remove();
+    $(".popup_list").show();    
+    $(".popup_table_setting tr").remove(); 
     $("#popup_content table").hide();     
 }
 
@@ -120,7 +120,7 @@ function setPopupList(popclass, title) {
  * Function:    showGeneralPopupUsers
  *
  * Created on Jan 09, 2024
- * Updated on Mar 02, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Shows the users popup content for the general page.
  *
@@ -133,12 +133,12 @@ function showGeneralPopupUsers(c, s) {
     var btn, cells, set;
     [btn, cells] = setPopupTable("gen_users", c.users[0], 5);
     
-    $("#popup_content .popup_table_finance").hide();
+    $(".popup_table_finance").hide();
     
     set = JSON.parse(s[5].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
 
-    $("#popup_content .popup_table_setting").append(
+    $(".popup_table_setting").append(
         '<tr>' +
             '<td><input id="user" type="text" name="user" placeholder="' + c.login[1] + '" value="' + cells[1] + '" /></td>' +
             '<td><input id="pass1" type="password" name="pass1" placeholder="' + c.login[2] + '" /></td>' + 
@@ -155,7 +155,7 @@ function showGeneralPopupUsers(c, s) {
  * Function:    showGeneralPopupServices
  *
  * Created on Feb 14, 2024
- * Updated on Mar 02, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Shows the services popup content for the general page.
  *
@@ -169,7 +169,7 @@ function showGeneralPopupServices(c, s, h) {
     var shw, btn, cells, set, col = 3;
     [btn, cells] = setPopupTable("gen_services", c.services[0], 7);     
     
-    $("#popup_content .popup_table_finance").hide();
+    $(".popup_table_finance").hide();
     
     // Create show or hide button.
     shw = 'img/show.png" alt="show';
@@ -197,7 +197,7 @@ function showGeneralPopupServices(c, s, h) {
         }
     }
     
-    $("#popup_content .popup_table_setting").append(
+    $(".popup_table_setting").append(
         '<tr>' +
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
             '<td><input id="service" type="text" name="service" placeholder="' + c.services[1] + '" value="' + cells[1] + '" /></td>' +                                         
@@ -252,7 +252,7 @@ function setServices(c, s) {
  * Function:    setPopupTable
  *
  * Created on Feb 14, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Set (prepare) the popup table, return the add or delete button and the cell values.
  *
@@ -267,9 +267,9 @@ function setPopupTable(popclass, title, n) {
       
     $("#popup_content").removeClass().addClass(popclass);                   
     $("#popup_content h2").html(title); 
-    $("#popup_content ul li").remove();
-    $("#popup_content ul").hide();
-    $("#popup_content .popup_table_setting").show().empty();
+    $(".popup_list li").remove();
+    $(".popup_list").hide();
+    $(".popup_table_setting").show().empty();
     
     // Remove add marker if a new row was added.
     removeAddRowMarker();

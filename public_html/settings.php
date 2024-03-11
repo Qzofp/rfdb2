@@ -20,7 +20,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Mar 08, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -40,15 +40,11 @@ if(!$user){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/common.css">        
         <link rel="stylesheet" href="css/settings.css">     
-        <link rel="stylesheet" href="css/ext/air-datepicker.css">  
-        
-        <link rel="stylesheet" href="css/ext/nice-select2.css">
-        
+        <link rel="stylesheet" href="css/ext/air-datepicker.css">          
+        <link rel="stylesheet" href="css/ext/nice-select2.css">        
         <script src="js/ext/jquery-3.7.1.min.js"></script>  
-        <script src="js/ext/air-datepicker.js"></script> 
-        
-        <script src="js/ext/nice-select2.js"></script>   
-        
+        <script src="js/ext/air-datepicker.js"></script>         
+        <script src="js/ext/nice-select2.js"></script>        
         <script src="js/ext/sha256.js"></script>        
         <script src="js/config.js"></script> 
         <script src="js/common.js"></script>    
@@ -130,20 +126,6 @@ if(!$user){
                     <u></u><br/>
                     <span></span>
                 </div>    
-                        
-                <!-- Test 
-                 <select id="example" placeholder="">
-                    <option value="AF">Afghanistan</option>
-                    <option value="AX">Åland Islands</option>
-                    <option value="AL">Albania</option>
-                    <option value="DZ">Algeria</option>
-                    <option value="AS">American Samoa</option>
-                    <option value="AD">Andorra</option>
-                    <option value="AO">Angola</option>
-                    <option value="AI">Anguilla</option>
-                    <option value="AQ">Antarctica</option>
-                </select>
-                -->
                 
                 <!-- Table label -->
                 <div id="label"><span></span></div>
@@ -165,7 +147,7 @@ if(!$user){
                     <div id="popup_content"> 
                         <h2></h2>                        
                         <form method="POST">                           
-                            <ul></ul>                    
+                            <ul class="popup_list"></ul>                    
                             <table class="popup_table_setting"></table>
                             
                             <!-- This table is needed for the datepicker. -->
@@ -173,19 +155,7 @@ if(!$user){
                                 <tr>
                                     <td><input class="shw" type="image" name="submit" src="" /></td>                                  
                                     <td><input id="date" type="text" name="date" placeholder="" value="" /></td>                                   
-                                    <td>
-                                        <select id="serv" placeholder="">
-                                            <option value="AF">Afghanistan</option>
-                                            <option value="AX">Åland Islands</option>
-                                            <option value="AL">Albania</option>
-                                            <option value="DZ">Algeria</option>
-                                            <option value="AS">American Samoa</option>
-                                            <option value="AD">Andorra</option>
-                                            <option value="AO">Angola</option>
-                                            <option value="AI">Anguilla</option>
-                                            <option value="AQ">Antarctica</option>
-                                        </select>
-                                    </td>      
+                                    <td><select id="serv" placeholder=""></select></td>      
                                     <td><input id="acct" type="text" name="account" placeholder="" value="" /></td>
                                     <td><input id="desc" type="text" name="desc" placeholder="" value="" /></td>
                                     <td><input class="btn" type="image" name="submit" src="" /></td>                 

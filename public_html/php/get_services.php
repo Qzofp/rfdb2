@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 10, 2024
- * Updated on Feb 28, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Check if the user is signed in and get the services from the databases tbl_services table.
  * Dependenties: config.php
@@ -73,8 +73,8 @@ function GetServices()
         $select = $db->prepare($query);
         $select->execute();
 
-        $users = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $users;       
+        $services = $select->fetchAll(PDO::FETCH_ASSOC);  
+        $response['data'] = $services;       
  
         $response['success'] = true;
     }

@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Mar 01, 2024
+ * Updated on Mar 10, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -79,7 +79,7 @@
  color: #000;
 }
  
-#popup_content ul {
+#popup_content .popup_list {
  font-size: 1em;
  display: inline-block;
  text-align: left;
@@ -94,7 +94,8 @@
  border-spacing: 0;
 }
 
-#popup_content table th, td {
+#popup_content th, 
+#popup_content td {
  text-align:left;
  font-size: 0.9em;
 }
@@ -131,7 +132,7 @@
 #popup_content .choice input[type=image] {
  width: 24px;
  height: 24px;
- cursor: pointer;    
+ cursor: pointer;
 }
 
 #popup_content .btn {
@@ -156,8 +157,26 @@
  width: 70% !important;
 }
 
+
+.popup_table_finance td {
+ padding: 0px 5px;
+}
+
+.popup_table_finance input[type=text] {
+ font-weight: normal;    
+ padding: 0px 5px;
+}
+
+
+.popup_table_finance #date {
+   width:150px; 
+}    
+
+
+
 /* Radio and checkbox buttons */
-#popup_content li {
+.popup_list li,
+.popup_table_setting li {
   display: inline-block;
   position: relative;
   padding: 0 6px;
@@ -165,15 +184,18 @@
   display: table; /* Display items vertical */
 }
 
-#popup_content td li {
+.popup_list td li,
+.popup_table_setting td li  {
   margin: -6.5px 0 0;
 }
     
-#popup_content li label {
+.popup_list li label,
+.popup_table_setting li label {
   font-weight: normal;
 }
 
-#popup_content li label:before {
+.popup_list li label:before,
+.popup_table_setting li label:before {
   content: " ";
   display: inline-block;
   position: relative;

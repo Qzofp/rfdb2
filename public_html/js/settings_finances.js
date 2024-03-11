@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 11, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -72,13 +72,12 @@ function showFinancesPopupAccounts(c, s, n, h) {
     $("#popup_content .popup_table_finance .shw").attr({
                 src: "img/" + shw + ".png",
                 alt: shw
-    });    
-    
-    // Debug
-    //cells[1] = "19-06-2000";
+    });        
        
     $("#popup_content .popup_table_finance #date").attr("placeholder", c.accounts[1]).val(cells[1]);
-    $("#popup_content .popup_table_finance #serv").attr("placeholder", c.accounts[2]).val(cells[2]);   
+    
+    addSelectMenu(c, "get_services", "sort=service", "serv", c.accounts[2], cells[2]);
+        
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
     $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
            
@@ -90,13 +89,7 @@ function showFinancesPopupAccounts(c, s, n, h) {
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
         $("#popup_content .shw").show();
-    }     
-    
-    // Test select box
-    NiceSelect.bind(document.getElementById("serv"));
-    //$('#serv').NiceSelect();
-
-
+    }            
     
     $("#popup_container").fadeIn("slow");
 }

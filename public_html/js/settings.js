@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 06, 2024
+ * Updated on Mar 11, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Mar 06, 2024
+ * Updated on Mar 09, 2024
  *
  * Description: Shows the settings page.
  *
@@ -103,6 +103,12 @@ function showSettings(c, s) {
             
     // Initialize the datepicker.
     initAirDatePicker(c);  
+    
+    // Test select box
+    //var options = { searchable: true, placeholder: "Dienst" };
+    //var dropdown = NiceSelect.bind(document.getElementById("serv"), options);
+    //dropdown.clear();
+    //dropdown.update( { searchable: false } );
     
     // Show the page theme.
     showPageTheme(s[5]);

@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Feb 11, 2024
+ * Updated on Mar 10, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -327,6 +327,7 @@ h2 {
  padding: 2px;
  background: #fff;
  vertical-align: top;
+ font-size: 0.9em;
 }
 
 #table_container thead th {
