@@ -1,3 +1,20 @@
+@CHARSET "UTF-8";
+/*
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.1
+ *
+ * File:    nice-select2.css
+ * Used in: sheet.php, settings.php
+ *
+ * Created on Mar 10, 2024
+ * Updated on Mar 15, 2024
+ *
+ * Description: The css for the nice select menu. Customize nice-select2.css file.
+ * Build for: Chromium based and Firefox browsers. 
+ *
+ */
+
 .nice-select {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     background-color: #fff;
@@ -64,13 +81,17 @@
 .nice-select.disabled:after {
     border-color: #ccc;
 }
+
+/*
 .nice-select.wide {
     width: 100%;
 }
+
 .nice-select.wide .nice-select-dropdown {
     left: 0 !important;
     right: 0 !important;
 }
+
 .nice-select.right {
     float: right;
 }
@@ -78,6 +99,7 @@
     left: auto;
     right: 0;
 }
+
 .nice-select.small {
     font-size: 12px;
     height: 36px;
@@ -91,6 +113,8 @@
     line-height: 34px;
     min-height: 34px;
 }
+*/
+
 .nice-select .nice-select-dropdown {
     margin-top: 4px;
     background-color: #fff;
@@ -111,13 +135,34 @@
     box-sizing: border-box;
     overflow: hidden;
     padding: 0;
-    max-height: 210px;
+    max-height: 210px; /* Change this size for a longer list */
     overflow-y: auto;
-    margin: 0px;
+    margin: 0px 3px 3px 3px;
 }
 .nice-select .list:hover .option:not(:hover) {
     background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.nice-select .list:-moz-read-only {
+  scrollbar-color: #808080 #dcdcdc;
+}
+
+/* Works on Chrome, Edge, and Safari */
+.nice-select .list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.nice-select .list::-webkit-scrollbar-track {
+  background: #dcdcdc;
+  border-radius: 20px;
+}
+
+.nice-select .list::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  border-radius: 20px;
+  border: 3px solid #dcdcdc;
+}
+
 .nice-select .option {
     cursor: pointer;
     font-weight: 400;
@@ -151,9 +196,12 @@
 .no-csspointerevents .nice-select.open .nice-select-dropdown {
     display: block;
 }
+
+/*
 .nice-select .list::-webkit-scrollbar {
     width: 0;
 }
+
 .nice-select .has-multiple {
     white-space: inherit;
     height: auto;
@@ -177,6 +225,8 @@
     line-height: 24px;
     padding: 0;
 }
+*/
+
 .nice-select .nice-select-search-box {
     box-sizing: border-box;
     width: 100%;

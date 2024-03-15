@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Mar 10, 2024
+ * Updated on Mar 15, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -266,7 +266,7 @@ h2 {
 }
 
 .content_main {
-  flex: 1;
+ flex: 1;  
 }
 
 /* Page buttons */
@@ -295,9 +295,11 @@ h2 {
  margin: auto;
  overflow: auto;
  height: 350px;
- scrollbar-color: #808080 #dcdcdc;
- scrollbar-width: thin;
 }
+
+#table_container:-moz-read-only {
+  scrollbar-color: #808080 #dcdcdc;
+}    
 
 /* Works on Chrome, Edge, and Safari */
 #table_container::-webkit-scrollbar {
@@ -468,8 +470,7 @@ footer h3 {
  color:red;
 }
 
-
 /* Firefox fixes */
 @supports (-moz-appearance:none) {
     header { height: 7.8em; }  /* fix 1 */
-}  
+}

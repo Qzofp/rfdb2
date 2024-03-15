@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Feb 28, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    GetServices
  *
  * Created on Feb 26, 2024
- * Updated on Feb 28, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -45,12 +45,14 @@ function GetAccounts()
     $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
     
     $response = [];
-
+    
     try 
     {
         $db = OpenDatabase();
      
-        $query = "SELECT tbl_accounts.`id`, tbl_accounts.`hide`, tbl_accounts.`date`, tbl_services.`service`, tbl_accounts.`account`, tbl_accounts.`description` ".
+        $query = "SELECT CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`serviceid`) AS id,tbl_accounts.`hide`,". 
+                    "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y'),tbl_services.`service`,tbl_accounts.`account`,".
+                    "tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`serviceid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".

@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Mar 10, 2024
+ * Updated on Mar 15, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -112,6 +112,30 @@
  width: 100%;
 }
 
+#popup_content input[type=text],
+#popup_content input[type=password] {
+ font-weight: normal;    
+ padding: 1px 5px;
+}
+
+/*
+#popup_content input[type=text]:focus,
+#popup_content input[type=password]:focus {
+    outline: none !important;
+    border: 1px solid #000;
+}
+*/
+
+/*
+#popup_content .inactive {
+  color: #808080;
+}
+
+#popup_content .inactive .selected {
+  color: #000;
+}
+*/
+
 #popup_content a {
  position: absolute;
  top: 5px;
@@ -157,16 +181,16 @@
  width: 70% !important;
 }
 
-
 .popup_table_finance td {
  padding: 0px 5px;
 }
 
+/*
 .popup_table_finance input[type=text] {
  font-weight: normal;    
  padding: 0px 5px;
 }
-
+*/
 
 .popup_table_finance #date {
    width:150px; 

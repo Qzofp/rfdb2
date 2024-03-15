@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 08, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -355,7 +355,7 @@ function getSelectedDateFromPage() {
  * Function:    updateAirDataPicker
  *
  * Created on Mar 08, 2024
- * Updated on Mar 08, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Update the Air datapicker.
  *
@@ -406,10 +406,7 @@ function updateAirDataPicker(adp, date) {
             mindate = date.year + "-01-01";
             maxdate = date.year + "-12-31";
             break;        
-    }
-    
-    // debug
-    //console.log(mindate, maxdate);
+    } 
     
     adp.update({
         minDate: mindate,

@@ -278,7 +278,7 @@ function setPopupTable(popclass, title, n) {
     if ($("#table_container tbody .marked").length) 
     {         
         $("#table_container tbody .marked").find("td").each(function(){
-            cells.push($(this).html());
+            cells.push($(this).html());            
         });        
         btn = "del";
     }

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 11, 2024
+ * Updated on Mar 15, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,22 +45,22 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 11, 2024
+ * Updated on Mar 15, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
- * In:  c, s, n, h
+ * In:  adp, c, s, slide, h
  * Out: items
  *
  */
-function showFinancesPopupAccounts(c, s, n, h) {
+function showFinancesPopupAccounts(adp, c, s, slide, h) {
     
     var shw, btn, cells, set;
-    [btn, cells] = setPopupTable("fin_accounts", c.accounts[n+4] + c.accounts[0], 5);    
+    [btn, cells] = setPopupTable("fin_accounts", c.accounts[slide+4] + c.accounts[0], 5);    
   
     $("#popup_content .popup_table_finance").show();
   
-    set = JSON.parse(s[n].value);
+    set = JSON.parse(s[slide].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);
   
     // Create show or hide button.
@@ -76,7 +76,8 @@ function showFinancesPopupAccounts(c, s, n, h) {
        
     $("#popup_content .popup_table_finance #date").attr("placeholder", c.accounts[1]).val(cells[1]);
     
-    addSelectMenu(c, "get_services", "sort=service", "serv", c.accounts[2], cells[2]);
+    setAirDatePicker(adp, cells[1]);    
+    addSelectMenu(c, "get_services", "sort=service&type=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], "service");
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
     $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
@@ -90,6 +91,8 @@ function showFinancesPopupAccounts(c, s, n, h) {
     if ($("#table_container tbody .marked").length) {        
         $("#popup_content .shw").show();
     }            
+
+    $("#popup_content .msg").html("&nbsp;");
     
     $("#popup_container").fadeIn("slow");
 }

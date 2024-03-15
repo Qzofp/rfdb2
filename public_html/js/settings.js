@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 11, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Mar 09, 2024
+ * Updated on Mar 15, 2024
  *
  * Description: Shows the settings page.
  *
@@ -64,11 +64,14 @@ function loadSettings() {
  *
  */
 function showSettings(c, s) {
-
+    
     showPageTitles(c, 5, "");
                 
     // Fill hamburger menu.
     fillHamburgerMenu(c, s, 5);        
+    
+    // Initialize the datepicker.
+    var $adp = initAirDatePicker(c);
     
     // Remove de "Pages" item and fill the slide menu.
     var items = c.settings.slice();
@@ -83,38 +86,29 @@ function showSettings(c, s) {
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showSettingsButton(c, this);    
+        showSettingsButton($adp, c, this);    
     });
     
     // Table row is pressed.
     $("#table_container").on('click', 'tbody tr', function(){        
-        editSettingsTableRow(c, s, this);    
+        editSettingsTableRow($adp, c, s, this);    
     });
     
     // Settings popup Ok button is pressed.  
     $("#popup_content").on("submit","form",function(e) {        
         setPopupChoice(e, c, s);
-    });    
+    });
   
     // Settings popup <enter> button is pressed.  
     $("#popup_content").on("keypress","form",function(e) {       
         getPopupEnterKey(e);   
     });
-            
-    // Initialize the datepicker.
-    initAirDatePicker(c);  
-    
-    // Test select box
-    //var options = { searchable: true, placeholder: "Dienst" };
-    //var dropdown = NiceSelect.bind(document.getElementById("serv"), options);
-    //dropdown.clear();
-    //dropdown.update( { searchable: false } );
-    
+
     // Show the page theme.
     showPageTheme(s[5]);
     
-    // Close popup windows.
-    $(".close").on("click", function () {        
+    // Close popup windows.       
+    $(".close").on("click", function() {        
         closePopupWindow();
     });    
 }
@@ -365,22 +359,22 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Feb 28, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
- * In:  c, that
+ * In:  adp, c, that
  * Out: -
  *
  */
-function showSettingsButton(c, that) {
+function showSettingsButton(adp, c, that) {
 
     var request = getAjaxRequest("get_settings", "");    
     request.done(function(result) {
         if (result.success) {         
                 
             var s = result.settings;
-            showSettingButtonAction(c, s, that);           
+            showSettingButtonAction(adp, c, s, that);           
         }
         else {
             showDatabaseError(result.message); 
@@ -398,15 +392,15 @@ function showSettingsButton(c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
- * In:  c, s, that
+ * In:  adp, c, s, that
  * Out: -
  *
  */
-function showSettingButtonAction(c, s, that) {
+function showSettingButtonAction(adp, c, s, that) {
     
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
@@ -439,7 +433,7 @@ function showSettingButtonAction(c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable("tbl_services", services, s, 5, "get_services", "sort=service");               
+                showTable("tbl_services", services, s, 5, "get_services", "sort=service&type=");             
             }
             break;              
             
@@ -468,7 +462,7 @@ function showSettingButtonAction(c, s, that) {
             //console.log(s[slide].name);
             
             if (that.className === 'active') {   
-                showFinancesPopupAccounts(c, s, slide, false);
+                showFinancesPopupAccounts(adp, c, s, slide, false);
             }
             else 
             {     
@@ -629,20 +623,20 @@ function setPopupChoice(e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 13, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
- * In:  c, s, that
+ * In:  adp, c, s, that
  * Out: -
  *
  */
-function editSettingsTableRow(c, s, that) {
+function editSettingsTableRow(adp, c, s, that) {
     
     // Get active button.
     var btn = $("#page_buttons .active").attr("alt");
-    var rowid = $(that).closest('tr').find('td:first').text();
-    
+    var rowid = $(that).closest('tr').find('td:first').text().split("_");
+       
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
     
@@ -651,7 +645,7 @@ function editSettingsTableRow(c, s, that) {
         hide = true;
     } 
     
-    if (btn !== "configs" && rowid > 0) {
+    if (btn !== "configs" && rowid[0] > 0) {
        $(that).addClass("marked");
     }
     
@@ -665,7 +659,7 @@ function editSettingsTableRow(c, s, that) {
             break;        
         
         case "accounts" :
-            showFinancesPopupAccounts(c, s, slide, hide);
+            showFinancesPopupAccounts(adp, c, s, slide, hide);
             break;
         
     } 

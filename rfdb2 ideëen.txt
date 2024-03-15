@@ -10,6 +10,8 @@ https://www.jqueryscript.net/time-clock/Simple-Clean-Date-Picker-Plugin-with-jQu
 https://www.jqueryscript.net/form/Searchable-Dropdown-Select-jQuery-Selectstyle.html
 https://www.jqueryscript.net/form/Customizable-Animated-Dropdown-Plugin-with-jQuery-CSS3-Nice-Select.html
 
+https://stackoverflow.com/questions/8493589/is-there-a-css-media-query-to-detect-windows
+
 
 Financiën (betaalrekening)
 ---------
