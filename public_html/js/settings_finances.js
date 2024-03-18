@@ -96,3 +96,82 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     
     $("#popup_container").fadeIn("slow");
 }
+
+/*
+ * Function:    modifyAccounts
+ *
+ * Created on Mar 18, 2024
+ * Updated on Mar 18, 2024
+ *
+ * Description: Check the accounts input and add, edit or remove the accounts in the database.
+ *
+ * In:  c, btn
+ * Out: -
+ *
+ */
+function modifyAccounts(c, btn) {
+    
+    var msg, input = [];
+    
+    // Get the input values.
+    input.push($("#date").val(), $("#serv").val(), $("#acct").val(), $("#desc").val());
+    
+    msg = c.messages[2].replace("#", input[2]);   
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
+    {     
+        // Add the input to account table if the account doesn´t exists.
+        if (validateInput(c.messages, c.accounts, input))
+        {        
+            var [id, action] = getRowIdAndAction();
+            var hide = getShowHideRow();
+            var send = 'date='+ input[0] + '&serv=' + input[1] + '&account=' + input[2] + '&desc=' + input[3] + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            
+            var request = getAjaxRequest("modify_accounts", send);
+            request.done(function(result) {
+                if (result.success) {         
+                    if (result.exists) {
+                        $(".msg").html(input[0] + " " + c.messages[1]);                    
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :
+                                //showAddService(result);
+                                break;
+                                
+                            case "edit"   :
+                                //showEditService(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {   
+                            // Reset input.
+                            //$("#service").val("");                        
+                            //$('input[name="services"]').prop('checked', false);
+                            //$("#website").val("");   
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+            
+            closeErrorMessage();               
+        }                        
+    } 
+}

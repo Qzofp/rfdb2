@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 15, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -474,6 +474,34 @@ function checkEditDelete(btn, msg) {
 }
 
 /*
+ * Function:    validateInput
+ *
+ * Created on Mar 18, 2024
+ * Updated on Mar 18, 2024
+ *
+ * Description: Validate the input, check if it is not empty.
+ *
+ * In:  msg, items, input
+ * Out: check
+ *
+ */
+function validateInput(msg, items, input) {
+    
+    var i, check = true;    
+    
+    i = 0;
+    input.forEach((value) => {
+        i++;
+        if (!value && check) {
+            $(".msg").html(items[i] + " " + msg[0]);
+            check = false;
+        }        
+    });   
+    
+    return check;    
+}
+
+/*
  * Function:    getRowIdAndAction
  *
  * Created on Feb 04, 2024
@@ -577,7 +605,7 @@ function getPopupEnterKey(e) {
  * Function:   initAirDatePicker
  *
  * Created on Mar 06, 2024
- * Updated on Mar 15, 2024
+ * Updated on Mar 16, 2024
  *
  * Description: Initialize the Air datepicker.
  *
@@ -603,6 +631,7 @@ function initAirDatePicker(c) {
     var adp = new AirDatepicker('#date', {
         locale: local,
         autoClose: true,
+        keyboardNav: false,
         disableNavWhenOutOfRange: true,
         minView: 'days'
     });   
@@ -614,7 +643,7 @@ function initAirDatePicker(c) {
  * Function:   serAirDatePicker
  *
  * Created on Mar 13, 2024
- * Updated on Mar 13, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Sets the Air datepicker.
  *
@@ -626,8 +655,8 @@ function setAirDatePicker(adp, date) {
     
     if (date) {
         let p = date.split("-");
-        adp.selectDate(p[1] + "-" + p[0] + "-" + p[2]); 
-        adp.setViewDate(p[1] + "-" + p[0] + "-" + p[2]);
+        adp.selectDate(p[2] + "-" + p[1] + "-" + p[0]); 
+        //adp.setViewDate(p[1] + "-" + p[0] + "-" + p[2]);
     }
     else {       
         adp.setViewDate(cDate); 
@@ -639,7 +668,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Mar 15, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Add the select menu.
  *
@@ -649,7 +678,7 @@ function setAirDatePicker(adp, date) {
  */
 function addSelectMenu(c, page, send, id, name, value, item) {
 
-    var empty, options;
+    var empty, options, plh;
     var request = getAjaxRequest(page, send);      
     request.done(function(result) {
         
@@ -681,17 +710,20 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             }    
     
             // Set the nice-select menu.
-            options = { searchable: !empty, searchtext: c.misc[0], placeholder: name };
+            plh = '<span class="placeholder">' + name + '</span>';
+            options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
             // Select placeholder fix.
             if (!value) {
                 db.clear();
-                //$(".current").addClass("inactive");
             }
             
+            
+            
             if (empty) {
-                $("#popup_content .msg").html("Empty message!"); // Get message from database!
+                $("#popup_content .msg").html(c.messages[4].replace("#", name));
+                db.disable();
             }
             
             // Windows scroll bar FF fix.

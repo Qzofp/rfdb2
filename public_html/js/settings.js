@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 13, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -569,7 +569,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Mar 01, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -583,18 +583,17 @@ function setPopupChoice(e, c, s) {
    
     var btn = e.originalEvent.submitter.alt;
     var popup  = $('#popup_content').attr('class');
-    
+        
     if (btn !== "cancel") {
         
-        var data;
         switch (popup) {
             case "gen_language" :
-                data = $('input[name="language"]:checked').parent().text();
+                let data = $('input[name="language"]:checked').parent().text();
                 setLanguage(data, s);
                 break;
             
             case "gen_pages"    :
-                var result = [false,false,false,false];
+                let result = [false,false,false,false];
                 $('input[name="pages"]:checked').each(function() {
                     result[this.value - 1] = true;      
                 });
@@ -611,7 +610,7 @@ function setPopupChoice(e, c, s) {
                 break;
                 
             case "fin_accounts" :
-                data = "TEST";
+                modifyAccounts(c, btn);
                 break;
                 
                 

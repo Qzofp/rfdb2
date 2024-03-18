@@ -445,7 +445,7 @@ function modifyUser(c, btn) {
         
     if(!checkEditDelete(btn, msg)) {
       
-        // Add the user input to user table if the user doesn´t exists.
+        // Add the input to user table if the user doesn´t exists.
         if (validateUser(c, data))
         {    
             var [id, action] = getRowIdAndAction();                        
@@ -623,7 +623,7 @@ function showEditUser(result) {
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Feb 23, 2024
+ * Updated on Mar 18, 2024
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -654,7 +654,7 @@ function modifyServices(c, btn) {
    
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
-        // Add the user input to user table if the user doesn´t exists.
+        // Add the input to account table if the account doesn´t exists.
         if (validateName(c.messages, c.services[1], input[0])) 
         {        
             var [id, action] = getRowIdAndAction();
@@ -729,7 +729,7 @@ function validateName(msg, name, value) {
     
     if (!value) {
         $(".msg").html(name + " " + msg[0]);
-        check = false;        
+        check = false;
     }
     
     return check;
