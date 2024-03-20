@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -477,24 +477,25 @@ function checkEditDelete(btn, msg) {
  * Function:    validateInput
  *
  * Created on Mar 18, 2024
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
- * Description: Validate the input, check if it is not empty.
+ * Description: Validate the input, check if it is not empty. Skip the last item if it true.
  *
- * In:  msg, items, input
+ * In:  msg, items, input, last
  * Out: check
  *
  */
-function validateInput(msg, items, input) {
+function validateInput(msg, items, input, last) {
     
-    var i, check = true;    
-    
-    i = 0;
-    input.forEach((value) => {
-        i++;
-        if (!value && check) {
-            $(".msg").html(items[i] + " " + msg[0]);
-            check = false;
+    var check = true;    
+    $("#popup_content .msg").html("&nbsp;"); 
+    input.forEach((value, i) => {
+          
+        if (!value && check) {        
+            if (input.length - 1 !== i || !last) {
+                $("#popup_content .msg").html(items[i+1] + " " + msg[0]);    
+                check = false;
+            }
         }        
     });   
     
@@ -505,17 +506,18 @@ function validateInput(msg, items, input) {
  * Function:    getRowIdAndAction
  *
  * Created on Feb 04, 2024
- * Updated on Feb 04, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Get the row id from the table and determine the table action.
  *
  * In:  -
- * Out: action
+ * Out: id, action
  * 
  */
 function getRowIdAndAction() {
     
-    var id, action = "add";
+    var id = 0; 
+    var action = "add";
     
     if ($("#table_container tbody .marked").length) {  
         id = $("#table_container tbody .marked").closest('tr').find('td:first').text();
@@ -668,7 +670,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Add the select menu.
  *
@@ -718,9 +720,7 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             if (!value) {
                 db.clear();
             }
-            
-            
-            
+                        
             if (empty) {
                 $("#popup_content .msg").html(c.messages[4].replace("#", name));
                 db.disable();

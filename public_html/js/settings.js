@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Mar 15, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Shows the settings page.
  *
@@ -96,7 +96,7 @@ function showSettings(c, s) {
     
     // Settings popup Ok button is pressed.  
     $("#popup_content").on("submit","form",function(e) {        
-        setPopupChoice(e, c, s);
+        setPopupChoice($adp, e, c, s);
     });
   
     // Settings popup <enter> button is pressed.  
@@ -569,15 +569,15 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
- * In:  that, e, c, s
+ * In:  adp, e, c, s
  * Out: -
  *
  */
-function setPopupChoice(e, c, s) {
+function setPopupChoice(adp, e, c, s) {
       
     e.preventDefault();
    
@@ -610,7 +610,7 @@ function setPopupChoice(e, c, s) {
                 break;
                 
             case "fin_accounts" :
-                modifyAccounts(c, btn);
+                modifyAccounts(adp, c, btn);
                 break;
                 
                 

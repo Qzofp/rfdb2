@@ -44,3 +44,4 @@ ToDo
 2. Configuraties aanpassen. Door nogmaals op het config icon te klikken en dat dan de instellingen verschijnen
    die aangepast kunnen worden. Bv. door het in beeld schuiven van deze instellingen, net zoals de grafieken.
 
+3. Input validatie onderzoeken en/of verbeteren. Bv. datum controleren, omschrijving wil of niet leeg, etc.

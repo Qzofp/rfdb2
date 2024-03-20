@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 09, 2024
+ * Updated on Mar 19, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -739,9 +739,9 @@ function validateName(msg, name, value) {
  * Function:    showAddService
  *
  * Created on Feb 21, 2024
- * Updated on Feb 21, 2024
+ * Updated on Mar 20, 2024
  *
- * Description: Show the result of add servce.
+ * Description: Show the result of add service.
  *
  * In:  result
  * Out: -

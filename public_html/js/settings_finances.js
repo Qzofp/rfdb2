@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 15, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 15, 2024
+ * Updated on Mar 20, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -101,15 +101,15 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Mar 18, 2024
+ * Updated on Mar 20, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
- * In:  c, btn
+ * In:  adp, c, btn
  * Out: -
  *
  */
-function modifyAccounts(c, btn) {
+function modifyAccounts(adp, c, btn) {
     
     var msg, input = [];
     
@@ -120,24 +120,33 @@ function modifyAccounts(c, btn) {
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the input to account table if the account doesn´t exists.
-        if (validateInput(c.messages, c.accounts, input))
-        {        
+        if (validateInput(c.messages, c.accounts, input, true))
+        {            
             var [id, action] = getRowIdAndAction();
+            
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
             var hide = getShowHideRow();
-            var send = 'date='+ input[0] + '&serv=' + input[1] + '&account=' + input[2] + '&desc=' + input[3] + 
-                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            var send = 'date='+ input[0] + '&serv=' + input[1] + '&type=' + type + '&account=' + input[2] + 
+                       '&desc=' + input[3] + '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            
+            // debug
+            console.log(send);
             
             var request = getAjaxRequest("modify_accounts", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
-                        $(".msg").html(input[0] + " " + c.messages[1]);                    
+                        $(".msg").html(input[2] + " " + c.messages[1]);                    
                     }
                     else 
                     {                    
                         switch (action) {
                             case "add"    :
-                                //showAddService(result);
+                                showAddAccount(result);
                                 break;
                                 
                             case "edit"   :
@@ -156,9 +165,16 @@ function modifyAccounts(c, btn) {
                         else 
                         {   
                             // Reset input.
-                            //$("#service").val("");                        
-                            //$('input[name="services"]').prop('checked', false);
-                            //$("#website").val("");   
+                            $("#date").val("");                        
+                            
+                            // Reset Air datepicker calender.
+                            adp.setViewDate(cDate); 
+                            adp.clear();
+                            
+                            $(".nice-select .current").html('<span class="placeholder">' + c.services[1] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $("#acct").val(""); 
+                            $("#desc").val(""); 
                         }
                     }     
                 }
@@ -174,4 +190,29 @@ function modifyAccounts(c, btn) {
             closeErrorMessage();               
         }                        
     } 
+}
+
+/*
+ * Function:    showAddAccount
+ *
+ * Created on Mar 20, 2024
+ * Updated on Mar 20, 2024
+ *
+ * Description: Show the result of add account.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showAddAccount(result) {
+    
+    $("#table_container").scrollTop(0);
+  
+    $("#table_container tbody").prepend('<tr><td>' + result.id + '</td>' +
+                                            '<td>' + result.date + '</td>' +                                            
+                                            '<td>' + result.serv + '</td>' +       
+                                            '<td>' + result.acct + '</td>' +                                                   
+                                            '<td>' + result.desc + '</td>');
+                                                 
+    $("#table_container tbody").children("tr:first").addClass("add"); 
 }

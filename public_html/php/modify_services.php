@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Feb 24, 2024
+ * Updated on Mar 19, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else
 }
 
 /*
- * Function:    ModifyServices
+ * Function:    ModifyService
  *
  * Created on Feb 20, 2024
  * Updated on Feb 23, 2024
@@ -236,7 +236,7 @@ function CheckService($id, $srv)
             $edit = "AND `id` <> $id";
         }
         
-        // Check if user aleready exists in the tbl_users table.
+        // Check if user aleready exists in the tbl_services table.
         $query = "SELECT count(0) FROM `tbl_services` WHERE `service` = '$srv' $edit;";        
         $select = $db->prepare($query);
         $select->execute();        

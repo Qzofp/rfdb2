@@ -12,6 +12,8 @@ https://www.jqueryscript.net/form/Customizable-Animated-Dropdown-Plugin-with-jQu
 
 https://stackoverflow.com/questions/8493589/is-there-a-css-media-query-to-detect-windows
 
+Mouse Cursors: https://github.com/ful1e5/Bibata_Cursor
+
 
 Financiën (betaalrekening)
 ---------
