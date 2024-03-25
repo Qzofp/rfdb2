@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 20, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -477,7 +477,7 @@ function checkEditDelete(btn, msg) {
  * Function:    validateInput
  *
  * Created on Mar 18, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Validate the input, check if it is not empty. Skip the last item if it true.
  *
@@ -493,7 +493,7 @@ function validateInput(msg, items, input, last) {
           
         if (!value && check) {        
             if (input.length - 1 !== i || !last) {
-                $("#popup_content .msg").html(items[i+1] + " " + msg[0]);    
+                $("#popup_content .msg").html(items[i+1] + " " + msg[5]);    
                 check = false;
             }
         }        
@@ -530,6 +530,85 @@ function getRowIdAndAction() {
     } 
     
     return [id, action];
+}
+
+/*
+ * Function:    showModifyMessage
+ *
+ * Created on Mar 24, 2024
+ * Updated on Mar 24, 2024
+ *
+ * Description: Show a message if modifing (add, edit or delete) a row cannot be done (i.e. name exists).
+ *
+ * In:  c, name, action
+ * Out: -
+ *
+ */
+function showModifyMessage(c, name, action) {
+    
+    if (action !== "delete") {
+        $(".msg").html(name + " " + c.messages[1]);
+    }
+    else {
+        $(".msg").html(name + " " + c.messages[3]);
+    }
+}
+
+/*
+ * Function:    showAddRow
+ *
+ * Created on Mar 22, 2024
+ * Updated on Mar 22, 2024
+ *
+ * Description: Show the result of adding a row .
+ *
+ * In:  data
+ * Out: -
+ *
+ */
+function showAddRow(data) {
+    
+    var row = "<tr>";  
+    $.each(data, function(key, value){         
+        // Skip exists and success values.
+        if (key !== "exists" && key !== "success") {
+            row += "<td>" + value + "</td>";
+        }      
+    });
+ 
+    $("#table_container").scrollTop(0); 
+    $("#table_container tbody").prepend(row);
+    $("#table_container tbody").children("tr:first").addClass("add");
+}
+
+/*
+ * Function:    showEditRow
+ *
+ * Created on Mar 23, 2024
+ * Updated on Mar 23, 2024
+ *
+ * Description: Show the result of editing a row.
+ *
+ * In:  data
+ * Out: -
+ *
+ */
+function showEditRow(data) {
+    
+    if (data.hide === "true") {
+        $("#table_container tbody .marked").addClass("hide");
+    }
+    else {
+        $("#table_container tbody .marked").removeClass("hide");
+    }    
+    
+    var i = 1;
+    $.each(data, function(key, value){         
+        // Skip exists, success, id and the hide values.
+        if (key !== "exists" && key !== "success" && key !== "id"  && key !== "hide") {
+            $("#table_container tbody .marked td").eq(i++).html(value);
+        }      
+    });
 }
 
 /*
@@ -579,7 +658,7 @@ function removeAddRowMarker() {
  * Function:   getPopupEnterKey
  *
  * Created on Feb 06, 2024
- * Updated on Feb 06, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: When the <enter> key is pressed get the right button and click it.
  *
@@ -588,14 +667,14 @@ function removeAddRowMarker() {
  *
  */
 function getPopupEnterKey(e) {
-    
+        
     if(e.which === 13){     
             
         e.preventDefault();  
             
         let btn = $("#popup_content table .btn").attr('alt');            
         if (btn === "add") {
-            $("#popup_content .btn").click();
+            $("#popup_content .btn:first").click();
         }
         else {     
             $("#popup_content .ok").click();
@@ -670,7 +749,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Add the select menu.
  *
@@ -722,7 +801,7 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             }
                         
             if (empty) {
-                $("#popup_content .msg").html(c.messages[4].replace("#", name));
+                $("#popup_content .msg").html(c.messages[4].replace("#", name) + " " + c.messages[5]);
                 db.disable();
             }
             
@@ -732,7 +811,7 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             }       
         }
         else {
-               showDatabaseError(result.message); 
+               showDatabaseError(result.message);
         }
     });
     

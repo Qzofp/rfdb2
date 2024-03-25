@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 19, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -429,7 +429,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Feb 25, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -454,12 +454,14 @@ function modifyUser(c, btn) {
                       
             var request = getAjaxRequest("modify_user", send);
             request.done(function(result) {
-                if (result.success) {         
+                if (result.success) {    
+                                       
                     if (!checkLastUserOrExists(result, data[0], c))
-                    {                    
+                    {
                         switch (action) {
                             case "add"    :
-                                showAddUser(result);
+                                showAddRow(result);
+                                //showAddUser(result);
                                 break;
                                 
                             case "edit"   :
@@ -501,7 +503,7 @@ function modifyUser(c, btn) {
  * Function:    validateUser
  *
  * Created on Jan 29, 2024
- * Updated on Feb 25, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Validate the user input (username and password).
  *
@@ -533,14 +535,24 @@ function validateUser(c, data) {
             }
             else 
             {       
-                $(".msg").html(c.login[2] + " " + c.messages[0]);
-                check = false;
+                if (data[1]) {
+                    $(".msg").html(c.login[2] + " " + c.messages[0]);
+                }
+                else {
+                    $(".msg").html(c.login[2] + " " + c.messages[5]);
+                }
+                check = false;         
             }     
         }
         else 
         {
-        $(".msg").html(c.login[1] + " " + c.messages[0]);
-        check = false;
+            if (data[0]) {
+                $(".msg").html(c.login[1] + " " + c.messages[0]);
+            }
+            else {
+                $(".msg").html(c.login[1] + " " + c.messages[5]);
+            }
+            check = false;
         } 
     }
     
@@ -578,30 +590,6 @@ function checkLastUserOrExists(result, user, c) {
 }
 
 /*
- * Function:    showAddUser
- *
- * Created on Feb 04, 2024
- * Updated on Feb 05, 2024
- *
- * Description: Show the result of add user.
- *
- * In:  result
- * Out: -
- *
- */
-function showAddUser(result) {
-    
-    $("#table_container").scrollTop(0);
-  
-    $("#table_container tbody").prepend('<tr><td>' + result.id + '</td>' +
-                                            '<td>' + result.user + '</td>' +
-                                            '<td>' + result.hash + '</td>' +
-                                            '<td></td><td></td></tr>');
-                                                 
-    $("#table_container tbody").children("tr:first").addClass("add");  
-}
-
-/*
  * Function:    showEditUser
  *
  * Created on Feb 04, 2024
@@ -623,7 +611,7 @@ function showEditUser(result) {
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Mar 18, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -666,7 +654,7 @@ function modifyServices(c, btn) {
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
-                        $(".msg").html(input[0] + " " + c.messages[1]);                    
+                        showModifyMessage(c, input[0], action);                   
                     }
                     else 
                     {                    
@@ -715,7 +703,7 @@ function modifyServices(c, btn) {
  * Function:    validateName
  *
  * Created on Feb 19, 2024
- * Updated on Feb 19, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Validate the name, check if it is not empty.
  *
@@ -728,7 +716,7 @@ function validateName(msg, name, value) {
     var check = true;
     
     if (!value) {
-        $(".msg").html(name + " " + msg[0]);
+        $(".msg").html(name + " " + msg[5]);
         check = false;
     }
     

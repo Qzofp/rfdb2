@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 20, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Mar 20, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Shows the settings page.
  *
@@ -96,12 +96,20 @@ function showSettings(c, s) {
     
     // Settings popup Ok button is pressed.  
     $("#popup_content").on("submit","form",function(e) {        
+        
+        // debug
+        //console.log("Press");
+        
         setPopupChoice($adp, e, c, s);
     });
   
     // Settings popup <enter> button is pressed.  
-    $("#popup_content").on("keypress","form",function(e) {       
-        getPopupEnterKey(e);   
+    $("#popup_content").on("keypress","form",function(e) {    
+        
+        // debug
+        //console.log("Enter");
+        
+        getPopupEnterKey(e);
     });
 
     // Show the page theme.

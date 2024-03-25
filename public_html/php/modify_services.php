@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Mar 19, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -122,96 +122,6 @@ function ModifyService()
 }
 
 /*
- * Function:    EditService
- *
- * Created on Feb 20, 2024
- * Updated on Feb 24, 2024
- *
- * Description: Edit the tbl_services table with the input if the service doesn't exists.
- *
- * In:  $id, $hide, $srv, $web, $aNames, $aOptions
- * Out: $response
- *
- */    
- function EditService($id, $hide, $srv, $web, $aNames, $aOptions)
- {   
-    $options    = "";
-    $opt_values = "";
-    
-    
-    $response = CheckService($id, $srv);    
-    if ($response['success'] && !$response['exists'])
-    {    
-        try 
-        {    
-            list($options, $opt_values) = CreateUpdateNamesAndValues($aNames, $aOptions);
-            
-            $db = OpenDatabase();
-                
-            $query = "UPDATE tbl_services SET `hide`=$hide, `service`='$srv',`website`='$web'$options WHERE `id`=$id";        
-            $select = $db->prepare($query);
-            $select->execute();
-            
-            $response['id']   = $db->lastInsertId();
-            $response['hide'] = $hide;       
-            $response['srv']  = $srv;
-            $response['web']  = $web;
-            $response['opt']  = $opt_values;
-            
-            $response['success'] = true;  
-        }
-        catch (PDOException $e) 
-        {    
-            $response['message'] = $e->getMessage();
-            $response['success'] = false;
-        } 
-    }
-    
-    // Close database connection.
-    $db = null;   
-      
-    return $response;
-}
-
-/*
- * Function:    DeleteService
- *
- * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
- *
- * Description: Delete the service in the tbl_users table.
- *
- * In:  $id
- * Out: $response
- *
- */    
- function DeleteService($id)
- {   
-    $response = [];  
-       
-    try 
-    {    
-        $db = OpenDatabase();
-                
-        $query = "DELETE FROM tbl_services WHERE `id` = $id";          
-        $select = $db->prepare($query);
-        $select->execute();
-                    
-        $response['success'] = true;  
-    }
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-
-    // Close database connection.
-    $db = null;   
-      
-    return $response;
-}
-
-/*
  * Function:    CheckService
  *
  * Created on Feb 20, 2024
@@ -236,7 +146,7 @@ function CheckService($id, $srv)
             $edit = "AND `id` <> $id";
         }
         
-        // Check if user aleready exists in the tbl_services table.
+        // Check if the service already exists in the tbl_services table.
         $query = "SELECT count(0) FROM `tbl_services` WHERE `service` = '$srv' $edit;";        
         $select = $db->prepare($query);
         $select->execute();        
@@ -305,7 +215,59 @@ function CreateInsertNamesAndValues($aNames, $aValues)
     }    
         
     return array($names, $values);
-}     
+}  
+
+/*
+ * Function:    EditService
+ *
+ * Created on Feb 20, 2024
+ * Updated on Feb 24, 2024
+ *
+ * Description: Edit the tbl_services table with the input if the service doesn't exists.
+ *
+ * In:  $id, $hide, $srv, $web, $aNames, $aOptions
+ * Out: $response
+ *
+ */    
+ function EditService($id, $hide, $srv, $web, $aNames, $aOptions)
+ {   
+    $options    = "";
+    $opt_values = "";
+    
+    
+    $response = CheckService($id, $srv);    
+    if ($response['success'] && !$response['exists'])
+    {    
+        try 
+        {    
+            list($options, $opt_values) = CreateUpdateNamesAndValues($aNames, $aOptions);
+            
+            $db = OpenDatabase();
+                
+            $query = "UPDATE tbl_services SET `hide`=$hide, `service`='$srv',`website`='$web'$options WHERE `id`=$id";        
+            $select = $db->prepare($query);
+            $select->execute();
+            
+            $response['id']   = $db->lastInsertId();
+            $response['hide'] = $hide;       
+            $response['srv']  = $srv;
+            $response['web']  = $web;
+            $response['opt']  = $opt_values;
+            
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        } 
+    }
+    
+    // Close database connection.
+    $db = null;   
+      
+    return $response;
+}
 
 /*
  * Function:    CreateUpdateNamesAndValues
@@ -353,4 +315,89 @@ function CreateUpdateNamesAndValues($aNames, $aValues)
     }     
     
     return array($names, $values); 
+}
+
+/*
+ * Function:    DeleteService
+ *
+ * Created on Feb 20, 2024
+ * Updated on Mar 24, 2024
+ *
+ * Description: Delete the row in the tbl_services table if it doesn't exists in the tbl_accounts table.
+ *
+ * In:  $id
+ * Out: $response
+ *
+ */    
+ function DeleteService($id)
+ {        
+    $response = CheckServiceInAccounts($id);
+    if ($response['success'] && !$response['exists'])
+    {      
+        try 
+        {    
+            $db = OpenDatabase();
+                
+            $query = "DELETE FROM tbl_services WHERE `id` = $id";          
+            $select = $db->prepare($query);
+            $select->execute();
+                    
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        } 
+
+        // Close database connection.
+        $db = null;   
+    }
+    
+    return $response;
+}
+
+/*
+ * Function:    CheckService
+ *
+ * Created on Mar 24, 2024
+ * Updated on Mar 24, 2024
+ *
+ * Description: Check if the service exists in the tbl_accounts table.
+ *
+ * In:  $id
+ * Out: $response
+ *
+ */
+function CheckServiceInAccounts($id)
+{
+    $response = [];
+    
+    try 
+    { 
+        $db = OpenDatabase();
+                
+        // Check if service exists in the tbl_accounts table.
+        $query = "SELECT count(0) FROM tbl_accounts WHERE serviceid = $id;";        
+        $select = $db->prepare($query);
+        $select->execute();        
+        $result = $select->fetchColumn();
+
+        $response['exists'] = false; 
+        if ($result > 0) {
+            $response['exists'] = true; 
+        }  
+
+        $response['success'] = true;         
+    }    
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
+    
+    // Close database connection.
+    $db = null;        
+    
+    return $response;    
 }

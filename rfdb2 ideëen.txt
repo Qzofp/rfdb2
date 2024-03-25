@@ -23,7 +23,7 @@ Groepen
 	- Energie
 	- Vervoer
 	- etc.
-Bedrijven
+Bedrijven / Businesses
     - AH
 	- Dirk
 	- Jumbo

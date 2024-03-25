@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -101,7 +101,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -134,23 +134,28 @@ function modifyAccounts(adp, c, btn) {
                        '&desc=' + input[3] + '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
             // debug
-            console.log(send);
+            //console.log(send);
             
             var request = getAjaxRequest("modify_accounts", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
-                        $(".msg").html(input[2] + " " + c.messages[1]);                    
+                        showModifyMessage(c, input[2], action);               
                     }
                     else 
                     {                    
                         switch (action) {
-                            case "add"    :
-                                showAddAccount(result);
+                            case "add"    :                                
+                                // Correct the id and service values.
+                                result.id += "_" + result.serv;
+                                result.serv = $(".nice-select .current:first").html();
+                                showAddRow(result);
                                 break;
                                 
                             case "edit"   :
-                                //showEditService(result);
+                                // Correct the service values.
+                                result.serv = $(".nice-select .current:first").html();        
+                                showEditRow(result);
                                 break;
                                 
                             case "delete" :
@@ -171,7 +176,7 @@ function modifyAccounts(adp, c, btn) {
                             adp.setViewDate(cDate); 
                             adp.clear();
                             
-                            $(".nice-select .current").html('<span class="placeholder">' + c.services[1] + '</span>');
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.services[1] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
                             $("#acct").val(""); 
                             $("#desc").val(""); 
@@ -190,29 +195,4 @@ function modifyAccounts(adp, c, btn) {
             closeErrorMessage();               
         }                        
     } 
-}
-
-/*
- * Function:    showAddAccount
- *
- * Created on Mar 20, 2024
- * Updated on Mar 20, 2024
- *
- * Description: Show the result of add account.
- *
- * In:  result
- * Out: -
- *
- */
-function showAddAccount(result) {
-    
-    $("#table_container").scrollTop(0);
-  
-    $("#table_container tbody").prepend('<tr><td>' + result.id + '</td>' +
-                                            '<td>' + result.date + '</td>' +                                            
-                                            '<td>' + result.serv + '</td>' +       
-                                            '<td>' + result.acct + '</td>' +                                                   
-                                            '<td>' + result.desc + '</td>');
-                                                 
-    $("#table_container tbody").children("tr:first").addClass("add"); 
 }

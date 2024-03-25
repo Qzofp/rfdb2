@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Feb 24, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Check if the user is signed in and modify the user in the tbl_users table.
  * Dependenties: config.php
@@ -71,7 +71,7 @@ function ModifyUser()
  * Function:    AddUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 24, 2024
+ * Updated on Mar 24, 2024
  *
  * Description: Add the user in the tbl_users table if the user doesn't exists.
  *
@@ -95,6 +95,8 @@ function ModifyUser()
             $response['id']   = $db->lastInsertId();            
             $response['user'] = $user;
             $response['hash'] = $hash;
+            $response['time'] = "";
+            $response['last'] = "";            
                
             $response['success'] = true;  
         }

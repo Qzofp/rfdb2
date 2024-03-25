@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 23, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -31,7 +31,7 @@ else
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 19, 2024
+ * Updated on Mar 23, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -59,11 +59,11 @@ function ModifyAccount()
             break;
             
         case "edit" :
-            //$response = EditService($id, $hide, $srv, $web, $aNames, $aOptions);
+            $response = EditAccount($id, $hide, $date, $serv, $type, $account, $desc);
             break;
             
         case "delete" :
-            //$response = DeleteService($id);
+            $response = DeleteAccount($id);
             break;                
     }    
     
@@ -74,7 +74,7 @@ function ModifyAccount()
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 19, 2024
+ * Updated on Mar 22, 2024
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
@@ -99,7 +99,7 @@ function ModifyAccount()
             $select->execute();
             
             // debug
-            $response['query'] = $query;
+            //$response['query'] = $query;
                         
             $response['id']    = $db->lastInsertId();            
             $response['date']  = $date;
@@ -123,41 +123,43 @@ function ModifyAccount()
 }
 
 /*
- * Function:    EditService
+ * Function:    EditAccount
  *
- * Created on Feb 20, 2024
- * Updated on Feb 24, 2024
+ * Created on Mar 23, 2024
+ * Updated on Mar 23, 2024
  *
- * Description: Edit the tbl_services table with the input if the service doesn't exists.
+ * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
- * In:  $id, $hide, $srv, $web, $aNames, $aOptions
+ * In:  $id, $hide, $date, $serv, $type, $account, $desc
  * Out: $response
  *
  */    
- function EditService($id, $hide, $srv, $web, $aNames, $aOptions)
+ function EditAccount($id, $hide, $date, $serv, $type, $account, $desc)
  {   
-    $options    = "";
-    $opt_values = "";
+    $aTypes   = ["","finance","stock","savings","crypto"];    
     
-    
-    $response = CheckService($id, $srv);    
+    $response = CheckAccount($id, $account);    
     if ($response['success'] && !$response['exists'])
     {    
         try 
-        {    
-            list($options, $opt_values) = CreateUpdateNamesAndValues($aNames, $aOptions);
-            
+        {                
             $db = OpenDatabase();
                 
-            $query = "UPDATE tbl_services SET `hide`=$hide, `service`='$srv',`website`='$web'$options WHERE `id`=$id";        
+            $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`='$account',`date`=CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),".
+                            "`serviceid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
+            
             $select = $db->prepare($query);
             $select->execute();
             
+            // debug
+            // $response['query'] = $query;            
+                    
             $response['id']   = $db->lastInsertId();
-            $response['hide'] = $hide;       
-            $response['srv']  = $srv;
-            $response['web']  = $web;
-            $response['opt']  = $opt_values;
+            $response['hide'] = $hide;
+            $response['date'] = $date;
+            $response['serv'] = $serv;
+            $response['acct'] = $account;
+            $response['desc'] = $desc;
             
             $response['success'] = true;  
         }
@@ -175,18 +177,18 @@ function ModifyAccount()
 }
 
 /*
- * Function:    DeleteService
+ * Function:    DeleteAccount
  *
- * Created on Feb 20, 2024
- * Updated on Feb 21, 2024
+ * Created on Mar 22, 2024
+ * Updated on Mar 22, 2024
  *
- * Description: Delete the service in the tbl_users table.
+ * Description: Delete the row with id in the tbl_accounts table.
  *
  * In:  $id
  * Out: $response
  *
  */    
- function DeleteService($id)
+ function DeleteAccount($id)
  {   
     $response = [];  
        
@@ -194,7 +196,7 @@ function ModifyAccount()
     {    
         $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_services WHERE `id` = $id";          
+        $query = "DELETE FROM tbl_accounts WHERE `id` = $id";          
         $select = $db->prepare($query);
         $select->execute();
                     
