@@ -130,3 +130,33 @@ id		service							hide	finance   	stock   	savings		crypto		website
 5		BTC Wallet						1		0			0			0			1
 6		Bitvavo Exchange				1		0			0			0			1
 
+Tabel Groepen
+-------------
+tbl_groups
+
+id	   hide    group	  			   	description
+1      0       Huis						VVE, Gemeente belastingen, e.d.								
+2      0       Eten & Drinken			Uitgaan, kantine, e.d.
+3      0       Energie					Water, Gas en Licht
+4	   0       Vervoer					Onderhoud, brandstof, wegenbelasting e.d.
+
+
+tbl_counters (experimenteel)			
+
+gid		bid		timestamp
+1				2024-03-02 11:03:34
+1				2024-03-09 10:45:56
+1               2024-03-16 11:14:01
+
+Tel het aantal gid (bv. is 1) van de afgelopen maand. Dat is de counter om te zien hoe vaak de groep of bedrijf wordt gebruikt. Daarbij sorteren gevolgd door de naam.
+Opschonen door alles ouder dan een maand te verwijderen.
+
+Counter tabel opschonen na het inloggen. Verwijder alles ouder dan 1 a 2 maanden.
+
+Sorteer query. Laat de meest opgevraagde groep eerst zien en daarna sorteren op naam.
+
+SELECT tbl_groups.`id`, tbl_groups.`group`, count(0) AS counter FROM `tbl_groups`
+LEFT JOIN tbl_counters ON tbl_groups.`id` = tbl_counters.`gid`
+GROUP BY tbl_groups.`group`
+ORDER BY counter DESC, `group`;
+

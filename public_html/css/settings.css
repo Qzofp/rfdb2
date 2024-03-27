@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Mar 17, 2024
+ * Updated on Mar 26, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -123,6 +123,7 @@
 #popup_content input[type=text]:hover,
 #popup_content input[type=password]:hover {
  border-color: #dbdbdb;
+ cursor: text;
 }
 
 #popup_content input[type=text]:focus,
