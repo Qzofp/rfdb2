@@ -4,11 +4,11 @@
  * Author: Rizzo Productions
  * Version: 0.1
  *
- * File:    get_accounts_finance.php
+ * File:    get_accounts.php
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Mar 13, 2024
+ * Updated on Mar 29, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,14 +28,14 @@ else
 }
 
 /*
- * Function:    GetServices
+ * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Mar 13, 2024
+ * Updated on Mar 29, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
- * In:  $type
+ * In:  -
  * Out: -
  *
  */

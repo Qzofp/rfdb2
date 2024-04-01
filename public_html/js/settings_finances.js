@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,12 +45,12 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 20, 2024
+ * Updated on Mar 30, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
  * In:  adp, c, s, slide, h
- * Out: items
+ * Out: -
  *
  */
 function showFinancesPopupAccounts(adp, c, s, slide, h) {
@@ -101,7 +101,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -130,8 +130,9 @@ function modifyAccounts(adp, c, btn) {
             
             var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
             var hide = getShowHideRow();
-            var send = 'date='+ input[0] + '&serv=' + input[1] + '&type=' + type + '&account=' + input[2] + 
-                       '&desc=' + input[3] + '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            var send = 'date='+ input[0] + '&serv=' + input[1] + '&type=' + type + '&account=' + 
+                       encodeURIComponent(input[2]) + '&desc=' + encodeURIComponent(input[3]) + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
             // debug
             //console.log(send);
@@ -176,8 +177,12 @@ function modifyAccounts(adp, c, btn) {
                             adp.setViewDate(cDate); 
                             adp.clear();
                             
-                            $(".nice-select .current:first").html('<span class="placeholder">' + c.services[1] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            // Reset nice-select menu if there is more then 1 item.
+                            if ($("#serv > option").length > 1) {
+                                $(".nice-select .current:first").html('<span class="placeholder">' + c.services[1] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            }
+                                                    
                             $("#acct").val(""); 
                             $("#desc").val(""); 
                         }
@@ -195,4 +200,131 @@ function modifyAccounts(adp, c, btn) {
             closeErrorMessage();               
         }                        
     } 
+}
+
+/*
+ * Function:    showFinancesPopupGroups
+ *
+ * Created on Mar 30, 2024
+ * Updated on Mar 30, 2024
+ *
+ * Description:  Shows the groups popup content for the finances page.
+ *
+ * In:  c, s 
+ * Out: -
+ *
+ */
+function showFinancesPopupGroups(c, s, h) {
+    
+    var shw, btn, cells, set;
+    [btn, cells] = setPopupTable("gen_groups", c.groups[0], 4);
+    
+    $(".popup_table_finance").hide();
+    
+    // Create show or hide button.
+    shw = 'img/show.png" alt="show';
+    if (h) { 
+        shw = 'img/hide.png" alt="hide';
+    }    
+    
+    set = JSON.parse(s[1].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);       
+    
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
+            
+            '<td><input id="groups" type="text" name="grps" placeholder="' + c.groups[1] + '" value="' + cells[1] + '" /></td>' +
+            '<td><input id="desc"   type="text" name="desc" placeholder="' + c.groups[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
+        '</tr>' +
+        '<tr><td class="msg" colspan="4">&nbsp;<td></tr>'
+    );    
+    
+    $("#popup_content .shw").hide();
+    if ($("#table_container tbody .marked").length) {        
+        $("#popup_content .shw").show();
+    }    
+    
+    $("#popup_container").fadeIn("slow");     
+}
+
+/*
+ * Function:    modifyGroups
+ *
+ * Created on Apr 01, 2024
+ * Updated on Apr 01, 2024
+ *
+ * Description: Check the groups input and add, edit or remove the groups in the database.
+ *
+ * In:  adp, c, btn
+ * Out: -
+ *
+ */
+function modifyGroups(c, btn) {
+    
+    var msg, input = [];
+    
+    // Get the input values.
+    input.push($("#groups").val(), $("#desc").val());
+    
+    msg = c.messages[2].replace("#", input[2]);   
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
+    {     
+        // Add the input to account table if the account doesn´t exists.
+        if (validateInput(c.messages, c.groups, input, true))
+        {            
+            var [id, action] = getRowIdAndAction();
+            var hide = getShowHideRow();
+            var send = 'group=' + encodeURIComponent(input[0]) + '&desc=' + encodeURIComponent(input[1]) + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            
+            // debug
+            console.log(send);
+            
+            var request = getAjaxRequest("modify_groups", send);
+            request.done(function(result) {
+                if (result.success) {         
+                    if (result.exists) {
+                        showModifyMessage(c, input[0], action);               
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :                                
+                                //showAddRow(result);
+                                break;
+                                
+                            case "edit"   :     
+                                //showEditRow(result);
+                                break;
+                                
+                            case "delete" :
+                                //showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {   
+                            // Reset input.
+
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+            
+            closeErrorMessage();               
+        }                        
+    }     
 }

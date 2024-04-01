@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -429,7 +429,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Mar 22, 2024
+ * Updated on Mar 30, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -450,8 +450,8 @@ function modifyUser(c, btn) {
         {    
             var [id, action] = getRowIdAndAction();                        
             var send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
-                              + '&id=' + id;    
-                      
+                              + '&id=' + id;
+            
             var request = getAjaxRequest("modify_user", send);
             request.done(function(result) {
                 if (result.success) {    
@@ -461,7 +461,6 @@ function modifyUser(c, btn) {
                         switch (action) {
                             case "add"    :
                                 showAddRow(result);
-                                //showAddUser(result);
                                 break;
                                 
                             case "edit"   :
@@ -611,7 +610,7 @@ function showEditUser(result) {
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -647,8 +646,8 @@ function modifyServices(c, btn) {
         {        
             var [id, action] = getRowIdAndAction();
             var hide = getShowHideRow();
-            var send = 'srv='+ input[0] + '&web=' + input[1] + '&opt=' + JSON.stringify(input[2]) + 
-                       '&action=' + action + '&id=' + id + '&hide=' + hide; 
+            var send = 'srv='+ encodeURIComponent(input[0]) + '&web=' + encodeURIComponent(input[1]) + '&opt=' +
+                        JSON.stringify(input[2]) + '&action=' + action + '&id=' + id + '&hide=' + hide;
             
             var request = getAjaxRequest("modify_services", send);
             request.done(function(result) {

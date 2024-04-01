@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 24, 2024
+ * Updated on Mar 30, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -299,7 +299,7 @@ function setPageButton(s, n, h) {
      var set = JSON.parse(s.value);
     
      $("#page_buttons .active").css("border-bottom", "");
-     $("#page_buttons img").removeClass("active");                
+     $("#page_buttons img").removeClass("active");             
      $("#page_buttons img").eq(n).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
      
      if (h > 0) {
@@ -749,7 +749,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Mar 22, 2024
+ * Updated on Mar 30, 2024
  *
  * Description: Add the select menu.
  *
@@ -769,7 +769,7 @@ function addSelectMenu(c, page, send, id, name, value, item) {
         if (result.success) {         
             let sel = "";
             $.each(result.data, function (n, field) {  
-                                
+                              
                 if (field.id === Number(value)) {
                     sel = " selected";
                 }
@@ -795,8 +795,8 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
-            // Select placeholder fix.
-            if (!value) {
+            // Select placeholder fix. And shows the selected item if there is only one.
+            if (!value && result.data.length > 1) {
                 db.clear();
             }
                         

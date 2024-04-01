@@ -60,6 +60,11 @@ Producten
 	- Beleggingsrekening
 	- Lijfrenterekening
 
+Termen
+--------
+Storting            Deposit   
+Onttrekking         Withdrawal
+
 Voorbeeld Sparen:
 																            (maand, kwartaal of jaar)
 																Spaarrekeningen 130,50  totaal
@@ -67,23 +72,24 @@ Voorbeeld Sparen:
 														ING Particulier			50
 
 datum			bij / af		bedrag			dienst				rekeningnummer		omschrijving
-07-11-2023		bij				100				LeasePlan Bank		LPB xxxx xxxx		Van ING betaalrekening
-08-11-2023		af				-20				LeasePlan Bank		LPB xxxx xxxx		Overschrijving naar ING betaalrekening
-14-11-2023		bij				50				ING Particulier		ING xxxx xxxx		Van ING betaalrekening	
+07-11-2023		bij				100				LeasePlan Bank		LPB xxxx xxxx		Storting van ING betaalrekening
+08-11-2023		af				-20				LeasePlan Bank		LPB xxxx xxxx		Ontrekking naar ING betaalrekening
+14-11-2023		bij				50				ING Particulier		ING xxxx xxxx		Storting van ING betaalrekening	
 01-12-2023		bij				0,50			LeasePlan Bank		LPB xxxx xxxx		Rente December
 
 
-Voorbeeld Beleggen:
+
+Voorbeeld Beleggen (simpel houden, in- en uitgaande geldstromen bijhouden):
+
 																          (maand, kwartaal of jaar)
 																Beleggingsrekeningen 150,50  totaal
 														OAKK Beheerd Beleggen		 100,50
 														ING Particulier				 50
 
-datum			bij / af		bedrag			dienst					rekeningnummer			omschrijving
-07-11-2023		bij				100				OAKK Beheerd Beleggen	xxxx-xxxx				Van ING betaalrekening
-14-11-2023		bij				50				ING Particulier			ING xxx xxxx			Van ING betaalrekening	
-01-12-2023		bij				0,50			OAKK Beheerd Beleggen	xxxx-xxxx				Divident 
-
+datum			bij / af		bedrag			dienst					rekeningnummer		     omschrijving
+07-11-2023		bij				100				OAKK Beheerd Beleggen	xxxx-xxxx			     Storting van ING betaalrekening                 
+14-11-2023		bij				50				ING Particulier			ING xxx xxxx		     Storting van ING betaalrekening	
+12-01-2024      af              -150            OAKK Beheerd Beleggen   xxxx-xxxx                Ontrekking naar ING betaalrekening
 
 
 Crypto
@@ -155,8 +161,8 @@ Counter tabel opschonen na het inloggen. Verwijder alles ouder dan 1 a 2 maanden
 
 Sorteer query. Laat de meest opgevraagde groep eerst zien en daarna sorteren op naam.
 
-SELECT tbl_groups.`id`, tbl_groups.`group`, count(0) AS counter FROM `tbl_groups`
-LEFT JOIN tbl_counters ON tbl_groups.`id` = tbl_counters.`gid`
+SELECT tbl_groups.`group`, count(0) AS ranking FROM `tbl_groups`
+LEFT JOIN tbl_rankings ON tbl_groups.`id` = tbl_rankings.`gid`
 GROUP BY tbl_groups.`group`
-ORDER BY counter DESC, `group`;
+ORDER BY ranking DESC, `group`;
 

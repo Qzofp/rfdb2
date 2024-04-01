@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 22, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -215,7 +215,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Mar 06, 2024
+ * Updated on Mar 29, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -226,7 +226,12 @@ function ShowGeneralSettings(c, s) {
 function ShowFinancesSettings(c, s) {
     
     var items = [];
-    var set = JSON.parse(s[1].value);    
+    var set = JSON.parse(s[1].value);   
+    
+    if($("#page_buttons img").hasClass("active")) {
+        $("#page_buttons img").removeClass("active");
+    }      
+    
     getAndSetScaleButton(c, s[1].name);
      
     $("#page_buttons img").css("border-bottom", "");
@@ -400,7 +405,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Mar 13, 2024
+ * Updated on Mar 29, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -464,27 +469,26 @@ function showSettingButtonAction(adp, c, s, that) {
             setScaleButton(c, that.alt);
             break;               
               
-        case "accounts" :    
-            
-            // Debug
-            //console.log(s[slide].name);
-            
+        case "accounts" :
             if (that.className === 'active') {   
                 showFinancesPopupAccounts(adp, c, s, slide, false);
             }
             else 
             {     
-                let items = setAccountItems(c, slide);
-                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=date");
                 setPageButton(s[slide], 1, -1);
+                let items = setAccountItems(c, slide);    
+                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=date");                
             }      
             break;
         
         case "groups"   :
-            setPageButton(s[1], 2, -1);
-            
-            // Test.
-            $("#label span").html(that.alt);
+            if (that.className === 'active') {   
+                showFinancesPopupGroups(c, s, false);
+            }
+            else {
+                setPageButton(s[1], 2, -1);
+                showTable("tbl_groups", c.groups, s, slide, "get_groups","rank=true");                
+            }
             break;
             
         case "shops"    :
@@ -577,7 +581,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Mar 20, 2024
+ * Updated on Apr 01, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -620,6 +624,11 @@ function setPopupChoice(adp, e, c, s) {
             case "fin_accounts" :
                 modifyAccounts(adp, c, btn);
                 break;
+            
+            case "gen_groups" :
+                modifyGroups(c, btn);
+                break;
+                
                 
                 
         }
@@ -630,7 +639,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Mar 13, 2024
+ * Updated on Mar 31, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -668,6 +677,10 @@ function editSettingsTableRow(adp, c, s, that) {
         case "accounts" :
             showFinancesPopupAccounts(adp, c, s, slide, hide);
             break;
+            
+        case "groups" :
+            showFinancesPopupGroups(c, s, hide);
+            break;           
         
     } 
 }
