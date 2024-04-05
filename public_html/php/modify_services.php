@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -358,10 +358,10 @@ function CreateUpdateNamesAndValues($aNames, $aValues)
 }
 
 /*
- * Function:    CheckService
+ * Function:    CheckServiceInAccounts
  *
  * Created on Mar 24, 2024
- * Updated on Mar 24, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Check if the service exists in the tbl_accounts table.
  *

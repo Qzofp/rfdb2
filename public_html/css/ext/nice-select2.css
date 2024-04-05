@@ -8,7 +8,7 @@
  * Used in: sheet.php, settings.php
  *
  * Created on Mar 10, 2024
- * Updated on Mar 17, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: The css for the nice select menu. Customize nice-select2.css file.
  * Build for: Chromium based and Firefox browsers. 
@@ -38,9 +38,16 @@
     transition: all 0.2s ease-in-out;
     user-select: none;
     white-space: nowrap;
-    width: auto;
-    min-width: 200px
+    width: 200px; /*min-width*/
 }
+
+.nice-select .current {
+    overflow: hidden;
+  /*  white-space: nowrap; */
+    text-overflow: ellipsis;
+    display: block;
+}
+
 .nice-select:hover {
     border-color: #dbdbdb;
 }
@@ -168,12 +175,13 @@
     padding-right: 29px;
     text-align: left;
     transition: all 0.2s;
+    width: 100%;
 }
 .nice-select .option:hover,
 .nice-select .option.focus,
 .nice-select .option.selected.focus {
     border-radius: 7px;
-    background-color: #f6f6f6; 
+    background-color: #f6f6f6;
 }
 .nice-select .option.selected {
     font-weight: bold;

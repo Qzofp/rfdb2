@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Apr 01, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -405,7 +405,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Mar 29, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -487,15 +487,18 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {
                 setPageButton(s[1], 2, -1);
-                showTable("tbl_groups", c.groups, s, slide, "get_groups","rank=true");                
+                showTable("tbl_groups", c.groups, s, slide, "get_groups","hide=false&rank=true");           
             }
             break;
             
         case "shops"    :
-            setPageButton(s[1], 3, -1);
-            
-            // Test
-            $("#label span").html(that.alt);
+            if (that.className === 'active') {   
+                showFinancesPopupBusinesses(c, s, false);
+            }
+            else {            
+                setPageButton(s[1], 3, -1);
+                showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","gid=0&rank=true");
+            }
             break;
         
         case "show"     :
@@ -639,7 +642,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Mar 31, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -680,9 +683,12 @@ function editSettingsTableRow(adp, c, s, that) {
             
         case "groups" :
             showFinancesPopupGroups(c, s, hide);
-            break;           
+            break;    
         
-    } 
+        case "shops" :
+            showFinancesPopupBusinesses(c, s, hide);
+            break;            
+    }
 }
 
 /*

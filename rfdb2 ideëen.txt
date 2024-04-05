@@ -147,7 +147,7 @@ id	   hide    group	  			   	description
 4	   0       Vervoer					Onderhoud, brandstof, wegenbelasting e.d.
 
 
-tbl_counters (experimenteel)			
+tbl_rankings (experimenteel)			
 
 gid		bid		timestamp
 1				2024-03-02 11:03:34
@@ -161,8 +161,32 @@ Counter tabel opschonen na het inloggen. Verwijder alles ouder dan 1 a 2 maanden
 
 Sorteer query. Laat de meest opgevraagde groep eerst zien en daarna sorteren op naam.
 
-SELECT tbl_groups.`group`, count(0) AS ranking FROM `tbl_groups`
+SELECT tbl_groups.`group`, count(0) AS ranking 
+FROM `tbl_groups`
 LEFT JOIN tbl_rankings ON tbl_groups.`id` = tbl_rankings.`gid`
 GROUP BY tbl_groups.`group`
 ORDER BY ranking DESC, `group`;
+
+
+Tabel Bedrijven
+---------------
+tbl_businesses
+
+id	hide	business			gid			website								rad_history		desc_history
+1	0		Gemeente Emmen		1			https://www.gemeente-emmen.nl		
+2   0       VVE					1										
+3	0		Brasserie			2			https://www.debrasserie.nl
+4   0		New York Pizza		2			https://newyorkpizza.nl
+5   0		Eneco				3			https://www.eneco.nl
+6   0       Shell				4			https://www.shell.nl
+
+SELECT CONCAT(tbl_businesses.`id`,'_',tbl_groups.`id`) AS id, tbl_businesses.`hide`, tbl_groups.`group`, tbl_businesses.`business`, count(0) AS ranking, tbl_businesses.`website` 
+FROM `tbl_businesses`
+LEFT JOIN `tbl_groups` ON tbl_groups.`id` = tbl_businesses.`gid`
+LEFT JOIN tbl_rankings ON tbl_businesses.`id` = tbl_rankings.`bid`
+-- WHERE tbl_groups.`group` = 'vervoer' -- gid gebruiken.
+GROUP BY tbl_businesses.`business`, tbl_businesses.`id`
+ORDER BY tbl_groups.`group`, ranking DESC, tbl_businesses.`business`
+
+
 

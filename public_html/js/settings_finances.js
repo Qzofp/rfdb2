@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Apr 01, 2024
+ * Updated on Apr 05, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -206,11 +206,11 @@ function modifyAccounts(adp, c, btn) {
  * Function:    showFinancesPopupGroups
  *
  * Created on Mar 30, 2024
- * Updated on Mar 30, 2024
+ * Updated on Apr 02, 2024
  *
  * Description:  Shows the groups popup content for the finances page.
  *
- * In:  c, s 
+ * In:  c, s, h 
  * Out: -
  *
  */
@@ -227,6 +227,11 @@ function showFinancesPopupGroups(c, s, h) {
         shw = 'img/hide.png" alt="hide';
     }    
     
+    // Fill in the ranking when it's empty.
+    if(cells[2] === "") {
+        cells[2] = 1;
+    }   
+    
     set = JSON.parse(s[1].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);       
     
@@ -235,6 +240,7 @@ function showFinancesPopupGroups(c, s, h) {
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +
             
             '<td><input id="groups" type="text" name="grps" placeholder="' + c.groups[1] + '" value="' + cells[1] + '" /></td>' +
+            '<td><input id="rank"   type="text" name="rank" placeholder="' + c.groups[2] + '" value="' + cells[2] + '" disabled/></td>' +
             '<td><input id="desc"   type="text" name="desc" placeholder="' + c.groups[3] + '" value="' + cells[3] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
@@ -253,7 +259,7 @@ function showFinancesPopupGroups(c, s, h) {
  * Function:    modifyGroups
  *
  * Created on Apr 01, 2024
- * Updated on Apr 01, 2024
+ * Updated on Apr 02, 2024
  *
  * Description: Check the groups input and add, edit or remove the groups in the database.
  *
@@ -266,21 +272,22 @@ function modifyGroups(c, btn) {
     var msg, input = [];
     
     // Get the input values.
-    input.push($("#groups").val(), $("#desc").val());
+    input.push($("#groups").val(), $("#rank").val(), $("#desc").val());
     
-    msg = c.messages[2].replace("#", input[2]);   
+    msg = c.messages[2].replace("#", input[0]);   
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the input to account table if the account doesn´t exists.
         if (validateInput(c.messages, c.groups, input, true))
         {            
-            var [id, action] = getRowIdAndAction();
+            var [id, action] = getRowIdAndAction();            
             var hide = getShowHideRow();
-            var send = 'group=' + encodeURIComponent(input[0]) + '&desc=' + encodeURIComponent(input[1]) + 
+            var send = 'group=' + encodeURIComponent(input[0]) + '&ranking=' + input[1] + 
+                       '&desc=' + encodeURIComponent(input[2]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
             // debug
-            console.log(send);
+            //console.log(send);
             
             var request = getAjaxRequest("modify_groups", send);
             request.done(function(result) {
@@ -292,15 +299,15 @@ function modifyGroups(c, btn) {
                     {                    
                         switch (action) {
                             case "add"    :                                
-                                //showAddRow(result);
+                                showAddRow(result);
                                 break;
                                 
                             case "edit"   :     
-                                //showEditRow(result);
+                                showEditRow(result);
                                 break;
                                 
                             case "delete" :
-                                //showDeleteRow();
+                                showDeleteRow();
                                 break;
                         }
                             
@@ -311,7 +318,8 @@ function modifyGroups(c, btn) {
                         else 
                         {   
                             // Reset input.
-
+                            $("#groups").val(""); 
+                            $("#desc").val("");                             
                         }
                     }     
                 }
@@ -327,4 +335,59 @@ function modifyGroups(c, btn) {
             closeErrorMessage();               
         }                        
     }     
+}
+
+/*
+ * Function:    showFinancesPopupBusinesses
+ *
+ * Created on Apr 05, 2024
+ * Updated on Apr 05, 2024
+ *
+ * Description:  Shows the businesses popup content for the finances page.
+ *
+ * In:  c, s, h 
+ * Out: -
+ *
+ */
+function showFinancesPopupBusinesses(c, s, h) {
+    
+    var shw, btn, cells, set;
+    [btn, cells] = setPopupTable("gen_businesses", c.businesses[0], 5);
+    
+    $(".popup_table_finance").hide();
+    
+    // Create show or hide button.
+    shw = 'img/show.png" alt="show';
+    if (h) { 
+        shw = 'img/hide.png" alt="hide';
+    }    
+    
+    // Fill in the ranking when it's empty.
+    if(cells[3] === "") {
+        cells[3] = 1;
+    }  
+    
+    set = JSON.parse(s[1].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);      
+    
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
+            '<td><select id="groups" placeholder=""></select></td>' +
+            '<td><input id="business" type="text" name="business" placeholder="' + c.businesses[2] + '" value="' + cells[2] + '" /></td>' +
+            '<td><input id="rank"   type="text" name="rank" placeholder="' + c.businesses[3] + '" value="' + cells[3] + '" disabled/></td>' +
+            '<td><input id="website"   type="text" name="website" placeholder="' + c.businesses[4] + '" value="' + cells[4] + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
+        '</tr>' +
+        '<tr><td class="msg" colspan="4">&nbsp;<td></tr>'
+    );     
+    
+    addSelectMenu(c, "get_groups", "hide=true&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
+    
+    $("#popup_content .shw").hide();
+    if ($("#table_container tbody .marked").length) {        
+        $("#popup_content .shw").show();
+    }    
+    
+    $("#popup_container").fadeIn("slow");        
 }
