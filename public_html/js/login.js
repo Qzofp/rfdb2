@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -22,7 +22,7 @@ const cDate = new Date();
  * Function:    loadLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: The login.js main function.
  *
@@ -32,9 +32,9 @@ const cDate = new Date();
  */
 function loadLoginPage() {
     
-    $.when(getAjaxRequest("get_login_constants", "")).done(function(result) {
+    $.when(getAjaxRequest("get_constants", "page=login")).done(function(result) {
 
-        if (result.success) {         
+        if (result.success) {            
             var c = processLoginConstants(result);        
             showLoginPage(c);
         }

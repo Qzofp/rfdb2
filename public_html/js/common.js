@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Mar 30, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -585,7 +585,7 @@ function showAddRow(data) {
  * Function:    showEditRow
  *
  * Created on Mar 23, 2024
- * Updated on Mar 23, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Show the result of editing a row.
  *
@@ -602,10 +602,10 @@ function showEditRow(data) {
         $("#table_container tbody .marked").removeClass("hide");
     }    
     
-    var i = 1;
+    var i = 0;
     $.each(data, function(key, value){         
         // Skip exists, success, id and the hide values.
-        if (key !== "exists" && key !== "success" && key !== "id"  && key !== "hide") {
+        if (key !== "exists" && key !== "success" && key !== "hide") {
             $("#table_container tbody .marked td").eq(i++).html(value);
         }      
     });

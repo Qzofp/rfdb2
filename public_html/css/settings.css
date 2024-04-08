@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Apr 05, 2024
+ * Updated on Apr 06, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -198,7 +198,7 @@
 }
 
 .gen_businesses .popup_table_setting td:nth-child(2) {
- width: 24%;    
+ width: 24%;
 }
 
 .gen_businesses .popup_table_setting td:nth-child(3) {
@@ -213,8 +213,13 @@
  width: 45%;    
 }
 
+.popup_table_setting td,
 .popup_table_finance td {
  padding: 0px 5px;
+}
+
+.popup_table_finance td:nth-child(3) {
+ width: 24%;
 }
 
 .popup_table_finance td:nth-child(4) {

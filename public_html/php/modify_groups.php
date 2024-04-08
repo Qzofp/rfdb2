@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 01, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_groups table.
  * Dependenties: config.php
@@ -121,7 +121,7 @@ function ModifyGroup()
  * Function:    EditGroup
  *
  * Created on Apr 02, 2024
- * Updated on Apr 02, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Edit the tbl_groups table with the input if the group doesn't exists.
  *
@@ -146,7 +146,7 @@ function ModifyGroup()
             // debug
             // $response['query'] = $query;            
                     
-            $response['id']      = $db->lastInsertId();
+            $response['id']      = $id;
             $response['hide']    = $hide;
             $response['group']   = $group;
             $response['ranking'] = $rank;       

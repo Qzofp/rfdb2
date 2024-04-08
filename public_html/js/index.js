@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadMain
  *
  * Created on Oct 28, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: The index.js main function.
  *
@@ -31,10 +31,10 @@
  */
 function loadMain() {
     
-    $.when(getAjaxRequest("get_constants", "")).done(function(result) {
+    $.when(getAjaxRequest("get_constants", "page=dashboard")).done(function(result) {
 
-        if (result.success) {         
-            var [c, s] = processConstants(result);           
+        if (result.success) {   
+            var [c, s] = processDashboardConstants(result);           
             showDashboard(c, s);   
         }
         else {

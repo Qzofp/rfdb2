@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Mar 23, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -126,7 +126,7 @@ function ModifyAccount()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on Mar 23, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
@@ -154,7 +154,7 @@ function ModifyAccount()
             // debug
             // $response['query'] = $query;            
                     
-            $response['id']   = $db->lastInsertId();
+            $response['id']   = $id;
             $response['hide'] = $hide;
             $response['date'] = $date;
             $response['serv'] = $serv;

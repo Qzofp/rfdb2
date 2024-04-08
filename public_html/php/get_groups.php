@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 29, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Check if the user is signed in and get the groups from the databases tbl_groupss table.
  * Dependenties: config.php
@@ -62,7 +62,7 @@ function GetGroups()
               
         $query = "SELECT tbl_groups.`id`, tbl_groups.`hide`, tbl_groups.`group`, count(0) AS ranking, tbl_groups.`description` ".
                  "FROM `tbl_groups` LEFT JOIN tbl_rankings ON tbl_groups.`id` = tbl_rankings.`gid` ".
-                 "$where".
+                 $where.
                  "GROUP BY tbl_groups.`id`, tbl_groups.`group` ".
                  "ORDER BY $ranking `group`;";
     

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -101,7 +101,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Apr 01, 2024
+ * Updated on Apr 07, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -122,8 +122,7 @@ function modifyAccounts(adp, c, btn) {
         // Add the input to account table if the account doesn´t exists.
         if (validateInput(c.messages, c.accounts, input, true))
         {            
-            var [id, action] = getRowIdAndAction();
-            
+            var [id, action] = getRowIdAndAction();            
             if (id) {
                 id = id.split("_")[0];
             }
@@ -154,7 +153,8 @@ function modifyAccounts(adp, c, btn) {
                                 break;
                                 
                             case "edit"   :
-                                // Correct the service values.
+                                // Correct the id and service values.
+                                result.id += "_" + result.serv;
                                 result.serv = $(".nice-select .current:first").html();        
                                 showEditRow(result);
                                 break;
@@ -263,7 +263,7 @@ function showFinancesPopupGroups(c, s, h) {
  *
  * Description: Check the groups input and add, edit or remove the groups in the database.
  *
- * In:  adp, c, btn
+ * In:  c, btn
  * Out: -
  *
  */
@@ -341,7 +341,7 @@ function modifyGroups(c, btn) {
  * Function:    showFinancesPopupBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 06, 2024
  *
  * Description:  Shows the businesses popup content for the finances page.
  *
@@ -379,7 +379,7 @@ function showFinancesPopupBusinesses(c, s, h) {
             '<td><input id="website"   type="text" name="website" placeholder="' + c.businesses[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
-        '<tr><td class="msg" colspan="4">&nbsp;<td></tr>'
+        '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
     );     
     
     addSelectMenu(c, "get_groups", "hide=true&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
@@ -390,4 +390,102 @@ function showFinancesPopupBusinesses(c, s, h) {
     }    
     
     $("#popup_container").fadeIn("slow");        
+}
+
+/*
+ * Function:    modifyBusinesses
+ *
+ * Created on Apr 06, 2024
+ * Updated on Apr 07, 2024
+ *
+ * Description: Check the businesses input and add, edit or remove the businesses in the database.
+ *
+ * In:  c, btn
+ * Out: -
+ *
+ */
+function modifyBusinesses(c, btn) {
+    
+    var msg, input = [];
+    
+    // Get the input values.
+    input.push($("#groups").val(), $("#business").val(), $("#rank").val(), $("#website").val());
+    
+    msg = c.messages[2].replace("#", input[1]);   
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
+    {     
+        // Add the input to businesses table if the business doesn´t exists.
+        if (validateInput(c.messages, c.groups, input, true))
+        {            
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            } 
+            
+            var hide = getShowHideRow();
+            var send = 'group=' + input[0] + '&business=' + encodeURIComponent(input[1]) + 
+                       '&ranking=' + input[2] + '&website=' + encodeURIComponent(input[3]) + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            
+            // debug
+            //console.log(send);
+            
+            var request = getAjaxRequest("modify_businesses", send);
+            request.done(function(result) {
+                if (result.success) {    
+                    if (result.exists) {
+                        showModifyMessage(c, input[1], action);               
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :  
+                                // Correct the id and service values.
+                                result.id += "_" + result.group;
+                                result.group = $(".nice-select .current:first").html();                                            
+                                showAddRow(result);
+                                break;
+                                
+                            case "edit"   :   
+                                // Correct the id and service values.
+                                result.id += "_" + result.group;
+                                result.group = $(".nice-select .current:first").html();
+                                showEditRow(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {           
+                            // Reset nice-select menu if there is more then 1 item.
+                            if ($("#groups > option").length > 1) {
+                                $(".nice-select .current:first").html('<span class="placeholder">' + c.businesses[1] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            }                            
+                            
+                            // Reset input.
+                            $("#business").val(""); 
+                            $("#website").val("");                             
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+            
+            closeErrorMessage();               
+        }                        
+    }     
 }

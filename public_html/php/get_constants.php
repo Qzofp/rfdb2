@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Jan 27, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -19,14 +19,18 @@
 require_once 'config.php';
 session_start();
 $user = $_SESSION['user'];
-if(!$user) 
+
+// Get data from ajax call.
+$page = filter_input(INPUT_POST, 'page', FILTER_SANITIZE_STRING);
+
+if(!$user && $page != "login")
 {
     header("location:info.php");
 }
-else 
+else
 {
     header("Content-Type:application/json"); 
-    GetConstants();
+    GetConstants($page);
 }
 
 
@@ -34,7 +38,7 @@ else
  * Function:    GetConstants
  *
  * Created on Dec 24, 2023
- * Updated on Jan 03, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  *
@@ -42,8 +46,8 @@ else
  * Out: -
  *
  */
-function GetConstants()
-{
+function GetConstants($page)
+{    
     $response = [];
 
     // Get the settings.
@@ -82,11 +86,32 @@ function GetConstants()
                 break;
         }
       
+        $where = "";
+        switch ($page)
+        {
+            case "login" : 
+                $where = "WHERE tbl_config.id IN (1,2,3,13) ";
+                break;
+            
+            case "dashboard":
+                $where = "WHERE tbl_config.id IN (1,2,3,4) ";
+                break;
+            
+            case "sheet":
+                $where = "WHERE tbl_config.id IN (1,2,3,4,5,6,7,8,11,16,18,19,20) ";
+                break;
+            
+            case "settings" :
+                $where = "WHERE tbl_config.id NOT IN (13) ";
+                break;
+        }
+              
         $query = "SELECT COALESCE(tbl_config.`value`, $language.`value`) AS `value` ".
                  "FROM tbl_config ".
                  "LEFT JOIN $language ON tbl_config.id = $language.id_config ".
+                 $where.
                  "ORDER BY tbl_config.id;";
-    
+        
         $select = $db->prepare($query);
         $select->execute();
 

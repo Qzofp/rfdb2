@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Apr 05, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadSettings
  *
  * Created on Oct 29, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 08, 2024
  *
  * Description: The settings.js main function.
  *
@@ -31,10 +31,10 @@
  */
 function loadSettings() {
     
-    $.when(getAjaxRequest("get_constants", "")).done(function(result) {
+    $.when(getAjaxRequest("get_constants", "page=settings")).done(function(result) {
 
-        if (result.success) {         
-            var [c, s] = processConstants(result);           
+        if (result.success) {            
+            var [c, s] = processSettingsConstants(result);         
             showSettings(c, s);   
         }
         else {
@@ -584,7 +584,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Apr 01, 2024
+ * Updated on Apr 06, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -632,8 +632,9 @@ function setPopupChoice(adp, e, c, s) {
                 modifyGroups(c, btn);
                 break;
                 
-                
-                
+            case "gen_businesses" :
+                modifyBusinesses(c, btn);
+                break;                                
         }
     }     
 }

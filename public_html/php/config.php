@@ -8,7 +8,7 @@
  * Used in: *.php
  *
  * Created on Oct 14, 2023
- * Updated on Nov 05, 2023
+ * Updated on Apr 07, 2024
  *
  * Description: .
  * Dependenties: -
@@ -21,8 +21,8 @@
 define("cHOST",  "127.0.0.1");
 define("cUSER",  "rfdb2_dbo");
 define("cPASS",  "Put your password here!");
-//define("cDBASE", "rfdb2");
-define("cDBASE", "rfdb2_empty");
+define("cDBASE", "rfdb2");
+//define("cDBASE", "rfdb2_empty");
 
 /*
  * Function:    OpenDatabase
