@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Apr 01, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -429,7 +429,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Mar 30, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -485,7 +485,7 @@ function modifyUser(c, btn) {
                     }     
                 }
                 else {
-                    showDatabaseError(result.message);
+                    showDatabaseError(result);
                 }
             });
     
@@ -853,4 +853,40 @@ function getShowHideRow() {
     }
     
     return hide;
+}
+
+/*
+ * Function:    showGeneralPopupConfigs
+ *
+ * Created on Apr 12, 2024
+ * Updated on Apr 12, 2024
+ *
+ * Description:  Shows the configs (settings) popup content for the general page.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showGeneralPopupConfigs(c, s) {
+    
+    var set;   
+    setPopupList("gen_configs", c.configs[0]);    
+    
+    set = JSON.parse(s[5].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);         
+    
+    $(".popup_list").append('<li>Table Rows</li>');
+    
+    // The start year for the pages.
+    for (let i = 1; i < c.pages.length - 2; i++) {        
+        set = JSON.parse(s[i].value);
+        if(set.page === "true") {       
+            $(".popup_list").append('<li>' + c.titles[i] + '</li>');   
+        }
+    } 
+    
+    $(".popup_list").append('<li>SALT phrase</li>'); 
+    
+    
+    $("#popup_container").fadeIn("slow");  
 }

@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadSettings
  *
  * Created on Oct 29, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: The settings.js main function.
  *
@@ -38,7 +38,7 @@ function loadSettings() {
             showSettings(c, s);   
         }
         else {
-            showDatabaseError(result.message);                    
+            showDatabaseError(result);                    
         }     
     })
     .fail(function(jqXHR, textStatus) {
@@ -125,7 +125,7 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Feb 12, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Shows the settings content for the chosen slide.
  *
@@ -158,7 +158,7 @@ function showSettingsContent(slide, c) {
             }            
         }
         else {
-            showDatabaseError(result.message); 
+            showDatabaseError(result); 
         }
     });
     
@@ -372,7 +372,7 @@ function ShowCryptoSettings(c, s) {
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Mar 13, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -390,7 +390,7 @@ function showSettingsButton(adp, c, that) {
             showSettingButtonAction(adp, c, s, that);           
         }
         else {
-            showDatabaseError(result.message); 
+            showDatabaseError(result); 
         }
     });
     
@@ -405,7 +405,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 10, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -449,11 +449,10 @@ function showSettingButtonAction(adp, c, s, that) {
                 showTable("tbl_services", services, s, 5, "get_services", "sort=service&type=");             
             }
             break;              
-            
-            
+                       
         case "configs"  :
             if (that.className === 'active') {
-                console.log(that.className); // debug   
+                showGeneralPopupConfigs(c, s);
             }
             else 
             {               
@@ -552,7 +551,7 @@ function setScaleButton(c, scale) {
  * Function:    getAndSetScaleButton
  *
  * Created on Dec 02, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Get the scale from the settings database and set the scale button.
  *
@@ -569,7 +568,7 @@ function getAndSetScaleButton(c, name) {
             setScaleButton(c, result.data[0].scale);            
         }
         else {
-           showDatabaseError(result.message);  
+           showDatabaseError(result);  
         }
     });
     
@@ -696,7 +695,7 @@ function editSettingsTableRow(adp, c, s, that) {
  * Function:   setShowRow
  *
  * Created on Feb 07, 2024
- * Updated on Feb 12, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Set the show rows (true, false) in the database and show or hide the hidden rows. 
  *
@@ -719,7 +718,7 @@ function setShowRows(that, slide, show) {
     var request = getAjaxRequest("change_showrows", send);
     request.done(function(result) {
         if (!result.success) {         
-            showDatabaseError(result.message); 
+            showDatabaseError(result); 
         }
     });
     

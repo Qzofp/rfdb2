@@ -190,3 +190,9 @@ ORDER BY tbl_groups.`group`, ranking DESC, tbl_businesses.`business`
 
 
 
+Financiën pagina's (geldt ook voor de beleggen, sparen en crypto pagina's)
+- Als de tabel leeg is dan popup met de vraag om het begin jaartal in te vullen.
+- Anders haal het begin jaartal op uit de settings. 
+- Dit kan ook worden aangepast op de instellingspagina bij configuraties.
+- Het begin jaartal wordt gebruikt voor de jaren keuzes. Van het begin (start) jaartal tot heden.
+

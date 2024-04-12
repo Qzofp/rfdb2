@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 10, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -83,7 +83,7 @@ function processDashboardConstants(data) {
  * Function:    processSheetContants
  *
  * Created on Apr 08, 2024
- * Updated on Apr 08, 2024
+ * Updated on Apr 10, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table for the sheet pages.
  *
@@ -105,16 +105,15 @@ function processSheetConstants(data) {
        titles:   tmp[3].split(","),
        months:   tmp[4].split(","),
        quarters: tmp[5].split(","),
-       year:     tmp[6].split(","),  
-       settings: tmp[7].split(","),             
-       errors:   tmp[8].split(","), 
-       messages: tmp[9].split(","),
+       year:     tmp[6].split(","),             
+       errors:   tmp[7].split(","), 
+       messages: tmp[8].split(","),
+       days:     tmp[9].split(","),
        
-       days:     tmp[10].split(","),
-       smonths:  tmp[11].split(","),
-       misc:     tmp[12].split(","),       
+       smonths:  tmp[10].split(","),
+       misc:     tmp[11].split(","),       
        
-       salt:     tmp[14]     
+       salt:     tmp[13]     
     };
 
     var set = [];
@@ -129,7 +128,7 @@ function processSheetConstants(data) {
  * Function:    processSettingsContants
  *
  * Created on Apr 08, 2024
- * Updated on Apr 08, 2024
+ * Updated on Apr 10, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table for the settings page.
  *
@@ -158,18 +157,19 @@ function processSettingsConstants(data) {
        
        errors:   tmp[10].split(","),
        configs:  tmp[11].split(","),     
-       users:    tmp[12].split(","),
-       services: tmp[13].split(","),
-       messages: tmp[14].split(","),
-       accounts: tmp[15].split(","),
-       days:     tmp[16].split(","),
-       smonths:  tmp[17].split(","),
-       misc:     tmp[18].split(","),       
-       groups:   tmp[19].split(","),
+       login:    tmp[12].split(","),    
+       users:    tmp[13].split(","),
+       services: tmp[14].split(","),
+       messages: tmp[15].split(","),
+       accounts: tmp[16].split(","),
+       days:     tmp[17].split(","),
+       smonths:  tmp[18].split(","),
+       misc:     tmp[19].split(","),   
        
-       businesses: tmp[20].split(","),
+       groups:     tmp[20].split(","),   
+       businesses: tmp[21].split(","),
        
-       salt:     tmp[21]     
+       salt:     tmp[22]     
     };
 
     var set = [];

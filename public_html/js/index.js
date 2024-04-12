@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -21,7 +21,7 @@
  * Function:    loadMain
  *
  * Created on Oct 28, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: The index.js main function.
  *
@@ -38,7 +38,7 @@ function loadMain() {
             showDashboard(c, s);   
         }
         else {
-            showDatabaseError(result.message);                    
+            showDatabaseError(result);                    
         }     
     })
     .fail(function(jqXHR, textStatus) {

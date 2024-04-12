@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Dec 20, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript login functions.
  * Dependenties: -
@@ -22,7 +22,7 @@ const cDate = new Date();
  * Function:    loadLoginPage
  *
  * Created on Dec 20, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: The login.js main function.
  *
@@ -39,7 +39,7 @@ function loadLoginPage() {
             showLoginPage(c);
         }
         else {
-            showDatabaseError(result.message);                    
+            showDatabaseError(result);                 
         }     
     })
     .fail(function(jqXHR, textStatus) {
@@ -87,7 +87,7 @@ function showLoginPage(c) {
  * Function:    validateLogin
  *
  * Created on Dec 22, 2023
- * Updated on Jan 27, 2024
+ * Updated on Apr, 2024
  *
  * Description: Validate the login and redirect on success.
  *
@@ -120,7 +120,7 @@ function validateLogin(e, c) {
             }
         }
         else {
-            showDatabaseError(result.message); 
+            showDatabaseError(result);
         }
     });
     

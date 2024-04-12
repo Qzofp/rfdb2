@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 07, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -169,19 +169,27 @@ function closePopupWindow() {
  * Function:    showDatabaseError
  *
  * Created on Nov 12, 2023
- * Updated on Nov 12, 2023
+ * Updated on Apr 12, 2024
  *
  * Description: Show the database error
  *
- * In:  msg
+ * In:  result
  * Out: -
  *
  */
-function showDatabaseError(msg) {
+function showDatabaseError(result) {
     
-    $("#error h2").html("Database error"); 
-    $("#error p").html(msg);
-    $("#popup_error").fadeIn("slow");
+    if (result.redirect) 
+    {
+        // The user has been logged out.
+        document.location.href = "/rfdb2";
+    }
+    else 
+    { 
+        $("#error h2").html("Database error"); 
+        $("#error p").html(result.message);
+        $("#popup_error").fadeIn("slow");
+    }
 }
 
 /*
@@ -234,7 +242,7 @@ function closeErrorMessage() {
  * Function:    changeScaleSetting
  *
  * Created on Nov 15, 2023
- * Updated on Feb 09, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Change the scale in the settings database.
  *
@@ -248,7 +256,7 @@ function changeScaleSetting(name, scale) {
     var request = getAjaxRequest("change_scale", send);      
     request.done(function(result) {
         if (!result.success) {         
-            showDatabaseError(result.message);                    
+            showDatabaseError(result);                    
         }
     });
     
@@ -361,11 +369,11 @@ function showTable(tblclass, items, s, n, page, send) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Feb 28, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
- * In:  s, page, l
+ * In:  s, page, l, send
  * Out: -
  *
  */
@@ -417,7 +425,7 @@ function fillTable(s, page, l, send) {
             }
         }
         else {
-            showDatabaseError(result.message); 
+            showDatabaseError(result);         
         }
     });
     
@@ -749,7 +757,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Mar 30, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Add the select menu.
  *
@@ -811,7 +819,7 @@ function addSelectMenu(c, page, send, id, name, value, item) {
             }       
         }
         else {
-               showDatabaseError(result.message);
+            showDatabaseError(result);
         }
     });
     

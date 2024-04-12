@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -18,27 +18,20 @@
  */
 require_once 'config.php';
 session_start();
-$user = $_SESSION['user'];
-
-// Get data from ajax call.
+header("Content-Type:application/json"); 
 $page = filter_input(INPUT_POST, 'page', FILTER_SANITIZE_STRING);
-
-if(!$user && $page != "login")
-{
-    header("location:info.php");
+if($page == "login" || isset($_SESSION['user'])) {
+    GetConstants($page);   
 }
-else
-{
-    header("Content-Type:application/json"); 
-    GetConstants($page);
+else {
+    RedirectAjaxRequest();
 }
-
-
+ 
 /*
  * Function:    GetConstants
  *
  * Created on Dec 24, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 10, 2024
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  *
@@ -98,11 +91,11 @@ function GetConstants($page)
                 break;
             
             case "sheet":
-                $where = "WHERE tbl_config.id IN (1,2,3,4,5,6,7,8,11,16,18,19,20) ";
+                $where = "WHERE tbl_config.id IN (1,2,3,4,5,6,7,11,16,18,19,20) ";
                 break;
             
             case "settings" :
-                $where = "WHERE tbl_config.id NOT IN (13) ";
+                //$where = "WHERE tbl_config.id NOT IN (13) ";
                 break;
         }
               

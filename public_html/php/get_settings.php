@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Feb 09, 2024
- * Updated on Feb 09, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check if the user is signed in and get the settings from de databases tbl_settings tables.
  * 
@@ -17,17 +17,14 @@
  */
 require_once 'config.php';
 session_start();
-$user = $_SESSION['user'];
-if(!$user) 
-{
-    header("location:info.php");
-}
-else 
-{
-    header("Content-Type:application/json"); 
+
+header("Content-Type:application/json");
+if (isset($_SESSION['user'])) {
     GetSettings();
 }
-
+else {
+    RedirectAjaxRequest(); 
+}
 
 /*
  * Function:    GetSettings

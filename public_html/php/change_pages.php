@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 30, 2023
- * Updated on Dec 24, 2023
+ * Updated on Apr 12, 2024
  *
  * Description: Check if the user is signed in and change the pages (true or false) in the tbl_settings table.
  * Dependenties: config.php
@@ -16,15 +16,12 @@
  */
 require_once 'config.php';
 session_start();
-$user = $_SESSION['user'];
-if(!$user) 
-{
-    header("location:info.php");
-}
-else 
-{
-    header("Content-Type:application/json"); 
+header("Content-Type:application/json");
+if (isset($_SESSION['user'])) {
     ChangePages();
+}
+else {
+    RedirectAjaxRequest(); 
 }
 
 /*

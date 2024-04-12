@@ -16,15 +16,12 @@
  */
 require_once 'config.php';
 session_start();
-$user = $_SESSION['user'];
-if(!$user) 
-{
-    header("location:info.php");
-}
-else 
-{
-    header("Content-Type:application/json"); 
+header("Content-Type:application/json");
+if (isset($_SESSION['user'])) {
     ChangeScale();
+}
+else {
+    RedirectAjaxRequest(); 
 }
 
 /*

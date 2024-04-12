@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Apr 07, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -101,7 +101,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Apr 07, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -189,7 +189,7 @@ function modifyAccounts(adp, c, btn) {
                     }     
                 }
                 else {
-                    showDatabaseError(result.message);
+                    showDatabaseError(result);
                 }
             });
            
@@ -259,7 +259,7 @@ function showFinancesPopupGroups(c, s, h) {
  * Function:    modifyGroups
  *
  * Created on Apr 01, 2024
- * Updated on Apr 02, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check the groups input and add, edit or remove the groups in the database.
  *
@@ -324,7 +324,7 @@ function modifyGroups(c, btn) {
                     }     
                 }
                 else {
-                    showDatabaseError(result.message);
+                    showDatabaseError(result);
                 }
             });
            
@@ -396,7 +396,7 @@ function showFinancesPopupBusinesses(c, s, h) {
  * Function:    modifyBusinesses
  *
  * Created on Apr 06, 2024
- * Updated on Apr 07, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check the businesses input and add, edit or remove the businesses in the database.
  *
@@ -477,7 +477,7 @@ function modifyBusinesses(c, btn) {
                     }     
                 }
                 else {
-                    showDatabaseError(result.message);
+                    showDatabaseError(result);
                 }
             });
            

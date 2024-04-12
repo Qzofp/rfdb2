@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 08, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 28, 2023
- * Updated on Apr 08 , 2024
+ * Updated on Apr 12 , 2024
  *
  * Description: The sheet.js main function.
  *
@@ -37,7 +37,7 @@ function loadSheet() {
             showSheetPage(c, s);
         }
         else {
-            showDatabaseError(result.message);                    
+            showDatabaseError(result);                    
         }     
     })
     .fail(function(jqXHR, textStatus) {

@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 10, 2024
- * Updated on Mar 13, 2024
+ * Updated on Apr 12, 2024
  *
  * Description: Check if the user is signed in and get the services from the databases tbl_services table.
  * Dependenties: config.php
@@ -16,15 +16,12 @@
  */
 require_once 'config.php';
 session_start();
-$user = $_SESSION['user'];
-if(!$user) 
-{
-    header("location:info.php");
-}
-else 
-{
-    header("Content-Type:application/json"); 
+header("Content-Type:application/json");
+if (isset($_SESSION['user'])) {
     GetServices();
+}
+else {
+    RedirectAjaxRequest(); 
 }
 
 /*
