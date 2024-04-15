@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 12, 2024
+ * Updated on Apr 15, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -828,4 +828,34 @@ function addSelectMenu(c, page, send, id, name, value, item) {
     });  
      
     closeErrorMessage();
+}
+
+/*
+ * Function:   setStartYear
+ *
+ * Created on Apr 15, 2024
+ * Updated on Apr 15, 2024
+ *
+ * Description: Set the start year for .
+ *
+ * In:  page, year
+ * Out: year
+ *
+ */
+function setStartYear(page, year) {
+
+    var request = getAjaxRequest("change_startyear", "page=" + page + "&year=" + year);    
+    request.done(function(result) {
+        if (!result.success) {
+            showDatabaseError(result); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();    
+
+    return year;
 }

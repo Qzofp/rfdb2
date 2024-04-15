@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 12, 2024
+ * Updated on Apr 15, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Mar 08, 2024
+ * Updated on Apr 15, 2024
  *
  * Description: Open the sheet page.
  *
@@ -121,14 +121,14 @@ function openSheetPage(c, s, i) {
     // Show the sheet title and current year.
     showPageTitles(c, i, " <span>" + cDate.getFullYear() + "</span>");
     
-    // Set the slie menu scale.
+    // Set the slide menu scale.
     setSlideMenuScale(s[i]);
 
     // Initialize the datepicker.
-    $adp = initAirDatePicker(c);      
+    $adp = initAirDatePicker(c);       
     
     // Add Yearpicker popup box and process year selection (also update the slide menu and the sheet table).
-    addYearPicker(c, $adp);
+    addYearPicker(c, s[i], $adp);
          
     // Fill the slide menu.
     fillSheetSlideMenu(c, cDate.getMonth());
@@ -263,20 +263,30 @@ function setSlideMenuScale(s) {
  * Function:    addYearPicker
  *
  * Created on Oct 30, 2023
- * Updated on Mar 08, 2024
+ * Updated on Apr 15, 2024
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
- * In:  c, adp
+ * In:  c, s, adp
  * Out: -
  *
  */
-function addYearPicker(c, adp) {
-    var $date;
+function addYearPicker(c, s, adp) {
     
+    var $set, $start, $date;
+    
+    // Get the start year, set it when the year isn't set.
+    $set = JSON.parse(s.value);
+    if ($set.start === 0) {
+        $start = setStartYear(s.name, cDate.getFullYear()); 
+    }
+    else {
+        $start = $set.start;
+    }
+       
     $(".yearpicker").yearpicker({
 	year: cDate.getFullYear(),
-	startYear: 1998,
+	startYear: $start,
         endYear: cDate.getFullYear(),
             onHide:function(value)
             {            
@@ -285,7 +295,7 @@ function addYearPicker(c, adp) {
                 let $chk = $(".slidemenu input[name='slideItem']:checked").val();
                 fillSheetSlideMenu(c, $chk);            
                 $date = getSelectedDateFromPage();
-                 updateAirDataPicker(adp, $date);
+                updateAirDataPicker(adp, $date);
                 
                 // Date Test, show the date that will be used to get the table data.
                 $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>"); 
