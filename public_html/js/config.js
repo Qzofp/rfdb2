@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Apr 10, 2024
+ * Updated on Apr 17, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -128,7 +128,7 @@ function processSheetConstants(data) {
  * Function:    processSettingsContants
  *
  * Created on Apr 08, 2024
- * Updated on Apr 10, 2024
+ * Updated on Apr 17, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table for the settings page.
  *
@@ -168,8 +168,9 @@ function processSettingsConstants(data) {
        
        groups:     tmp[20].split(","),   
        businesses: tmp[21].split(","),
+       setconfigs: tmp[22].split(","),
        
-       salt:     tmp[22]     
+       salt:     tmp[23]     
     };
 
     var set = [];

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Apr 12, 2024
+ * Updated on Apr 17, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -859,7 +859,7 @@ function getShowHideRow() {
  * Function:    showGeneralPopupConfigs
  *
  * Created on Apr 12, 2024
- * Updated on Apr 12, 2024
+ * Updated on Apr 17, 2024
  *
  * Description:  Shows the configs (settings) popup content for the general page.
  *
@@ -869,24 +869,54 @@ function getShowHideRow() {
  */
 function showGeneralPopupConfigs(c, s) {
     
-    var set;   
-    setPopupList("gen_configs", c.configs[0]);    
+    var set, start, salt;
     
+    $("#popup_content").removeClass().addClass("gen_configs");                   
+    $("#popup_content h2").html(c.configs[0]); 
+    $(".popup_list li").remove();
+    $(".popup_list").hide();
+    $(".popup_table_setting").show().empty();
+    $(".popup_table_finance").hide();
+        
     set = JSON.parse(s[5].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);         
+        
+    // Number of sheet rows.
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td>' + c.setconfigs[0] + '</td>' + 
+            '<td><input id="rows" type="text" name="rows" placeholder="' + c.setconfigs[1] + '" value="' + set.rows + '" /></td>' +
+        '</tr>'
+    );
     
-    $(".popup_list").append('<li>Table Rows</li>');
-    
-    // The start year for the pages.
+    // Start year for finance pages.
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);
         if(set.page === "true") {       
-            $(".popup_list").append('<li>' + c.titles[i] + '</li>');   
+            
+            start = set.start;
+            if (set.start === 0) {
+                start = "";
+            }
+            
+            $(".popup_table_setting").append(
+                '<tr>' +
+                    '<td>' + c.setconfigs[2] + c.titles[i] + '</td>' + 
+                    '<td><input id="' + s[i].name + '" type="text" name="' + s[i].name + '" placeholder="' + c.setconfigs[3] + cDate.getFullYear() +'" value="' + start + '" /></td>' +
+                '</tr>'
+            );
         }
-    } 
-    
-    $(".popup_list").append('<li>SALT phrase</li>'); 
-    
-    
+    }        
+     
+    // Salt phrase.  
+    salt = JSON.parse(s[8].value);
+    $(".popup_table_setting").append(    
+        '<tr>' +
+            '<td>' + c.setconfigs[4] + '</td>' + 
+            '<td><input id="salt" type="text" name="salt" placeholder="' + c.setconfigs[5] + '" value="' + salt.phrase + '" /></td>' +
+        '</tr>' +
+        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+    ); 
+  
     $("#popup_container").fadeIn("slow");  
 }
