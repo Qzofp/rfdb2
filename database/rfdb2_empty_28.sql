@@ -21,6 +21,12 @@ SET time_zone = "+00:00";
 -- Database: `rfdb2_empty`
 --
 
+--
+-- Database: `rfdb2_empty`
+--
+CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `rfdb2_empty`;
+
 -- --------------------------------------------------------
 
 --
