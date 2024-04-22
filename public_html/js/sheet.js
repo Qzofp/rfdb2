@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 15, 2024
+ * Updated on Apr 22, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -263,7 +263,7 @@ function setSlideMenuScale(s) {
  * Function:    addYearPicker
  *
  * Created on Oct 30, 2023
- * Updated on Apr 15, 2024
+ * Updated on Apr 22, 2024
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
@@ -277,7 +277,7 @@ function addYearPicker(c, s, adp) {
     
     // Get the start year, set it when the year isn't set.
     $set = JSON.parse(s.value);
-    if ($set.start === 0) {
+    if ($set.start === "") {
         $start = setStartYear(s.name, cDate.getFullYear()); 
     }
     else {

@@ -5,6 +5,8 @@ https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/m
 
 Password:       P@ssw0rd
 Hash:           9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e
+Salt phrase:    Please put your SALT pharse here.
+
 
 Ideeën
 ------

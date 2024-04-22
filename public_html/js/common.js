@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 15, 2024
+ * Updated on Apr 19, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -169,7 +169,7 @@ function closePopupWindow() {
  * Function:    showDatabaseError
  *
  * Created on Nov 12, 2023
- * Updated on Apr 12, 2024
+ * Updated on Apr 19, 2024
  *
  * Description: Show the database error
  *
@@ -181,8 +181,9 @@ function showDatabaseError(result) {
     
     if (result.redirect) 
     {
-        // The user has been logged out.
-        document.location.href = "/rfdb2";
+        // The user has been logged out.        
+        document.location.href = "/rfdb2_dev";
+        //document.location.href = "/rfdb2";
     }
     else 
     { 

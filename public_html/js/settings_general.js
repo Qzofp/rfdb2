@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Apr 19, 2024
+ * Updated on Apr 22, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -923,3 +923,121 @@ function showGeneralPopupConfigs(c, s) {
     $("#popup_container").fadeIn("slow");  
 }
 
+/*
+ * Function:    modifyConfigs
+ *
+ * Created on Apr 19, 2024
+ * Updated on Apr 22, 2024
+ *
+ * Description: Check the configs (settings) input and modify it in the tbl_settings table.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function modifyConfigs(c, s) {
+    
+    var set, id, check, input = [];
+    
+    // Get the input values.
+    input.push($("#rows").val(), $("#salt").val());   
+    for (let i = 1; i < c.pages.length - 2; i++) {        
+        set = JSON.parse(s[i].value);
+        id = "#" + s[i].name;
+        if(set.page === "true") {       
+           input.push($(id).val()); 
+        }
+        else {
+           input.push("");
+        }
+    }     
+    
+    // Validate and send data.
+    [check, input] = validateConfigs(c, s, input); 
+    if (check)
+    {          
+        var send = 'rows=' + input[0] + '&salt=' + encodeURIComponent(input[1]) + '&finance=' + input[2] +
+                   '&stock=' + input[3] + '&savings=' + input[4] + '&crypto=' + input[5]; 
+        
+        //console.log(send);
+        
+        var request = getAjaxRequest("modify_configs", send);
+            request.done(function(result) {
+                if (result.success) {      
+                                     
+                    closePopupWindow(); 
+                    
+                    // Reload page if the number of rows or salt phrase is changes.
+                    if (input[0] || input[1]) {       
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 600);                          
+                    }           
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
+    
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+           
+            closeErrorMessage();                   
+    }    
+}
+
+/*
+ * Function:    validateConfigs
+ *
+ * Created on Apr 19, 2024
+ * Updated on Apr 21, 2024
+ *
+ * Description: Validate the configs (settings) input.
+ *
+ * In:  c, s, input
+ * Out: check, input
+ *
+ */
+function validateConfigs(c, s, input) {
+
+    var set, check = true;
+    var isValidSaltPhrase = /^[0-9A-Za-z.,!? ]{20,}$/;
+        
+    // Check rows input. If the input isn't changed then make the input empty.
+    if (isNaN(input[0]) || Number(input[0]) < 15 || Number(input[0]) > 50) {
+        $(".msg").html(c.setconfigs[0] + " " + c.messages[0]);
+        check = false;     
+    } 
+    else {
+        set = JSON.parse(s[5].value);
+        if (input[0] === set.rows) {
+            input[0] = "";
+        }
+    }
+    
+    // Check the start year input.
+    for (let i = 2; i < 6; i++) {      
+        if (input[i] !== 0 && input[i] !== "" ) {           
+            if (isNaN(input[i]) || Number(input[i]) < 1970 || Number(input[i]) > cDate.getFullYear()) {
+                $(".msg").html(c.setconfigs[2] + " " + c.titles[i-1] + " " + c.messages[0]);
+                check = false;
+                i = 6;
+            }
+        }
+    }
+    
+    // Check the Salt phrase input.  If the input isn't changed then make the input empty.
+    if (!isValidSaltPhrase.test(input[1]) ? true : false) {
+        $(".msg").html(c.setconfigs[5] + " " + c.messages[0]); 
+        check = false;
+    }
+    else {
+        set = JSON.parse(s[8].value);
+        if (input[1] === set.phrase) {
+            input[1] = "";
+        }
+    }    
+    
+    return [check, input];
+}

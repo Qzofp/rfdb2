@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Apr 12, 2024
+ * Updated on Apr 22, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Mar 22, 2024
+ * Updated on Apr 22, 2024
  *
  * Description: Shows the settings page.
  *
@@ -96,19 +96,11 @@ function showSettings(c, s) {
     
     // Settings popup Ok button is pressed.  
     $("#popup_content").on("submit","form",function(e) {        
-        
-        // debug
-        //console.log("Press");
-        
         setPopupChoice($adp, e, c, s);
     });
   
     // Settings popup <enter> button is pressed.  
     $("#popup_content").on("keypress","form",function(e) {    
-        
-        // debug
-        //console.log("Enter");
-        
         getPopupEnterKey(e);
     });
 
@@ -583,7 +575,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Apr 06, 2024
+ * Updated on Apr 21, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -633,7 +625,11 @@ function setPopupChoice(adp, e, c, s) {
                 
             case "gen_businesses" :
                 modifyBusinesses(c, btn);
-                break;                                
+                break; 
+            
+            case "gen_configs" :
+                modifyConfigs(c, s);
+                break;
         }
     }     
 }
@@ -642,7 +638,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Apr 05, 2024
+ * Updated on Apr 19, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -687,7 +683,11 @@ function editSettingsTableRow(adp, c, s, that) {
         
         case "shops" :
             showFinancesPopupBusinesses(c, s, hide);
-            break;            
+            break;  
+        
+        case "configs" :
+            showGeneralPopupConfigs(c, s);
+            break;              
     }
 }
 
