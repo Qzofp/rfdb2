@@ -17,7 +17,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Mar 06, 2024
+ * Updated on Apr 26, 2024
  *
  * Description: Sheet framework test page.
  *
@@ -150,11 +150,75 @@ if(!$user){
                     <img src="img/chart.png" alt="chart"/>
 		</div>
             
-                <!-- Date Test, show the date that will be used to get the table data. -->
-                <div id="tst_date"></div>
+                <!-- Display the balance under the slides. -->
+                <div id="balance">
+                    <u>Balance</u><br/>
+                    <span>€0,00 (Month, Quarter or Year)</span>
+                </div>    
                 
-                <!-- Test datepicker -->
-                <input id="date" type="text" name="serv" placeholder="" value="" />
+                <!-- Table label -->
+                <div id="label"><span></span></div>
+                
+                <!-- Settings table -->
+                <div id="table_container">
+                    <table>
+                        <thead>                        
+                        </thead>
+                        <tbody>                       
+                        </tbody>                    
+                        <tfoot>                       
+                        </tfoot>
+                    </table>
+                </div>                
+                           
+                <!-- Finances popup window. -->
+                <div id="popup_container"> 
+                    <div id="popup_content"> 
+                        <h2></h2>                        
+                        <form method="POST">                           
+                            
+                            <!-- This table is needed for the datepicker. -->
+                            <table class="popup_table_finance">
+                                <tr>
+                                    <td><input class="shw" type="image" name="submit" src="" /></td>                                  
+                                    <td><input id="date" type="text" name="date" placeholder="" value="" /></td>   
+                                    
+                                    
+                                    
+                                    <td><input class="btn" type="image" name="submit" src="" /></td>                 
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="5">&nbsp;<td>
+                                </tr>
+                            </table>
+                            
+                            <a class="close" href="javascript:void(0)">x</a>   
+                            <div class="choice">
+                                <input class="ok" type="image" name="submit" src="img/ok.png" alt="ok" />
+                                <input class="close" type="image" name="cancel" src="img/cancel.png" alt="cancel" />                         
+                            </div>                        
+                       </form>
+                    </div>                    
+                </div>                
+                
+                
+                
+                
+                
+                <!-- Date Test, show the date that will be used to get the table data. 
+                <div id="tst_date"></div> -->
+                
+                <!-- Test datepicker
+                <input id="date" type="text" name="serv" placeholder="" value="" /> -->
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 <!-- Chart slider  -->
                 <div id="chart_slider">

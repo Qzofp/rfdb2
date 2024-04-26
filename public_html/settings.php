@@ -125,7 +125,7 @@ if(!$user){
                 <div id="settings">
                     <u></u><br/>
                     <span></span>
-                </div>    
+                </div>
                 
                 <!-- Table label -->
                 <div id="label"><span></span></div>

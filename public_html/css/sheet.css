@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 17, 2023
+ * Updated on Apr 24, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -35,19 +35,25 @@
   margin-top: -7px;
 }
 
-/* Popup input window */
-.close {
- position: absolute;
- top: 5px;
- right: 12px;
- font-size: 17px;
- color: #000;
- text-decoration: none;
+#balance {
+ text-align: center;
+ padding-top: 10px;
+ font-size: 0.9em;
 }
 
-.close:hover {
- color:darkred;
+#label {
+ margin: 10px 50px 15px 50px;
+ font-size: 1.1em;
 }
+
+#label span {
+ display: inline-block;
+ width: 200px;
+ background-color: #f5f5f5;
+ padding: 3px;
+}
+
+
 
 
 
@@ -75,3 +81,16 @@
 */ 
 }
 
+/* Popup or Chart slider close button */
+.close {
+ position: absolute;
+ top: 5px;
+ right: 12px;
+ font-size: 17px;
+ color: #999;
+ text-decoration: none;
+}
+
+.close:hover {
+ color:darkred;
+}

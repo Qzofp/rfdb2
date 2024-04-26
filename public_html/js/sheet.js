@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 22, 2024
+ * Updated on Apr 26, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Apr 15, 2024
+ * Updated on Apr 26, 2024
  *
  * Description: Open the sheet page.
  *
@@ -132,7 +132,29 @@ function openSheetPage(c, s, i) {
          
     // Fill the slide menu.
     fillSheetSlideMenu(c, cDate.getMonth());
-      
+    
+    // Fill hamburger menu.
+    fillHamburgerMenu(c, s, i);
+ 
+    
+    
+    
+    // Show the sheet content.
+    showSheetContent($adp, c, s, i);
+    
+    // Begin date Test, show the date that will be used to get the table data.   
+    //$date = getSelectedDateFromPage();
+    //updateAirDataPicker($adp, $date);   
+    //$("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");   
+    // End date Test.    
+    
+    
+    
+    
+    
+    // Show the page theme for finance, stock, savings and crypto.
+    showPageTheme(s[i]);    
+        
     // Change slide menu scale (months, quarters, year).
     $("#page_buttons").on('click', 'img', function() {
         changeSheetContent(c, s[i], this);
@@ -140,38 +162,26 @@ function openSheetPage(c, s, i) {
         // Date Test, show the date that will be used to get the table data.
         $date = getSelectedDateFromPage();
         updateAirDataPicker($adp, $date);  
-        $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");             
+        
+        //$("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");             
         
     });	
     
-    // Fill hamburger menu.
-    fillHamburgerMenu(c, s, i);
-
     // Process menu selection and reload the page.
     $(".menu_item").click(function() {
         window.location.href=this;
         window.location.reload(true);
     });
-        
-    // Begin date Test, show the date that will be used to get the table data.   
-    $date = getSelectedDateFromPage();
-    updateAirDataPicker($adp, $date);   
-    $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");   
-    // End date Test.
-  
+            
+    // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {
         
         // Date Test, show the date that will be used to get the table data.
         $date = getSelectedDateFromPage();
         updateAirDataPicker($adp, $date);  
-        $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");     
+        //$("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");     
     });               
-        
-    
-            
-    // Show the page theme for finance, stock, savings and crypto.
-    showPageTheme(s[i]);
-     
+                 
     closeChartWindow(); 
 }
 
@@ -263,7 +273,7 @@ function setSlideMenuScale(s) {
  * Function:    addYearPicker
  *
  * Created on Oct 30, 2023
- * Updated on Apr 22, 2024
+ * Updated on Apr 26, 2024
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
@@ -293,7 +303,8 @@ function addYearPicker(c, s, adp) {
                 $("header h1 span").html(value);			
 		
                 let $chk = $(".slidemenu input[name='slideItem']:checked").val();
-                fillSheetSlideMenu(c, $chk);            
+                fillSheetSlideMenu(c, $chk);  
+                
                 $date = getSelectedDateFromPage();
                 updateAirDataPicker(adp, $date);
                 
@@ -508,10 +519,40 @@ function fillSheetSlideMenu(c, active) {
 }
 
 /*
+ * Function:    showSheetContent
+ *
+ * Created on Apr 26, 2024
+ * Updated on Apr 26, 2024
+ *
+ * Description: Shows the sheet content for the chosen slide.
+ *
+ * In:  adp, c, s, i
+ * Out: -
+ *
+ */
+function showSheetContent(adp, c, s, i) {
+    
+    var date;
+    
+    date = getSelectedDateFromPage();
+    updateAirDataPicker(adp, date);      
+    
+    console.log(date);
+    
+    // Test
+    var items = ["Payment Accounts","Date","Account Number","Income","xFixed","xOther","Group","Business","Description"];
+    
+    //$("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>");  
+    showTable("tbl_finances", items, s, i, "get_finances", "sort=date"); // Add scale etc.
+    
+}
+
+
+/*
  * Function:    changeSheetContent
  *
  * Created on Dec 17, 2023
- * Updated on Dec 17, 2023
+ * Updated on Apr 24, 2024
  *
  * Description: Change sheet content for the page.
  *
@@ -529,7 +570,7 @@ function changeSheetContent(c, s, that) {
             var $date = getSelectedDateFromPage();
             
             // Date Test, show the date that will be used to get the table data. 
-            $("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>"); 
+            //$("#tst_date").html("<h1>Scale: " + $date.scale + " " + $date.month + " " + $date.quarter + " " + $date.year +"</h1>"); 
             break;
             
         case "edit" :

@@ -10,7 +10,7 @@
  * Created on Oct 18, 2023
  * Updated on Apr 19, 2024
  *
- * Description: The css tabs demo 1 page.
+ * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
  *
  */
@@ -47,7 +47,8 @@
  width: 45%;
 }
 
-/* Popup window */
+/* Popup Window css for the settings page */
+/*
 #popup_container {
  position: fixed;
  top: 50px;
@@ -78,7 +79,8 @@
  text-decoration: underline;
  color: #000;
 }
- 
+*/ 
+
 #popup_content .popup_list {
  font-size: 1em;
  display: inline-block;

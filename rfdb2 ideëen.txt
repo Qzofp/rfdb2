@@ -196,3 +196,15 @@ Financiën pagina's (geldt ook voor de beleggen, sparen en crypto pagina's)
 - Dit kan ook worden aangepast op de instellingspagina bij configuraties.
 - Het begin jaartal wordt gebruikt voor de jaren keuzes. Van het begin (start) jaartal tot heden.
 
+
+Financiën Tabel 
+
+
+
+Bij         Afv             Afo
+Bij			Af Vast			Af Overig
+Income      xFixed      	xOther
+1.000,00    -1.0000,00      -1.000,00
+
+
+Income Expense(s)
