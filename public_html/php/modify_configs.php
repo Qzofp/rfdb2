@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 21, 2024
- * Updated on Apr 22, 2024
+ * Updated on Apr 27, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyConfigs
  *
  * Created on Apr 21, 2024
- * Updated on Apr 22, 2024
+ * Updated on Apr 27, 2024
  *
  * Description: Modify (edit) the tbl_settings table.
  *
@@ -40,6 +40,7 @@ function ModifyConfigs()
 {
     // Get data from ajax call.
     $rows    = filter_input(INPUT_POST, 'rows'    , FILTER_SANITIZE_STRING);
+    $sign    = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_STRING);    
     $salt    = filter_input(INPUT_POST, 'salt'    , FILTER_SANITIZE_STRING); 
     $finance = filter_input(INPUT_POST, 'finance' , FILTER_SANITIZE_STRING); 
     $stock   = filter_input(INPUT_POST, 'stock'   , FILTER_SANITIZE_STRING);
@@ -49,6 +50,10 @@ function ModifyConfigs()
     $response['success'] = true;
     if ($rows) {
         $response = EditSetting("settings", "rows", $rows);
+    }
+
+    if ($response['success'] && $sign) {
+        $response = EditSetting("settings", "sign", $sign);
     }
     
     if ($response['success'] && $salt) {

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Apr 22, 2024
+ * Updated on Apr 27, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -859,7 +859,7 @@ function getShowHideRow() {
  * Function:    showGeneralPopupConfigs
  *
  * Created on Apr 12, 2024
- * Updated on Apr 19, 2024
+ * Updated on Apr 27, 2024
  *
  * Description:  Shows the configs (settings) popup content for the general page.
  *
@@ -889,6 +889,14 @@ function showGeneralPopupConfigs(c, s) {
         '</tr>'
     );
     
+    // Currency sign
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td>' + c.setconfigs[2] + '</td>' + 
+            '<td><input id="sign" type="text" name="sign" placeholder="' + c.setconfigs[3] + '" value="' + set.sign + '" /></td>' +
+        '</tr>'
+    );    
+      
     // Start year for finance pages.
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);
@@ -901,8 +909,8 @@ function showGeneralPopupConfigs(c, s) {
             
             $(".popup_table_setting").append(
                 '<tr>' +
-                    '<td>' + c.setconfigs[2] + c.titles[i] + '</td>' + 
-                    '<td><input id="' + s[i].name + '" type="text" name="' + s[i].name + '" placeholder="' + c.setconfigs[3] + cDate.getFullYear() +'" value="' + start + '" /></td>' +
+                    '<td>' + c.setconfigs[4] + c.titles[i] + '</td>' + 
+                    '<td><input id="' + s[i].name + '" type="text" name="' + s[i].name + '" placeholder="' + c.setconfigs[5] + cDate.getFullYear() +'" value="' + start + '" /></td>' +
                 '</tr>'
             );
         }
@@ -912,10 +920,10 @@ function showGeneralPopupConfigs(c, s) {
     salt = JSON.parse(s[8].value);
     $(".popup_table_setting").append(  
         '<tr><td colspan="2">&nbsp;<td></tr>' +
-        '<tr><td class="warning" colspan="2">' + c.setconfigs[4] + '<td></tr>' +
+        '<tr><td class="warning" colspan="2">' + c.setconfigs[6] + '<td></tr>' +
         '<tr>' +
-            '<td>' + c.setconfigs[5] + '</td>' + 
-            '<td><input id="salt" type="text" name="salt" placeholder="' + c.setconfigs[6] + '" value="' + salt.phrase + '" /></td>' +
+            '<td>' + c.setconfigs[7] + '</td>' + 
+            '<td><input id="salt" type="text" name="salt" placeholder="' + c.setconfigs[8] + '" value="' + salt.phrase + '" /></td>' +
         '</tr>' +
         '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
     ); 
@@ -927,7 +935,7 @@ function showGeneralPopupConfigs(c, s) {
  * Function:    modifyConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Apr 22, 2024
+ * Updated on Apr 27, 2024
  *
  * Description: Check the configs (settings) input and modify it in the tbl_settings table.
  *
@@ -940,7 +948,7 @@ function modifyConfigs(c, s) {
     var set, id, check, input = [];
     
     // Get the input values.
-    input.push($("#rows").val(), $("#salt").val());   
+    input.push($("#rows").val(), $("#sign").val(), $("#salt").val());   
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);
         id = "#" + s[i].name;
@@ -956,10 +964,11 @@ function modifyConfigs(c, s) {
     [check, input] = validateConfigs(c, s, input); 
     if (check)
     {          
-        var send = 'rows=' + input[0] + '&salt=' + encodeURIComponent(input[1]) + '&finance=' + input[2] +
-                   '&stock=' + input[3] + '&savings=' + input[4] + '&crypto=' + input[5]; 
+        var send = 'rows=' + input[0] + '&sign=' + input[1] + '&salt=' + encodeURIComponent(input[2]) + 
+                   '&finance=' + input[3] + '&stock=' + input[4] + '&savings=' + input[5] + 
+                   '&crypto=' + input[6]; 
         
-        //console.log(send);
+        console.log(send);
         
         var request = getAjaxRequest("modify_configs", send);
             request.done(function(result) {
@@ -991,7 +1000,7 @@ function modifyConfigs(c, s) {
  * Function:    validateConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Apr 21, 2024
+ * Updated on Apr 27, 2024
  *
  * Description: Validate the configs (settings) input.
  *
@@ -1002,7 +1011,8 @@ function modifyConfigs(c, s) {
 function validateConfigs(c, s, input) {
 
     var set, check = true;
-    var isValidSaltPhrase = /^[0-9A-Za-z.,!? ]{20,}$/;
+    var isValidCurrencySign = /([$€£]){1}/;
+    var isValidSaltPhrase = /^[0-9A-Za-z.,!? ]{20,}$/;   
         
     // Check rows input. If the input isn't changed then make the input empty.
     if (isNaN(input[0]) || Number(input[0]) < 15 || Number(input[0]) > 50) {
@@ -1015,21 +1025,33 @@ function validateConfigs(c, s, input) {
             input[0] = "";
         }
     }
-    
+       
+    // Check currency sign.
+    if (!isValidCurrencySign.test(input[1]) ? true : false || input[1].length > 1) {
+        $(".msg").html(c.setconfigs[2] + " " + c.messages[0]); 
+        check = false;
+    }
+    else {
+        set = JSON.parse(s[5].value);
+        if (input[1] === set.sign) {
+            input[1] = "";
+        }
+    } 
+
     // Check the start year input.
-    for (let i = 2; i < 6; i++) {      
+    for (let i = 3; i < 7; i++) {      
         if (input[i] !== 0 && input[i] !== "" ) {           
             if (isNaN(input[i]) || Number(input[i]) < 1970 || Number(input[i]) > cDate.getFullYear()) {
-                $(".msg").html(c.setconfigs[2] + " " + c.titles[i-1] + " " + c.messages[0]);
+                $(".msg").html(c.setconfigs[4] + " " + c.titles[i-2] + " " + c.messages[0]);
                 check = false;
                 i = 6;
             }
         }
     }
-    
+   
     // Check the Salt phrase input.  If the input isn't changed then make the input empty.
-    if (!isValidSaltPhrase.test(input[1]) ? true : false) {
-        $(".msg").html(c.setconfigs[5] + " " + c.messages[0]); 
+    if (!isValidSaltPhrase.test(input[2]) ? true : false) {
+        $(".msg").html(c.setconfigs[7] + " " + c.messages[0]); 
         check = false;
     }
     else {
@@ -1038,6 +1060,6 @@ function validateConfigs(c, s, input) {
             input[1] = "";
         }
     }    
-    
+   
     return [check, input];
 }
