@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Apr 29, 2024
+ * Updated on May 03, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Apr 29, 2024
+ * Updated on May 03, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -42,6 +42,7 @@ function GetFinances()
     $year    = filter_input(INPUT_POST, 'year'   , FILTER_SANITIZE_STRING);
     $quarter = filter_input(INPUT_POST, 'quarter', FILTER_SANITIZE_STRING);
     $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_STRING);
+    $sign    = filter_input(INPUT_POST, 'sign'   , FILTER_SANITIZE_STRING);
     $sort    = filter_input(INPUT_POST, 'sort'   , FILTER_SANITIZE_STRING);
     
     $response = [];
@@ -50,8 +51,34 @@ function GetFinances()
     {
         $db = OpenDatabase();
      
-        switch ($scale) {
+        // Formats for date and currency.
+        if ($sign == "$" ) {
+            $date = "DATE_FORMAT(tbl_finances.`date`,'%m-%d-%Y') AS `date`";
+        }
+        else {
+            $date = "DATE_FORMAT(tbl_finances.`date`,'%d-%m-%Y') AS `date`";   
+        }
+        
+        // COALESCE(NULLIF(fixed, 0), ' ')
+        
+        switch ($sign) 
+        {
+            case "$" :
+            case "£" :
+                $income = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'en_US'), 0 )), ' ' ) AS `income`";
+                $fixed  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'en_US'), 0 )), ' ' ) AS `fixed`";
+                $other  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'en_US'), 0 )), ' ' ) AS `other`";
+                break;
             
+            case "€"  :
+                $income = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'de_DE'), 0 )), ' ' ) AS `income`";
+                $fixed  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'de_DE'), 0 )), ' ' ) AS `fixed`";
+                $other  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'de_DE'), 0 )), ' ' ) AS `other`";                
+                break;
+        }
+        
+        switch ($scale) 
+        {    
             case "months" :
                 $where = "WHERE year(tbl_finances.`date`) = $year AND month(tbl_finances.`date`) = ".$month + 1;
                 break;
@@ -65,7 +92,7 @@ function GetFinances()
                 break;         
         }
            
-        $query = "SELECT tbl_finances.id, tbl_finances.`date`, `account`, `income`, `fixed`, `other`, `group`, `business`, tbl_finances.`description` ".
+        $query = "SELECT tbl_finances.id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
                  "FROM tbl_finances ".
                  "LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id ".
                  "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".

@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Apr 19, 2024
+ * Updated on Apr 30, 2024
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -39,6 +39,21 @@
 }
 
 /* Settings tables */
+.tbl_config tbody td {
+ max-width: 0;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;    
+}
+
+.tbl_config tbody td:nth-child(2) {
+ width: 15%;
+}
+
+.tbl_config tbody td:nth-child(3) {
+ width: 85%;
+}
+
 .tbl_services tbody td:nth-child(2) {
  width: 25%;
 }

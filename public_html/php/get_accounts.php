@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 01, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Mar 29, 2024
+ * Updated on May 01, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -39,6 +39,7 @@ else {
 function GetAccounts()
 {   
     $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
+    $sign = filter_input(INPUT_POST, 'sign', FILTER_SANITIZE_STRING);    
     $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
     
     $response = [];
@@ -46,10 +47,17 @@ function GetAccounts()
     try 
     {
         $db = OpenDatabase();
+        
+        // Date format.
+        if ($sign == "$" ) {
+            $date = "DATE_FORMAT(tbl_accounts.`date`,'%m-%d-%Y') AS `date`";  
+        }
+        else {
+            $date = "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y') AS `date`";   
+        }
      
         $query = "SELECT CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`serviceid`) AS id,tbl_accounts.`hide`,". 
-                    "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y'),tbl_services.`service`,tbl_accounts.`account`,".
-                    "tbl_accounts.`description`".
+                    "$date, tbl_services.`service`,tbl_accounts.`account`, tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`serviceid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".

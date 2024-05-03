@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Apr 24, 2024
+ * Updated on May 03, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -35,6 +35,7 @@
   margin-top: -7px;
 }
 
+/* Balance en label */
 #balance {
  text-align: center;
  padding-top: 10px;
@@ -53,8 +54,55 @@
  padding: 3px;
 }
 
+/* Sheet tables */
+.tbl_finances tbody td {
+ max-width: 0;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;    
+}
 
+.tbl_finances thead th:nth-child(1),
+.tbl_finances tbody td:nth-child(1) {
+ width: 0.5%;
+}
 
+.tbl_finances thead th:nth-child(2),
+.tbl_finances tbody td:nth-child(2) {
+ width: 7%;
+}
+
+.tbl_finances thead th:nth-child(3),
+.tbl_finances tbody td:nth-child(3) {
+ width: 10%;
+}
+
+.tbl_finances thead th:nth-child(4),
+.tbl_finances thead th:nth-child(5),
+.tbl_finances thead th:nth-child(6),
+.tbl_finances tbody td:nth-child(4) {
+ width: 7%;
+}
+
+.tbl_finances tbody td:nth-child(4) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+}    
+
+.tbl_finances tbody td:nth-child(5),
+.tbl_finances tbody td:nth-child(6) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+ width: 7%;
+ color: red;
+}
+
+.tbl_finances thead th:nth-child(7),
+.tbl_finances thead th:nth-child(8),
+.tbl_finances tbody td:nth-child(7),
+.tbl_finances tbody td:nth-child(8) {
+ width: 12%;
+}
 
 
 /* Chart slider */

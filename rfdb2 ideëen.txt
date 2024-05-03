@@ -200,11 +200,20 @@ Financiën pagina's (geldt ook voor de beleggen, sparen en crypto pagina's)
 Financiën Tabel 
 
 
+Inkomsten	Vaste Kosten	Overige Kosten
 
 Bij         Afv             Afo
 Bij			Af Vast			Af Overig
+Bij			aVa				aOv
+Bij			afVast			afOverig
+
+In          xFi				xOt
 Income      xFixed      	xOther
 1.000,00    -1.0000,00      -1.000,00
 
 
 Income Expense(s)
+
+Valutatekens: € $ £
+
+SELECT sum(income), sum(fixed), sum(other), sum(income) - sum(fixed) - sum(other) AS balance FROM `tbl_finances` WHERE 1

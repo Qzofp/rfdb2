@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 29, 2024
+ * Updated on May 01, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -493,7 +493,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on Apr 29, 2024
+ * Updated on May 01, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -503,11 +503,14 @@ function fillSheetSlideMenu(c, active) {
  */
 function showSheetContent(adp, c, s, i) {
     
-    var date, send;
+    var date, set, send;
     
     date = getSelectedDateFromPage();
-    updateAirDataPicker(adp, date);          
-    send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month + "&sort=date";
+    updateAirDataPicker(adp, date);       
+    set = JSON.parse(s[5].value);
+    
+    send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
+           "&sign=" + set.sign + "&sort=date";
     
     switch (s[i].name) {
         case "finance" :

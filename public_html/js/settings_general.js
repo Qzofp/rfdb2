@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Apr 27, 2024
+ * Updated on May 01, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -935,7 +935,7 @@ function showGeneralPopupConfigs(c, s) {
  * Function:    modifyConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Apr 27, 2024
+ * Updated on May 01, 2024
  *
  * Description: Check the configs (settings) input and modify it in the tbl_settings table.
  *
@@ -967,8 +967,6 @@ function modifyConfigs(c, s) {
         var send = 'rows=' + input[0] + '&sign=' + input[1] + '&salt=' + encodeURIComponent(input[2]) + 
                    '&finance=' + input[3] + '&stock=' + input[4] + '&savings=' + input[5] + 
                    '&crypto=' + input[6]; 
-        
-        console.log(send);
         
         var request = getAjaxRequest("modify_configs", send);
             request.done(function(result) {

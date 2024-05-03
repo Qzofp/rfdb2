@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 01, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js

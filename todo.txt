@@ -50,3 +50,6 @@ ToDo
 
 4. Valuta teken (bv. euro, dollar) toevoegen aan config settings.
    - Gereed
+
+5. Config settings maken voor het datum en getal formaat (getal formaat koppelen aan het valuta teken, dus Euro 0.000,00 en Dollar 0,000.00).
+   - Gereed voor de valuta. De datum is ook gekoppeld aan het valuta teken. Later misschien aanpassen en een aparte setting maken voor het datum format.
