@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on May 03, 2024
+ * Updated on May 06, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -35,13 +35,18 @@
   margin-top: -7px;
 }
 
-/* Balance en label */
+/* Balance */
 #balance {
  text-align: center;
  padding-top: 10px;
  font-size: 0.9em;
 }
 
+#balance span {
+ font-family: verdana;
+}
+
+/* Label */
 #label {
  margin: 10px 50px 15px 50px;
  font-size: 1.1em;
@@ -55,7 +60,13 @@
 }
 
 /* Sheet tables */
-.tbl_finances tbody td {
+.tbl_finances thead th img {
+ vertical-align: middle;
+ cursor: pointer;
+}
+
+.tbl_finances tbody td,
+.tbl_finances tfoot td {
  max-width: 0;
  overflow: hidden;
  text-overflow: ellipsis;
@@ -104,6 +115,20 @@
  width: 12%;
 }
 
+.tbl_finances tfoot td:nth-child(2) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+/* font-weight: */
+ color: green;
+}
+
+.tbl_finances tfoot td:nth-child(3),
+.tbl_finances tfoot td:nth-child(4) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+/* font-weight: bold; */
+ color: #C11B17;
+}
 
 /* Chart slider */
 #chart_slider{

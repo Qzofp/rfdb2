@@ -53,3 +53,17 @@ ToDo
 
 5. Config settings maken voor het datum en getal formaat (getal formaat koppelen aan het valuta teken, dus Euro 0.000,00 en Dollar 0,000.00).
    - Gereed voor de valuta. De datum is ook gekoppeld aan het valuta teken. Later misschien aanpassen en een aparte setting maken voor het datum format.
+
+6. Corrigeer inhoud financiën tabel waar group leeg is en business gelijk is aan 'Overige'.
+
+    USE rfdb2;
+
+    SELECT tbl_finances.id, tbl_finances.`date`, `account`, `income`, `fixed`, `other`, `group`, `business`, tbl_finances.`description`
+    FROM tbl_finances
+    LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id 
+    LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id
+    LEFT JOIN tbl_groups ON tbl_businesses.gid = tbl_groups.id 
+    WHERE `group` is null and `business` = 'Overige'
+    ORDER BY tbl_finances.`date`
+
+7. Laat een loader zien als het laden van een tabel lang duurt, bv. van een jaar tabel.

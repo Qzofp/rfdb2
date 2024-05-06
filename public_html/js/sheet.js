@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 01, 2024
+ * Updated on May 06, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Apr 29, 2024
+ * Updated on May 05, 2024
  *
  * Description: Open the sheet page.
  *
@@ -137,7 +137,7 @@ function openSheetPage(c, s, i) {
     fillHamburgerMenu(c, s, i);
     
     // Show the sheet content.
-    showSheetContent($adp, c, s, i);    
+    showSheetContent($adp, c, s, i, false);    
     
     // Show the page theme for finance, stock, savings and crypto.
     showPageTheme(s[i]);    
@@ -149,8 +149,17 @@ function openSheetPage(c, s, i) {
             
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {      
-        showSheetContent($adp, c, s, i);    
-    });               
+        showSheetContent($adp, c, s, i, false);    
+    });
+    
+    // Sort date button is pressed.
+    $("#table_container thead").on('click', 'th img', function() {
+        showSheetContent($adp, c, s, i, $(this).attr("alt") === "down" ? true : false);
+        
+        //var test = $(this).attr("alt") === "down" ? true : false;
+        //console.log(test);
+        
+    });
           
     // Process menu selection and reload the page.
     $(".menu_item").click(function() {
@@ -249,7 +258,7 @@ function setSlideMenuScale(s) {
  * Function:    addYearPicker
  *
  * Created on Oct 30, 2023
- * Updated on Apr 29, 2024
+ * Updated on May 05, 2024
  *
  * Description: Add the YearPicker popup box (also update the slidemenu and the sheet table).
  *
@@ -280,7 +289,7 @@ function addYearPicker(adp, c, s, i) {
 		
                 let $chk = $(".slidemenu input[name='slideItem']:checked").val();
                 fillSheetSlideMenu(c, $chk);  
-                showSheetContent(adp, c, s, i);
+                showSheetContent(adp, c, s, i, false);
             }
     });    
 }
@@ -493,28 +502,39 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on May 01, 2024
+ * Updated on May 06, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
- * In:  adp, c, s, i
+ * In:  adp, c, s, i, sort_date
  * Out: -
  *
  */
-function showSheetContent(adp, c, s, i) {
+function showSheetContent(adp, c, s, i, sort_date) {
     
-    var date, set, send;
+    var date, set, sort, sort_img, send;
+    var totals = [];
     
     date = getSelectedDateFromPage();
     updateAirDataPicker(adp, date);       
     set = JSON.parse(s[5].value);
+       
+    if (sort_date) {
+        sort = "&sort=`date`";
+        sort_img = '<img src="img/up.png" alt="up">';
+    }
+    else {
+        sort = "&sort=`date` DESC";
+        sort_img = '<img src="img/down.png" alt="down">';
+    } 
     
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
-           "&sign=" + set.sign + "&sort=date";
+           "&sign=" + set.sign + sort;
     
     switch (s[i].name) {
         case "finance" :
-            showTable("tbl_finances", c.payment, s, i, "get_finances", send); 
+            showTable("tbl_finances", c.payment, s, i, "get_finances", send);            
+            $(".tbl_finances thead th:nth-child(2)").append(sort_img);                        
             break;
             
         case "stock" :
@@ -525,7 +545,65 @@ function showSheetContent(adp, c, s, i) {
         
         case "crypto" :
             break;      
-    }     
+    }
+    
+    getAndShowTableTotals("get_finances_totals", send, c, s, i);     
+}
+
+/*
+ * Function:    getAndShowTableTotals
+ *
+ * Created on May 05, 2024
+ * Updated on May 06, 2024
+ *
+ * Description: Get and show the totals of the finances table.
+ *
+ * In:  page, send, c, s, i
+ * Out: -
+ *
+ */
+function getAndShowTableTotals(page, send, c, s, i) {
+   
+    var set = JSON.parse(s[i].value);
+   
+    // Show the balance label.
+    $("#balance u").html(c.misc[1]); 
+    
+    send += "&name=" + s[i].name;
+    var request = getAjaxRequest(page, send);
+    request.done(function(result) {
+        if (result.success) {         
+            
+            if(result.data[0].balance.includes("-")) {
+                $("#balance span").css("color", "#C11B17");
+            }
+            else {
+                $("#balance span").css("color", "green"); 
+            }
+            
+            $("#balance span").html(result.data[0].balance);
+
+            $("#table_container tfoot td").remove();
+            $("#table_container tfoot tr").append(
+                    '<td colspan="3"></td>' +
+                    '<td>' + result.data[0].income + '</td>' +
+                    '<td>' + result.data[0].fixed + '</td>' +
+                    '<td>' + result.data[0].other + '</td>' +
+                    '<td colspan="3"></td>'
+            );
+    
+            $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);        
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();
 }
 
 /*

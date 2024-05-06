@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on May 03, 2024
+ * Updated on May 05, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on May 03, 2024
+ * Updated on May 05, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -77,6 +77,11 @@ function GetFinances()
                 break;
         }
         
+        $sortid = "tbl_finances.id";
+        if(str_contains($sort, "DESC")) {
+            $sortid = "tbl_finances.id DESC";
+        }     
+        
         switch ($scale) 
         {    
             case "months" :
@@ -98,13 +103,13 @@ function GetFinances()
                  "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".
                  "LEFT JOIN tbl_groups ON tbl_businesses.gid = tbl_groups.id ".
                  "$where ".
-                 "ORDER BY tbl_finances.`$sort`";
+                 "ORDER BY tbl_finances.$sort, $sortid";
         
         $select = $db->prepare($query);
         $select->execute();
 
-        $accounts = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $accounts;       
+        $finances = $select->fetchAll(PDO::FETCH_ASSOC);  
+        $response['data'] = $finances;    
  
         $response['success'] = true;
     }

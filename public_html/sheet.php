@@ -17,7 +17,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Apr 26, 2024
+ * Updated on May 05, 2024
  *
  * Description: Sheet framework test page.
  *
@@ -152,8 +152,8 @@ if(!$user){
             
                 <!-- Display the balance under the slides. -->
                 <div id="balance">
-                    <u>Balance</u><br/>
-                    <span>€0,00 (Month, Quarter or Year)</span>
+                    <u></u><br/>
+                    <span></span>
                 </div>    
                 
                 <!-- Table label -->
