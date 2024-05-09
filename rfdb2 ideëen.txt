@@ -71,11 +71,11 @@ Voorbeeld Sparen:
 														LeasePlan Bank			80,50
 														ING Particulier			50
 
-datum			bij / af		bedrag			dienst				rekeningnummer		omschrijving
-07-11-2023		bij				100				LeasePlan Bank		LPB xxxx xxxx		Storting van ING betaalrekening
-08-11-2023		af				-20				LeasePlan Bank		LPB xxxx xxxx		Ontrekking naar ING betaalrekening
-14-11-2023		bij				50				ING Particulier		ING xxxx xxxx		Storting van ING betaalrekening	
-01-12-2023		bij				0,50			LeasePlan Bank		LPB xxxx xxxx		Rente December
+datum			storting	ontrekking		dienst				rekeningnummer		omschrijving
+07-11-2023		100				            LeasePlan Bank		LPB xxxx xxxx		Storting van ING betaalrekening
+08-11-2023					-20				LeasePlan Bank		LPB xxxx xxxx		Ontrekking naar ING betaalrekening
+14-11-2023		50				            ING Particulier		ING xxxx xxxx		Storting van ING betaalrekening	
+01-12-2023		0,50			            LeasePlan Bank		LPB xxxx xxxx		Rente December
 
 
 
@@ -86,16 +86,10 @@ Voorbeeld Beleggen (simpel houden, in- en uitgaande geldstromen bijhouden):
 														OAKK Beheerd Beleggen		 100,50
 														ING Particulier				 50
 
-datum			bij / af		bedrag			dienst					rekeningnummer		     omschrijving
-07-11-2023		bij				100				OAKK Beheerd Beleggen	xxxx-xxxx			     Storting van ING betaalrekening                 
-14-11-2023		bij				50				ING Particulier			ING xxx xxxx		     Storting van ING betaalrekening	
-12-01-2024      af              -150            OAKK Beheerd Beleggen   xxxx-xxxx                Ontrekking naar ING betaalrekening
-
-
-
-
-
-
+datum			storting	ontrekking		dienst					rekeningnummer		     omschrijving
+07-11-2023		100				            OAKK Beheerd Beleggen	xxxx-xxxx			     Storting van ING betaalrekening                 
+14-11-2023		50				            ING Particulier			ING xxx xxxx		     Storting van ING betaalrekening	
+12-01-2024                  -150            OAKK Beheerd Beleggen   xxxx-xxxx                Ontrekking naar ING betaalrekening
 
 
 Crypto
@@ -113,14 +107,40 @@ Voorbeeld Cryptorekeningen
 																	------
 																	50 Euro
 																	
-datum			rekening		storting	ontrekking		aantal		crypto		bedrijf			beschrijving
-07-03-2018		Rizzo's Wallet	100							0,1			BTC			Bitonic			Voor 100 Euro 0,1 BTC gekocht
-12-11-2020		Rizzo's Wallet				-50				-0,02		BTC			Bitonic			Voor 50 Euro 0,02 BTC verkocht
+datum			rekening		storting	ontrekking		aantal		crypto		Transactie		beschrijving
+07-03-2018		Rizzo's Wallet 	100							0,1			BTC			Bitonic         Voor 100 Euro 0,1 BTC gekocht naar Rizzo's Wallet
+12-11-2020		Rizzo's Wallet				-50				-0,02		BTC			Bitonic			Voor 50 Euro 0,02 BTC verkocht van Rizzo's Wallet
+03-07-2021      Rizzo's Wallet                              -0,05       BTC         Rizzo's Safe    Verstuurt naar Rizzo's Safe
+03-07-2021      Rizzo's Safe                                0,049       BTC         Rizzo's Wallet  Ontvangen van Rizzo's Wallet
+05-09-2021      Binance         100                         0,07        BTC         
+
+- of - 
+
+datum			storting	ontrekking		aantal		crypto		dienst        rekening		    beschrijving
+07-03-2018		100							0,1		    BTC         Trezor        Rizzo's Wallet    Voor 100 Euro 0,1 BTC gekocht van Bitonic
+12-11-2020		           -50  		    -0,02		BTC			Trezor        Rizzo's Wallet	Voor 50 Euro 0,02 BTC verkocht aan Bitonic
+03-07-2021                                  -0,05       BTC         Trezor        Rizzo's Wallet    Verstuurt naar Rizzo's Safe
+03-07-2021                                  0,049       BTC         Trezor        Rizzo's Safe      Ontvangen van Rizzo's Wallet
+05-09-2021      100                         0,07        BTC         Binance       BNC xxx-xxx       Voor 100 Euro gekocht van Binance (Binance Wallet)
+21-01-2022                                  -0,03       BTC         Binance       BNC xxx-xxx       Verkocht voor ETH (Binance Wallet)
+21-01-2022                                  12,473      ETH         Binance       BNC xxx-xxx       Gekocht met BTC (Binance Wallet)
+22-01-2022                                  -12,473     ETH         Binance       BNC xxx-xxx       Verstuurt naar Rizzo's Wallet
+22-01-2022                                  12,421      ETH         Trezor        Rizzo's Wallet    Ontvangen van Binance (incl. tx kosten)
 
 
+tbl_wallets
 
+id   aid                     sid
+1    1 (Rizzo's Wallet)      1
+2    1                       2
+3    2 (BNC xxx-xxx)         1
+4    2                       2
 
+tbl_cryptonames
 
+id  name        symbol
+1   Bitcoin     BTC
+2   Ethereum    ETH
 
 
 ---------
