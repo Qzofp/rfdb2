@@ -92,6 +92,12 @@ datum			bij / af		bedrag			dienst					rekeningnummer		     omschrijving
 12-01-2024      af              -150            OAKK Beheerd Beleggen   xxxx-xxxx                Ontrekking naar ING betaalrekening
 
 
+
+
+
+
+
+
 Crypto
 ------
 Crypto
@@ -101,6 +107,23 @@ Wallets
 	- BTC Wallet #1
 	- Bitvavo Wallet
 
+Voorbeeld Cryptorekeningen
+--------------------------
+																	Balans
+																	------
+																	50 Euro
+																	
+datum			rekening		storting	ontrekking		aantal		crypto		bedrijf			beschrijving
+07-03-2018		Rizzo's Wallet	100							0,1			BTC			Bitonic			Voor 100 Euro 0,1 BTC gekocht
+12-11-2020		Rizzo's Wallet				-50				-0,02		BTC			Bitonic			Voor 50 Euro 0,02 BTC verkocht
+
+
+
+
+
+
+
+---------
 
 Voorbeeld Betaalrekening:
 
