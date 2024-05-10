@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Apr 29, 2024
+ * Updated on May 10, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -83,7 +83,7 @@ function processDashboardConstants(data) {
  * Function:    processSheetContants
  *
  * Created on Apr 08, 2024
- * Updated on Apr 29, 2024
+ * Updated on May 10, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table for the sheet pages.
  *
@@ -99,22 +99,23 @@ function processSheetConstants(data) {
     });
 
     var con = {
-       project:  tmp[0],
-       footer:   tmp[1],
-       pages:    tmp[2].split(","),
-       titles:   tmp[3].split(","),
-       months:   tmp[4].split(","),
-       quarters: tmp[5].split(","),
-       year:     tmp[6].split(","),             
-       errors:   tmp[7].split(","), 
-       messages: tmp[8].split(","),
-       days:     tmp[9].split(","),
+       project:     tmp[0],
+       footer:      tmp[1],
+       pages:       tmp[2].split(","),
+       titles:      tmp[3].split(","),
+       months:      tmp[4].split(","),
+       quarters:    tmp[5].split(","),
+       year:        tmp[6].split(","),             
+       errors:      tmp[7].split(","), 
+       messages:    tmp[8].split(","),
+       days:        tmp[9].split(","),
        
-       smonths:  tmp[10].split(","),
-       misc:     tmp[11].split(","), 
-       payment:  tmp[12].split(","),        
+       smonths:     tmp[10].split(","),
+       misc:        tmp[11].split(","), 
+       payment:     tmp[12].split(","),  
+       investment:  tmp[13].split(","), 
        
-       salt:     tmp[13]     
+       salt:        tmp[14]     
     };
 
     var set = [];

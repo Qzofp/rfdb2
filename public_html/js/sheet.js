@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 06, 2024
+ * Updated on May 10, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on May 05, 2024
+ * Updated on May 10, 2024
  *
  * Description: Open the sheet page.
  *
@@ -155,10 +155,6 @@ function openSheetPage(c, s, i) {
     // Sort date button is pressed.
     $("#table_container thead").on('click', 'th img', function() {
         showSheetContent($adp, c, s, i, $(this).attr("alt") === "down" ? true : false);
-        
-        //var test = $(this).attr("alt") === "down" ? true : false;
-        //console.log(test);
-        
     });
           
     // Process menu selection and reload the page.
@@ -502,7 +498,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on May 06, 2024
+ * Updated on May 10, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -513,7 +509,6 @@ function fillSheetSlideMenu(c, active) {
 function showSheetContent(adp, c, s, i, sort_date) {
     
     var date, set, sort, sort_img, send;
-    var totals = [];
     
     date = getSelectedDateFromPage();
     updateAirDataPicker(adp, date);       
@@ -529,15 +524,17 @@ function showSheetContent(adp, c, s, i, sort_date) {
     } 
     
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
-           "&sign=" + set.sign + sort;
+           "&sign=" + set.sign + sort + "&name=" + s[i].name;
+   
+    console.log(send);
     
     switch (s[i].name) {
         case "finance" :
-            showTable("tbl_finances", c.payment, s, i, "get_finances", send);            
-            $(".tbl_finances thead th:nth-child(2)").append(sort_img);                        
+            showTable("tbl_finances", c.payment, s, i, "get_finances", send);                       
             break;
             
         case "stock" :
+            showTable("tbl_stocks", c.investment, s, i, "get_finances", send);           
             break;
         
         case "savings" :
@@ -546,7 +543,8 @@ function showSheetContent(adp, c, s, i, sort_date) {
         case "crypto" :
             break;      
     }
-    
+
+    $(".tbl_finances thead th:nth-child(2)").append(sort_img); 
     getAndShowTableTotals("get_finances_totals", send, c, s, i);     
 }
 

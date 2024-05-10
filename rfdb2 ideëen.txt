@@ -66,10 +66,10 @@ Storting            Deposit
 Onttrekking         Withdrawal
 
 Voorbeeld Sparen:
-																            (maand, kwartaal of jaar)
-																Spaarrekeningen 130,50  totaal
-														LeasePlan Bank			80,50
-														ING Particulier			50
+
+																Balans
+																------
+																130,50 Euro
 
 datum			storting	ontrekking		dienst				rekeningnummer		omschrijving
 07-11-2023		100				            LeasePlan Bank		LPB xxxx xxxx		Storting van ING betaalrekening
@@ -81,10 +81,9 @@ datum			storting	ontrekking		dienst				rekeningnummer		omschrijving
 
 Voorbeeld Beleggen (simpel houden, in- en uitgaande geldstromen bijhouden):
 
-																          (maand, kwartaal of jaar)
-																Beleggingsrekeningen 150,50  totaal
-														OAKK Beheerd Beleggen		 100,50
-														ING Particulier				 50
+																Balans
+																------
+																0 Euro
 
 datum			storting	ontrekking		dienst					rekeningnummer		     omschrijving
 07-11-2023		100				            OAKK Beheerd Beleggen	xxxx-xxxx			     Storting van ING betaalrekening                 

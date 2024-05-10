@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 05, 2024
- * Updated on May 06, 2024
+ * Updated on May 10, 2024
  *
  * Description: Check if the user is signed in and get the finances total from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinancesTotals
  *
  * Created on May 05, 2024
- * Updated on May 06, 2024
+ * Updated on May 10, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -50,42 +50,59 @@ function GetFinancesTotals()
     try 
     {
         $db = OpenDatabase();
-        
+         
+        // Determine the currency format.
         switch ($sign) 
         {
             case "$" :
             case "£" :
-                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`income`),2,'en_US'), 0 )), '&nbsp;' ) AS `income`";
-                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`fixed`),2,'en_US'), 0 )), '&nbsp;' ) AS `fixed`";
-                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`other`),2,'en_US'), 0 )), '&nbsp;' ) AS `other`";
-                $balance = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`income`) - sum(`fixed`) - sum(`other`)),2,'en_US'), 0 )), '&nbsp;' ) AS `balance`";
+                $format = "en_US";
                 break;
             
             case "€"  :
-                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`income`),2,'de_DE'), 0 )), '&nbsp;' ) AS `income`";
-                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`fixed`),2,'de_DE'), 0 )), '&nbsp;' ) AS `fixed`";
-                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`other`),2,'de_DE'), 0 )), '&nbsp;' ) AS `other`";
-                $balance = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`income`) - sum(`fixed`) - sum(`other`)),2,'de_DE'), 0 )), '&nbsp;' ) AS `balance`";          
+                $format = "de_DE";       
                 break;
         }  
         
+        // Create select and the table.
+        switch($name) 
+        {
+            case "finance" :
+                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`income`),2,'$format'), 0 )), '&nbsp;' ) AS `income`";
+                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`fixed`),2,'$format'), 0 )), '&nbsp;' ) AS `fixed`";
+                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`other`),2,'$format'), 0 )), '&nbsp;' ) AS `other`";
+                $balance = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`income`) - sum(`fixed`) - sum(`other`)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";                
+                $select  = "$income, $fixed, $other, $balance";
+                $table   = "tbl_finances";
+                break;
+            
+            case "stock" :
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`deposit`),2,'$format'), 0 )), '&nbsp;' ) AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`withdrawal`),2,'$format'), 0 )), '&nbsp;' ) AS `withdrawal`";
+                $balance    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`deposit`) - sum(`withdrawal`)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";
+                $select     = "$deposit, $withdrawal, $balance";
+                $table      = "tbl_stocks";
+                break;
+        }
+        
+        // Determine the scale.
         switch ($scale) 
         {    
             case "months" :
-                $where = "WHERE year(tbl_finances.`date`) = $year AND month(tbl_finances.`date`) = ".$month + 1;
+                $where = "WHERE year($table.`date`) = $year AND month($table.`date`) = ".$month + 1;
                 break;
             
             case "quarters" :
-                $where = "WHERE year(tbl_finances.`date`) = $year AND quarter(tbl_finances.`date`) = ".$quarter + 1;
+                $where = "WHERE year($table.`date`) = $year AND quarter($table.`date`) = ".$quarter + 1;
                 break;
             
             case "year" :
-                $where = "WHERE year(tbl_finances.`date`) = $year";
+                $where = "WHERE year($table.`date`) = $year";
                 break;         
         }
            
-        $query = "SELECT $income, $fixed, $other, $balance ".
-                 "FROM tbl_finances ".
+        $query = "SELECT $select ".
+                 "FROM $table ".
                  "$where";
         
         $select = $db->prepare($query);

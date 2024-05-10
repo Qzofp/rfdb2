@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on May 05, 2024
+ * Updated on May 10, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on May 05, 2024
+ * Updated on May 10, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -44,6 +44,7 @@ function GetFinances()
     $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_STRING);
     $sign    = filter_input(INPUT_POST, 'sign'   , FILTER_SANITIZE_STRING);
     $sort    = filter_input(INPUT_POST, 'sort'   , FILTER_SANITIZE_STRING);
+    $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_STRING);
     
     $response = [];
     
@@ -59,51 +60,69 @@ function GetFinances()
             $date = "DATE_FORMAT(tbl_finances.`date`,'%d-%m-%Y') AS `date`";   
         }
         
-        // COALESCE(NULLIF(fixed, 0), ' ')
-        
+        // Determine the currency format.
         switch ($sign) 
         {
             case "$" :
             case "£" :
-                $income = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'en_US'), 0 )), ' ' ) AS `income`";
-                $fixed  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'en_US'), 0 )), ' ' ) AS `fixed`";
-                $other  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'en_US'), 0 )), ' ' ) AS `other`";
+                $format = "en_US";
                 break;
             
             case "€"  :
-                $income = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'de_DE'), 0 )), ' ' ) AS `income`";
-                $fixed  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'de_DE'), 0 )), ' ' ) AS `fixed`";
-                $other  = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'de_DE'), 0 )), ' ' ) AS `other`";                
+                $format = "de_DE";       
                 break;
-        }
+        } 
+         
+        // Create the first part of the query.
+        switch($name) 
+        {
+            case "finance" :
+                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'$format'), 0 )), ' ' ) AS `income`";
+                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'$format'), 0 )), ' ' ) AS `fixed`";
+                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format '), 0 )), ' ' ) AS `other`";                              
+                $table   = "tbl_finances";          
+                $query = "SELECT tbl_finances.id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
+                         "FROM tbl_finances ".
+                         "LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id ".
+                         "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".
+                         "LEFT JOIN tbl_groups ON tbl_businesses.gid = tbl_groups.id ";            
+                break;
+            
+            case "stock" :
+                $deposit    = "";
+                $withdrawal = "";
+
+                
+                
+
+                break;
+        }        
         
-        $sortid = "tbl_finances.id";
-        if(str_contains($sort, "DESC")) {
-            $sortid = "tbl_finances.id DESC";
-        }     
-        
+        // Determine the scale.
         switch ($scale) 
         {    
             case "months" :
-                $where = "WHERE year(tbl_finances.`date`) = $year AND month(tbl_finances.`date`) = ".$month + 1;
+                $where = "WHERE year($table.`date`) = $year AND month($table.`date`) = ".$month + 1;
                 break;
             
             case "quarters" :
-                $where = "WHERE year(tbl_finances.`date`) = $year AND quarter(tbl_finances.`date`) = ".$quarter + 1;
+                $where = "WHERE year($table.`date`) = $year AND quarter($table.`date`) = ".$quarter + 1;
                 break;
             
             case "year" :
-                $where = "WHERE year(tbl_finances.`date`) = $year";
+                $where = "WHERE year($table.`date`) = $year";
                 break;         
-        }
-           
-        $query = "SELECT tbl_finances.id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
-                 "FROM tbl_finances ".
-                 "LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id ".
-                 "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".
-                 "LEFT JOIN tbl_groups ON tbl_businesses.gid = tbl_groups.id ".
-                 "$where ".
-                 "ORDER BY tbl_finances.$sort, $sortid";
+        }        
+        
+        // Determine the sort order.
+        $sortid = "$table.`id`";
+        if(str_contains($sort, "DESC")) {
+            $sortid = "$table.`id` DESC";
+        }           
+             
+        // Complete the query by adding the last part.
+        $query .= "$where ".
+                  "ORDER BY $table.$sort, $sortid";
         
         $select = $db->prepare($query);
         $select->execute();
