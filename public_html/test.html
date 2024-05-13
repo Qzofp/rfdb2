@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Counter Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/ext/jquery-3.7.1.min.js"></script>    
+    </head>
+    <body>
+        <h1>Counter Test</h1>
+        
+        <div class="count" data-value="-10000.00"></div>
+        
+    </body>
+    
+    <script>
+ 
+function showCounter(duration, sign, local) {
+              
+    $('.count').each(function () {
+        $(this).prop('Counter', 0).animate({
+                Counter: $(this).data('value')
+            }, {
+            duration: duration,
+            easing: 'swing',
+            step: function () {                      
+                $(this).text(sign + this.Counter.toLocaleString(local, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            },
+            complete: function () {                      
+                $(this).text(sign + this.Counter.toLocaleString(local, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            }
+        });
+    });   
+}
+
+showCounter(2000, "€ ", "de-DE");
+
+      
+    </script>   
+</html>

@@ -383,6 +383,10 @@ function fillTable(s, page, l, send) {
     var setting = JSON.parse(s[5].value);     
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
+        
+        // Debug
+        //console.log(result.query);
+        
         if (result.success) {         
                         
             let i = 0;             

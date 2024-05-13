@@ -67,3 +67,7 @@ ToDo
     ORDER BY tbl_finances.`date`
 
 7. Laat een loader zien als het laden van een tabel lang duurt, bv. van een jaar tabel.
+
+8. Counter maken voor de totale waardes, zie ook https://stackoverflow.com/questions/23006516/jquery-animated-number-counter-from-zero-to-value
+
+9. Balans bug. Deze is leeg als het totaal van het inkomsten (stortingen) gelijk is aan de uitgaven (onttrekking). Zie sparen mei 2024 (rfdb2_empty).

@@ -73,7 +73,7 @@ Voorbeeld Sparen:
 
 datum			storting	ontrekking		dienst				rekeningnummer		omschrijving
 07-11-2023		100				            LeasePlan Bank		LPB xxxx xxxx		Storting van ING betaalrekening
-08-11-2023					-20				LeasePlan Bank		LPB xxxx xxxx		Ontrekking naar ING betaalrekening
+08-11-2023					-20				LeasePlan Bank		LPB xxxx xxxx		Onttrekking naar ING betaalrekening
 14-11-2023		50				            ING Particulier		ING xxxx xxxx		Storting van ING betaalrekening	
 01-12-2023		0,50			            LeasePlan Bank		LPB xxxx xxxx		Rente December
 
@@ -89,6 +89,30 @@ datum			storting	ontrekking		dienst					rekeningnummer		     omschrijving
 07-11-2023		100				            OAKK Beheerd Beleggen	xxxx-xxxx			     Storting van ING betaalrekening                 
 14-11-2023		50				            ING Particulier			ING xxx xxxx		     Storting van ING betaalrekening	
 12-01-2024                  -150            OAKK Beheerd Beleggen   xxxx-xxxx                Ontrekking naar ING betaalrekening
+
+- of -
+
+datum			storting	ontrekking		aantal		aandeel		dienst              rekening		    beschrijving
+11-02-1999      1000                                                ING Particulier     BL01-2321           Storting van betaalrekening ING
+11-02-1999                                  5           Shell       ING Particulier     BL01-2321           Aankoop Shell 5 voor 100 EUR
+11-02-1999                                  10          KPN         ING Particulier     BL01-2321           Aankoop KPN 10 voor 30 EUR
+05-05-2001                                  5           Shell       ING Particulier     BL01-2321           Verkoop Shell 5 voor 150 EUR
+05-05-2001                  200                                     ING Particulier     BL01-2321           Ontrekking naar betaalrekening ING
+
+tbl_wallets
+
+id   aid                     sid
+1    1 (Rizzo's Wallet)      1
+2    1                       2
+3    2 (BNC xxx-xxx)         1
+4    2                       2
+
+tbl_stocknames
+
+id  name      beschrijving      
+1   Shell     Olie   
+2   KPN       Telecom   
+
 
 
 Crypto
@@ -129,17 +153,17 @@ datum			storting	ontrekking		aantal		crypto		dienst        rekening		    beschri
 
 tbl_wallets
 
-id   aid                     sid
-1    1 (Rizzo's Wallet)      1
-2    1                       2
+id   aid                     cid
+1    1 (Rizzo's Wallet)      1 (BTC)
+2    1                       2 (ETH)
 3    2 (BNC xxx-xxx)         1
 4    2                       2
 
 tbl_cryptonames
 
-id  name        symbol
-1   Bitcoin     BTC
-2   Ethereum    ETH
+id  name        symbol      waarde
+1   Bitcoin     BTC         50000
+2   Ethereum    ETH         2000
 
 
 ---------

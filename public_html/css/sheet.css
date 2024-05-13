@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on May 06, 2024
+ * Updated on May 13, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -60,48 +60,37 @@
 }
 
 /* Sheet tables */
-.tbl_finances thead th img {
- vertical-align: middle;
- cursor: pointer;
-}
-
-.tbl_finances tbody td,
-.tbl_finances tfoot td {
- max-width: 0;
- overflow: hidden;
- text-overflow: ellipsis;
- white-space: nowrap;    
-}
-
-.tbl_finances thead th:nth-child(1),
-.tbl_finances tbody td:nth-child(1) {
- width: 0.5%;
-}
-
 .tbl_finances thead th:nth-child(2),
-.tbl_finances tbody td:nth-child(2) {
+.tbl_stocks thead th:nth-child(2),
+.tbl_savings thead th:nth-child(2) {
  width: 7%;
 }
 
-.tbl_finances thead th:nth-child(3),
-.tbl_finances tbody td:nth-child(3) {
+.tbl_finances thead th:nth-child(3) {
  width: 10%;
 }
 
 .tbl_finances thead th:nth-child(4),
 .tbl_finances thead th:nth-child(5),
 .tbl_finances thead th:nth-child(6),
-.tbl_finances tbody td:nth-child(4) {
+.tbl_stocks thead th:nth-child(3),
+.tbl_stocks thead th:nth-child(4),
+.tbl_savings thead th:nth-child(3),
+.tbl_savings thead th:nth-child(4) {
  width: 7%;
 }
 
-.tbl_finances tbody td:nth-child(4) {
+.tbl_finances tbody td:nth-child(4),
+.tbl_stocks tbody td:nth-child(3),
+.tbl_savings tbody td:nth-child(3) {
  font-family: verdana;  
  font-size: 0.8em !important;
 }    
 
 .tbl_finances tbody td:nth-child(5),
-.tbl_finances tbody td:nth-child(6) {
+.tbl_finances tbody td:nth-child(6),
+.tbl_stocks tbody td:nth-child(4),
+.tbl_savings tbody td:nth-child(4) {
  font-family: verdana;  
  font-size: 0.8em !important;
  width: 7%;
@@ -109,26 +98,39 @@
 }
 
 .tbl_finances thead th:nth-child(7),
-.tbl_finances thead th:nth-child(8),
-.tbl_finances tbody td:nth-child(7),
-.tbl_finances tbody td:nth-child(8) {
+.tbl_finances thead th:nth-child(8) {
  width: 12%;
 }
 
-.tbl_finances tfoot td:nth-child(2) {
+.tbl_stocks thead th:nth-child(5),
+.tbl_stocks thead th:nth-child(6),
+.tbl_savings thead th:nth-child(5),
+.tbl_savings thead th:nth-child(6) {
+ width: 18%;    
+}
+
+.tbl_finances tfoot td:nth-child(2),
+.tbl_stocks tfoot td:nth-child(2),
+.tbl_savings tfoot td:nth-child(2) {
  font-family: verdana;  
  font-size: 0.8em !important;
-/* font-weight: */
  color: green;
 }
 
 .tbl_finances tfoot td:nth-child(3),
-.tbl_finances tfoot td:nth-child(4) {
+.tbl_finances tfoot td:nth-child(4),
+.tbl_stocks tfoot td:nth-child(3),
+.tbl_savings tfoot td:nth-child(3) {
  font-family: verdana;  
  font-size: 0.8em !important;
-/* font-weight: bold; */
  color: #C11B17;
 }
+
+
+
+
+
+
 
 /* Chart slider */
 #chart_slider{

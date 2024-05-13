@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on May 03, 2024
+ * Updated on May 12, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -328,12 +328,10 @@ h2 {
 #table_container td {
  padding: 2px;
  background: #fff;
- vertical-align: top;
- font-size: 0.9em;
+ vertical-align: top; 
 }
 
 #table_container thead th {
- font-size: 0.9em;
  text-align:left;   
  background: #fff;
  position: -webkit-sticky;
@@ -341,13 +339,28 @@ h2 {
  top: 0;
 }
 
+#table_container td,
+#table_container thead th {
+ font-size: 0.9em;    
+ max-width: 0;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;       
+}
+
+#table_container th img {
+ vertical-align: middle;
+ cursor: pointer;
+}
+
 #table_container tbody td{
  border-bottom:1px solid #afdcec; 
 }
 
+#table_container thead th:first-child,
 #table_container tbody td:first-child {
  color:#fff;
- max-width: 5px;
+ width: 0.5%;
 }
 
 #table_container tbody tr:last-child td,

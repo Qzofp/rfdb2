@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -498,7 +498,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -526,25 +526,29 @@ function showSheetContent(adp, c, s, i, sort_date) {
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
            "&sign=" + set.sign + sort + "&name=" + s[i].name;
    
-    console.log(send);
+    // Debug
+    //console.log(send);
     
     switch (s[i].name) {
         case "finance" :
-            showTable("tbl_finances", c.payment, s, i, "get_finances", send);                       
+            showTable("tbl_finances", c.payment, s, i, "get_finances", send);   
+            $(".tbl_finances thead th:nth-child(2)").append(sort_img); 
             break;
             
         case "stock" :
-            showTable("tbl_stocks", c.investment, s, i, "get_finances", send);           
+            showTable("tbl_stocks", c.investment, s, i, "get_finances", send); 
+            $(".tbl_stocks thead th:nth-child(2)").append(sort_img); 
             break;
         
         case "savings" :
+            showTable("tbl_savings", c.savings, s, i, "get_finances", send); 
+            $(".tbl_savings thead th:nth-child(2)").append(sort_img);             
             break;
         
         case "crypto" :
             break;      
     }
-
-    $(".tbl_finances thead th:nth-child(2)").append(sort_img); 
+    
     getAndShowTableTotals("get_finances_totals", send, c, s, i);     
 }
 
@@ -552,7 +556,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on May 06, 2024
+ * Updated on May 13, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -572,6 +576,9 @@ function getAndShowTableTotals(page, send, c, s, i) {
     request.done(function(result) {
         if (result.success) {         
             
+            // debug.
+            //console.log(result.query);
+            
             if(result.data[0].balance.includes("-")) {
                 $("#balance span").css("color", "#C11B17");
             }
@@ -582,14 +589,22 @@ function getAndShowTableTotals(page, send, c, s, i) {
             $("#balance span").html(result.data[0].balance);
 
             $("#table_container tfoot td").remove();
-            $("#table_container tfoot tr").append(
-                    '<td colspan="3"></td>' +
-                    '<td>' + result.data[0].income + '</td>' +
-                    '<td>' + result.data[0].fixed + '</td>' +
-                    '<td>' + result.data[0].other + '</td>' +
-                    '<td colspan="3"></td>'
-            );
-    
+            
+            switch (s[i].name) 
+            {
+                case "finance" :
+                    showFinancesTotals(result);
+                    break;
+                
+                case "stock" :
+                case "savings" :
+                    showStockorSavingsTotals(result);
+                    break;
+                    
+                case "crypto" :
+                    break;
+            }
+            
             $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);        
         }
         else {
@@ -602,6 +617,51 @@ function getAndShowTableTotals(page, send, c, s, i) {
     });  
     
     closeErrorMessage();
+}
+
+/*
+ * Function:    ShowFinancesTotals
+ *
+ * Created on May 11, 2024
+ * Updated on May 11, 2024
+ *
+ * Description: Show the totals of the finances table.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showFinancesTotals(result) {
+
+    $("#table_container tfoot tr").append(
+            '<td colspan="3"></td>' +
+            '<td>' + result.data[0].income + '</td>' +
+            '<td>' + result.data[0].fixed + '</td>' +
+            '<td>' + result.data[0].other + '</td>' +
+            '<td colspan="3"></td>'
+    );    
+}
+
+/*
+ * Function:    showStockorSavingsTotals
+ *
+ * Created on May 11, 2024
+ * Updated on May 11, 2024
+ *
+ * Description: Show the totals of the stocks or savings table.
+ *
+ * In:  result
+ * Out: -
+ *
+ */
+function showStockorSavingsTotals(result) {
+    
+    $("#table_container tfoot tr").append(
+            '<td colspan="2"></td>' +
+            '<td>' + result.data[0].deposit + '</td>' +
+            '<td>' + result.data[0].withdrawal + '</td>' +
+            '<td colspan="4"></td>'
+    );    
 }
 
 /*

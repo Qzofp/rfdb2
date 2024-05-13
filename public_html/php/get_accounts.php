@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on May 01, 2024
+ * Updated on May 11, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on May 01, 2024
+ * Updated on May 11, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -56,10 +56,10 @@ function GetAccounts()
             $date = "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y') AS `date`";   
         }
      
-        $query = "SELECT CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`serviceid`) AS id,tbl_accounts.`hide`,". 
+        $query = "SELECT CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) AS id,tbl_accounts.`hide`,". 
                     "$date, tbl_services.`service`,tbl_accounts.`account`, tbl_accounts.`description`".
                  "FROM tbl_accounts ".
-                 "INNER JOIN tbl_services ON tbl_accounts.`serviceid` = tbl_services.`id` ".
+                 "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".
                  "ORDER BY `$sort`;";
     

@@ -8,7 +8,7 @@
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -31,7 +31,7 @@ else {
  * Function:    GetConstants
  *
  * Created on Dec 24, 2023
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  *
@@ -91,11 +91,11 @@ function GetConstants($page)
                 break;
             
             case "sheet":
-                $where = "WHERE tbl_config.id IN (1,2,3,4,5,6,7,11,16,18,19,20,24,25) ";
+                $where = "WHERE tbl_config.id IN (1,2,3,4,5,6,7,11,16,18,19,20,24,25,26,27) ";
                 break;
             
             case "settings" :
-                $where = "WHERE tbl_config.id NOT IN (24,25) ";
+                $where = "WHERE tbl_config.id NOT IN (24,25,26,27) ";
                 break;
         }
               

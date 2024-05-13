@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 13, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -71,7 +71,7 @@ function ModifyAccount()
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 22, 2024
+ * Updated on May 15, 2024
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
@@ -90,7 +90,7 @@ function ModifyAccount()
         {    
             $db = OpenDatabase();
                  
-            $query = "INSERT INTO tbl_accounts (`account`,`date`,`serviceid`,`type`,`description`) ".
+            $query = "INSERT INTO tbl_accounts (`account`,`date`,`sid`,`type`,`description`) ".
                      "VALUES ('$account',CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),'$serv','$aTypes[$type]','$desc');";            
             $select = $db->prepare($query);
             $select->execute();
@@ -123,7 +123,7 @@ function ModifyAccount()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on Apr 07, 2024
+ * Updated on May 13, 2024
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
@@ -143,7 +143,7 @@ function ModifyAccount()
             $db = OpenDatabase();
                 
             $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`='$account',`date`=CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),".
-                            "`serviceid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
+                            "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);
             $select->execute();

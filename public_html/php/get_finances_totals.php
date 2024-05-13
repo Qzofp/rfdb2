@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 05, 2024
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Check if the user is signed in and get the finances total from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinancesTotals
  *
  * Created on May 05, 2024
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -71,17 +71,29 @@ function GetFinancesTotals()
                 $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`income`),2,'$format'), 0 )), '&nbsp;' ) AS `income`";
                 $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`fixed`),2,'$format'), 0 )), '&nbsp;' ) AS `fixed`";
                 $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`other`),2,'$format'), 0 )), '&nbsp;' ) AS `other`";
-                $balance = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`income`) - sum(`fixed`) - sum(`other`)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";                
+                $balance = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((COALESCE(sum(`income`),0) - COALESCE(sum(`fixed`),0) - COALESCE(sum(`other`),0)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";                
                 $select  = "$income, $fixed, $other, $balance";
                 $table   = "tbl_finances";
                 break;
             
             case "stock" :
                 $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`deposit`),2,'$format'), 0 )), '&nbsp;' ) AS `deposit`";
-                $withdrawal = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`withdrawal`),2,'$format'), 0 )), '&nbsp;' ) AS `withdrawal`";
-                $balance    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((sum(`deposit`) - sum(`withdrawal`)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`withdrawal`),2,'$format'), 0 )), '&nbsp;' ) AS `withdrawal`";
+                $balance    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((COALESCE(sum(`deposit`),0) - COALESCE(sum(`withdrawal`),0)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";
                 $select     = "$deposit, $withdrawal, $balance";
                 $table      = "tbl_stocks";
+                break;
+            
+            case "savings" :
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(sum(`deposit`),2,'$format'), 0 )), '&nbsp;' ) AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(sum(`withdrawal`),2,'$format'), 0 )), '&nbsp;' ) AS `withdrawal`";
+                $balance    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT((COALESCE(sum(`deposit`),0) - COALESCE(sum(`withdrawal`),0)),2,'$format'), 0 )), '&nbsp;' ) AS `balance`";
+                $select     = "$deposit, $withdrawal, $balance";
+                $table      = "tbl_savings";
+                break;                
+                
+            case "crypto" :
+                
                 break;
         }
         

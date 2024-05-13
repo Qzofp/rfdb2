@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on May 10, 2024
+ * Updated on May 13, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -77,9 +77,9 @@ function GetFinances()
         switch($name) 
         {
             case "finance" :
-                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'$format'), 0 )), ' ' ) AS `income`";
-                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'$format'), 0 )), ' ' ) AS `fixed`";
-                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format '), 0 )), ' ' ) AS `other`";                              
+                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'$format'), 0 )), ' ') AS `income`";
+                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'$format'), 0 )), ' ') AS `fixed`";
+                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format'), 0 )), ' ') AS `other`";                              
                 $table   = "tbl_finances";          
                 $query = "SELECT tbl_finances.id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
                          "FROM tbl_finances ".
@@ -89,12 +89,27 @@ function GetFinances()
                 break;
             
             case "stock" :
-                $deposit    = "";
-                $withdrawal = "";
-
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), 0 )), ' ') AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), 0 )), ' ') AS `withdrawal`";
+                $table      = "tbl_stocks";
+                $query = "SELECT tbl_stocks.`id`, tbl_stocks.`date`, $deposit, $withdrawal, `service`, `account`, tbl_stocks.`description` ".
+                         "FROM tbl_stocks ".
+                         "LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id` ".
+                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
+                break;
+            
+            case "savings" :
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), 0 )), ' ') AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), 0 )), ' ') AS `withdrawal`";
+                $table      = "tbl_savings";
+                $query = "SELECT tbl_savings.`id`, tbl_savings.`date`, $deposit, $withdrawal, `service`, `account`, tbl_savings.`description` ".
+                         "FROM tbl_savings ".
+                         "LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id` ".
+                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
+                break;  
+            
+            case "crypto" :
                 
-                
-
                 break;
         }        
         
@@ -130,6 +145,9 @@ function GetFinances()
         $finances = $select->fetchAll(PDO::FETCH_ASSOC);  
         $response['data'] = $finances;    
  
+        // Debug
+        //$response['query'] = $query;
+        
         $response['success'] = true;
     }
     catch (PDOException $e) 
