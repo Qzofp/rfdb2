@@ -13,12 +13,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <body>
         <h1>Counter Test</h1>
         
-        <div class="count" data-value="-10000.00"></div>
+        <div class="count"></div>
         
     </body>
     
     <script>
- 
+
+/*    
 function showCounter(duration, sign, local) {
               
     $('.count').each(function () {
@@ -36,8 +37,33 @@ function showCounter(duration, sign, local) {
         });
     });   
 }
+*/ 
 
-showCounter(2000, "€ ", "de-DE");
+$.fn.counter = function(start, sign, local){
+    
+  var $el = this;
+  $el.prop('Counter',start).animate({
+    Counter: $el.data('value')
+  }, {
+    duration: 2000,
+    easing: 'swing',
+    step: function () {
+        $(this).text(sign + this.Counter.toLocaleString(local, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    },
+    complete: function () {                      
+        $(this).text(sign + this.Counter.toLocaleString(local, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    }    
+  });
+};
+
+$(".count").data('value', 2500);
+$(".count").counter(200, "$ ", "en-US");
+
+
+// showCounter(2000, "€ ", "de-DE");
+
+
+
 
       
     </script>   

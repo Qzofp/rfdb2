@@ -161,9 +161,25 @@ id   aid                     cid
 
 tbl_cryptonames
 
-id  name        symbol      waarde
-1   Bitcoin     BTC         50000
-2   Ethereum    ETH         2000
+id  name        symbol      
+1   Bitcoin     BTC         
+2   Ethereum    ETH        
+
+Tabel Crypto's
+--------------
+
+name			crypto			website
+Bitcoin			BTC				https://bitcoin.org	
+Ethereum		ETH				https://ethereum.org
+
+
+Tabel  Wallets
+--------------
+
+datum				dienst			rekening			crypto		beschrijving
+10-05-2001			Trezor			Rizzo's Wallet		BTC			Trezor BTC Wallet
+02-06-2001			Trezor			Rizzo's Wallet		ETH			Trezor ETH Wallet
+16-01-2005			Binance			BNC xxx-xxx 		BTC			Binance Exchange BTC Wallet
 
 
 ---------

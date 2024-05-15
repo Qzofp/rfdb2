@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 13, 2024
+ * Updated on May 15, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -556,7 +556,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on May 13, 2024
+ * Updated on May 15, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -576,29 +576,42 @@ function getAndShowTableTotals(page, send, c, s, i) {
     request.done(function(result) {
         if (result.success) {         
             
+            var currency = JSON.parse(s[5].value);
+            
             // debug.
             //console.log(result.query);
             
-            if(result.data[0].balance.includes("-")) {
+            if (result.data[0].balance.includes("-")) {
                 $("#balance span").css("color", "#C11B17");
             }
             else {
                 $("#balance span").css("color", "green"); 
             }
-            
-            $("#balance span").html(result.data[0].balance);
+         
+            if (result.data[0].balance !== "&nbsp;") 
+            {
+                $("#balance span").data('value', result.data[0].balance);
+                $("#balance span").startCounter(0, 1500, currency.sign);
+            }
+            else if ($("#table_container tbody td:nth-child(1)").html() === "&nbsp;") {
+                $("#balance span").html(result.data[0].balance);
+            }
+            else {
+                $("#balance span").data('value', 0);
+                $("#balance span").startCounter(0, 1500, currency.sign);
+            }
 
             $("#table_container tfoot td").remove();
             
             switch (s[i].name) 
             {
                 case "finance" :
-                    showFinancesTotals(result);
+                    showFinancesTotals(result, currency.sign);
                     break;
                 
                 case "stock" :
                 case "savings" :
-                    showStockorSavingsTotals(result);
+                    showStockorSavingsTotals(result, currency.sign);
                     break;
                     
                 case "crypto" :
@@ -623,45 +636,95 @@ function getAndShowTableTotals(page, send, c, s, i) {
  * Function:    ShowFinancesTotals
  *
  * Created on May 11, 2024
- * Updated on May 11, 2024
+ * Updated on May 15, 2024
  *
  * Description: Show the totals of the finances table.
  *
- * In:  result
+ * In:  result, sign
  * Out: -
  *
  */
-function showFinancesTotals(result) {
+function showFinancesTotals(result, sign) {
 
     $("#table_container tfoot tr").append(
             '<td colspan="3"></td>' +
-            '<td>' + result.data[0].income + '</td>' +
-            '<td>' + result.data[0].fixed + '</td>' +
-            '<td>' + result.data[0].other + '</td>' +
+            '<td></td>' +
+            '<td></td>' +
+            '<td></td>' +
             '<td colspan="3"></td>'
     );    
+    
+    // Income counter
+    if (result.data[0].income !== "&nbsp;") 
+    {
+        $("#table_container tfoot td:nth-child(2)").data('value', result.data[0].income);
+        $("#table_container tfoot td:nth-child(2)").startCounter(0, 1500, sign);
+    }
+    else {
+        $("#table_container tfoot td:nth-child(2)").html(result.data[0].income);
+    }    
+    
+    // Fixed counter
+    if (result.data[0].fixed !== "&nbsp;") 
+    {
+        $("#table_container tfoot td:nth-child(3)").data('value', result.data[0].fixed);
+        $("#table_container tfoot td:nth-child(3)").startCounter(0, 1500, sign);
+    }
+    else {
+        $("#table_container tfoot td:nth-child(3)").html(result.data[0].fixed);
+    }    
+    
+    // Other counter
+    if (result.data[0].other !== "&nbsp;") 
+    {
+        $("#table_container tfoot td:nth-child(4)").data('value', result.data[0].other);
+        $("#table_container tfoot td:nth-child(4)").startCounter(0, 1500, sign);
+    }
+    else {
+        $("#table_container tfoot td:nth-child(4)").html(result.data[0].other);
+    } 
 }
 
 /*
  * Function:    showStockorSavingsTotals
  *
  * Created on May 11, 2024
- * Updated on May 11, 2024
+ * Updated on May 15, 2024
  *
  * Description: Show the totals of the stocks or savings table.
  *
- * In:  result
+ * In:  result, sign
  * Out: -
  *
  */
-function showStockorSavingsTotals(result) {
+function showStockorSavingsTotals(result, sign) {
     
     $("#table_container tfoot tr").append(
             '<td colspan="2"></td>' +
-            '<td>' + result.data[0].deposit + '</td>' +
-            '<td>' + result.data[0].withdrawal + '</td>' +
+            '<td></td>' +
+            '<td></td>' +
             '<td colspan="4"></td>'
     );    
+    
+    // Deposit counter
+    if (result.data[0].deposit !== "&nbsp;") 
+    {
+        $("#table_container tfoot td:nth-child(2)").data('value', result.data[0].deposit);
+        $("#table_container tfoot td:nth-child(2)").startCounter(0, 1500, sign);
+    }
+    else {
+        $("#table_container tfoot td:nth-child(2)").html(result.data[0].deposit);
+    }    
+    
+    // Withdrawal counter
+    if (result.data[0].withdrawal !== "&nbsp;") 
+    {
+        $("#table_container tfoot td:nth-child(3)").data('value', result.data[0].withdrawal);
+        $("#table_container tfoot td:nth-child(3)").startCounter(0, 1500, sign);
+    }
+    else {
+        $("#table_container tfoot td:nth-child(3)").html(result.data[0].withdrawal);
+    }    
 }
 
 /*

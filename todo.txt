@@ -69,5 +69,10 @@ ToDo
 7. Laat een loader zien als het laden van een tabel lang duurt, bv. van een jaar tabel.
 
 8. Counter maken voor de totale waardes, zie ook https://stackoverflow.com/questions/23006516/jquery-animated-number-counter-from-zero-to-value
+                                                 https://stackoverflow.com/questions/73016948/jquery-javascript-counter-with-animation-always-reset-from-0-to-n-value
+   - Gereed.
 
 9. Balans bug. Deze is leeg als het totaal van het inkomsten (stortingen) gelijk is aan de uitgaven (onttrekking). Zie sparen mei 2024 (rfdb2_empty).
+   - Gefixed.
+
+10. Balans counter aanpassen, zodat de kleur (rood / groen) verandert als het balans verandert van - naar + en andersom. Dit bij het toevoegen van records.

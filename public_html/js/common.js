@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 19, 2024
+ * Updated on May 15, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -864,3 +864,47 @@ function setStartYear(page, year) {
 
     return year;
 }
+
+/*
+ * Function:   startCounter
+ *
+ * Created on May 14, 2024
+ * Updated on May 15, 2024
+ *
+ * Description: Start the counter, i.e. $(".count").startCounter(200, 1500, "€ ", "de-DE");
+ *
+ * In:  start, duration, sign
+ * Out: 
+ *
+ */
+$.fn.startCounter = function(start, duration, sign){
+    
+    var format, $el;
+    
+    // Determine the currency format.
+    switch (sign) 
+    {
+        case "$" :
+        case "£" :
+            format = "en-US";
+            break;
+            
+        case "€"  :
+            format = "de-DE";     
+            break;
+    } 
+            
+    $el = this;  
+    $el.prop('Counter',start).animate({
+        Counter: $el.data('value')
+    }, {
+        duration: duration,
+        easing: 'swing',
+        step: function () {
+            $(this).text(sign + " " + this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        },
+        complete: function () {                      
+            $(this).text(sign + " " +  this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }    
+    });
+};
