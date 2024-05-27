@@ -17,7 +17,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on May 05, 2024
+ * Updated on May 15, 2024
  *
  * Description: Sheet framework test page.
  *
@@ -227,6 +227,9 @@ if(!$user){
                         <h1>Chart Content</h1>
                     </div>
                 </div>    
+                
+                <!-- Loading spinner -->
+                <div id="loading"></div>               
                                 
                 <!-- Error popup window. -->
                 <div id="popup_error">

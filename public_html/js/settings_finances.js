@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on May 01, 2024
+ * Updated on May 27, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 30, 2024
+ * Updated on May 26, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -76,7 +76,9 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
        
     $("#popup_content .popup_table_finance #date").attr("placeholder", c.accounts[1]).val(cells[1]);
     
-    setAirDatePicker(adp, cells[1]);    
+    setAirDatePicker(adp, cells[1]);
+    
+    removeSelectMenu();
     addSelectMenu(c, "get_services", "sort=service&type=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], "service");
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
@@ -341,7 +343,7 @@ function modifyGroups(c, btn) {
  * Function:    showFinancesPopupBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Apr 06, 2024
+ * Updated on May 26, 2024
  *
  * Description:  Shows the businesses popup content for the finances page.
  *
@@ -382,6 +384,7 @@ function showFinancesPopupBusinesses(c, s, h) {
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
     );     
     
+    removeSelectMenu();
     addSelectMenu(c, "get_groups", "hide=true&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
     
     $("#popup_content .shw").hide();
@@ -488,4 +491,116 @@ function modifyBusinesses(c, btn) {
             closeErrorMessage();               
         }                        
     }     
+}
+
+/*
+ * Function:    showCryptoPopupCurrenties
+ *
+ * Created on May 20, 2024
+ * Updated on May 20, 2024
+ *
+ * Description:  Shows the crypto currenties popup content for the crypto page.
+ *
+ * In:  c, s, h 
+ * Out: -
+ *
+ */
+function showCryptoPopupCurrenties(c, s, h) {
+    
+    var shw, btn, cells, set;
+    [btn, cells] = setPopupTable("gen_currenties", c.cryptos[0], 4);
+    
+    $(".popup_table_finance").hide();
+    
+    // Create show or hide button.
+    shw = 'img/show.png" alt="show';
+    if (h) { 
+        shw = 'img/hide.png" alt="hide';
+    }    
+    
+    set = JSON.parse(s[4].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);      
+    
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
+            '<td><input id="name" type="text" name="name" placeholder="' + c.cryptos[1] + '" value="' + cells[1] + '" /></td>' +
+            '<td><input id="crypto"   type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
+            '<td><input id="website"   type="text" name="website" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
+        '</tr>' +
+        '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
+    );     
+        
+    $("#popup_content .shw").hide();
+    if ($("#table_container tbody .marked").length) {        
+        $("#popup_content .shw").show();
+    }    
+    
+    $("#popup_container").fadeIn("slow");      
+}
+
+/*
+ * Function:    showCryptoPopupWallets
+ *
+ * Created on May 20, 2024
+ * Updated on May 27, 2024
+ *
+ * Description:  Shows the crypto wallets popup content for the crypto page.
+ *
+ * In:  c, s, h 
+ * Out: -
+ *
+ */
+function showCryptoPopupWallets(c, s, h) {
+    
+    var shw, btn, cells, set;
+    [btn, cells] = setPopupTable("gen_wallets", c.wallets[0], 5);
+    
+    $(".popup_table_finance").hide();
+    
+    // Create show or hide button.
+    shw = 'img/show.png" alt="show';
+    if (h) { 
+        shw = 'img/hide.png" alt="hide';
+    }      
+    
+    set = JSON.parse(s[4].value);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);      
+    
+    $(".popup_table_setting").append(
+        '<tr>' +
+            '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
+            '<td><select id="services" placeholder=""></select></td>' +
+            '<td><select id="accounts" placeholder=""></select></td>' +
+            '<td><select id="cryptos" placeholder=""></select></td>' +            
+            '<td><input id="website"   type="text" name="website" placeholder="' + c.wallets[4] + '" value="' + cells[4] + '" /></td>' +
+            '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
+        '</tr>' +
+        '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
+    );     
+    
+    removeSelectMenu();
+    addSelectMenu(c, "get_services", "sort=service&type=crypto", "services", c.wallets[1], cells[0].split("_")[1], "service", 0);
+    
+    if (cells[2]) {
+        addSelectMenu(c, "get_accounts", "sort=account&sid=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], "account");
+    }
+    else {
+        disableSelectMenu("accounts", c.wallets[2]);  
+    }
+    
+    if (cells[3]) {
+        addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", c.wallets[3], cells[0].split("_")[3], "symbol");
+    }
+    else {
+        disableSelectMenu("cryptos", c.wallets[3]);
+    }
+    
+    $("#popup_content .shw").hide();
+    if ($("#table_container tbody .marked").length) {        
+        $("#popup_content .shw").show();
+    }    
+    
+    $("#popup_container").fadeIn("slow");
 }

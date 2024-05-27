@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on May 15, 2024
+ * Updated on May 27, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -370,7 +370,7 @@ function showTable(tblclass, items, s, n, page, send) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 17, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -380,12 +380,18 @@ function showTable(tblclass, items, s, n, page, send) {
  */
 function fillTable(s, page, l, send) {
          
-    var setting = JSON.parse(s[5].value);     
+    // Show loading spinner.
+    $("#loading").show(); 
+    
+    var setting = JSON.parse(s[5].value);
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
         
         // Debug
         //console.log(result.query);
+        
+        // Hide loading spinner.
+        $("#loading").hide();
         
         if (result.success) {         
                         
@@ -410,7 +416,7 @@ function fillTable(s, page, l, send) {
             });  
 
             // Add empty rows.
-            for (let j = i; j < setting.rows; j++) {
+            for (let j = i; j <= setting.rows; j++) {
                $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
             }
             
@@ -762,15 +768,15 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 27, 2024
  *
  * Description: Add the select menu.
  *
- * In:  c, page, send id, name, value, item
+ * In:  c, page, send, id, name, value, item, n
  * Out: -
  *
  */
-function addSelectMenu(c, page, send, id, name, value, item) {
+function addSelectMenu(c, page, send, id, name, value, item, n=1) {
 
     var empty, options, plh;
     var request = getAjaxRequest(page, send);      
@@ -796,23 +802,19 @@ function addSelectMenu(c, page, send, id, name, value, item) {
                     }    
                 }); 
                 empty = false;
-            });
-          
-            // Remove nice-select menu if it exists.
-            if ($("#popup_content .nice-select").length) {
-                $("#popup_content .nice-select").remove();
-            }    
-    
+            });  
+                
             // Set the nice-select menu.
             plh = '<span class="placeholder">' + name + '</span>';
             options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
             // Select placeholder fix. And shows the selected item if there is only one.
-            if (!value && result.data.length > 1) {
+            if (!value && result.data.length > n) {
                 db.clear();
             }
-                        
+            
+            $("#popup_content .msg").html("&nbsp;");
             if (empty) {
                 $("#popup_content .msg").html(c.messages[4].replace("#", name) + " " + c.messages[5]);
                 db.disable();
@@ -833,6 +835,51 @@ function addSelectMenu(c, page, send, id, name, value, item) {
     });  
      
     closeErrorMessage();
+}
+
+/*
+ * Function:   removeSelectMenu
+ *
+ * Created on May 26, 2024
+ * Updated on May 26, 2024
+ *
+ * Description: Remove the select menu.
+ *
+ * In:  id
+ * Out: -
+ *
+ */
+function removeSelectMenu(id="") {
+    
+    // Check if nice-select menu exists.
+    if ($("#popup_content .nice-select").length) 
+    {
+        // debug.
+        //console.log( $("#" + id).next() );
+        
+        if (id) { // Remove nice-select by the select id.
+            if ($("#" + id).next().length) {
+                $("#" + id).next().remove();
+            }
+        }
+        else { // Remove all nice-select menus.
+            $("#popup_content .nice-select").remove();
+        }
+    }
+}
+
+function disableSelectMenu(id, name) {
+    
+    var plh, options, db;
+    
+    // Set the nice-select menu.
+    plh = '<span class="placeholder">' + name + '</span>';
+    options = { searchable: false , placeholder: plh };  
+    if ($("#" + id).length) 
+    {
+        db = NiceSelect.bind(document.getElementById(id), options);    
+        db.disable();
+    } 
 }
 
 /*

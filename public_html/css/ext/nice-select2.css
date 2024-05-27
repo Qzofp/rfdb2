@@ -8,7 +8,7 @@
  * Used in: sheet.php, settings.php
  *
  * Created on Mar 10, 2024
- * Updated on Apr 06, 2024
+ * Updated on May 27, 2024
  *
  * Description: The css for the nice select menu. Customize nice-select2.css file.
  * Build for: Chromium based and Firefox browsers. 
@@ -82,6 +82,7 @@
 .nice-select.disabled {
     border-color: #ededed;
     color: #999;
+    background-color: #dcdcdc;
     pointer-events: none;
 }
 .nice-select.disabled:after {

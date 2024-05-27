@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on May 12, 2024
+ * Updated on May 17, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -454,10 +454,21 @@ h2 {
  color: #000;
 }
 
+#rank {
+ background-color: #dcdcdc;    
+}
 
-
-
-
+/* Loading spinner */
+#loading {
+ display: none;    
+ position: fixed;
+ width: 100%;
+ height: 100%;
+ top: 0;
+ left: 0;
+ z-index: 999;
+ background: url("../img/loading.gif") center no-repeat;
+}
 
 /* Footer */
 footer {

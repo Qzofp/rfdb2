@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on May 01, 2024
+ * Updated on May 27, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Apr 22, 2024
+ * Updated on May 27, 2024
  *
  * Description: Shows the settings page.
  *
@@ -104,6 +104,11 @@ function showSettings(c, s) {
         getPopupEnterKey(e);
     });
 
+    // Select event is triggered.
+    $("#popup_content").on('click', '.list .selected', function() {
+        getSelectAndProcessChoice(c, this);
+    });
+    
     // Show the page theme.
     showPageTheme(s[5]);
     
@@ -328,7 +333,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on May 01, 2024
+ * Updated on May 17, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -348,15 +353,15 @@ function ShowCryptoSettings(c, s) {
      
     getAndSetScaleButton(c, s[4].name);
     $("#page_buttons img").eq(1).attr({src:"img/accounts.png", alt:"accounts"}).addClass("active").css("border-bottom", "2px solid " + set.theme.color);
+    $("#page_buttons img").eq(2).attr({src:"img/crypto.png", alt:"crypto"}).show();
+    $("#page_buttons img").eq(3).attr({src:"img/wallet.png", alt:"wallets"}).show();       
     
     var show = "show";
     if (set.show !== "true") {
         show = "hide";
     }
     
-    $("#page_buttons img").eq(2).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();    
-    $("#page_buttons img").eq(3).hide();    
-    $("#page_buttons img").eq(4).hide();
+    $("#page_buttons img").eq(4).attr({src:"img/" + show + ".png", alt:"" + show + ""}).show();
     $("#page_buttons img").eq(5).hide(); 
       
     set = JSON.parse(s[5].value);  
@@ -401,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Apr 10, 2024
+ * Updated on May 20, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -493,6 +498,26 @@ function showSettingButtonAction(adp, c, s, that) {
             else {            
                 setPageButton(s[1], 3, -1);
                 showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","gid=0&rank=true");
+            }
+            break;
+            
+        case "crypto" :
+            if (that.className === 'active') {  
+                showCryptoPopupCurrenties(c, s, false);
+            } 
+            else {
+                setPageButton(s[4], 2, -1);
+                showTable("tbl_cryptocurrenties", c.cryptos, s, slide, "get_cryptos","sort=name");
+            }
+            break;
+            
+        case "wallets" :
+            if (that.className === 'active') {  
+                showCryptoPopupWallets(c, s, false);
+            } 
+            else {            
+                setPageButton(s[4], 3, -1);
+                showTable("tbl_wallets", c.wallets, s, slide, "get_wallets","sort=account");
             }
             break;
         
@@ -639,10 +664,47 @@ function setPopupChoice(adp, e, c, s) {
 }
 
 /*
+ * Function:    getSelectAndProcessChoice
+ *
+ * Created on May 25, 2024
+ * Updated on May 27, 2024
+ *
+ * Description: Get the choosen select value and proces that value.
+ *
+ * In:  c, that
+ * Out: -
+ *
+ */
+function getSelectAndProcessChoice(c, that) {
+
+    var popup = $('#popup_content').attr('class');
+    if (popup === "gen_wallets") 
+    {
+        var select = $(that).parents(':eq(3)').find('select').attr('id');
+        var id = $(that).attr('data-value');
+        
+        //console.log( $(that).parents(':eq(3)').find('select').attr('id') );
+        //console.log( $(that).attr('data-value') );
+        //console.log( $('#popup_content').attr('class') );  
+        
+        if (select === "services") 
+        {
+            removeSelectMenu("accounts"); 
+            addSelectMenu(c, "get_accounts", "sort=account&sid=" + id, "accounts", c.wallets[2], 0, "account", 0);
+        }
+        else if (select === "accounts") 
+        {
+            removeSelectMenu("cryptos");
+            addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", c.wallets[3], 0, "symbol");
+        }     
+    }     
+}
+
+/*
  * Function:    editSettingsTableRow
  *
  * Created on Jan 31, 2024
- * Updated on Apr 19, 2024
+ * Updated on May 27, 2024
  *
  * Description: Edit or delete the settings table row that was pressed.
  *
@@ -691,7 +753,15 @@ function editSettingsTableRow(adp, c, s, that) {
         
         case "configs" :
             showGeneralPopupConfigs(c, s);
-            break;              
+            break;  
+            
+        case "crypto" :
+            showCryptoPopupCurrenties(c, s, hide);
+            break;
+        
+        case "wallets" :
+            showCryptoPopupWallets(c, s, hide);
+            break;
     }
 }
 

@@ -15,7 +15,7 @@
  *               js/login.js
  *
  * Created on Dec 20, 2023
- * Updated on Feb 06, 2024
+ * Updated on May 19, 2024
  *
  * Description: Login page.
  * 
@@ -61,6 +61,9 @@ if(isset($_SESSION['user'])) {
                 </p>  
             </form>  
         </div>  
+        
+        <!-- Loading spinner -->
+        <div id="loading"></div>         
         
         <!-- Error popup window. -->
         <div id="popup_error">

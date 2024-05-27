@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 15, 2024
+ * Updated on May 17, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -556,7 +556,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on May 15, 2024
+ * Updated on May 17, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -598,7 +598,7 @@ function getAndShowTableTotals(page, send, c, s, i) {
             }
             else {
                 $("#balance span").data('value', 0);
-                $("#balance span").startCounter(0, 1500, currency.sign);
+                $("#balance span").startCounter(500, 1500, currency.sign);
             }
 
             $("#table_container tfoot td").remove();

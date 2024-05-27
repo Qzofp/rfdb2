@@ -20,7 +20,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Mar 11, 2024
+ * Updated on Mar 19, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -173,7 +173,10 @@ if(!$user){
                        </form>
                     </div>                    
                 </div>
-                                                           
+                            
+                <!-- Loading spinner -->
+                <div id="loading"></div>                 
+                
                 <!-- Error popup window. -->
                 <div id="popup_error">
                     <div id="error"> 
@@ -186,10 +189,8 @@ if(!$user){
         
             <!-- Right side bar -->
             <aside class="side"></aside>
-            
-            
-        </div>     
-      
+                        
+        </div>
         
         <!-- Footer -->
         <footer>

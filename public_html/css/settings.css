@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on May 12, 2024
+ * Updated on May 27, 2024
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -104,6 +104,31 @@
 
 .tbl_businesses th:nth-child(5) {
  width: 32%; 
+}
+
+.tbl_cryptocurrenties th:nth-child(2) {
+ width: 25%;
+}
+
+.tbl_cryptocurrenties th:nth-child(3) {
+ width: 25%;
+}
+
+.tbl_cryptocurrenties th:nth-child(4) {
+ width: 49%;
+}
+
+.tbl_wallets th:nth-child(2), 
+.tbl_wallets th:nth-child(3) {
+ width: 20%;  
+}
+
+.tbl_wallets th:nth-child(4) {
+ width: 10%;  
+}
+
+.tbl_wallets th:nth-child(5) {
+ width: 49%;  
 }
 
 /* Settings popups */
@@ -216,7 +241,8 @@
 }
 
 #popup_container .gen_services,
-#popup_container .fin_accounts {
+#popup_container .fin_accounts,
+#popup_container .gen_wallets {
  width: 70% !important;
 }
 
@@ -276,6 +302,31 @@
 .popup_table_finance #date {
  width:90px; 
 }    
+
+.gen_currenties .popup_table_setting td:nth-child(2) {
+ width: 35%;
+}
+
+.gen_currenties .popup_table_setting td:nth-child(3) {
+ width: 10%;
+}
+
+.gen_currenties .popup_table_setting td:nth-child(4) {
+ width: 54%;
+}
+
+.gen_wallets .popup_table_setting td:nth-child(2),
+.gen_wallets .popup_table_setting td:nth-child(3) {
+ width: 24%;
+}
+
+.gen_wallets .popup_table_setting td:nth-child(4) {
+ width: 12%;
+}
+
+.gen_wallets .popup_table_setting td:nth-child(5) {
+ width: 38%;
+}
 
 /* Radio and checkbox buttons */
 .popup_list li,

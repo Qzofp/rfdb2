@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Apr 12, 2024
+ * Updated on May 26, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -358,7 +358,7 @@ function CreateUpdateNamesAndValues($aNames, $aValues)
  * Function:    CheckServiceInAccounts
  *
  * Created on Mar 24, 2024
- * Updated on Apr 05, 2024
+ * Updated on May 26, 2024
  *
  * Description: Check if the service exists in the tbl_accounts table.
  *
@@ -375,7 +375,7 @@ function CheckServiceInAccounts($id)
         $db = OpenDatabase();
                 
         // Check if service exists in the tbl_accounts table.
-        $query = "SELECT count(0) FROM tbl_accounts WHERE serviceid = $id;";        
+        $query = "SELECT count(0) FROM tbl_accounts WHERE sid = $id;";        
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();

@@ -139,30 +139,30 @@ datum			rekening		storting	ontrekking		aantal		crypto		Transactie		beschrijving
 
 - of - 
 
-datum			storting	ontrekking		aantal		crypto		dienst        rekening		    beschrijving
-07-03-2018		100							0,1		    BTC         Trezor        Rizzo's Wallet    Voor 100 Euro 0,1 BTC gekocht van Bitonic
-12-11-2020		           -50  		    -0,02		BTC			Trezor        Rizzo's Wallet	Voor 50 Euro 0,02 BTC verkocht aan Bitonic
-03-07-2021                                  -0,05       BTC         Trezor        Rizzo's Wallet    Verstuurt naar Rizzo's Safe
-03-07-2021                                  0,049       BTC         Trezor        Rizzo's Safe      Ontvangen van Rizzo's Wallet
-05-09-2021      100                         0,07        BTC         Binance       BNC xxx-xxx       Voor 100 Euro gekocht van Binance (Binance Wallet)
-21-01-2022                                  -0,03       BTC         Binance       BNC xxx-xxx       Verkocht voor ETH (Binance Wallet)
-21-01-2022                                  12,473      ETH         Binance       BNC xxx-xxx       Gekocht met BTC (Binance Wallet)
-22-01-2022                                  -12,473     ETH         Binance       BNC xxx-xxx       Verstuurt naar Rizzo's Wallet
-22-01-2022                                  12,421      ETH         Trezor        Rizzo's Wallet    Ontvangen van Binance (incl. tx kosten)
+datum			storting	ontrekking		dienst        rekening		    aantal      crypto      beschrijving
+07-03-2018		100							Trezor        Rizzo's Wallet    0,1		    BTC         Voor 100 Euro 0,1 BTC gekocht van Bitonic
+12-11-2020		           -50  		    Trezor        Rizzo's Wallet	-0,02		BTC         Voor 50 Euro 0,02 BTC verkocht aan Bitonic
+03-07-2021                                  Trezor        Rizzo's Wallet    -0,05       BTC         Verstuurt naar Rizzo's Safe
+03-07-2021                                  Trezor        Rizzo's Safe      0,049       BTC         Ontvangen van Rizzo's Wallet
+05-09-2021      100                         Binance       BNC xxx-xxx       0,07        BTC         Voor 100 Euro gekocht van Binance (Binance Wallet)
+21-01-2022                                  Binance       BNC xxx-xxx       -0,03       BTC         Verkocht voor ETH (Binance Wallet)
+21-01-2022                                  Binance       BNC xxx-xxx       12,473      ETH         Gekocht met BTC (Binance Wallet)
+22-01-2022                                  Binance       BNC xxx-xxx       -12,473     ETH         Verstuurt naar Rizzo's Wallet
+22-01-2022                                  Trezor        Rizzo's Wallet    12,421      ETH         Ontvangen van Binance (incl. tx kosten)
 
 
 tbl_wallets
 
-id   aid                     cid
-1    1 (Rizzo's Wallet)      1 (BTC)
+id   aid                     cid        description
+1    1 (Rizzo's Wallet)      1 (BTC)    Trezor BTC Wallet
 2    1                       2 (ETH)
 3    2 (BNC xxx-xxx)         1
 4    2                       2
 
-tbl_cryptonames
+tbl_cryptocurrenties
 
-id  name        symbol      
-1   Bitcoin     BTC         
+id  name        symbol   website   
+1   Bitcoin     BTC      https://bitcoin.org   
 2   Ethereum    ETH        
 
 Tabel Crypto's
@@ -176,10 +176,10 @@ Ethereum		ETH				https://ethereum.org
 Tabel  Wallets
 --------------
 
-datum				dienst			rekening			crypto		beschrijving
-10-05-2001			Trezor			Rizzo's Wallet		BTC			Trezor BTC Wallet
-02-06-2001			Trezor			Rizzo's Wallet		ETH			Trezor ETH Wallet
-16-01-2005			Binance			BNC xxx-xxx 		BTC			Binance Exchange BTC Wallet
+dienst			rekening			crypto		beschrijving
+Trezor			Rizzo's Wallet		BTC			Trezor BTC Wallet
+Trezor			Rizzo's Wallet		ETH			Trezor ETH Wallet
+Binance			BNC xxx-xxx 		BTC			Binance Exchange BTC Wallet
 
 
 ---------

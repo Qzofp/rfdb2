@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on May 11, 2024
+ * Updated on May 27, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on May 11, 2024
+ * Updated on May 27, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -41,6 +41,7 @@ function GetAccounts()
     $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
     $sign = filter_input(INPUT_POST, 'sign', FILTER_SANITIZE_STRING);    
     $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+    $sid  = filter_input(INPUT_POST, 'sid', FILTER_SANITIZE_STRING);
     
     $response = [];
     
@@ -56,11 +57,23 @@ function GetAccounts()
             $date = "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y') AS `date`";   
         }
      
-        $query = "SELECT CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) AS id,tbl_accounts.`hide`,". 
-                    "$date, tbl_services.`service`,tbl_accounts.`account`, tbl_accounts.`description`".
+        // 
+        if ($sid) 
+        {
+            $id = "tbl_accounts.`id` ";
+            $where = "WHERE tbl_accounts.`sid` = $sid AND tbl_accounts.`hide` = 0 ";
+        }
+        else 
+        {
+            $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
+            $where = "WHERE tbl_accounts.`type` = '$type' ";
+        }
+        
+        $query = "SELECT $id AS id,tbl_accounts.`hide`,". 
+                    "$date, tbl_services.`service`,tbl_accounts.`account` AS account, tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                 "WHERE tbl_accounts.`type` = '$type' ".
+                 $where.
                  "ORDER BY `$sort`;";
     
         $select = $db->prepare($query);
