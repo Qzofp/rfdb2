@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on May 27, 2024
+ * Updated on May 31, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -604,7 +604,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on Apr 21, 2024
+ * Updated on May 31, 2024
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -658,6 +658,14 @@ function setPopupChoice(adp, e, c, s) {
             
             case "gen_configs" :
                 modifyConfigs(c, s);
+                break;
+                
+            case "gen_currenties" :
+                modifyCryptoCurrenties(c, btn);
+                break;
+                
+            case "gen_wallets" :
+                modifyCryptoWallets(c, btn);
                 break;
         }
     }     

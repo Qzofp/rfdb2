@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on May 27, 2024
+ * Updated on May 31, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -377,8 +377,8 @@ function showFinancesPopupBusinesses(c, s, h) {
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><select id="groups" placeholder=""></select></td>' +
             '<td><input id="business" type="text" name="business" placeholder="' + c.businesses[2] + '" value="' + cells[2] + '" /></td>' +
-            '<td><input id="rank"   type="text" name="rank" placeholder="' + c.businesses[3] + '" value="' + cells[3] + '" disabled/></td>' +
-            '<td><input id="website"   type="text" name="website" placeholder="' + c.businesses[4] + '" value="' + cells[4] + '" /></td>' +
+            '<td><input id="rank" type="text" name="rank" placeholder="' + c.businesses[3] + '" value="' + cells[3] + '" disabled/></td>' +
+            '<td><input id="website" type="text" name="website" placeholder="' + c.businesses[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
@@ -525,8 +525,8 @@ function showCryptoPopupCurrenties(c, s, h) {
         '<tr>' +
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><input id="name" type="text" name="name" placeholder="' + c.cryptos[1] + '" value="' + cells[1] + '" /></td>' +
-            '<td><input id="crypto"   type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
-            '<td><input id="website"   type="text" name="website" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input id="crypto" type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
+            '<td><input id="website" type="text" name="website" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
@@ -541,10 +541,94 @@ function showCryptoPopupCurrenties(c, s, h) {
 }
 
 /*
+ * Function:    modifyCryptoCurrenties
+ *
+ * Created on May 28, 2024
+ * Updated on May 31, 2024
+ *
+ * Description: Check the crypto currenties input and add, edit or remove the crypto currenties in the database.
+ *
+ * In:  c, btn
+ * Out: -
+ *
+ */
+function modifyCryptoCurrenties(c, btn) {
+    
+    var msg, input = [];
+    
+    // Get the input values.
+    input.push($("#name").val(), $("#crypto").val(), $("#website").val());
+    
+    msg = c.messages[2].replace("#", input[0]); 
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
+    {     
+        // Add the input to account table if the account doesn´t exists.
+        if (validateInput(c.messages, c.cryptos, input, true))
+        {            
+            var [id, action] = getRowIdAndAction();            
+            var hide = getShowHideRow();
+            var send = 'name=' + encodeURIComponent(input[0]) + 
+                       '&symbol=' + encodeURIComponent(input[1])  + 
+                       '&web=' + encodeURIComponent(input[2]) + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide;
+            
+            // debug
+            //console.log(send);
+             
+            var request = getAjaxRequest("modify_cryptocurrenties", send);
+            request.done(function(result) {
+                if (result.success) {         
+                    if (result.exists) {
+                        showModifyMessage(c, input[0] + " " + c.messages[6] + " " + input[1], action);               
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :                                
+                                showAddRow(result);
+                                break;
+                                
+                            case "edit"   :     
+                                showEditRow(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {   
+                            // Reset input.
+                            $("#name").val(""); 
+                            $("#crypto").val("");
+                            $("#website").val("");   
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+            
+            closeErrorMessage();                 
+        }         
+    }
+}
+
+/*
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on May 27, 2024
+ * Updated on May 31, 2024
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -574,7 +658,7 @@ function showCryptoPopupWallets(c, s, h) {
             '<td><select id="services" placeholder=""></select></td>' +
             '<td><select id="accounts" placeholder=""></select></td>' +
             '<td><select id="cryptos" placeholder=""></select></td>' +            
-            '<td><input id="website"   type="text" name="website" placeholder="' + c.wallets[4] + '" value="' + cells[4] + '" /></td>' +
+            '<td><input id="desc" type="text" name="desc" placeholder="' + c.wallets[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
@@ -603,4 +687,107 @@ function showCryptoPopupWallets(c, s, h) {
     }    
     
     $("#popup_container").fadeIn("slow");
+}
+
+/*
+ * Function:    modifyCryptoWallets
+ *
+ * Created on May 31, 2024
+ * Updated on May 31, 2024
+ *
+ * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
+ *
+ * In:  c, btn
+ * Out: -
+ *
+ */
+function modifyCryptoWallets(c, btn) {
+    
+    var msg, input = [];
+    
+    // Get the input values.
+    input.push($("#services").val(),$("#accounts").val(), $("#cryptos").val(), $("#desc").val());
+        
+    msg = c.messages[2].replace("#", $("#accounts option:selected").text());
+    if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
+    {     
+        // Add the input to businesses table if the business doesn´t exists.
+        if (validateInput(c.messages, c.wallets, input, true))
+        {            
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            var hide = getShowHideRow();
+            var send = 'service=' + input[0] + '&account=' + input[1] + '&crypto=' + input[2] + 
+                       '&desc=' + encodeURIComponent(input[3]) + 
+                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+            
+            // debug
+            //console.log(send);
+         
+            var request = getAjaxRequest("modify_wallets", send);
+            request.done(function(result) {
+                if (result.success) {    
+                    if (result.exists) {
+                        showModifyMessage(c, input[1], action);               
+                    }
+                    else 
+                    {                    
+                        switch (action) {
+                            case "add"    :  
+                                // Correct the id and service values.
+                                result.id += "_" + result.service + 
+                                             "_" + result.account + 
+                                             "_" + result.crypto;
+                                
+                                result.service = $(".nice-select .current:first").html();
+                                result.account = $(".nice-select .current:eq(1)").html();
+                                result.crypto  = $(".nice-select .current:eq(2)").html();
+                                showAddRow(result);
+                                break;
+                                
+                            case "edit"   :   
+                                // Correct the id and service values.
+                                result.id += "_" + result.group;
+                                result.group = $(".nice-select .current:first").html();
+                                showEditRow(result);
+                                break;
+                                
+                            case "delete" :
+                                showDeleteRow();
+                                break;
+                        }
+                            
+                        // Close popup window or clear input fields.
+                        if (btn === 'ok') {
+                            closePopupWindow();                           
+                        }
+                        else 
+                        {           
+                            // Reset nice-select menu if there is more then 1 item.
+                            if ($("#groups > option").length > 1) {
+                                $(".nice-select .current:first").html('<span class="placeholder">' + c.businesses[1] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            }                            
+                            
+                            // Reset input.
+                            $("#business").val(""); 
+                            $("#website").val("");                             
+                        }
+                    }     
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
+            
+            closeErrorMessage();            
+        }                        
+    } 
 }

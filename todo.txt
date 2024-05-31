@@ -76,3 +76,5 @@ ToDo
    - Gefixed.
 
 10. Balans counter aanpassen, zodat de kleur (rood / groen) verandert als het balans verandert van - naar + en andersom. Dit bij het toevoegen van records.
+
+11. Bug: Bij Settings -> Accounts, 2 verschillende services (diensten) kunnen niet dezelfde account numbers hebben. Kans is klein dat dit voorkomt, maar zou wel moeten kunnen.

@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on May 27, 2024
+ * Updated on May 29, 2024
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -308,11 +308,11 @@
 }
 
 .gen_currenties .popup_table_setting td:nth-child(3) {
- width: 10%;
+ width: 12%;
 }
 
 .gen_currenties .popup_table_setting td:nth-child(4) {
- width: 54%;
+ width: 52%;
 }
 
 .gen_wallets .popup_table_setting td:nth-child(2),
