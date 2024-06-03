@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on May 13, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -62,7 +62,8 @@
 /* Sheet tables */
 .tbl_finances thead th:nth-child(2),
 .tbl_stocks thead th:nth-child(2),
-.tbl_savings thead th:nth-child(2) {
+.tbl_savings thead th:nth-child(2),
+.tbl_crypto thead th:nth-child(2) {
  width: 7%;
 }
 
@@ -76,13 +77,16 @@
 .tbl_stocks thead th:nth-child(3),
 .tbl_stocks thead th:nth-child(4),
 .tbl_savings thead th:nth-child(3),
-.tbl_savings thead th:nth-child(4) {
+.tbl_savings thead th:nth-child(4),
+.tbl_crypto thead th:nth-child(3),
+.tbl_crypto thead th:nth-child(4) {
  width: 7%;
 }
 
 .tbl_finances tbody td:nth-child(4),
 .tbl_stocks tbody td:nth-child(3),
-.tbl_savings tbody td:nth-child(3) {
+.tbl_savings tbody td:nth-child(3),
+.tbl_crypto tbody td:nth-child(3) {
  font-family: verdana;  
  font-size: 0.8em !important;
 }    
@@ -90,7 +94,8 @@
 .tbl_finances tbody td:nth-child(5),
 .tbl_finances tbody td:nth-child(6),
 .tbl_stocks tbody td:nth-child(4),
-.tbl_savings tbody td:nth-child(4) {
+.tbl_savings tbody td:nth-child(4),
+.tbl_crypto tbody td:nth-child(4) {
  font-family: verdana;  
  font-size: 0.8em !important;
  width: 7%;
@@ -109,9 +114,25 @@
  width: 18%;    
 }
 
+.tbl_crypto tbody td:nth-child(5),
+.tbl_crypto tbody td:nth-child(6) {
+  width: 15%;
+}
+
+.tbl_crypto tbody td:nth-child(7) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+ width: 8%;
+}
+
+.tbl_crypto tbody td:nth-child(8) {
+  width: 6%;
+}
+
 .tbl_finances tfoot td:nth-child(2),
 .tbl_stocks tfoot td:nth-child(2),
-.tbl_savings tfoot td:nth-child(2) {
+.tbl_savings tfoot td:nth-child(2),
+.tbl_crypto tfoot td:nth-child(2) {
  font-family: verdana;  
  font-size: 0.8em !important;
  color: green;
@@ -120,15 +141,12 @@
 .tbl_finances tfoot td:nth-child(3),
 .tbl_finances tfoot td:nth-child(4),
 .tbl_stocks tfoot td:nth-child(3),
-.tbl_savings tfoot td:nth-child(3) {
+.tbl_savings tfoot td:nth-child(3),
+.tbl_crypto tfoot td:nth-child(3) {
  font-family: verdana;  
  font-size: 0.8em !important;
  color: #C11B17;
 }
-
-
-
-
 
 
 

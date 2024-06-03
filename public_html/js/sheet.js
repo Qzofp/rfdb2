@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on May 17, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -498,7 +498,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on May 13, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -546,6 +546,8 @@ function showSheetContent(adp, c, s, i, sort_date) {
             break;
         
         case "crypto" :
+            showTable("tbl_crypto", c.crypto, s, i, "get_finances", send); 
+            $(".tbl_crypto thead th:nth-child(2)").append(sort_img);                
             break;      
     }
     
@@ -556,7 +558,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on May 17, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -611,10 +613,11 @@ function getAndShowTableTotals(page, send, c, s, i) {
                 
                 case "stock" :
                 case "savings" :
-                    showStockorSavingsTotals(result, currency.sign);
+                    showTableTotals(result, currency.sign, 4);
                     break;
                     
                 case "crypto" :
+                    showTableTotals(result, currency.sign, 6);
                     break;
             }
             
@@ -638,7 +641,7 @@ function getAndShowTableTotals(page, send, c, s, i) {
  * Created on May 11, 2024
  * Updated on May 15, 2024
  *
- * Description: Show the totals of the finances table.
+ * Description: Show the table totals for the finances table.
  *
  * In:  result, sign
  * Out: -
@@ -686,24 +689,24 @@ function showFinancesTotals(result, sign) {
 }
 
 /*
- * Function:    showStockorSavingsTotals
+ * Function:    showTableTotals
  *
  * Created on May 11, 2024
- * Updated on May 15, 2024
+ * Updated on Jun 03, 2024
  *
- * Description: Show the totals of the stocks or savings table.
+ * Description: Show the table totals for the stocks, savings and cryptotable.
  *
- * In:  result, sign
+ * In:  result, sign, col
  * Out: -
  *
  */
-function showStockorSavingsTotals(result, sign) {
+function showTableTotals(result, sign, col) {
     
     $("#table_container tfoot tr").append(
             '<td colspan="2"></td>' +
             '<td></td>' +
             '<td></td>' +
-            '<td colspan="4"></td>'
+            '<td colspan="' + col + '"></td>'
     );    
     
     // Deposit counter

@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on May 31, 2024
+ * Updated on Jun 02, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -675,7 +675,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on May 27, 2024
+ * Updated on Jun 02, 2024
  *
  * Description: Get the choosen select value and proces that value.
  *
@@ -691,16 +691,12 @@ function getSelectAndProcessChoice(c, that) {
         var select = $(that).parents(':eq(3)').find('select').attr('id');
         var id = $(that).attr('data-value');
         
-        //console.log( $(that).parents(':eq(3)').find('select').attr('id') );
-        //console.log( $(that).attr('data-value') );
-        //console.log( $('#popup_content').attr('class') );  
-        
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
             addSelectMenu(c, "get_accounts", "sort=account&sid=" + id, "accounts", c.wallets[2], 0, "account", 0);
         }
-        else if (select === "accounts") 
+        else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {
             removeSelectMenu("cryptos");
             addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", c.wallets[3], 0, "symbol");

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -693,7 +693,7 @@ function showCryptoPopupWallets(c, s, h) {
  * Function:    modifyCryptoWallets
  *
  * Created on May 31, 2024
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
  *
@@ -730,14 +730,18 @@ function modifyCryptoWallets(c, btn) {
             var request = getAjaxRequest("modify_wallets", send);
             request.done(function(result) {
                 if (result.success) {    
-                    if (result.exists) {
-                        showModifyMessage(c, input[1], action);               
+                    if (result.exists) 
+                    {
+                        let service = $(".nice-select .current:first").html();
+                        let account = $(".nice-select .current:eq(1)").html();
+                        let crypto  = $(".nice-select .current:eq(2)").html();                       
+                        showModifyMessage(c, service + ", " + account + " " + c.messages[7] + " " + crypto , action);            
                     }
                     else 
                     {                    
                         switch (action) {
                             case "add"    :  
-                                // Correct the id and service values.
+                                // Correct the id and get the select values.
                                 result.id += "_" + result.service + 
                                              "_" + result.account + 
                                              "_" + result.crypto;
@@ -749,9 +753,14 @@ function modifyCryptoWallets(c, btn) {
                                 break;
                                 
                             case "edit"   :   
-                                // Correct the id and service values.
-                                result.id += "_" + result.group;
-                                result.group = $(".nice-select .current:first").html();
+                                // Correct the id get the select values.
+                                result.id += "_" + result.service + 
+                                             "_" + result.account + 
+                                             "_" + result.crypto;
+                                                                
+                                result.service = $(".nice-select .current:first").html();
+                                result.account = $(".nice-select .current:eq(1)").html();
+                                result.crypto  = $(".nice-select .current:eq(2)").html();            
                                 showEditRow(result);
                                 break;
                                 
@@ -767,14 +776,23 @@ function modifyCryptoWallets(c, btn) {
                         else 
                         {           
                             // Reset nice-select menu if there is more then 1 item.
-                            if ($("#groups > option").length > 1) {
-                                $(".nice-select .current:first").html('<span class="placeholder">' + c.businesses[1] + '</span>');
+                            if ($("#services > option").length >= 1) {
+                                $(".nice-select .current:first").html('<span class="placeholder">' + c.wallets[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }                            
+                            }     
+
+                            if ($("#accounts > option").length >= 1) {
+                                $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.wallets[2] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            }   
+                            
+                            if ($("#cryptos > option").length >= 1) {
+                                $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.wallets[3] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            }                               
                             
                             // Reset input.
-                            $("#business").val(""); 
-                            $("#website").val("");                             
+                            $("#desc").val("");                             
                         }
                     }     
                 }

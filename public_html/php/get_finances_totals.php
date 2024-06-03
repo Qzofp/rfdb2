@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 05, 2024
- * Updated on May 15, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: Check if the user is signed in and get the finances total from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinancesTotals
  *
  * Created on May 05, 2024
- * Updated on May 15, 2024
+ * Updated on Jun 03, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -54,32 +54,36 @@ function GetFinancesTotals()
         switch($name) 
         {
             case "finance" :
-                $income  = "COALESCE(NULLIF(sum(`income`), 0), '&nbsp;' ) AS `income`";
-                $fixed   = "COALESCE(NULLIF(-1*sum(`fixed`), 0), '&nbsp;' ) AS `fixed`";
-                $other   = "COALESCE(NULLIF(-1*sum(`other`), 0), '&nbsp;' ) AS `other`";
+                $income  = "COALESCE(NULLIF(sum(`income`), null), '&nbsp;' ) AS `income`";
+                $fixed   = "COALESCE(NULLIF(-1*sum(`fixed`), null), '&nbsp;' ) AS `fixed`";
+                $other   = "COALESCE(NULLIF(-1*sum(`other`), null), '&nbsp;' ) AS `other`";
                 $balance = "COALESCE(NULLIF(COALESCE(sum(`income`),0) - COALESCE(sum(`fixed`),0) - COALESCE(sum(`other`),0), 0), '&nbsp;' ) AS `balance`";                
                 $select  = "$income, $fixed, $other, $balance";
                 $table   = "tbl_finances";
                 break;
             
             case "stock" :
-                $deposit    = "COALESCE(NULLIF(sum(`deposit`), 0), '&nbsp;' ) AS `deposit`";
-                $withdrawal = "COALESCE(NULLIF(-1*sum(`withdrawal`), 0), '&nbsp;' ) AS `withdrawal`";
+                $deposit    = "COALESCE(NULLIF(sum(`deposit`), null), '&nbsp;' ) AS `deposit`";
+                $withdrawal = "COALESCE(NULLIF(-1*sum(`withdrawal`), null), '&nbsp;' ) AS `withdrawal`";
                 $balance    = "COALESCE(NULLIF(COALESCE(sum(`deposit`),0) - COALESCE(sum(`withdrawal`),0), 0), '&nbsp;' ) AS `balance`";
                 $select     = "$deposit, $withdrawal, $balance";
                 $table      = "tbl_stocks";
                 break;
             
             case "savings" :
-                $deposit    = "COALESCE(NULLIF(sum(`deposit`), 0), '&nbsp;' ) AS `deposit`";
-                $withdrawal = "COALESCE(NULLIF(-1*sum(`withdrawal`), 0), '&nbsp;' ) AS `withdrawal`";
+                $deposit    = "COALESCE(NULLIF(sum(`deposit`), null), '&nbsp;' ) AS `deposit`";
+                $withdrawal = "COALESCE(NULLIF(-1*sum(`withdrawal`), null), '&nbsp;' ) AS `withdrawal`";
                 $balance    = "COALESCE(NULLIF(COALESCE(sum(`deposit`),0) - COALESCE(sum(`withdrawal`),0), 0), '&nbsp;' ) AS `balance`";
                 $select     = "$deposit, $withdrawal, $balance";
                 $table      = "tbl_savings";
                 break;                
                 
             case "crypto" :
-                
+                $deposit    = "COALESCE(NULLIF(sum(`deposit`), null), '&nbsp;' ) AS `deposit`";
+                $withdrawal = "COALESCE(NULLIF(-1*sum(`withdrawal`), null), '&nbsp;' ) AS `withdrawal`";
+                $balance    = "COALESCE(NULLIF(COALESCE(sum(`deposit`),0) - COALESCE(sum(`withdrawal`),0), 0), '&nbsp;' ) AS `balance`";
+                $select     = "$deposit, $withdrawal, $balance";
+                $table      = "tbl_crypto";                
                 break;
         }
         

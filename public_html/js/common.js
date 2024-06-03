@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -452,7 +452,7 @@ function fillTable(s, page, l, send) {
  * Function:    checkEditDelete
  *
  * Created on Feb 03, 2024
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Check if the edit or delete button is pressed in de popup choice window.
  *
@@ -474,10 +474,10 @@ function checkEditDelete(btn, msg) {
         $("#table_container tbody .marked").toggleClass("marked delete");
         $(".msg").html(msg);
         
-        $("input[type=text]").prop('disabled', true);
-        $("input[type=password]").prop('disabled', true);
-        $("input[type=checkbox]").prop('disabled', true);
-        $(".nice-select").addClass("disabled");
+        $("#popup_content input[type=text]").prop('disabled', true);
+        $("#popup_content input[type=password]").prop('disabled', true);
+        $("#popup_content input[type=checkbox]").prop('disabled', true);
+        $("#popup_content .nice-select").addClass("disabled");
         
         check = true;
     }  
@@ -491,10 +491,10 @@ function checkEditDelete(btn, msg) {
         $("#table_container tbody .delete").toggleClass("delete marked");
         $(".msg").html("&nbsp;");     
         
-        $("input[type=text]").prop('disabled', false);
-        $("input[type=password]").prop('disabled', false);
-        $("input[type=checkbox]").prop('disabled', false);
-        $(".nice-select").removeClass("disabled");
+        $("#popup_content input[type=text]").prop('disabled', false);
+        $("#popup_content input[type=password]").prop('disabled', false);
+        $("#popup_content input[type=checkbox]").prop('disabled', false);
+        $("#popup_content .nice-select").removeClass("disabled");
               
         check = true;
     }

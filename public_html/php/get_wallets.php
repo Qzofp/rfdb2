@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on May 27, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Check if the user is signed in and get the wallets from the databases tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetCryptos
  *
  * Created on May 19, 2024
- * Updated on May 27, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Get the wallets from the databases tbl_wallets table.
  *
@@ -47,7 +47,7 @@ function GetWallets()
         $db = OpenDatabase();
         
         $id = "CONCAT(tbl_wallets.`id`, '_',tbl_services.`id`, '_', tbl_accounts.`id`, '_', tbl_cryptocurrenties.`id`) ";      
-        $query = "SELECT $id AS id,`service`,`account`,`symbol`,tbl_wallets.`description` ". 
+        $query = "SELECT $id AS id,tbl_wallets.`hide` AS hide,`service`,`account`,`symbol`,tbl_wallets.`description` ". 
                  "FROM tbl_wallets ".
                  "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                  "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".

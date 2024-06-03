@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 31, 2024
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyWallets
  *
  * Created on May 31, 2024
- * Updated on May 31, 2024
+ * Updated on Jun 01, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_wallets table if the wallet doesn't exists.
  *
@@ -55,11 +55,11 @@ function ModifyWallets()
             break;
             
         case "edit" :
-            //$response = EditBusinesses($id, $hide, $group, $business, $rank, $website);
+            $response = EditWallet($id, $hide, $sid, $aid, $cid, $desc);
             break;
             
         case "delete" :
-            //$response = DeleteBusinesses($id);
+            $response = DeleteWallet($id);
             break;                
     }    
     
@@ -117,38 +117,38 @@ function ModifyWallets()
 }
 
 /*
- * Function:    EditBusinesses
+ * Function:    EditWallet
  *
- * Created on Apr 07, 2024
- * Updated on Apr 07, 2024
+ * Created on Jun 01, 2024
+ * Updated on Jun 01, 2024
  *
- * Description: Edit the tbl_businesses table with the input if the group and business doesn't exists.
+ * Description: Edit the tbl_wallet table with the input if the wallet doesn't exists.
  *
- * In:  $id, $hide, $group, $business, $rank, $website
+ * In:  $id, $hide, $sid, $aid, $cid, $desc
  * Out: $response
  *
  */    
- function EditBusinesses($id, $hide, $group, $business, $rank, $website)
+ function EditWallet($id, $hide, $sid, $aid, $cid, $desc)
  {   
-    $response = CheckBusinesses($id, $group, $business); 
+    $response = CheckWallet($id, $aid, $cid);
     if ($response['success'] && !$response['exists'])
     {    
         try 
         {                
             $db = OpenDatabase();
                 
-            $query = "UPDATE tbl_businesses SET `hide`=$hide,`business`='$business',`gid`='$group',".
-                     "`website`='$website' WHERE `id`=$id";  
+            $query = "UPDATE tbl_wallets SET `hide`=$hide,`aid`='$aid',`cid`='$cid',".
+                     "`description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);
             $select->execute();
                             
-            $response['id']       = $id;
-            $response['hide']     = $hide;
-            $response['group']    = $group;
-            $response['business'] = $business;
-            $response['ranking']  = $rank;       
-            $response['website']  = $website;
+            $response['id']      = $id;
+            $response['hide']    = $hide;
+            $response['service'] = $sid;            
+            $response['account'] = $aid;
+            $response['crypto']  = $cid;  
+            $response['desc']    = $desc;
             
             // debug
             //$response['query'] = $query;                
@@ -219,18 +219,18 @@ function CheckWallet($id, $aid, $cid)
 }
 
 /*
- * Function:    DeleteBusinesses
+ * Function:    DeleteWallet
  *
- * Created on Apr 07, 2024
- * Updated on Apr 07, 2024
+ * Created on Jun 01, 2024
+ * Updated on Jun 01, 2024
  *
- * Description: Delete the row with id in the tbl_businesses table.
+ * Description: Delete the row with id in the tbl_wallet table.
  *
  * In:  $id
  * Out: $response
  *
  */    
- function DeleteBusinesses($id)
+ function DeleteWallet($id)
  {   
     $response = [];  
        
@@ -238,7 +238,7 @@ function CheckWallet($id, $aid, $cid)
     {    
         $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_businesses WHERE `id` = $id";          
+        $query = "DELETE FROM tbl_wallets WHERE `id` = $id";          
         $select = $db->prepare($query);
         $select->execute();
                     
