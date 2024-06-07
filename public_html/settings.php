@@ -22,7 +22,7 @@
  * Created on Oct 29, 2023
  * Updated on Mar 19, 2024
  *
- * Description: Redirect to the start page.
+ * Description: Settings framework page.
  * 
  */
 session_start();

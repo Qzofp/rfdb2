@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 05, 2024
- * Updated on Apr 12, 2024
+ * Updated on Jun 07, 2024
  *
  * Description: Check if the user is signed in and get the businesses from the databases tbl_businesses table.
  * Dependenties: config.php
@@ -46,10 +46,14 @@ function GetBusinesses()
     try 
     {
         $db = OpenDatabase();
-     
-        $group = "";
+         
         if ($gid > 0) {
+            $id = "tbl_businesses.`id`";
             $group = "AND tbl_groups.`id` = $gid "; 
+        }
+        else {
+            $id = "CONCAT(tbl_businesses.`id`,'_',tbl_groups.`id`)";
+            $group = "";
         }
         
         $ranking = "";
@@ -57,7 +61,7 @@ function GetBusinesses()
             $ranking = "ranking DESC,";
         }
         
-        $query = "SELECT CONCAT(tbl_businesses.`id`,'_',tbl_groups.`id`) AS id, tbl_businesses.`hide`, tbl_groups.`group`, tbl_businesses.`business`, count(0) AS ranking, tbl_businesses.`website` ".
+        $query = "SELECT $id AS id, tbl_businesses.`hide`, tbl_groups.`group`, tbl_businesses.`business`, count(0) AS ranking, tbl_businesses.`website` ".
                  "FROM `tbl_businesses` ".
                  "LEFT JOIN `tbl_groups` ON tbl_groups.`id` = tbl_businesses.`gid` ".
                  "LEFT JOIN tbl_rankings ON tbl_businesses.`id` = tbl_rankings.`bid` ". 

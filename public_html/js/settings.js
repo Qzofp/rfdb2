@@ -675,7 +675,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Jun 02, 2024
+ * Updated on Jun 05, 2024
  *
  * Description: Get the choosen select value and proces that value.
  *
@@ -694,7 +694,7 @@ function getSelectAndProcessChoice(c, that) {
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
-            addSelectMenu(c, "get_accounts", "sort=account&sid=" + id, "accounts", c.wallets[2], 0, "account", 0);
+            addSelectMenu(c, "get_accounts", "sort=account&hide=true&sid=" + id, "accounts", c.wallets[2], 0, "account", 0);
         }
         else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {

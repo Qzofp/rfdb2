@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on May 29, 2024
+ * Updated on Jun 05, 2024
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -138,93 +138,6 @@
  text-align: left;
  list-style-type: none;
  margin: 0px 20px 20px 0px;
-}
-
-#popup_content table {
- width: calc(90% - 10px);
- margin: auto;
- border-collapse: separate;
- border-spacing: 0;
-}
-
-#popup_content th, 
-#popup_content td {
- text-align:left;
- font-size: 0.9em;
-}
-
-#popup_content table .msg {
- text-align: center;
- color: maroon;
- font-weight: bold;
-}
-
-#popup_content table .warning {
- text-align: center;
- color: #da9100;
- font-weight: bold;    
- font-style: italic;
-}
-
-#popup_content input {
- font-size: 1em;  
- cursor: pointer;
- width: 100%;
-}
-
-#popup_content input[type=text],
-#popup_content input[type=password] {
- border-radius: 5px;
- font-weight: normal;    
- padding: 3px 5px;
- border: 1px solid #e8e8e8; 
-}
-
-#popup_content input[type=text]:hover,
-#popup_content input[type=password]:hover {
- border-color: #dbdbdb;
- cursor: text;
-}
-
-#popup_content input[type=text]:focus,
-#popup_content input[type=password]:focus {
- outline: none !important;
- border-color: #999;
-}
-
-#popup_content a {
- position: absolute;
- top: 5px;
- right: 12px;
- font-size: 17px;
- color: #000;
- text-decoration: none;
-}
-
-#popup_content .choice {
- position: absolute;
- bottom: 5px;
- right: 7px;
-}
-
-#popup_content .btn,
-#popup_content .shw,
-#popup_content .choice input[type=image] {
- width: 24px;
- height: 24px;
- cursor: pointer;
-}
-
-#popup_content .btn {
- margin-top: 3px;    
-}
-
-#popup_content .close {
- color: #999;
-}
-
-#popup_content .close:hover {
- color:darkred;
 }
 
 #popup_container .gen_language, 
@@ -359,6 +272,7 @@
   height: 20px;
   border: 2px solid #808080; /*#536878; */
   background-color: transparent;
+  cursor: pointer;
 }
 
 .rad input[type='radio'],
@@ -376,6 +290,7 @@
   content: " ";
   display: block;
   background: #808080; /* #536878; */
+  cursor: pointer;
 }
 
 .rad label:before,

@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Jun 03, 2024
+ * Updated on Jun 06, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -58,6 +58,91 @@
  background-color: #f5f5f5;
  padding: 3px;
 }
+
+/* Sheet popups */
+#popup_content  {
+ width: 85% !important;
+}
+
+.popup_finances table {
+ width: calc(95% - 10px) !important;
+}
+
+.popup_finances td:nth-child(1),  /* Date */
+.popup_finances td:nth-child(3) { /* Amount */
+ width:8%; 
+}  
+
+.popup_finances td:nth-child(2),   /* Payment */
+.popup_finances td:nth-child(8),   /* Service (Group) */
+.popup_finances td:nth-child(10) {  /* Account (Business) */ 
+  width:15%;
+} 
+
+.popup_finances td:nth-child(4),  /* Radio buttons */
+.popup_finances td:nth-child(5),
+.popup_finances td:nth-child(6) { 
+  width:2%;
+} 
+
+.popup_finances td:nth-child(13) { /* Description */ 
+  width:33%;
+} 
+
+.popup_table_finance .label {
+  text-align: center !important;
+  color: #808080;
+}
+
+/* Popup radio buttons */
+.popup_table_finance .rad li {
+  display: inline-block;
+  position: relative;
+  padding: 0 6px;
+}
+
+.popup_table_finance .rad li  {
+  margin: -6.5px 0 0;
+}
+    
+.popup_table_finance .rad li label {
+  font-weight: normal;
+}
+
+.popup_table_finance .rad li label:before {
+  content: " ";
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  margin: 0 5px 0 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #808080;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.rad input[type='radio'] {
+  display: none;
+}
+
+.rad input[type='radio']:checked + label:after {
+  width: 12px; 
+  height: 12px;
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  content: " ";
+  display: block;
+  background: #808080; 
+  cursor: pointer;
+}
+
+.rad label:before,
+.rad input[type='radio']:checked + label:after {
+  border-radius: 11px;
+}
+
 
 /* Sheet tables */
 .tbl_finances thead th:nth-child(2),
@@ -174,8 +259,7 @@
 */ 
 }
 
-/* Popup or Chart slider close button */
-.close {
+#chart_content .close {
  position: absolute;
  top: 5px;
  right: 12px;
@@ -184,6 +268,7 @@
  text-decoration: none;
 }
 
-.close:hover {
+#chart_content .close:hover {
  color:darkred;
 }
+

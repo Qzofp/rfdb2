@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Jun 03, 2024
+ * Updated on Jun 07, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Jun 03, 2024
+ * Updated on Jun 07, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -71,13 +71,14 @@ function GetFinances()
         switch($name) 
         {
             case "finance" :
-                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'$format'), null )), ' ') AS `income`";
-                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'$format'), null )), ' ') AS `fixed`";
-                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format'), null )), ' ') AS `other`";  
+                $id      = "CONCAT(tbl_finances.id, '_',tbl_finances.aid, '_', tbl_businesses.gid, '_', tbl_finances.bid)";
                 $date    = "DATE_FORMAT(tbl_finances.`date`,'$date_format') AS `date`";
+                $income  = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`income`,2,'$format'), null )), '') AS `income`";
+                $fixed   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`fixed`,2,'$format'), null )), '') AS `fixed`";
+                $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format'), null )), '') AS `other`";                  
                 $table   = "tbl_finances";    
                 
-                $query = "SELECT tbl_finances.id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
+                $query = "SELECT $id AS id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
                          "FROM tbl_finances ".
                          "LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id ".
                          "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".
@@ -89,6 +90,7 @@ function GetFinances()
                 $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), ' ') AS `withdrawal`";
                 $date       = "DATE_FORMAT(tbl_stocks.`date`,'$date_format') AS `date`";
                 $table      = "tbl_stocks";
+                
                 $query = "SELECT tbl_stocks.`id`, $date, $deposit, $withdrawal, `service`, `account`, tbl_stocks.`description` ".
                          "FROM tbl_stocks ".
                          "LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id` ".
@@ -100,6 +102,7 @@ function GetFinances()
                 $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), ' ') AS `withdrawal`";
                 $date       = "DATE_FORMAT(tbl_savings.`date`,'$date_format') AS `date`";
                 $table      = "tbl_savings";
+                
                 $query = "SELECT tbl_savings.`id`, $date, $deposit, $withdrawal, `service`, `account`, tbl_savings.`description` ".
                          "FROM tbl_savings ".
                          "LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id` ".
@@ -112,6 +115,7 @@ function GetFinances()
                 $amount     = "COALESCE(NULLIF(FORMAT(`amount`,8,'$format'), null ), ' ')";
                 $date       = "DATE_FORMAT(tbl_crypto.`date`,'$date_format') AS `date`";
                 $table      = "tbl_crypto";
+                
                 $query = "SELECT tbl_crypto.`id`, $date, $deposit, $withdrawal, `service`, `account`, $amount, `symbol`, tbl_crypto.`description` ".
                          "FROM tbl_crypto ".
                          "LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id` ".

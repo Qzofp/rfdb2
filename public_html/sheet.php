@@ -8,18 +8,21 @@
  * Dependencies: css/common.css
  *               css/ext/yearpicker.css
  *               css/ext/air-datepicker.css
+ *               css/ext/nice-select2.css
  *               css/sheet.css 
  *               js/ext/jquery-3.7.1.min.js
  *               js/ext/yearpicker.js
  *               js/ext/air-datepicker.js
+ *               js/ext/nice-select2.js
  *               js/config.js
  *               js/common.js
+ *               js/sheet_edit.js
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on May 15, 2024
+ * Updated on Jun 07, 2024
  *
- * Description: Sheet framework test page.
+ * Description: Sheet framework page.
  *
  */
 session_start();
@@ -37,13 +40,16 @@ if(!$user){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/common.css">
         <link rel="stylesheet" href="css/ext/yearpicker.css">	
-        <link rel="stylesheet" href="css/ext/air-datepicker.css">         
+        <link rel="stylesheet" href="css/ext/air-datepicker.css">    
+        <link rel="stylesheet" href="css/ext/nice-select2.css">         
         <link rel="stylesheet" href="css/sheet.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>      
 	<script src="js/ext/yearpicker.js"></script>  
-        <script src="js/ext/air-datepicker.js"></script>           
+        <script src="js/ext/air-datepicker.js"></script>      
+        <script src="js/ext/nice-select2.js"></script>        
         <script src="js/config.js"></script>  
         <script src="js/common.js"></script>   
+        <script src="js/sheet_edit.js"></script>        
         <script src="js/sheet.js"></script>
     </head>
     <body>      
@@ -179,16 +185,42 @@ if(!$user){
                             
                             <!-- This table is needed for the datepicker. -->
                             <table class="popup_table_finance">
-                                <tr>
-                                    <td><input class="shw" type="image" name="submit" src="" /></td>                                  
+                                <tr>                              
                                     <td><input id="date" type="text" name="date" placeholder="" value="" /></td>   
+                                    <td><select id="payment" placeholder=""></select></td> <!-- Finances only -->
+                                    <td><input id="amount" type="text" name="amount" placeholder="" value="" /></td>
                                     
+                                    <!-- Radio buttons -->
+                                    <td class="rad">
+                                        <li>
+                                            <input type="radio" id="mny-1" name="money" value="1">
+                                            <label for="mny-1"></label>
+                                        </li>
+                                    </td>
+                                    <td class="rad">
+                                        <li>
+                                            <input type="radio" id="mny-2" name="money" value="2">
+                                            <label for="mny-2"></label>
+                                        </li>
+                                    </td>
+                                    <td class="rad">
+                                        <li>
+                                            <input type="radio" id="mny-3" name="money" value="3"> <!-- Finances only -->
+                                            <label for="mny-3"></label>
+                                        </li>
+                                    </td>                                    
                                     
-                                    
+                                    <td><input class="srt" type="image" name="submit" src="img\sort.png" alt="srt" /></td>
+                                    <td><select id="service" placeholder=""></select></td> 
+                                    <td><input class="srt" type="image" name="submit" src="img\rank.png" alt="rnk" /></td>
+                                    <td><select id="account" placeholder=""></select></td> 
+                                    <td><input id="number" type="text" name="number" placeholder="" value="" /></td> <!-- Crypto only -->
+                                    <td><select id="crypto" placeholder=""></select></td> <!-- Crypto only -->
+                                    <td><input id="description" type="text" name="account" placeholder="" value="" /></td>
                                     <td><input class="btn" type="image" name="submit" src="" /></td>                 
                                 </tr>
                                 <tr>
-                                    <td class="msg" colspan="5">&nbsp;<td>
+                                    <td class="msg" colspan="14">&nbsp;<td>
                                 </tr>
                             </table>
                             

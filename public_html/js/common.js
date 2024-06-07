@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 01, 2024
+ * Updated on Jun 04, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -136,7 +136,7 @@ function showPageTheme(s) {
  * Function:    closePopupWindow
  *
  * Created on Nov 19, 2023
- * Updated on Feb 05, 2024
+ * Updated on Jun 04, 2024
  *
  * Description: Close the Popup window.
  *
@@ -147,6 +147,10 @@ function showPageTheme(s) {
 function closePopupWindow() {
        
     var mark = "";
+    
+    $("#popup_content input[type=text]").prop('disabled', false);
+    $("#popup_content input[type=password]").prop('disabled', false);
+    $("#popup_content input[type=checkbox]").prop('disabled', false);    
         
     $("#popup_container").fadeOut("slow");     
           
@@ -216,7 +220,7 @@ function showAjaxError(xhr, msg) {
  * Function:    closeErrorMessage
  *
  * Created on Nov 12, 2023
- * Updated on Nov 12, 2023
+ * Updated on Jun 04, 2023
  *
  * Description: Close the error message.
  *
@@ -227,7 +231,7 @@ function showAjaxError(xhr, msg) {
 function closeErrorMessage() {
     
     // Close popup error.
-    $(".close").on("click", function () {
+    $("#popup_error .close").on("click", function () {        
       $("#popup_error").fadeOut("slow");
     });
  

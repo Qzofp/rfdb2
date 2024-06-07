@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 03, 2024
+ * Updated on Jun 07, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on May 10, 2024
+ * Updated on Jun 07, 2024
  *
  * Description: Open the sheet page.
  *
@@ -142,10 +142,26 @@ function openSheetPage(c, s, i) {
     // Show the page theme for finance, stock, savings and crypto.
     showPageTheme(s[i]);    
         
-    // Change slide menu scale (months, quarters, year).
+    // Page button is pressed (scale, edit or chart button).
     $("#page_buttons").on('click', 'img', function() {
         changeSheetContent($adp, c, s, i, this);
-    });	
+    });
+    
+    // Table row is pressed.
+    $("#table_container").on('click', 'tbody tr', function(){        
+        showSheetEditPopup($adp, c, s, i, this);
+    });    
+    
+    // Sheet popup Ok button is pressed.  
+    $("#popup_content").on("submit","form",function(e) {   
+        e.preventDefault();
+        console.log(e.originalEvent.submitter.alt);
+    });
+    
+    // Popup radio button is selected.
+    $("#popup_content input[type='radio']").change(function() {
+        showPopupRadioButtonLabel($(this).val(), c, s[i].name);
+    });
             
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {      
@@ -163,7 +179,13 @@ function openSheetPage(c, s, i) {
         window.location.reload(true);
     });    
     
-    closeChartWindow(); 
+    // Close Chart Window.
+    closeChartWindow();
+    
+    // Close popup windows.       
+    $("#popup_container .close").on("click", function() {
+        closePopupWindow();
+    });     
 }
 
 /*
@@ -511,7 +533,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
     var date, set, sort, sort_img, send;
     
     date = getSelectedDateFromPage();
-    updateAirDataPicker(adp, date);       
+    updateAirDataPicker(adp, date);    
     set = JSON.parse(s[5].value);
        
     if (sort_date) {
@@ -734,7 +756,7 @@ function showTableTotals(result, sign, col) {
  * Function:    changeSheetContent
  *
  * Created on Dec 17, 2023
- * Updated on Apr 29, 2024
+ * Updated on Jun 04, 2024
  *
  * Description: Change sheet content for the page.
  *
@@ -753,6 +775,7 @@ function changeSheetContent(adp, c, s, i, that) {
             break;
             
         case "edit" :
+            showSheetEditPopup(adp, c, s, i);
             break;
             
         case "chart" : 
