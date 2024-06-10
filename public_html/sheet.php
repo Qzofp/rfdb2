@@ -20,7 +20,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Jun 07, 2024
+ * Updated on Jun 10, 2024
  *
  * Description: Sheet framework page.
  *
@@ -188,7 +188,7 @@ if(!$user){
                                 <tr>                              
                                     <td><input id="date" type="text" name="date" placeholder="" value="" /></td>   
                                     <td><select id="payment" placeholder=""></select></td> <!-- Finances only -->
-                                    <td><input id="amount" type="text" name="amount" placeholder="" value="" /></td>
+                                    
                                     
                                     <!-- Radio buttons -->
                                     <td class="rad">
@@ -210,9 +210,11 @@ if(!$user){
                                         </li>
                                     </td>                                    
                                     
-                                    <td><input class="srt" type="image" name="submit" src="img\sort.png" alt="srt" /></td>
+                                    <td class="sign"></td>
+                                    <td><input id="amount" type="text" name="amount" placeholder="" value="" /></td>
+                                    <td><input class="srt" type="image" name="submit" src="" alt="" /></td>
                                     <td><select id="service" placeholder=""></select></td> 
-                                    <td><input class="srt" type="image" name="submit" src="img\rank.png" alt="rnk" /></td>
+                                    <td><input class="srt" type="image" name="submit" src="" alt="" /></td>
                                     <td><select id="account" placeholder=""></select></td> 
                                     <td><input id="number" type="text" name="number" placeholder="" value="" /></td> <!-- Crypto only -->
                                     <td><select id="crypto" placeholder=""></select></td> <!-- Crypto only -->
@@ -220,7 +222,7 @@ if(!$user){
                                     <td><input class="btn" type="image" name="submit" src="" /></td>                 
                                 </tr>
                                 <tr>
-                                    <td class="msg" colspan="14">&nbsp;<td>
+                                    <td class="msg" colspan="15">&nbsp;<td>
                                 </tr>
                             </table>
                             
@@ -231,26 +233,7 @@ if(!$user){
                             </div>                        
                        </form>
                     </div>                    
-                </div>                
-                
-                
-                
-                
-                
-                <!-- Date Test, show the date that will be used to get the table data. 
-                <div id="tst_date"></div> -->
-                
-                <!-- Test datepicker
-                <input id="date" type="text" name="serv" placeholder="" value="" /> -->
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                </div>                            
                 
                 <!-- Chart slider  -->
                 <div id="chart_slider">

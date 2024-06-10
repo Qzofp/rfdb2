@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Jun 06, 2024
+ * Updated on Jun 08, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -69,24 +69,31 @@
 }
 
 .popup_finances td:nth-child(1),  /* Date */
-.popup_finances td:nth-child(3) { /* Amount */
+.popup_finances td:nth-child(7) { /* Amount */
  width:8%; 
 }  
 
+.popup_finances td:nth-child(6) {  /* Sign */
+ /*width:1.5%;*/
+ text-align: right !important;
+ /*padding-right: 5px;*/
+ color: #808080;
+}
+
 .popup_finances td:nth-child(2),   /* Payment */
-.popup_finances td:nth-child(8),   /* Service (Group) */
-.popup_finances td:nth-child(10) {  /* Account (Business) */ 
+.popup_finances td:nth-child(9),   /* Service (Group) */
+.popup_finances td:nth-child(11) {  /* Account (Business) */ 
   width:15%;
 } 
 
-.popup_finances td:nth-child(4),  /* Radio buttons */
-.popup_finances td:nth-child(5),
-.popup_finances td:nth-child(6) { 
+.popup_finances td:nth-child(3),  /* Radio buttons */
+.popup_finances td:nth-child(4),
+.popup_finances td:nth-child(5) { 
   width:2%;
 } 
 
-.popup_finances td:nth-child(13) { /* Description */ 
-  width:33%;
+.popup_finances td:nth-child(14) { /* Description */ 
+  width:31%;
 } 
 
 .popup_table_finance .label {

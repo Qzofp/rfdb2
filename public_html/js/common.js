@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 04, 2024
+ * Updated on Jun 08, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -882,6 +882,18 @@ function removeSelectMenu(id="") {
     }
 }
 
+/*
+ * Function:   disableSelectMenu
+ *
+ * Created on May 26, 2024
+ * Updated on Jun 08, 2024
+ *
+ * Description: Disable the select menu.
+ *
+ * In:  id, nmae
+ * Out: -
+ *
+ */
 function disableSelectMenu(id, name) {
     
     var plh, options, db;
@@ -892,6 +904,7 @@ function disableSelectMenu(id, name) {
     if ($("#" + id).length) 
     {
         db = NiceSelect.bind(document.getElementById(id), options);    
+        db.clear();
         db.disable();
     } 
 }
