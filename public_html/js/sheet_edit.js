@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jun 10, 2024
+ * Updated on Jun 14, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    setSheetPopupChoice
  *
  * Created on Jun 10, 2024
- * Updated on Jun 10, 2024
+ * Updated on Jun 14, 2024
  *
  * Description: Set the choice made in the sheet popup window.
  *
@@ -30,32 +30,23 @@
  */
 function setSheetPopupChoice(e, c, s, i) {
     
-    e.preventDefault();
-        
-    var btn = e.originalEvent.submitter.alt;      
-       
-    // debug
-    console.log(btn);
-    if (btn === "ok") {
-        changePopupMessageRow("This is a test message!");
-    }
-    // debug
-    
+    e.preventDefault();     
+    var btn = e.originalEvent.submitter.alt;          
     switch (btn) {
         case "ok"  :
         case "add" :
+            
+            // Debug
+            changePopupMessageRow("This is a test message!");
+            
             break;
         
         case "srt" :
-            
-            console.log($(e.originalEvent.submitter).parent().next().find('select').attr('id'));
-            
+            setSortButton(c, s, i, "srt", e);
             break
         
         case "rnk" :
-            
-            console.log($(e.originalEvent.submitter).parent().next().find('select').attr('id'));
-            
+            setSortButton(c, s, i, "rnk", e);
             break
     }
 }
@@ -98,6 +89,71 @@ function showPopupRadioButtonLabel(value, c, name) {
     changePopupMessageRow(label, x, y, z); 
     return label;
 }
+
+/*
+ * Function:    getPopupSelectAndProcessChoice
+ *
+ * Created on Jun 12, 2024
+ * Updated on Jun 14, 2024
+ *
+ * Description: Get the choosen select value and process that value.
+ *
+ * In:  c, i, that
+ * Out: -
+ *
+ */
+function getPopupSelectAndProcessChoice(c, i, that) {
+
+    var request = getAjaxRequest("get_settings", "");    
+    request.done(function(result) {
+        if (result.success) {   
+    
+            let ph, set, page, rank;
+            let select = $(that).parents(':eq(3)').find('select').attr('id');
+            let id = $(that).attr('data-value');
+            
+            let s = result.settings; 
+            switch (s[i].name) {
+                case "finance" :
+                    ph = c.payment[7];
+                    set = JSON.parse(s[1].value);
+                    page = "get_businesses";
+                    rank = set.sort.bsn;
+                break;
+            
+            case "stock" :
+                rank = "false";
+                break;
+            
+            case "savings" :
+                rank = "false";
+                break;
+            
+            case "crypto" :
+                ph = c.wallets[3];
+                rank = "false";
+                break;         
+            }
+        
+            if (select === "service") 
+            {
+                removeSelectMenu("account"); 
+                addSelectMenu(c, page, "rank=" + rank + "&hide=true&gid=" + id, "account", ph, 0, "business");    
+            }
+            else if (s[i].name === "crypto" && select === "account" && !$("#table_container tbody .marked").length)
+            {
+                removeSelectMenu("cryptos");
+                addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", ph, 0, "symbol");
+            }
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage(); 
+}   
 
 /*
  * Function:    changeMessageRow
@@ -235,7 +291,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Jun 09, 2024
+ * Updated on Jun 12, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -246,7 +302,8 @@ function showSheetEditPopup(adp, c, i, that="") {
 function showSheetFinancePopup(adp, c, s, i) {
     
     var cells, label;
-    var set  = JSON.parse(s[5].value);
+    var set = JSON.parse(s[5].value);
+    var fin = JSON.parse(s[1].value);
     
     // Get row input, is empty when row is empty or not selected.
     cells = setSheetPopupTable("popup_finances", c.payment[0], s[i], 9);
@@ -269,7 +326,7 @@ function showSheetFinancePopup(adp, c, s, i) {
     }
     
     // Add Sort buttons.
-    addSortButtons(JSON.parse(s[1].value)); 
+    addSortButtons(fin); 
 
     // Add radio buttons and label.
     $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
@@ -279,9 +336,9 @@ function showSheetFinancePopup(adp, c, s, i) {
     // Add Select Menus.
     removeSelectMenu(); 
     addSelectMenu(c, "get_accounts", "sort=account&hide=true&type=" + s[i].name, "payment", c.payment[2], cells[0].split("_")[1], "account");
-    addSelectMenu(c, "get_groups", "hide=true&rank=false", "service", c.payment[6], cells[0].split("_")[2], "group"); 
+    addSelectMenu(c, "get_groups", "hide=true&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group"); 
     if (cells[6]) {
-        addSelectMenu(c, "get_businesses", "rank=false&hide=true&gid=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");
+        addSelectMenu(c, "get_businesses", "rank=" + fin.sort.bsn + "&hide=true&gid=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");
     }
     else {
         disableSelectMenu("account", c.payment[7]);
@@ -297,7 +354,7 @@ function showSheetFinancePopup(adp, c, s, i) {
  * Function:    addSortButtons
  *
  * Created on Jun 10, 2024
- * Updated on Jun 10, 2024
+ * Updated on Jun 12, 2024
  *
  * Description:  Add the sort buttons for the finances page.
  *
@@ -309,28 +366,107 @@ function addSortButtons(set) {
     
     // Group sort.
     if (set.sort.grp === "true") {
-        $("#popup_content .srt").eq(0).attr({src:"img/sort.png", alt:"srt"});
+        $("#popup_content .srt").eq(0).attr({src:"img/rank.png", alt:"rnk"}); 
     }
     else {
-        $("#popup_content .srt").eq(0).attr({src:"img/rank.png", alt:"rnk"}); 
+        $("#popup_content .srt").eq(0).attr({src:"img/sort.png", alt:"srt"});
     }
     
     // Business sort.
     if (set.sort.bsn === "true") {
-        $("#popup_content .srt").eq(1).attr({src:"img/sort.png", alt:"srt"});
+        $("#popup_content .srt").eq(1).attr({src:"img/rank.png", alt:"rnk"}); 
     }
     else {
-        $("#popup_content .srt").eq(1).attr({src:"img/rank.png", alt:"rnk"}); 
+        $("#popup_content .srt").eq(1).attr({src:"img/sort.png", alt:"srt"});
     }    
+}
+
+/*
+ * Function:    setSortButtons
+ *
+ * Created on Jun 14, 2024
+ * Updated on Jun 14, 2024
+ *
+ * Description:  Set the sort buttons for the finances page.
+ *
+ * In:  c, s, i, btn, e
+ * Out: -
+ *
+ */
+function setSortButton(c, s, i, btn, e) {
+    
+    var phg, pha, page, rank;
+    var select = $(e.originalEvent.submitter).parent().next().find('select').attr('id');
+    var send = "name=" + s[i].name + "&btn=" + btn + "&sel=" + select;
+    
+    //console.log(send);
+    
+    var request = getAjaxRequest("change_sortbutton", send);      
+    request.done(function(result) {
+        if (result.success) 
+        {                        
+            switch (s[i].name) {
+                case "finance" :
+                    phg = c.payment[6];
+                    pha = c.payment[7];
+                    page = "get_businesses";
+                break;
+            
+            case "stock" :
+                break;
+            
+            case "savings" :
+                break;
+            
+            case "crypto" :
+                break;         
+            }        
+            
+            if (btn === "rnk") 
+            {
+                $("#popup_content .srt").eq(result.button).attr({src:"img/sort.png", alt:"srt"});
+                rank = "false";
+            }
+            else 
+            {
+                $("#popup_content .srt").eq(result.button).attr({src:"img/rank.png", alt:"rnk"}); 
+                rank = "true";
+            }
+            
+            // Refresh the first select menu, else the second select menu.
+            if (result.button === 0) 
+            {
+                removeSelectMenu("service"); 
+                addSelectMenu(c, "get_groups", "hide=true&rank=" + rank, "service", phg, 0, "group");
+                removeSelectMenu("account"); 
+                disableSelectMenu("account", pha);
+            }
+            else if ($("#account").next().attr('class').split(' ')[1] !== "disabled") 
+            {                    
+                let id = $("#service").next().find(".selected").attr('data-value');
+                removeSelectMenu("account"); 
+                addSelectMenu(c, page, "rank=" + rank + "&hide=true&gid=" + id, "account", pha, 0, "business"); 
+            }
+        }
+        else {
+            showDatabaseError(result);
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
 }
 
 /*
  * Function:    addAmountAndRadioButton
  *
  * Created on Jun 07, 2024
- * Updated on Jun 10, 2024
+ * Updated on Jun 12, 2024
  *
- * Description:  .
+ * Description:  Add the amount and radio button.
  *
  * In:  ph, c, name, x, y, z
  * Out: label

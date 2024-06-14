@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 05, 2024
- * Updated on Jun 09, 2024
+ * Updated on Jun 14, 2024
  *
  * Description: Check if the user is signed in and get the businesses from the databases tbl_businesses table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Jun 09, 2024
+ * Updated on Jun 14, 2024
  *
  * Description: Get the businesses from the databases tbl_businesses table.
  *

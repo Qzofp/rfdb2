@@ -677,7 +677,7 @@ function setPopupChoice(adp, e, c, s) {
  * Created on May 25, 2024
  * Updated on Jun 05, 2024
  *
- * Description: Get the choosen select value and proces that value.
+ * Description: Get the choosen select value and process that value.
  *
  * In:  c, that
  * Out: -
