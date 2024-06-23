@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Jun 07, 2024
+ * Updated on Jun 23, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Jun 07, 2024
+ * Updated on Jun 23, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -86,37 +86,40 @@ function GetFinances()
                 break;
             
             case "stock" :
-                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), ' ') AS `deposit`";
-                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), ' ') AS `withdrawal`";
+                $id         = "CONCAT(tbl_stocks.id, '_', tbl_services.id, '_', tbl_accounts.id)";
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), '') AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), '') AS `withdrawal`";
                 $date       = "DATE_FORMAT(tbl_stocks.`date`,'$date_format') AS `date`";
                 $table      = "tbl_stocks";
                 
-                $query = "SELECT tbl_stocks.`id`, $date, $deposit, $withdrawal, `service`, `account`, tbl_stocks.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, tbl_stocks.`description` ".
                          "FROM tbl_stocks ".
                          "LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id` ".
                          "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
                 break;
             
             case "savings" :
-                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), ' ') AS `deposit`";
-                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), ' ') AS `withdrawal`";
+                $id         = "CONCAT(tbl_savings.id, '_', tbl_services.id, '_', tbl_accounts.id)";
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), '') AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), '') AS `withdrawal`";
                 $date       = "DATE_FORMAT(tbl_savings.`date`,'$date_format') AS `date`";
                 $table      = "tbl_savings";
                 
-                $query = "SELECT tbl_savings.`id`, $date, $deposit, $withdrawal, `service`, `account`, tbl_savings.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, tbl_savings.`description` ".
                          "FROM tbl_savings ".
                          "LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id` ".
                          "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
                 break;  
             
             case "crypto" :
-                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), ' ') AS `deposit`";
-                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), ' ') AS `withdrawal`";
+                $id         = "CONCAT(tbl_crypto.id, '_', tbl_services.id, '_', tbl_accounts.id, '_', tbl_cryptocurrenties.`id`)";
+                $deposit    = "COALESCE(CONCAT('$sign ', NULLIF(FORMAT(`deposit`,2,'$format'), null )), '') AS `deposit`";
+                $withdrawal = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`withdrawal`,2,'$format'), null )), '') AS `withdrawal`";
                 $amount     = "COALESCE(NULLIF(FORMAT(`amount`,8,'$format'), null ), ' ')";
                 $date       = "DATE_FORMAT(tbl_crypto.`date`,'$date_format') AS `date`";
                 $table      = "tbl_crypto";
                 
-                $query = "SELECT tbl_crypto.`id`, $date, $deposit, $withdrawal, `service`, `account`, $amount, `symbol`, tbl_crypto.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, $amount, `symbol`, tbl_crypto.`description` ".
                          "FROM tbl_crypto ".
                          "LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id` ".
                          "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".

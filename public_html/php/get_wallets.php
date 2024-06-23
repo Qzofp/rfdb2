@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on Jun 01, 2024
+ * Updated on Jun 22, 2024
  *
  * Description: Check if the user is signed in and get the wallets from the databases tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetCryptos
  *
  * Created on May 19, 2024
- * Updated on Jun 01, 2024
+ * Updated on Jun 22, 2024
  *
  * Description: Get the wallets from the databases tbl_wallets table.
  *
@@ -38,10 +38,22 @@ else {
  */
 function GetWallets()
 {   
+    $aid  = filter_input(INPUT_POST, 'aid', FILTER_SANITIZE_STRING);
     $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
     
     $response = [];
     
+    // Determine the where clause.
+    $where = "";
+    if ($aid) 
+    {
+        $id = "tbl_cryptocurrenties.`id` ";
+        $where = "WHERE tbl_accounts.`id` = $aid AND tbl_cryptocurrenties.`hide` = 0 ";
+    }
+    else {
+        $where = "WHERE tbl_accounts.`hide` = 0 AND tbl_cryptocurrenties.`hide` = 0 ";
+    }
+  
     try 
     {
         $db = OpenDatabase();
@@ -52,6 +64,7 @@ function GetWallets()
                  "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                  "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                 $where .
                  "ORDER BY `$sort`;";
     
         $select = $db->prepare($query);

@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Jun 08, 2024
+ * Updated on Jun 20, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -64,35 +64,80 @@
  width: 85% !important;
 }
 
-.popup_finances table {
+.popup_finances table,
+.popup_stocks table,
+.popup_savings table,
+.popup_crypto table {
  width: calc(95% - 10px) !important;
 }
 
+#popup_container .popup_stocks,
+#popup_container .popup_savings {
+ width: 80% !important;
+}
+
 .popup_finances td:nth-child(1),  /* Date */
-.popup_finances td:nth-child(7) { /* Amount */
+.popup_finances td:nth-child(7),  /* Amount */
+.popup_stocks td:nth-child(1),
+.popup_stocks td:nth-child(7), 
+.popup_savings td:nth-child(1),
+.popup_savings td:nth-child(7),
+.popup_crypto td:nth-child(1),
+.popup_crypto td:nth-child(7),
+.popup_crypto td:nth-child(12) { 
  width:8%; 
 }  
 
-.popup_finances td:nth-child(6) {  /* Sign */
- /*width:1.5%;*/
+.popup_finances td:nth-child(6),  /* Sign */
+.popup_stocks td:nth-child(6),
+.popup_savings td:nth-child(6), 
+.popup_crypto td:nth-child(6) { 
+ width:2%;
  text-align: right !important;
- /*padding-right: 5px;*/
  color: #808080;
 }
 
 .popup_finances td:nth-child(2),   /* Payment */
 .popup_finances td:nth-child(9),   /* Service (Group) */
-.popup_finances td:nth-child(11) {  /* Account (Business) */ 
+.popup_finances td:nth-child(11),  /* Account (Business) */ 
+.popup_crypto td:nth-child(9), 
+.popup_crypto td:nth-child(11) {
   width:15%;
+} 
+
+.popup_stocks td:nth-child(9),   /* Service */
+.popup_stocks td:nth-child(11),  /* Account */ 
+.popup_savings td:nth-child(9),  
+.popup_savings td:nth-child(11) {
+    width:20%;
 } 
 
 .popup_finances td:nth-child(3),  /* Radio buttons */
 .popup_finances td:nth-child(4),
-.popup_finances td:nth-child(5) { 
+.popup_finances td:nth-child(5),
+.popup_stocks td:nth-child(3),  
+.popup_stocks td:nth-child(4),
+.popup_savings td:nth-child(3),  
+.popup_savings td:nth-child(4), 
+.popup_crypto td:nth-child(3),  
+.popup_crypto td:nth-child(4) {
   width:2%;
 } 
 
+.popup_crypto td:nth-child(13) { /* Crypto */
+  width:8%;
+} 
+
 .popup_finances td:nth-child(14) { /* Description */ 
+  width:30%;
+} 
+
+.popup_stocks td:nth-child(14), /* Description */ 
+.popup_savings td:nth-child(14) {
+  width:37%;
+} 
+
+.popup_crypto td:nth-child(14) { /* Description */ 
   width:31%;
 } 
 

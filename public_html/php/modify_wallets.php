@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 31, 2024
- * Updated on Jun 01, 2024
+ * Updated on Jun 21, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -120,7 +120,7 @@ function ModifyWallets()
  * Function:    EditWallet
  *
  * Created on Jun 01, 2024
- * Updated on Jun 01, 2024
+ * Updated on Jun 21, 2024
  *
  * Description: Edit the tbl_wallet table with the input if the wallet doesn't exists.
  *
@@ -130,9 +130,9 @@ function ModifyWallets()
  */    
  function EditWallet($id, $hide, $sid, $aid, $cid, $desc)
  {   
-    $response = CheckWallet($id, $aid, $cid);
+    $response = CheckWallet($id, $aid, $cid);    
     if ($response['success'] && !$response['exists'])
-    {    
+    {             
         try 
         {                
             $db = OpenDatabase();
@@ -153,13 +153,13 @@ function ModifyWallets()
             // debug
             //$response['query'] = $query;                
             
-            $response['success'] = true;  
+                $response['success'] = true;  
         }
         catch (PDOException $e) 
         {    
             $response['message'] = $e->getMessage();
             $response['success'] = false;
-        } 
+        }
     }
     
     // Close database connection.

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jun 14, 2024
+ * Updated on Jun 23, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function setSheetPopupChoice(e, c, s, i) {
  * Function:    showPopupRadioButtonLabel
  *
  * Created on Jun 06, 2024
- * Updated on Jun 09, 2024
+ * Updated on Jun 20, 2024
  *
  * Description: Show the radio button label in the popup window.
  *
@@ -77,12 +77,18 @@ function showPopupRadioButtonLabel(value, c, name) {
             break;
             
         case "stock" :
+            label = c.investment[Number(value) + 1];
+            x = 1; y = 3; z = 12;
             break;
             
         case "savings" :
+            label = c.savings[Number(value) + 1];
+            x = 1; y = 3; z = 12;            
             break;
             
         case "crypto" :
+            label = c.crypto[Number(value) + 1];
+            x = 1; y = 3; z = 12;
             break;            
     } 
     
@@ -94,7 +100,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Jun 14, 2024
+ * Updated on Jun 21, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -108,7 +114,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
     request.done(function(result) {
         if (result.success) {   
     
-            let ph, set, page, rank;
+            let ph, set, page, send, item, n;
             let select = $(that).parents(':eq(3)').find('select').attr('id');
             let id = $(that).attr('data-value');
             
@@ -118,32 +124,45 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                     ph = c.payment[7];
                     set = JSON.parse(s[1].value);
                     page = "get_businesses";
-                    rank = set.sort.bsn;
+                    send = "rank=" + set.sort.bsn + "&hide=true&gid=" + id;
+                    item = "business";
+                    n = 1;
                 break;
             
             case "stock" :
-                rank = "false";
+                ph = c.investment[5];
+                page = "get_accounts";
+                send = "sort=account&type=stock&hide=true&sid=" + id;
+                item = "account";
+                n = 1;
                 break;
             
             case "savings" :
-                rank = "false";
+                ph = c.savings[5];
+                page = "get_accounts";
+                send = "sort=account&type=savings&hide=true&sid=" + id;
+                item = "account";     
+                n = 1;
                 break;
             
             case "crypto" :
-                ph = c.wallets[3];
-                rank = "false";
+                ph = c.crypto[5];
+                page = "get_accounts";
+                send = "sort=account&type=crypto&hide=true&sid=" + id;
+                item = "account";  
+                n = 0;
                 break;         
             }
-        
+                        
             if (select === "service") 
             {
                 removeSelectMenu("account"); 
-                addSelectMenu(c, page, "rank=" + rank + "&hide=true&gid=" + id, "account", ph, 0, "business");    
+                addSelectMenu(c, page, send, "account", ph, 0, item, n);
             }
-            else if (s[i].name === "crypto" && select === "account" && !$("#table_container tbody .marked").length)
-            {
-                removeSelectMenu("cryptos");
-                addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", ph, 0, "symbol");
+            else if (s[i].name === "crypto" && !$("#table_container tbody .marked").length)
+            {   
+                removeSelectMenu("crypto");
+                addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + id, "crypto", c.crypto[7], 0, "symbol");
             }
         }
     });
@@ -240,7 +259,7 @@ function setSheetPopupTable(popclass, title, page, n) {
  * Function:    showSheetEditPopup
  *
  * Created on Jun 04, 2024
- * Updated on Jun 07, 2024
+ * Updated on Jun 20, 2024
  *
  * Description: Shows the popup when the page edit button is pressed.
  *
@@ -266,12 +285,15 @@ function showSheetEditPopup(adp, c, i, that="") {
                     break;
             
                 case "stock" :
+                    showSheetStocksPopup(adp, c, s, i);
                     break;
             
                 case "savings" :
+                    showSheetSavingsPopup(adp, c, s, i);
                     break;
             
                 case "crypto" :
+                    showSheetCryptoPopup(adp, c, s, i);
                     break;            
             } 
         }
@@ -291,7 +313,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Jun 12, 2024
+ * Updated on Jun 20, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -307,11 +329,7 @@ function showSheetFinancePopup(adp, c, s, i) {
     
     // Get row input, is empty when row is empty or not selected.
     cells = setSheetPopupTable("popup_finances", c.payment[0], s[i], 9);
-    
-    // Test: hide 3rd radio button, sort and rank buttons.
-    // $(".popup_table_finance td li:eq(2)").hide();
-    // $(".popup_table_finance .srt").hide();
-    
+        
     // Hide other input fields, which are not necessary for the finances popup.
     $("#number").hide();
     $("#crypto").hide();
@@ -346,8 +364,184 @@ function showSheetFinancePopup(adp, c, s, i) {
     
     // Add description.
     $("#popup_content .popup_table_finance #description").attr("placeholder", c.payment[8]).val(cells[8]);  
-
     $("#popup_container").fadeIn("slow");    
+}
+
+/*
+ * Function:    showSheetStocksPopup
+ *
+ * Created on Jun 15, 2024
+ * Updated on Jun 20, 2024
+ *
+ * Description:  Shows the popup content for the stocks page.
+ *
+ * In:  adp, c, s, i
+ * Out: -
+ *
+ */
+function showSheetStocksPopup(adp, c, s, i) {
+
+    var cells, label;
+    var set = JSON.parse(s[5].value);
+    
+    // Get row input, is empty when row is empty or not selected.
+    cells = setSheetPopupTable("popup_stocks", c.investment[0], s[i], 9);    
+       
+    // Hide other input fields, which are not necessary for the stocks popup.
+    $("#payment").hide();
+    $(".popup_table_finance td:eq(4)").hide();
+    $(".popup_table_finance .srt").hide();
+    $("#number").hide();
+    $("#crypto").hide();  
+    
+    // Add date.
+    $("#popup_content .popup_table_finance #date").attr("placeholder", c.investment[1]).val(cells[1]);
+    if (cells[1]) {
+        setAirDatePicker(adp, cells[1]);
+    }
+    else {
+        adp.clear();  
+    }    
+    
+    // Add radio buttons and label.
+    $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
+    label = addAmountAndRadioButton(c.misc[2], c, s[i].name, cells[2], cells[3]);    
+    changePopupMessageRow(label, 1, 3, 12);    
+    
+    // Add Select Menus.
+    removeSelectMenu(); 
+    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.investment[4], cells[0].split("_")[1], "service");
+    if (cells[5]) {
+        addSelectMenu(c, "get_accounts", "sort=account&type=stock&hide=true&sid=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], "account");
+    }
+    else {
+        disableSelectMenu("account", c.investment[5]);
+    } 
+     
+    // Add description.
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.investment[6]).val(cells[6]);        
+    $("#popup_container").fadeIn("slow");    
+}
+
+/*
+ * Function:    showSheetSavingsPopup
+ *
+ * Created on Jun 19, 2024
+ * Updated on Jun 20, 2024
+ *
+ * Description:  Shows the popup content for the savings page.
+ *
+ * In:  adp, c, s, i
+ * Out: -
+ *
+ */
+function showSheetSavingsPopup(adp, c, s, i) {
+
+    var cells, label;
+    var set = JSON.parse(s[5].value);
+    
+    // Get row input, is empty when row is empty or not selected.
+    cells = setSheetPopupTable("popup_savings", c.savings[0], s[i], 9);    
+       
+    // Hide other input fields, which are not necessary for the savings popup.
+    $("#payment").hide();
+    $(".popup_table_finance td:eq(4)").hide();
+    $(".popup_table_finance .srt").hide();
+    $("#number").hide();
+    $("#crypto").hide();  
+    
+    // Add date.
+    $("#popup_content .popup_table_finance #date").attr("placeholder", c.savings[1]).val(cells[1]);
+    if (cells[1]) {
+        setAirDatePicker(adp, cells[1]);
+    }
+    else {
+        adp.clear();  
+    }    
+    
+    // Add radio buttons and label.
+    $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
+    label = addAmountAndRadioButton(c.misc[2], c, s[i].name, cells[2], cells[3]);    
+    changePopupMessageRow(label, 1, 3, 12);    
+    
+    // Add Select Menus.
+    removeSelectMenu(); 
+    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.savings[4], cells[0].split("_")[1], "service");
+    if (cells[5]) {
+        addSelectMenu(c, "get_accounts", "sort=account&type=savings&hide=true&sid=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], "account");
+    }
+    else {
+        disableSelectMenu("account", c.savings[5]);
+    } 
+     
+    // Add description.
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.savings[6]).val(cells[6]);       
+    $("#popup_container").fadeIn("slow");    
+}
+
+/*
+ * Function:    showSheetCryptoPopup
+ *
+ * Created on Jun 20, 2024
+ * Updated on Jun 23, 2024
+ *
+ * Description:  Shows the popup content for the crypto page.
+ *
+ * In:  adp, c, s, i
+ * Out: -
+ *
+ */
+function showSheetCryptoPopup(adp, c, s, i) {
+
+    var cells, label;
+    var set = JSON.parse(s[5].value);
+    
+    // Get row input, is empty when row is empty or not selected.
+    cells = setSheetPopupTable("popup_crypto", c.crypto[0], s[i], 9);    
+       
+    // Hide other input fields, which are not necessary for the crypto popup.
+    $("#payment").hide();
+    $(".popup_table_finance td:eq(4)").hide();
+    $(".popup_table_finance .srt").hide();
+    
+    // Add date.
+    $("#popup_content .popup_table_finance #date").attr("placeholder", c.crypto[1]).val(cells[1]);
+    if (cells[1]) {
+        setAirDatePicker(adp, cells[1]);
+    }
+    else {
+        adp.clear();  
+    }    
+    
+    // Add radio buttons and label.
+    $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
+    label = addAmountAndRadioButton(c.misc[2], c, s[i].name, cells[2], cells[3]);    
+    changePopupMessageRow(label, 1, 3, 12);    
+    
+    // Add Select Menus.
+    removeSelectMenu(); 
+    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.crypto[4], cells[0].split("_")[1], "service");
+    if (cells[5]) {
+        addSelectMenu(c, "get_accounts", "sort=account&type=crypto&hide=true&sid=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], "account");
+    }
+    else {
+        disableSelectMenu("account", c.crypto[5]);
+    } 
+    
+    // Add number input field.
+    $("#popup_content .popup_table_finance #number").attr("placeholder", c.crypto[6]).val(cells[6]);      
+    
+    // Add crypto select menu.
+    if (cells[7]) {    
+        addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[2], "symbol");
+    }
+    else {
+        disableSelectMenu("crypto", c.crypto[7]);
+    }
+      
+    // Add description input field.
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.crypto[8]).val(cells[8]);       
+    $("#popup_container").fadeIn("slow");      
 }
 
 /*

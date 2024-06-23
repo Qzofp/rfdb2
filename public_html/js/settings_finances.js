@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Jun 05, 2024
+ * Updated on Jun 18, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -628,7 +628,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Jun 05, 2024
+ * Updated on Jun 18, 2024
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -668,7 +668,7 @@ function showCryptoPopupWallets(c, s, h) {
     addSelectMenu(c, "get_services", "sort=service&type=crypto", "services", c.wallets[1], cells[0].split("_")[1], "service", 0);
     
     if (cells[2]) {
-        addSelectMenu(c, "get_accounts", "sort=account&hide=true&sid=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_accounts", "sort=account&type=crypto&hide=true&sid=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], "account");
     }
     else {
         disableSelectMenu("accounts", c.wallets[2]);  

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 14, 2024
+ * Updated on Jun 18, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Jun 14, 2024
+ * Updated on Jun 15, 2024
  *
  * Description: Open the sheet page.
  *
@@ -158,9 +158,9 @@ function openSheetPage(c, s, i) {
     });
     
     // Settings popup <enter> button is pressed.  
-    // $("#popup_content").on("keypress","form",function(e) {    
-    //     getPopupEnterKey(e);
-    // });
+    $("#popup_content").on("keypress","form",function(e) {    
+        getPopupEnterKey(e);
+    });
     
     // Popup radio button is selected.
     $("#popup_content input[type='radio']").change(function() {
