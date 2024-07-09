@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on Jun 21, 2024
+ * Updated on Jun 24, 2024
  *
  * Description: Check if the user is signed in and get the cryptos from the databases tbl_cryptocurrenties table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetCryptos
  *
  * Created on May 19, 2024
- * Updated on Jun 21, 2024
+ * Updated on Jun 24, 2024
  *
  * Description: Get the cryptos from the databases tbl_cryptocurrenties table.
  *
@@ -44,6 +44,7 @@ function GetCryptos()
     $response = [];
     
     // Determine the where clause.
+    $where = "";
     if ($hide) {
         $where = "WHERE `hide` = 0 ";
     }    

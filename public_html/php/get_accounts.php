@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Jun 18, 2024
+ * Updated on Jul 03, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Jun 18, 2024
+ * Updated on Jul 03, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -59,21 +59,18 @@ function GetAccounts()
         }
      
         // Determine the where clause.
-        if ($sid) 
+        $where = "WHERE tbl_accounts.`type` = '$type' ";      
+        if ($sid)
         {
-            $id = "tbl_accounts.`id` ";
-            $where = "WHERE tbl_accounts.`sid` = $sid ";
-            
-            if ($type) {
-                $where .= "AND tbl_accounts.`type` = '$type' ";
-            } 
+            $id = "tbl_accounts.`id` ";       
+            if ($sid > 0) {
+                $where .= "AND tbl_accounts.`sid` = $sid ";
+            }
         }
-        else 
-        {
+        else {
             $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
-            $where = "WHERE tbl_accounts.`type` = '$type' ";
         }
-        
+      
         if ($hide) {
             $where .= "AND tbl_accounts.`hide` = 0 ";
         }

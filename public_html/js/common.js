@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 08, 2024
+ * Updated on Jun 28, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.

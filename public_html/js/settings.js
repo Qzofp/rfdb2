@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jun 21, 2024
+ * Updated on Jun 25, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on May 27, 2024
+ * Updated on Jun 25, 2024
  *
  * Description: Shows the settings page.
  *
@@ -106,7 +106,7 @@ function showSettings(c, s) {
 
     // Select event is triggered.
     $("#popup_content").on('click', '.list .selected', function() {
-        getSelectAndProcessChoice(c, this);
+        getSelectAndProcessChoice(c, s, this);
     });
     
     // Show the page theme.
@@ -675,26 +675,27 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Jun 21, 2024
+ * Updated on Jun 25, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
- * In:  c, that
+ * In:  c, s, that
  * Out: -
  *
  */
-function getSelectAndProcessChoice(c, that) {
+function getSelectAndProcessChoice(c, s, that) {
 
     var popup = $('#popup_content').attr('class');
     if (popup === "gen_wallets") 
     {
+        var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
         var select = $(that).parents(':eq(3)').find('select').attr('id');
         var id = $(that).attr('data-value');
         
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
-            addSelectMenu(c, "get_accounts", "sort=account&hide=true&sid=" + id, "accounts", c.wallets[2], 0, "account", 0);
+            addSelectMenu(c, "get_accounts", "sort=account&hide=true&sid=" + id + "&type=" + s[slide].name, "accounts", c.wallets[2], 0, "account", 0);
         }
         else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {

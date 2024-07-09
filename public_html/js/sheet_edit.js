@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jun 23, 2024
+ * Updated on Jul 08, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    setSheetPopupChoice
  *
  * Created on Jun 10, 2024
- * Updated on Jun 14, 2024
+ * Updated on Jul 08, 2024
  *
  * Description: Set the choice made in the sheet popup window.
  *
@@ -32,15 +32,7 @@ function setSheetPopupChoice(e, c, s, i) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;          
-    switch (btn) {
-        case "ok"  :
-        case "add" :
-            
-            // Debug
-            changePopupMessageRow("This is a test message!");
-            
-            break;
-        
+    switch (btn) {        
         case "srt" :
             setSortButton(c, s, i, "srt", e);
             break
@@ -48,6 +40,13 @@ function setSheetPopupChoice(e, c, s, i) {
         case "rnk" :
             setSortButton(c, s, i, "rnk", e);
             break
+            
+        case "cancel" :
+            break;
+            
+        default :
+            modifySheets(c, s, i, btn);
+            break;
     }
 }
 
@@ -100,7 +99,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Jun 21, 2024
+ * Updated on Jun 24, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -159,7 +158,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                 removeSelectMenu("account"); 
                 addSelectMenu(c, page, send, "account", ph, 0, item, n);
             }
-            else if (s[i].name === "crypto" && !$("#table_container tbody .marked").length)
+            else if (s[i].name === "crypto" && !$("#table_container tbody .marked").length && select === "account")
             {   
                 removeSelectMenu("crypto");
                 addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + id, "crypto", c.crypto[7], 0, "symbol");
@@ -313,7 +312,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Jun 20, 2024
+ * Updated on Jul 03, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -353,7 +352,7 @@ function showSheetFinancePopup(adp, c, s, i) {
       
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_accounts", "sort=account&hide=true&type=" + s[i].name, "payment", c.payment[2], cells[0].split("_")[1], "account");
+    addSelectMenu(c, "get_accounts", "sid=-1&sort=account&hide=true&type=" + s[i].name, "payment", c.payment[2], cells[0].split("_")[1], "account");
     addSelectMenu(c, "get_groups", "hide=true&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group"); 
     if (cells[6]) {
         addSelectMenu(c, "get_businesses", "rank=" + fin.sort.bsn + "&hide=true&gid=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");
@@ -698,4 +697,274 @@ function addAmountAndRadioButton(ph, c, name, x, y, z="") {
     $("#popup_content .popup_table_finance #amount").val(value);
     
     return label;
+}
+
+/*
+ * Function:    modifySheets
+ *
+ * Created on Jun 24, 2024
+ * Updated on Jun 28, 2024
+ *
+ * Description: Modify one of the finances sheets.
+ *
+ * In:  c, s, i, btn
+ * Out: -
+ *
+ */
+function modifySheets(c, s, i, btn) {
+    
+    switch(s[i].name) {
+        case "finance" :    
+            modifyFinances(c, s, btn);
+            break;
+
+        case "stock" :
+            break;
+        
+        case "savings" :
+            break;
+        
+        case "crypto" :
+            break;        
+    }
+}
+
+/*
+ * Function:    validateSheetInput
+ *
+ * Created on Jun 27, 2024
+ * Updated on Jun 29, 2024
+ *
+ * Description: Validate the input, check if it is not empty.
+ *
+ * In:  msg, items, input
+ * Out: check
+ *
+ */
+function validateSheetInput(msg, items, input) {
+    
+    var check = true; 
+    input.forEach((value, i) => {
+          
+        if (!value && check) 
+        {        
+                changePopupMessageRow(items[i] + " " + msg);  
+                check = false;
+        }        
+    });   
+
+    return check;
+}
+
+/*
+ * Function:    validateSheetCurrency
+ *
+ * Created on Jun 28, 2024
+ * Updated on Jul 07, 2024
+ *
+ * Description: Validate the currency, check if it is not empty and if it's a positive value.
+ *
+ * In:  c, s, value, nv (negative value)
+ * Out: check
+ *
+ */
+function validateSheetCurrency(c, s, value) {
+
+    var check = true;
+    if (!value) 
+    {
+        changePopupMessageRow(c.misc[2] + " " + c.messages[5]); 
+        check = false;
+    }
+    else 
+    {        
+        let regex, set = JSON.parse(s[5].value);
+        switch (set.sign) {
+            case "$" :
+            case "£" :
+                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/;
+                break;
+            
+            case "€"  :
+                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{2})?$/;
+                break;
+        }
+        
+        if (!regex.test(value) ? true : false) 
+        {
+            changePopupMessageRow(c.misc[2] + " " + c.messages[0]); 
+            check = false;
+        }     
+    }  
+    return check;       
+}
+
+/*
+ * Function:    correctAmount
+ *
+ * Created on Jul 07, 2024
+ * Updated on Jul 07, 2024
+ *
+ * Description: Correct the amount. Add zero's after the point or comma if they are missing.
+ *
+ * In:  s, amount
+ * Out: value
+ *
+ */
+function correctAmount(s, amount) {
+   
+    var format, value;
+    var set = JSON.parse(s[5].value);
+   
+    switch (set.sign) {
+        case "$" :
+        case "£" :
+            format = "en-US";
+            break;
+            
+        case "€"  :
+            format = "de-DE";
+            break;
+    }   
+   
+    if(!isNaN(amount)) {
+        value = Number(amount).toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    else {
+        value = amount;
+    }
+    
+    return value;
+}
+
+/*
+ * Function:    modifyFinances
+ *
+ * Created on Jun 24, 2024
+ * Updated on Jul 08, 2024
+ *
+ * Description: Check the finances sheet input and add, edit or remove the finances in the database.
+ *
+ * In:  c, s, btn
+ * Out: -
+ *
+ */
+function modifyFinances(c, s, btn) {
+    
+    var msg, amount, input = [];
+    
+    // Get the input values.
+    input.push($("#date").val(), $("#payment").val(), $('input[name="money"]:checked').val(), 
+               $("#service").val(), $("#account").val(), $("#description").val());
+    
+    amount = $("#amount").val();
+    
+    msg = c.messages[2].replace("#", $("#account option:selected").text());
+    if(!checkEditDelete(btn, msg))
+    {     
+        let items = [c.payment[1], c.payment[2], c.misc[2] + " " + c.misc[3], c.payment[6], c.payment[7], c.payment[8]];
+        
+        // Add, edit or delete the finances table row.
+        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+           
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            let set = JSON.parse(s[5].value);
+            
+            var send = 'date=' + input[0] + '&payment=' + input[1] + '&type=' + input[2] + '&sign=' + set.sign +
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
+                       '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
+            
+            // debug
+            //console.log(send);
+          
+            var request = getAjaxRequest("modify_finances_sheet", send);
+            request.done(function(result) {
+                
+                //console.log(result.query);
+                
+                if (result.success) {    
+                   
+                    switch (action) {
+                        case "add"    :                        
+                            // Correct the id and get the select values.
+                            result.id += "_" + result.payment + 
+                                         "_" + result.service + 
+                                         "_" + result.account;
+                                
+                            result.payment = $(".nice-select .current:first").html();
+                            result.service = $(".nice-select .current:eq(1)").html();
+                            result.account = $(".nice-select .current:eq(2)").html();
+                            showAddRow(result);   
+                            break;
+                                
+                        case "edit"   :   
+                            // Correct the id get the select values.
+                            result.id += "_" + result.payment + 
+                                         "_" + result.service + 
+                                         "_" + result.account;
+                                                                
+                            result.payment = $(".nice-select .current:first").html();
+                            result.service = $(".nice-select .current:eq(1)").html();
+                            result.account = $(".nice-select .current:eq(2)").html();            
+                            showEditRow(result);
+                            break;
+                                
+                        case "delete" :
+                            showDeleteRow();
+                            break;
+                    }
+                            
+                    // Close popup window or clear input fields.
+                    if (btn === 'ok') {
+                        closePopupWindow();                           
+                    }
+                    else 
+                    {           
+                        // Reset input.
+                        $("#date").val("");   
+                        
+                        // Reset nice-select menu if there is more then 1 item.
+                        if ($("#payment > option").length >= 1) { 
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.payment[2] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");                       
+                        }                             
+                        $("#payment").val("");
+                        
+                        // Reset radio buttons.
+                        $('input[name="money"]').prop('checked', false);
+                        $(".popup_table_finance .label").html("&nbsp;");
+                        $(".popup_table_finance .msg").html("&nbsp;");
+                        
+                        $("#amount").val(""); 
+
+                        if ($("#service > option").length >= 1) {
+                                $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.payment[6] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }                        
+                        $("#service").val("");
+
+                        if ($("#account > option").length >= 1) {
+                                $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.payment[7] + '</span>');
+                                $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }   
+                        $("#account").val("");                           
+                        
+                        $("#description").val("");                             
+                    }     
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });    
+            closeErrorMessage();  
+        }                    
+    }     
 }
