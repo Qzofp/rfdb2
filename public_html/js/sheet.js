@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 18, 2024
+ * Updated on Jul 10, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -589,7 +589,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on Jun 03, 2024
+ * Updated on Jul 10, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -604,7 +604,7 @@ function getAndShowTableTotals(page, send, c, s, i) {
     // Show the balance label.
     $("#balance u").html(c.misc[1]); 
     
-    send += "&name=" + s[i].name;
+    //send += "&name=" + s[i].name;
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
         if (result.success) {         

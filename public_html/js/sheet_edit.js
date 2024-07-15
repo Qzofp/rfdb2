@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jul 08, 2024
+ * Updated on Jul 15, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -703,7 +703,7 @@ function addAmountAndRadioButton(ph, c, name, x, y, z="") {
  * Function:    modifySheets
  *
  * Created on Jun 24, 2024
- * Updated on Jun 28, 2024
+ * Updated on Jul 13, 2024
  *
  * Description: Modify one of the finances sheets.
  *
@@ -719,9 +719,11 @@ function modifySheets(c, s, i, btn) {
             break;
 
         case "stock" :
+            modifyStocks(c, s, btn);
             break;
         
         case "savings" :
+            modifySavings(c, s, btn);
             break;
         
         case "crypto" :
@@ -803,7 +805,7 @@ function validateSheetCurrency(c, s, value) {
  * Function:    correctAmount
  *
  * Created on Jul 07, 2024
- * Updated on Jul 07, 2024
+ * Updated on Jul 15, 2024
  *
  * Description: Correct the amount. Add zero's after the point or comma if they are missing.
  *
@@ -813,27 +815,23 @@ function validateSheetCurrency(c, s, value) {
  */
 function correctAmount(s, amount) {
    
-    var format, value;
+    var format, tmp, value;
     var set = JSON.parse(s[5].value);
    
     switch (set.sign) {
         case "$" :
         case "£" :
             format = "en-US";
+            tmp = amount.replace(/[,]/g, '');    
             break;
             
         case "€"  :
             format = "de-DE";
+            tmp = amount.replace(/[.]/g, '').replace(/[,]/g, '.');
             break;
     }   
-   
-    if(!isNaN(amount)) {
-        value = Number(amount).toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    else {
-        value = amount;
-    }
-    
+
+    value = Number(tmp).toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return value;
 }
 
@@ -841,7 +839,7 @@ function correctAmount(s, amount) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Jul 08, 2024
+ * Updated on Jul 13, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -855,8 +853,7 @@ function modifyFinances(c, s, btn) {
     
     // Get the input values.
     input.push($("#date").val(), $("#payment").val(), $('input[name="money"]:checked').val(), 
-               $("#service").val(), $("#account").val(), $("#description").val());
-    
+               $("#service").val(), $("#account").val(), $("#description").val());    
     amount = $("#amount").val();
     
     msg = c.messages[2].replace("#", $("#account option:selected").text());
@@ -872,8 +869,7 @@ function modifyFinances(c, s, btn) {
                 id = id.split("_")[0];
             }
             
-            let set = JSON.parse(s[5].value);
-            
+            let set = JSON.parse(s[5].value);            
             var send = 'date=' + input[0] + '&payment=' + input[1] + '&type=' + input[2] + '&sign=' + set.sign +
                        '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
                        '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
@@ -884,8 +880,7 @@ function modifyFinances(c, s, btn) {
             var request = getAjaxRequest("modify_finances_sheet", send);
             request.done(function(result) {
                 
-                //console.log(result.query);
-                
+                //console.log(result.query);                
                 if (result.success) {    
                    
                     switch (action) {
@@ -928,7 +923,8 @@ function modifyFinances(c, s, btn) {
                         $("#date").val("");   
                         
                         // Reset nice-select menu if there is more then 1 item.
-                        if ($("#payment > option").length >= 1) { 
+                        if ($("#payment > option").length >= 1) 
+                        { 
                             $(".nice-select .current:first").html('<span class="placeholder">' + c.payment[2] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");                       
                         }                             
@@ -941,20 +937,24 @@ function modifyFinances(c, s, btn) {
                         
                         $("#amount").val(""); 
 
-                        if ($("#service > option").length >= 1) {
+                        if ($("#service > option").length >= 1) 
+                        {
                                 $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.payment[6] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
                         }                        
                         $("#service").val("");
 
-                        if ($("#account > option").length >= 1) {
+                        if ($("#account > option").length >= 1) 
+                        {
                                 $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.payment[7] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
                         }   
-                        $("#account").val("");                           
-                        
-                        $("#description").val("");                             
-                    }     
+                        $("#account").val("");                        
+                        $("#description").val("");    
+                    }
+                    
+                    // Adjust the total value (income, xfixed or xother).
+                    GetAndAdjustFinancesTotals(set.sign);                    
                 }
                 else {
                     showDatabaseError(result);
@@ -967,4 +967,406 @@ function modifyFinances(c, s, btn) {
             closeErrorMessage();  
         }                    
     }     
+}
+
+/*
+ * Function:    GetAndAdjustFinancesTotals
+ *
+ * Created on Jul 10, 2024
+ * Updated on Jul 14, 2024
+ *
+ * Description: Get and adjust the total(s) of the finances sheet table.
+ *
+ * In:  sign
+ * Out: -
+ *
+ */
+function GetAndAdjustFinancesTotals(sign) {
+    
+    var date, send;
+    
+    date = getSelectedDateFromPage();    
+    send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
+           "&sign=" + sign + "&name=finance";    
+
+    var request = getAjaxRequest("get_finances_totals", send);
+    request.done(function(result) {
+        if (result.success) {         
+            let n, balance;
+            
+            // Adjust balance.
+            if (result.data[0].balance === "&nbsp;") {
+                balance = 0;
+            }
+            else {
+                balance = result.data[0].balance;
+            }
+                      
+            n = $("#balance span").currencyToNumber();
+            $("#balance span").data('value', balance);
+            $("#balance span").startCounter(n, 2000, sign);
+            
+            if (result.data[0].balance.includes("-")) {
+                $("#balance span").css("color", "#C11B17");
+            }
+            else {
+                $("#balance span").css("color", "green"); 
+            }            
+            
+            // Adjust income, fixed and other totals.
+            n = $("#table_container tfoot td:nth-child(2)").currencyToNumber();
+            if (n > 0 || !isNaN(result.data[0].income))  
+            {             
+                $("#table_container tfoot td:nth-child(2)").data('value', isNaN(result.data[0].income) ? "0" : result.data[0].income);
+                $("#table_container tfoot td:nth-child(2)").startCounter(n, 1500, sign);
+            }    
+   
+            n = $("#table_container tfoot td:nth-child(3)").currencyToNumber();
+            if (n < 0 || !isNaN(result.data[0].fixed))  
+            {             
+                $("#table_container tfoot td:nth-child(3)").data('value', isNaN(result.data[0].fixed) ? "0" : result.data[0].fixed);
+                $("#table_container tfoot td:nth-child(3)").startCounter(n, 1500, sign);
+            }    
+
+            n = $("#table_container tfoot td:nth-child(4)").currencyToNumber();  
+            if (n < 0 || !isNaN(result.data[0].other))  
+            {             
+                $("#table_container tfoot td:nth-child(4)").data('value', isNaN(result.data[0].other) ? "0" : result.data[0].other);
+                $("#table_container tfoot td:nth-child(4)").startCounter(n, 1500, sign);  
+            }
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
+}
+
+/*
+ * Function:    modifyStocks
+ *
+ * Created on Jul 12, 2024
+ * Updated on Jul 13, 2024
+ *
+ * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
+ *
+ * In:  c, s, btn
+ * Out: -
+ *
+ */
+function modifyStocks(c, s, btn) {
+    
+    var msg, amount, input = [];
+    
+    // Get the input values.
+    input.push($("#date").val(), $('input[name="money"]:checked').val(), 
+               $("#service").val(), $("#account").val(), $("#description").val());   
+    amount = $("#amount").val();
+    
+    msg = c.messages[2].replace("#", $("#account option:selected").text());
+    if(!checkEditDelete(btn, msg))
+    {     
+        let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.investment[4], c.investment[5], c.investment[6]];
+        
+        // Add, edit or delete the finances table row.
+        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+           
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            let set = JSON.parse(s[5].value);            
+            var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
+                       '&desc=' + encodeURIComponent(input[4]) + '&id=' + id + '&action=' + action; 
+            
+            // debug
+            //console.log(send);
+          
+            var request = getAjaxRequest("modify_stocks_sheet", send);
+            request.done(function(result) {
+                
+                //console.log(result.query);                
+                if (result.success) {    
+                   
+                    switch (action) {
+                        case "add"    :                        
+                            // Correct the id and get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();
+                            showAddRow(result);   
+                            break;
+                                
+                        case "edit"   :   
+                            // Correct the id get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();            
+                            showEditRow(result);
+                            break;
+                                
+                        case "delete" :
+                            showDeleteRow();
+                            break;
+                    }
+                            
+                    // Close popup window or clear input fields.
+                    if (btn === 'ok') {
+                        closePopupWindow();                           
+                    }
+                    else 
+                    {           
+                        // Reset input.
+                        $("#date").val("");   
+                                                
+                        // Reset radio buttons.
+                        $('input[name="money"]').prop('checked', false);
+                        $(".popup_table_finance .label").html("&nbsp;");
+                        $(".popup_table_finance .msg").html("&nbsp;");
+                        
+                        $("#amount").val(""); 
+
+                        // Reset nice-select menu if there is more then 1 item.
+                        if ($("#service > option").length >= 1) 
+                        {
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.investment[4] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }                        
+                        $("#service").val("");
+
+                        if ($("#account > option").length >= 1) 
+                        {
+                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.investment[5] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }   
+                        $("#account").val("");                           
+                        
+                        $("#description").val("");    
+                    }
+                    
+                    // Adjust the total values (balance, deposit and withdrawal).
+                    GetAndAdjustSheetTotals(set.sign, "stock");                    
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });    
+            closeErrorMessage();          
+        }                    
+    }     
+}
+
+/*
+ * Function:    modifySavings
+ *
+ * Created on Jul 13, 2024
+ * Updated on Jul 15, 2024
+ *
+ * Description: Check the savings sheet input and add, edit or remove the savings in the database.
+ *
+ * In:  c, s, btn
+ * Out: -
+ *
+ */
+function modifySavings(c, s, btn) {
+    
+    var msg, amount, input = [];
+    
+    // Get the input values.
+    input.push($("#date").val(), $('input[name="money"]:checked').val(), 
+               $("#service").val(), $("#account").val(), $("#description").val());   
+    amount = $("#amount").val();
+    
+    msg = c.messages[2].replace("#", $("#account option:selected").text());
+    if(!checkEditDelete(btn, msg))
+    {     
+        let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.investment[4], c.savings[5], c.savings[6]];
+        
+        // Add, edit or delete the finances table row.
+        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+           
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            let set = JSON.parse(s[5].value);            
+            var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
+                       '&desc=' + encodeURIComponent(input[4]) + '&id=' + id + '&action=' + action; 
+            
+            // debug
+            //console.log(send);
+          
+            var request = getAjaxRequest("modify_savings_sheet", send);
+            request.done(function(result) {
+                
+                //console.log(result.query);                
+                if (result.success) {    
+                   
+                    switch (action) {
+                        case "add"    :                        
+                            // Correct the id and get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();
+                            showAddRow(result);   
+                            break;
+                                
+                        case "edit"   :   
+                            // Correct the id get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();            
+                            showEditRow(result);
+                            break;
+                                
+                        case "delete" :
+                            showDeleteRow();
+                            break;
+                    }
+                            
+                    // Close popup window or clear input fields.
+                    if (btn === 'ok') {
+                        closePopupWindow();                           
+                    }
+                    else 
+                    {           
+                        // Reset input.
+                        $("#date").val("");   
+                                                
+                        // Reset radio buttons.
+                        $('input[name="money"]').prop('checked', false);
+                        $(".popup_table_finance .label").html("&nbsp;");
+                        $(".popup_table_finance .msg").html("&nbsp;");
+                        
+                        $("#amount").val(""); 
+
+                        // Reset nice-select menu if there is more then 1 item.
+                        if ($("#service > option").length >= 1) 
+                        {
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.savings[4] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }                        
+                        $("#service").val("");
+
+                        if ($("#account > option").length >= 1) 
+                        {
+                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }   
+                        $("#account").val("");                           
+                        
+                        $("#description").val("");    
+                    }
+                    
+                    // Adjust the total values (balance, deposit and withdrawal).
+                    GetAndAdjustSheetTotals(set.sign, "savings");                    
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });    
+            closeErrorMessage();          
+        }                    
+    }     
+}
+
+
+// ModifyCrypto
+
+
+/*
+ * Function:    GetAndAdjustSheetTotals
+ *
+ * Created on Jul 12, 2024
+ * Updated on Jul 14, 2024
+ *
+ * Description: Get and adjust the total(s) of the stocks, savings or crypto sheet table.
+ *
+ * In:  sign, name
+ * Out: -
+ *
+ */
+function GetAndAdjustSheetTotals(sign, name) {
+    
+    var date, send;
+    
+    date = getSelectedDateFromPage();    
+    send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
+           "&sign=" + sign + "&name=" + name;    
+  
+    var request = getAjaxRequest("get_finances_totals", send);
+    request.done(function(result) {
+        if (result.success) {         
+            let n, balance;
+            
+            // Adjust balance.
+            if (result.data[0].balance === "&nbsp;") {
+                balance = 0;
+            }
+            else {
+                balance = result.data[0].balance;
+            }
+                      
+            n = $("#balance span").currencyToNumber();
+            $("#balance span").data('value', balance);
+            $("#balance span").startCounter(n, 2000, sign);
+            
+            if (result.data[0].balance.includes("-")) {
+                $("#balance span").css("color", "#C11B17");
+            }
+            else {
+                $("#balance span").css("color", "green"); 
+            }            
+            
+            // Adjust deposit and withdrawal totals.
+            n = $("#table_container tfoot td:nth-child(2)").currencyToNumber();   
+            if (n > 0 || !isNaN(result.data[0].deposit))  
+            {            
+                $("#table_container tfoot td:nth-child(2)").data('value', isNaN(result.data[0].deposit) ? "0" : result.data[0].deposit);
+                $("#table_container tfoot td:nth-child(2)").startCounter(n, 1500, sign);  
+            }
+            
+            n = $("#table_container tfoot td:nth-child(3)").currencyToNumber();
+            if (n < 0 || !isNaN(result.data[0].withdrawal))  
+            {
+                $("#table_container tfoot td:nth-child(3)").data('value', isNaN(result.data[0].withdrawal) ? "0" : result.data[0].withdrawal);
+                $("#table_container tfoot td:nth-child(3)").startCounter(n, 1500, sign);   
+            }
+            
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();      
 }

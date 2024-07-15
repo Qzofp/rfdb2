@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jun 28, 2024
+ * Updated on Jul 12, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -943,7 +943,7 @@ function setStartYear(page, year) {
  * Function:   startCounter
  *
  * Created on May 14, 2024
- * Updated on May 15, 2024
+ * Updated on Jul 11, 2024
  *
  * Description: Start the counter, i.e. $(".count").startCounter(200, 1500, "€ ", "de-DE");
  *
@@ -951,7 +951,7 @@ function setStartYear(page, year) {
  * Out: 
  *
  */
-$.fn.startCounter = function(start, duration, sign){
+$.fn.startCounter = function(start, duration, sign) {
     
     var format, $el;
     
@@ -969,9 +969,8 @@ $.fn.startCounter = function(start, duration, sign){
     } 
             
     $el = this;  
-    $el.prop('Counter',start).animate({
-        Counter: $el.data('value')
-    }, {
+    $el.prop('Counter',start).animate({Counter: $el.data('value')}, 
+    {
         duration: duration,
         easing: 'swing',
         step: function () {
@@ -981,4 +980,27 @@ $.fn.startCounter = function(start, duration, sign){
             $(this).text(sign + " " +  this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         }    
     });
+};
+
+/*
+ * Function:   currencyToNumber
+ *
+ * Created on Jul 09, 2024
+ * Updated on Jul 12, 2024
+ *
+ * Description: Convert the currency to a number.
+ *
+ * In:  
+ * Out: 
+ *
+ */
+$.fn.currencyToNumber = function() {
+  
+    var $el = this.html().replace(/^.{1,2}|\.|,/g, '');
+    
+    if(isNaN($el)) {
+        $el = 0;
+    }
+        
+    return Number($el)/100;
 };

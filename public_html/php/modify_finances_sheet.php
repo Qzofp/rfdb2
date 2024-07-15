@@ -4,11 +4,11 @@
  * Author: Rizzo Productions
  * Version: 0.1
  *
- * File:    modify_wallets.php
+ * File:    modify_finances_sheet.php
  * Used in: js\settings.js
  *
  * Created on Jul 05, 2024
- * Updated on Jul 08, 2024
+ * Updated on Jul 12, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -73,7 +73,7 @@ function ModifyFinances()
  * Function:    AddFinances
  *
  * Created on Jul 05, 2024
- * Updated on Jul 08, 2024
+ * Updated on Jul 12, 2024
  *
  * Description: Add the input to the tbl_finances table.
  *
@@ -103,6 +103,9 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
                 case 3: $typcol = "other";  
                         $other = $sign." -".$amount;
                     break;
+                
+                default :
+                    break;
             }
             
             // Convert the and amount (currency).
@@ -116,6 +119,9 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
                     break;
+                
+                default :
+                    break;                
             }        
             
             $query = "INSERT INTO tbl_finances (`date`,`aid`,`$typcol`,`bid`, `description`) ".
@@ -199,7 +205,7 @@ function AddRankings($gid, $bid)
  * Function:    EditFinances
  *
  * Created on Jul 07, 2024
- * Updated on Jul 07, 2024
+ * Updated on Jul 12, 2024
  *
  * Description: Edit the tbl_finances table with the input.
  *
@@ -224,27 +230,36 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
                 break;
+                                             
+            default :
+                break;             
         }
         
         // Determine type (income, fixed or other).
         switch ($type) {
-            case 1: $incol = "`income`=$amtcol";
-                    $fxcol = "`fixed`=null";
-                    $otcol = "`other`=null";
-                    $income = $sign." ".$amount;
+            case 1: 
+                $incol = "`income`=$amtcol";
+                $fxcol = "`fixed`=null";
+                $otcol = "`other`=null";
+                $income = $sign." ".$amount;
                 break;
                 
-            case 2: $incol = "`income`=null";
-                    $fxcol = "`fixed`=$amtcol";
-                    $otcol = "`other`=null";
-                    $fixed = $sign." -".$amount;
+            case 2:
+                $incol = "`income`=null";
+                $fxcol = "`fixed`=$amtcol";
+                $otcol = "`other`=null";
+                $fixed = $sign." -".$amount;
                 break;
                 
-            case 3: $incol = "`income`=null";
-                    $fxcol = "`fixed`=null";
-                    $otcol = "`other`=$amtcol";
-                    $other = $sign." -".$amount;
+            case 3: 
+                $incol = "`income`=null";
+                $fxcol = "`fixed`=null";
+                $otcol = "`other`=$amtcol";
+                $other = $sign." -".$amount;
                 break;
+                                               
+            default :
+                break;             
         }        
         
         $query = "UPDATE tbl_finances SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".

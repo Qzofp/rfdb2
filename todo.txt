@@ -41,12 +41,13 @@ Ideeën
 ToDo
 ----
 1. Fix: Zorg ervoor dat de laatste User in de Settings tbl_user tabel niet weggegooid kan worden.
-    - Gereed.
+   - Gereed.
 
 2. Configuraties aanpassen. Door nogmaals op het config icon te klikken en dat dan de instellingen verschijnen
    die aangepast kunnen worden. Bv. door het in beeld schuiven van deze instellingen, net zoals de grafieken.
+   - Gereed (ander oplossing)
 
-3. Input validatie onderzoeken en/of verbeteren. Bv. datum controleren, omschrijving wil of niet leeg, etc.
+3. Input validatie onderzoeken en/of verbeteren. Bv. datum controleren, omschrijving wel of niet leeg, etc.
 
 4. Valuta teken (bv. euro, dollar) toevoegen aan config settings.
    - Gereed
@@ -67,6 +68,7 @@ ToDo
     ORDER BY tbl_finances.`date`
 
 7. Laat een loader zien als het laden van een tabel lang duurt, bv. van een jaar tabel.
+   - Gereed
 
 8. Counter maken voor de totale waardes, zie ook https://stackoverflow.com/questions/23006516/jquery-animated-number-counter-from-zero-to-value
                                                  https://stackoverflow.com/questions/73016948/jquery-javascript-counter-with-animation-always-reset-from-0-to-n-value
@@ -78,3 +80,5 @@ ToDo
 10. Balans counter aanpassen, zodat de kleur (rood / groen) verandert als het balans verandert van - naar + en andersom. Dit bij het toevoegen van records.
 
 11. Bug: Bij Settings -> Accounts, 2 verschillende services (diensten) kunnen niet dezelfde account numbers hebben. Kans is klein dat dit voorkomt, maar zou wel moeten kunnen.
+
+12. Bug: Datum in popup verandert niet als bij de configuraties $ of £ is gekozen.
