@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Jul 10, 2024
+ * Updated on Jul 19, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Jun 15, 2024
+ * Updated on Jul 19, 2024
  *
  * Description: Open the sheet page.
  *
@@ -186,6 +186,16 @@ function openSheetPage(c, s, i) {
     $(".menu_item").click(function() {
         window.location.href=this;
         window.location.reload(true);
+    });    
+    
+    // Tooltip: account finances sheet
+    $('.tbl_finances tbody').on("mouseover", "td:nth-child(3)", function() {
+        $(this).attr("title", $(this).text());
+    });
+    
+    // Tooltip: description all sheets
+    $('#table_container tbody').on("mouseover", "td:last-child", function() {
+        $(this).attr("title", $(this).text());
     });    
     
     // Close Chart Window.

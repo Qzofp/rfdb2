@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Jun 20, 2024
+ * Updated on Jul 17, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -284,8 +284,6 @@
  font-size: 0.8em !important;
  color: #C11B17;
 }
-
-
 
 /* Chart slider */
 #chart_slider{

@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jul 05, 2024
- * Updated on Jul 12, 2024
+ * Updated on Jul 16, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -73,7 +73,7 @@ function ModifyFinances()
  * Function:    AddFinances
  *
  * Created on Jul 05, 2024
- * Updated on Jul 12, 2024
+ * Updated on Jul 16, 2024
  *
  * Description: Add the input to the tbl_finances table.
  *
@@ -91,6 +91,9 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
             $db = OpenDatabase();
             
             // Determine type (income, fixed or other).
+            $income = "";
+            $fixed  = "";
+            $other  = "";            
             switch ($type) {
                 case 1: $typcol = "income";
                         $income = $sign." ".$amount;
@@ -205,7 +208,7 @@ function AddRankings($gid, $bid)
  * Function:    EditFinances
  *
  * Created on Jul 07, 2024
- * Updated on Jul 12, 2024
+ * Updated on Jul 16, 2024
  *
  * Description: Edit the tbl_finances table with the input.
  *
@@ -236,6 +239,9 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
         }
         
         // Determine type (income, fixed or other).
+        $income = "";
+        $fixed  = "";
+        $other  = "";        
         switch ($type) {
             case 1: 
                 $incol = "`income`=$amtcol";

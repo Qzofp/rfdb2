@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jul 12, 2024
- * Updated on Jul 12, 2024
+ * Updated on Jul 16, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php
@@ -72,7 +72,7 @@ function ModifyStocks()
  * Function:    AddStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 12, 2024
+ * Updated on Jul 16, 2024
  *
  * Description: Add the input to the tbl_stocks table.
  *
@@ -86,7 +86,9 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
     {    
         $db = OpenDatabase();
             
-        // Determine type (income, fixed or other).
+        // Determine type (deposit or withdrawal).
+        $deposit = "";
+        $withdrawal = "";        
         switch ($type) {
             case 1: $typcol = "deposit";
                 $deposit = $sign." ".$amount;
@@ -180,7 +182,9 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
                 break;            
         }
         
-        // Determine type (income, fixed or other).
+        // Determine type (deposit or withdrawal).
+        $deposit = "";
+        $withdrawal = "";            
         switch ($type) {
             case 1: 
                 $depcol = "`deposit`=$amtcol";

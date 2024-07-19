@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jul 15, 2024
+ * Updated on Jul 19, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -703,7 +703,7 @@ function addAmountAndRadioButton(ph, c, name, x, y, z="") {
  * Function:    modifySheets
  *
  * Created on Jun 24, 2024
- * Updated on Jul 13, 2024
+ * Updated on Jul 17, 2024
  *
  * Description: Modify one of the finances sheets.
  *
@@ -727,6 +727,7 @@ function modifySheets(c, s, i, btn) {
             break;
         
         case "crypto" :
+            modifyCrypto(c, s, btn);
             break;        
     }
 }
@@ -762,16 +763,16 @@ function validateSheetInput(msg, items, input) {
  * Function:    validateSheetCurrency
  *
  * Created on Jun 28, 2024
- * Updated on Jul 07, 2024
+ * Updated on Jul 17, 2024
  *
- * Description: Validate the currency, check if it is not empty and if it's a positive value.
+ * Description: Validate the currency, check if it is not empty and if it has a correct value.
  *
- * In:  c, s, value, nv (negative value)
+ * In:  c, s, value
  * Out: check
  *
  */
 function validateSheetCurrency(c, s, value) {
-
+   
     var check = true;
     if (!value) 
     {
@@ -784,11 +785,11 @@ function validateSheetCurrency(c, s, value) {
         switch (set.sign) {
             case "$" :
             case "£" :
-                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/;
+                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/;                
                 break;
             
             case "€"  :
-                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{2})?$/;
+                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{2})?$/;           
                 break;
         }
         
@@ -798,6 +799,67 @@ function validateSheetCurrency(c, s, value) {
             check = false;
         }     
     }  
+    return check;       
+}
+
+/*
+ * Function:    validateSheetCrypto
+ *
+ * Created on Jul 17, 2024
+ * Updated on Jul 19, 2024
+ *
+ * Description: Validate the crypto input, check if it is not empty and if it has a correct value.
+ *
+ * In:  c, s, input
+ * Out: check
+ *
+ */
+function validateSheetCrypto(c, s, input) {
+    
+    var check = true;    
+
+    console.log(input);
+    
+    if (!input[1] && !input[2]) 
+    {
+        changePopupMessageRow(c.misc[2] + " " + c.messages[7] + " " +  c.crypto[6]  + " " + c.messages[5]); 
+        check = false;
+    }
+    else if (input[1]) 
+    {   
+        check = validateSheetCurrency(c, s, input[1]); 
+        if (check) 
+        {
+            if (!input[0]) 
+            {
+                changePopupMessageRow(c.misc[2] + " " + c.misc[3] + " " + c.messages[5]);  
+                check = false;                
+            }
+        }
+    }
+    
+    // Check if the number value is correct.
+    if (input[2]) 
+    {
+        let regex, set = JSON.parse(s[5].value);
+        switch (set.sign) {
+            case "$" :
+            case "£" :
+                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{8})?$/;                
+                break;
+            
+            case "€"  :
+                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{8})?$/;           
+                break;
+        }
+        
+        if (!regex.test(input[2]) ? true : false) 
+        {
+            changePopupMessageRow(c.crypto[6] + " " + c.messages[0]); 
+            check = false;
+        }          
+    }    
+    
     return check;       
 }
 
@@ -1051,7 +1113,7 @@ function GetAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 13, 2024
+ * Updated on Jul 17, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1073,7 +1135,7 @@ function modifyStocks(c, s, btn) {
     {     
         let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.investment[4], c.investment[5], c.investment[6]];
         
-        // Add, edit or delete the finances table row.
+        // Add, edit or delete the stocks table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
            
             var [id, action] = getRowIdAndAction();               
@@ -1175,7 +1237,7 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 15, 2024
+ * Updated on Jul 17, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1195,9 +1257,9 @@ function modifySavings(c, s, btn) {
     msg = c.messages[2].replace("#", $("#account option:selected").text());
     if(!checkEditDelete(btn, msg))
     {     
-        let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.investment[4], c.savings[5], c.savings[6]];
+        let items = [c.savings[1], c.misc[2] + " " + c.misc[3], c.savings[4], c.savings[5], c.savings[6]];
         
-        // Add, edit or delete the finances table row.
+        // Add, edit or delete the savings table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
            
             var [id, action] = getRowIdAndAction();               
@@ -1295,9 +1357,140 @@ function modifySavings(c, s, btn) {
     }     
 }
 
+/*
+ * Function:    modifyCrypto
+ *
+ * Created on Jul 17, 2024
+ * Updated on Jul 19, 2024
+ *
+ * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
+ *
+ * In:  c, s, btn
+ * Out: -
+ *
+ */
+function modifyCrypto(c, s, btn) {
+    
+    var msg, amount, number, input = [];
+    var crypto = [];
+    
+    // Get the input values.
+    input.push($("#date").val(), $("#service").val(), $("#account").val(), $("#crypto").val(), $("#description").val());   
+    
+    // Get the crypto input values.
+    crypto.push($('input[name="money"]:checked').val(), $("#amount").val(), $("#number").val());
+    
+    msg = c.messages[2].replace("#", $("#account option:selected").text());
+    if(!checkEditDelete(btn, msg))
+    {     
+        let items = [c.crypto[1], c.crypto[4], c.crypto[5], c.crypto[7], c.crypto[8]];
+                
+        // Add, edit or delete the crypto table row.
+        if (validateSheetInput(c.messages[5], items, input) && validateSheetCrypto(c, s, crypto)) {
+           
+            var [id, action] = getRowIdAndAction();               
+            if (id) {
+                id = id.split("_")[0];
+            }
+            
+            let set = JSON.parse(s[5].value);            
+            var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
+                       '&number=' + number + '&crypto=' + input[4] + '&desc=' + encodeURIComponent(input[5]) + 
+                       '&id=' + id + '&action=' + action;
+            
+            // debug
+            console.log(send);
+        
+        /*  
+            var request = getAjaxRequest("modify_crypto_sheet", send);
+            request.done(function(result) {
+                
+                //console.log(result.query);                
+                if (result.success) {    
+                   
+                    switch (action) {
+                        case "add"    :                        
+                            // Correct the id and get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();
+                            showAddRow(result);   
+                            break;
+                                
+                        case "edit"   :   
+                            // Correct the id get the select values.
+                            result.id += "_" + result.service + 
+                                         "_" + result.account;
+                                                                
+                            result.service = $(".nice-select .current:first").html();
+                            result.account = $(".nice-select .current:eq(1)").html();            
+                            showEditRow(result);
+                            break;
+                                
+                        case "delete" :
+                            showDeleteRow();
+                            break;
+                    }
+                            
+                    // Close popup window or clear input fields.
+                    if (btn === 'ok') {
+                        closePopupWindow();                           
+                    }
+                    else 
+                    {           
+                        // Reset input.
+                        $("#date").val("");   
+                                                
+                        // Reset radio buttons.
+                        $('input[name="money"]').prop('checked', false);
+                        $(".popup_table_finance .label").html("&nbsp;");
+                        $(".popup_table_finance .msg").html("&nbsp;");
+                        
+                        $("#amount").val(""); 
 
-// ModifyCrypto
+                        // Reset nice-select menu if there is more then 1 item.
+                        if ($("#service > option").length >= 1) 
+                        {
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.savings[4] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }                        
+                        $("#service").val("");
 
+                        if ($("#account > option").length >= 1) 
+                        {
+                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }   
+                        $("#account").val("");                           
+                        
+                        $("#number").val(""); 
+                        
+                        // Crypto
+                        
+                        
+                        $("#description").val("");    
+                    }
+                    
+                    // Adjust the total values (balance, deposit and withdrawal).
+                    GetAndAdjustSheetTotals(set.sign, "crypto");                    
+                }
+                else {
+                    showDatabaseError(result);
+                }
+            });
+           
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });    
+            closeErrorMessage(); 
+        */    
+            
+        }                    
+    }     
+}
 
 /*
  * Function:    GetAndAdjustSheetTotals
