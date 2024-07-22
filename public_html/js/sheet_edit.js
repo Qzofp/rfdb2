@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jul 19, 2024
+ * Updated on Jul 22, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -763,7 +763,7 @@ function validateSheetInput(msg, items, input) {
  * Function:    validateSheetCurrency
  *
  * Created on Jun 28, 2024
- * Updated on Jul 17, 2024
+ * Updated on Jul 20, 2024
  *
  * Description: Validate the currency, check if it is not empty and if it has a correct value.
  *
@@ -785,11 +785,11 @@ function validateSheetCurrency(c, s, value) {
         switch (set.sign) {
             case "$" :
             case "£" :
-                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/;                
+                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,2})?$/;                
                 break;
             
             case "€"  :
-                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{2})?$/;           
+                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{1,2})?$/;           
                 break;
         }
         
@@ -806,7 +806,7 @@ function validateSheetCurrency(c, s, value) {
  * Function:    validateSheetCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Jul 19, 2024
+ * Updated on Jul 21, 2024
  *
  * Description: Validate the crypto input, check if it is not empty and if it has a correct value.
  *
@@ -817,43 +817,26 @@ function validateSheetCurrency(c, s, value) {
 function validateSheetCrypto(c, s, input) {
     
     var check = true;    
-
-    console.log(input);
     
-    if (!input[1] && !input[2]) 
-    {
-        changePopupMessageRow(c.misc[2] + " " + c.messages[7] + " " +  c.crypto[6]  + " " + c.messages[5]); 
-        check = false;
-    }
-    else if (input[1]) 
-    {   
-        check = validateSheetCurrency(c, s, input[1]); 
-        if (check) 
-        {
-            if (!input[0]) 
-            {
-                changePopupMessageRow(c.misc[2] + " " + c.misc[3] + " " + c.messages[5]);  
-                check = false;                
-            }
-        }
-    }
+    // Check the amount value.
+    check = validateSheetCurrency(c, s, input[0]);
     
     // Check if the number value is correct.
-    if (input[2]) 
+    if (check) 
     {
         let regex, set = JSON.parse(s[5].value);
         switch (set.sign) {
             case "$" :
             case "£" :
-                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{8})?$/;                
+                regex = /^-?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,8})?$/;                
                 break;
             
             case "€"  :
-                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{8})?$/;           
+                regex = /^-?[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{1,8})?$/;           
                 break;
         }
         
-        if (!regex.test(input[2]) ? true : false) 
+        if (!regex.test(input[1]) ? true : false) 
         {
             changePopupMessageRow(c.crypto[6] + " " + c.messages[0]); 
             check = false;
@@ -867,7 +850,7 @@ function validateSheetCrypto(c, s, input) {
  * Function:    correctAmount
  *
  * Created on Jul 07, 2024
- * Updated on Jul 15, 2024
+ * Updated on Jul 21, 2024
  *
  * Description: Correct the amount. Add zero's after the point or comma if they are missing.
  *
@@ -875,7 +858,7 @@ function validateSheetCrypto(c, s, input) {
  * Out: value
  *
  */
-function correctAmount(s, amount) {
+function correctAmount(s, amount, n=2) {
    
     var format, tmp, value;
     var set = JSON.parse(s[5].value);
@@ -893,7 +876,7 @@ function correctAmount(s, amount) {
             break;
     }   
 
-    value = Number(tmp).toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    value = Number(tmp).toLocaleString(format, { minimumFractionDigits: n, maximumFractionDigits: n });
     return value;
 }
 
@@ -901,7 +884,7 @@ function correctAmount(s, amount) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Jul 13, 2024
+ * Updated on Jul 20, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -915,13 +898,14 @@ function modifyFinances(c, s, btn) {
     
     // Get the input values.
     input.push($("#date").val(), $("#payment").val(), $('input[name="money"]:checked').val(), 
-               $("#service").val(), $("#account").val(), $("#description").val());    
+               $("#amount").val(), $("#service").val(), $("#account").val(), $("#description").val());    
     amount = $("#amount").val();
     
     msg = c.messages[2].replace("#", $("#account option:selected").text());
     if(!checkEditDelete(btn, msg))
     {     
-        let items = [c.payment[1], c.payment[2], c.misc[2] + " " + c.misc[3], c.payment[6], c.payment[7], c.payment[8]];
+        let items = [c.payment[1], c.payment[2], c.misc[2] + " " + c.misc[3], c.misc[2], c.payment[6], 
+                     c.payment[7], c.payment[8]];
         
         // Add, edit or delete the finances table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
@@ -1113,7 +1097,7 @@ function GetAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 17, 2024
+ * Updated on Jul 20, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1126,14 +1110,15 @@ function modifyStocks(c, s, btn) {
     var msg, amount, input = [];
     
     // Get the input values.
-    input.push($("#date").val(), $('input[name="money"]:checked').val(), 
+    input.push($("#date").val(), $('input[name="money"]:checked').val(), $("#amount").val(),
                $("#service").val(), $("#account").val(), $("#description").val());   
     amount = $("#amount").val();
     
     msg = c.messages[2].replace("#", $("#account option:selected").text());
     if(!checkEditDelete(btn, msg))
     {     
-        let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.investment[4], c.investment[5], c.investment[6]];
+        let items = [c.investment[1], c.misc[2] + " " + c.misc[3], c.misc[2], c.investment[4], 
+                     c.investment[5], c.investment[6]];
         
         // Add, edit or delete the stocks table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
@@ -1237,7 +1222,7 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 17, 2024
+ * Updated on Jul 20, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1250,14 +1235,14 @@ function modifySavings(c, s, btn) {
     var msg, amount, input = [];
     
     // Get the input values.
-    input.push($("#date").val(), $('input[name="money"]:checked').val(), 
+    input.push($("#date").val(), $('input[name="money"]:checked').val(), $("#amount").val(),
                $("#service").val(), $("#account").val(), $("#description").val());   
     amount = $("#amount").val();
     
     msg = c.messages[2].replace("#", $("#account option:selected").text());
     if(!checkEditDelete(btn, msg))
     {     
-        let items = [c.savings[1], c.misc[2] + " " + c.misc[3], c.savings[4], c.savings[5], c.savings[6]];
+        let items = [c.savings[1], c.misc[2] + " " + c.misc[3], c.misc[2], c.savings[4], c.savings[5], c.savings[6]];
         
         // Add, edit or delete the savings table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
@@ -1361,7 +1346,7 @@ function modifySavings(c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Jul 19, 2024
+ * Updated on Jul 22, 2024
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
@@ -1371,19 +1356,22 @@ function modifySavings(c, s, btn) {
  */
 function modifyCrypto(c, s, btn) {
     
-    var msg, amount, number, input = [];
+    var msg, input = [];
     var crypto = [];
     
     // Get the input values.
-    input.push($("#date").val(), $("#service").val(), $("#account").val(), $("#crypto").val(), $("#description").val());   
+    input.push($("#date").val(), $('input[name="money"]:checked').val(), $("#amount").val(), 
+               $("#service").val(), $("#account").val(), $("#number").val(), $("#crypto").val(), 
+               $("#description").val());   
     
     // Get the crypto input values.
-    crypto.push($('input[name="money"]:checked').val(), $("#amount").val(), $("#number").val());
+    crypto.push($("#amount").val(), $("#number").val());
     
     msg = c.messages[2].replace("#", $("#account option:selected").text());
     if(!checkEditDelete(btn, msg))
     {     
-        let items = [c.crypto[1], c.crypto[4], c.crypto[5], c.crypto[7], c.crypto[8]];
+        let items = [c.crypto[1], c.misc[2] + " " + c.misc[3], c.misc[2], c.crypto[4], c.crypto[5], 
+                     c.crypto[6], c.crypto[7], c.crypto[8]];
                 
         // Add, edit or delete the crypto table row.
         if (validateSheetInput(c.messages[5], items, input) && validateSheetCrypto(c, s, crypto)) {
@@ -1395,17 +1383,17 @@ function modifyCrypto(c, s, btn) {
             
             let set = JSON.parse(s[5].value);            
             var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
-                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
-                       '&number=' + number + '&crypto=' + input[4] + '&desc=' + encodeURIComponent(input[5]) + 
+                       '&amount=' + correctAmount(s, crypto[0]) + '&service=' + input[3] + '&account=' + input[4] + 
+                       '&number=' + correctAmount(s, crypto[1], 8) + '&crypto=' + input[6] + '&desc=' + encodeURIComponent(input[7]) + 
                        '&id=' + id + '&action=' + action;
             
             // debug
-            console.log(send);
+            //console.log(send);
         
-        /*  
             var request = getAjaxRequest("modify_crypto_sheet", send);
             request.done(function(result) {
                 
+                // debug
                 //console.log(result.query);                
                 if (result.success) {    
                    
@@ -1413,20 +1401,24 @@ function modifyCrypto(c, s, btn) {
                         case "add"    :                        
                             // Correct the id and get the select values.
                             result.id += "_" + result.service + 
-                                         "_" + result.account;
+                                         "_" + result.account +
+                                         "_" + result.crypto;
                                 
                             result.service = $(".nice-select .current:first").html();
                             result.account = $(".nice-select .current:eq(1)").html();
+                            result.crypto  = $(".nice-select .current:eq(2)").html();
                             showAddRow(result);   
                             break;
                                 
                         case "edit"   :   
                             // Correct the id get the select values.
                             result.id += "_" + result.service + 
-                                         "_" + result.account;
+                                         "_" + result.account +
+                                         "_" + result.crypto;
                                                                 
                             result.service = $(".nice-select .current:first").html();
-                            result.account = $(".nice-select .current:eq(1)").html();            
+                            result.account = $(".nice-select .current:eq(1)").html();  
+                            result.crypto  = $(".nice-select .current:eq(2)").html();
                             showEditRow(result);
                             break;
                                 
@@ -1454,22 +1446,26 @@ function modifyCrypto(c, s, btn) {
                         // Reset nice-select menu if there is more then 1 item.
                         if ($("#service > option").length >= 1) 
                         {
-                            $(".nice-select .current:first").html('<span class="placeholder">' + c.savings[4] + '</span>');
+                            $(".nice-select .current:first").html('<span class="placeholder">' + c.crypto[4] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
                         }                        
                         $("#service").val("");
 
                         if ($("#account > option").length >= 1) 
                         {
-                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
+                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.crypto[5] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
                         }   
                         $("#account").val("");                           
                         
                         $("#number").val(""); 
                         
-                        // Crypto
-                        
+                        if ($("#crypto > option").length >= 1) 
+                        {
+                            $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.crypto[7] + '</span>');
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                        }   
+                        $("#crypto").val("");
                         
                         $("#description").val("");    
                     }
@@ -1485,9 +1481,7 @@ function modifyCrypto(c, s, btn) {
             request.fail(function(jqXHR, textStatus) {
                 showAjaxError(jqXHR, textStatus);
             });    
-            closeErrorMessage(); 
-        */    
-            
+            closeErrorMessage();    
         }                    
     }     
 }

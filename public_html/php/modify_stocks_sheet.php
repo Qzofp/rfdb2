@@ -5,10 +5,10 @@
  * Version: 0.1
  *
  * File:    modify_stocks_sheet.php
- * Used in: js\settings.js
+ * Used in: js\sheet_edit.js
  *
  * Created on Jul 12, 2024
- * Updated on Jul 16, 2024
+ * Updated on Jul 22, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php

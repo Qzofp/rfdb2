@@ -68,7 +68,7 @@ ToDo
     ORDER BY tbl_finances.`date`
 
 7. Laat een loader zien als het laden van een tabel lang duurt, bv. van een jaar tabel.
-   - Gereed
+   - Gereed.
 
 8. Counter maken voor de totale waardes, zie ook https://stackoverflow.com/questions/23006516/jquery-animated-number-counter-from-zero-to-value
                                                  https://stackoverflow.com/questions/73016948/jquery-javascript-counter-with-animation-always-reset-from-0-to-n-value
@@ -78,6 +78,7 @@ ToDo
    - Gefixed.
 
 10. Balans counter aanpassen, zodat de kleur (rood / groen) verandert als het balans verandert van - naar + en andersom. Dit bij het toevoegen van records.
+   - Opgelost.
 
 11. Bug: Bij Settings -> Accounts, 2 verschillende services (diensten) kunnen niet dezelfde account numbers hebben. Kans is klein dat dit voorkomt, maar zou wel moeten kunnen.
 

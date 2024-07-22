@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 12, 2024
+ * Updated on Jul 22, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Nov 15, 2023
+ * Updated on Jul 22, 2023
  *
  * Description: Shows the dashboard page.
  *
@@ -65,6 +65,10 @@ function loadMain() {
  */
 function showDashboard(c, s) {
 
+    // Remove the old rankings (only for the finances sheet).
+    removeOldRankings(3);
+    
+    // Show the page titles.
     showPageTitles(c, 0, "");
                 
     // Fill hamburger menu.
@@ -78,4 +82,32 @@ function showDashboard(c, s) {
     
     // Show the page theme.
     showPageTheme(s[0]); 
+}
+
+/*
+ * Function:    removeOldRankings
+ *
+ * Created on Jul 22, 2023
+ * Updated on Jul 22, 2023
+ *
+ * Description: Remove rankings older then n months.
+ *
+ * In:  n
+ * Out: -
+ *
+ */
+function removeOldRankings(n) {
+    
+    var request = getAjaxRequest("delete_rankings", "n=" + n);      
+    request.done(function(result) {
+        if (!result.success) {         
+            showDatabaseError(result);                    
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {        
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage(); 
 }
