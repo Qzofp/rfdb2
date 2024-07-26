@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on May 13, 2024
+ * Updated on Jul 25, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 23, 2024
+ * Updated on jul 24, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -60,7 +60,7 @@ function ModifyAccount()
             break;
             
         case "delete" :
-            $response = DeleteAccount($id);
+            $response = DeleteAccount($id, $type);
             break;                
     }    
     
@@ -177,34 +177,36 @@ function ModifyAccount()
  * Function:    DeleteAccount
  *
  * Created on Mar 22, 2024
- * Updated on Mar 22, 2024
+ * Updated on Jul 25, 2024
  *
  * Description: Delete the row with id in the tbl_accounts table.
  *
- * In:  $id
+ * In:  $id, $type
  * Out: $response
  *
  */    
- function DeleteAccount($id)
- {   
-    $response = [];  
-       
-    try 
-    {    
-        $db = OpenDatabase();
+ function DeleteAccount($id, $type)
+ {     
+    $response = CheckAccountInSheets($id, $type);  
+    if ($response['success'] && !$response['exists'])
+    {      
+        try 
+        {    
+            $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_accounts WHERE `id` = $id";          
-        $select = $db->prepare($query);
-        $select->execute();
+            $query = "DELETE FROM tbl_accounts WHERE `id` = $id";          
+            $select = $db->prepare($query);
+            $select->execute();
                     
-        $response['success'] = true;  
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        }
     }
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-
+    
     // Close database connection.
     $db = null;   
       
@@ -260,3 +262,52 @@ function CheckAccount($id, $account)
     
     return $response;
 }
+
+/*
+ * Function:    CheckAccountInSheets
+ *
+ * Created on Jul 24, 2024
+ * Updated on Jul 25, 2024
+ *
+ * Description: Check if the account exists in the sheets tables (tbl_finances, tbl_stocks, tbl_savings and tbl_wallets).
+ *
+ * In:  $id, $type
+ * Out: $response
+ *
+ */
+function CheckAccountInSheets($id, $type)
+{  
+    $response = [];
+    $aTables   = ["","tbl_finances","tbl_stocks","tbl_savings","tbl_wallets"];  
+    
+    try 
+    { 
+        $db = OpenDatabase();
+                
+        // Check if user aleready exists in the tbl_accounts table.
+        $query = "SELECT count(0) FROM `$aTables[$type]` WHERE `aid` = $id;";       
+        $select = $db->prepare($query);
+        $select->execute();        
+        $result = $select->fetchColumn();
+
+        // debug
+        //$response['query'] = $query;
+        
+        $response['exists'] = false; 
+        if ($result > 0) {
+            $response['exists'] = true; 
+        }  
+
+        $response['success'] = true;         
+    }    
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
+    
+    // Close database connection.
+    $db = null;        
+    
+    return $response;        
+}        

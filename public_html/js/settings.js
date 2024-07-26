@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jun 25, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -212,7 +212,7 @@ function ShowGeneralSettings(c, s) {
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on May 01, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -246,14 +246,14 @@ function ShowFinancesSettings(c, s) {
     
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 1);
-    showTable("tbl_accounts", items, s, 1, "get_accounts","type=finance&sign=" + set.sign + "&sort=date");
+    showTable("tbl_accounts", items, s, 1, "get_accounts","type=finance&sign=" + set.sign + "&sort=tbl_accounts.`date`");
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on May 01, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -286,14 +286,14 @@ function ShowStocksSettings(c, s) {
    
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 2);
-    showTable("tbl_accounts", items, s, 2, "get_accounts", "type=stock&sign=" + set.sign + "&sort=date");   
+    showTable("tbl_accounts", items, s, 2, "get_accounts", "type=stock&sign=" + set.sign + "&sort=tbl_accounts.`date`");   
 }
 
 /*
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on May 01, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -326,14 +326,14 @@ function ShowSavingsSettings(c, s) {
 
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 3);
-    showTable("tbl_accounts", items, s, 3, "get_accounts", "type=savings&sign=" + set.sign + "&sort=date");       
+    showTable("tbl_accounts", items, s, 3, "get_accounts", "type=savings&sign=" + set.sign + "&sort=tbl_accounts.`date`");       
 }
 
 /*
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on May 17, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -366,7 +366,7 @@ function ShowCryptoSettings(c, s) {
       
     set = JSON.parse(s[5].value);  
     items = setAccountItems(c, 4);
-    showTable("tbl_accounts", items, s, 4, "get_accounts", "type=crypto&sign=" + set.sign + "&sort=date");
+    showTable("tbl_accounts", items, s, 4, "get_accounts", "type=crypto&sign=" + set.sign + "&sort=tbl_accounts.`date`");
 }
 
 /*

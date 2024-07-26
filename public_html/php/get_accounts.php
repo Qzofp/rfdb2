@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Jul 03, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Jul 03, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -80,7 +80,7 @@ function GetAccounts()
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  $where.
-                 "ORDER BY `$sort`;";
+                 "ORDER BY $sort;";
     
         $select = $db->prepare($query);
         $select->execute();

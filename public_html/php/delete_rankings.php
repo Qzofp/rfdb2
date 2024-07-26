@@ -8,7 +8,7 @@
  * Used in: js\index.js
  *
  * Created on Jul 22, 2024
- * Updated on Jul 22, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Check if the user is signed in and delete old tbl_rankings table entries.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    DeleteRankings
  *
  * Created on Jul 22, 2024
- * Updated on Jul 22, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Delete rankings olde then n months from the tbl_ranking table.
  *
@@ -46,7 +46,7 @@ function DeleteRankings()
     {    
         $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_rankings WHERE `timestamp` <= DATE_SUB(CURDATE(), INTERVAL $n MONTH);";         
+        $query = "DELETE FROM tbl_rankings WHERE `timestamp` < DATE_SUB(CURDATE(), INTERVAL $n MONTH);";         
         $select = $db->prepare($query);
         $select->execute();
                     

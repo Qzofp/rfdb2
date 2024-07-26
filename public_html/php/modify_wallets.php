@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 31, 2024
- * Updated on Jun 21, 2024
+ * Updated on Jul 25, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -232,26 +232,73 @@ function CheckWallet($id, $aid, $cid)
  */    
  function DeleteWallet($id)
  {   
-    $response = [];  
-       
+    $response = CheckWalletInCrypto($id);
+    if ($response['success'] && !$response['exists'])
+    { 
+        try 
+        {    
+            $db = OpenDatabase();
+                
+            $query = "DELETE FROM tbl_wallets WHERE `id` = $id";          
+            $select = $db->prepare($query);
+            $select->execute();
+                    
+            $response['success'] = true;  
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        } 
+    }
+    
+    // Close database connection.
+    $db = null;   
+      
+    return $response;
+}
+
+/*
+ * Function:    CheckWalletInCrypto
+ *
+ * Created on Jul 25, 2024
+ * Updated on Jul 25, 2024
+ *
+ * Description: Check if the wallet exists in the tbl_crypto table.
+ *
+ * In:  $id
+ * Out: $response
+ *
+ */
+function CheckWalletInCrypto($id)
+{  
+    $response = [];
+    
     try 
-    {    
+    { 
         $db = OpenDatabase();
                 
-        $query = "DELETE FROM tbl_wallets WHERE `id` = $id";          
+        // Check if the business exists in the tbl_finances table.
+        $query = "SELECT count(0) FROM tbl_crypto WHERE wid = $id;";        
         $select = $db->prepare($query);
-        $select->execute();
-                    
-        $response['success'] = true;  
-    }
+        $select->execute();        
+        $result = $select->fetchColumn();
+
+        $response['exists'] = false; 
+        if ($result > 0) {
+            $response['exists'] = true; 
+        }  
+
+        $response['success'] = true;         
+    }    
     catch (PDOException $e) 
     {    
         $response['message'] = $e->getMessage();
         $response['success'] = false;
     } 
-
+    
     // Close database connection.
-    $db = null;   
-      
+    $db = null;        
+    
     return $response;
 }

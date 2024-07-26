@@ -140,7 +140,7 @@ function modifyAccounts(adp, c, btn) {
             
             var request = getAjaxRequest("modify_accounts", send);
             request.done(function(result) {
-                if (result.success) {         
+                if (result.success) {    
                     if (result.exists) {
                         showModifyMessage(c, input[2], action);               
                     }

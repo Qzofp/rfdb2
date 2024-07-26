@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jul 22, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -884,7 +884,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Jul 20, 2024
+ * Updated on Jul 24, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -917,8 +917,8 @@ function modifyFinances(c, s, btn) {
             
             let set = JSON.parse(s[5].value);            
             var send = 'date=' + input[0] + '&payment=' + input[1] + '&type=' + input[2] + '&sign=' + set.sign +
-                       '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
-                       '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[4] + '&account=' + input[5] + 
+                       '&desc=' + encodeURIComponent(input[6]) + '&id=' + id + '&action=' + action; 
             
             // debug
             //console.log(send);
