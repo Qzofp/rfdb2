@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Jul 24, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -99,7 +99,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Jun 24, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -122,32 +122,40 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                 case "finance" :
                     ph = c.payment[7];
                     set = JSON.parse(s[1].value);
-                    page = "get_businesses";
-                    send = "rank=" + set.sort.bsn + "&hide=true&gid=" + id;
+                    //page = "get_businesses";
+                    page = "get_select_finances";
+                    //send = "rank=" + set.sort.bsn + "&hide=true&gid=" + id;
+                    send = "type=business&rank=" + set.sort.bsn + "&id=" + id;
                     item = "business";
                     n = 1;
                 break;
             
             case "stock" :
                 ph = c.investment[5];
-                page = "get_accounts";
-                send = "sort=account&type=stock&hide=true&sid=" + id;
+                //page = "get_accounts";
+                page = "get_select_stocks";
+                //send = "sort=account&type=stock&hide=true&sid=" + id;
+                send = "type=account&id=" + id;
                 item = "account";
                 n = 1;
                 break;
             
             case "savings" :
                 ph = c.savings[5];
-                page = "get_accounts";
-                send = "sort=account&type=savings&hide=true&sid=" + id;
+                //page = "get_accounts";
+                page = "get_select_savings";
+                //send = "sort=account&type=savings&hide=true&sid=" + id;
+                send = "type=account&id=" + id;
                 item = "account";     
                 n = 1;
                 break;
             
             case "crypto" :
                 ph = c.crypto[5];
-                page = "get_accounts";
-                send = "sort=account&type=crypto&hide=true&sid=" + id;
+                //page = "get_accounts";
+                page = "get_select_crypto";
+                //send = "sort=account&type=crypto&hide=true&sid=" + id;
+                send = "type=account&id=" + id;
                 item = "account";  
                 n = 0;
                 break;         
@@ -158,10 +166,11 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                 removeSelectMenu("account"); 
                 addSelectMenu(c, page, send, "account", ph, 0, item, n);
             }
-            else if (s[i].name === "crypto" && !$("#table_container tbody .marked").length && select === "account")
+            else if (s[i].name === "crypto" && select === "account")
             {   
                 removeSelectMenu("crypto");
-                addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + id, "crypto", c.crypto[7], 0, "symbol");
+                //addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + id, "crypto", c.crypto[7], 0, "symbol");
+                addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + id, "crypto", c.crypto[7], 0, "symbol");
             }
         }
     });
@@ -312,7 +321,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Jul 03, 2024
+ * Updated on Jul 28, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -352,10 +361,13 @@ function showSheetFinancePopup(adp, c, s, i) {
       
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_accounts", "sid=-1&sort=account&hide=true&type=" + s[i].name, "payment", c.payment[2], cells[0].split("_")[1], "account");
-    addSelectMenu(c, "get_groups", "hide=true&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group"); 
+    //addSelectMenu(c, "get_accounts", "sid=-1&sort=account&hide=true&type=" + s[i].name, "payment", c.payment[2], cells[0].split("_")[1], "account");
+    addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], "account");  
+    //addSelectMenu(c, "get_groups", "hide=true&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group"); 
+    addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group");     
     if (cells[6]) {
-        addSelectMenu(c, "get_businesses", "rank=" + fin.sort.bsn + "&hide=true&gid=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");
+        //addSelectMenu(c, "get_businesses", "rank=" + fin.sort.bsn + "&hide=true&gid=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");
+        addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");    
     }
     else {
         disableSelectMenu("account", c.payment[7]);
@@ -370,7 +382,7 @@ function showSheetFinancePopup(adp, c, s, i) {
  * Function:    showSheetStocksPopup
  *
  * Created on Jun 15, 2024
- * Updated on Jun 20, 2024
+ * Updated on Jul 28, 2024
  *
  * Description:  Shows the popup content for the stocks page.
  *
@@ -409,9 +421,11 @@ function showSheetStocksPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.investment[4], cells[0].split("_")[1], "service");
+    //addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.investment[4], cells[0].split("_")[1], "service");
+    addSelectMenu(c, "get_select_stocks", "type=service", "service", c.investment[4], cells[0].split("_")[1], "service");
     if (cells[5]) {
-        addSelectMenu(c, "get_accounts", "sort=account&type=stock&hide=true&sid=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], "account");
+        //addSelectMenu(c, "get_accounts", "sort=account&type=stock&hide=true&sid=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_stocks", "type=account&id=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], "account");
     }
     else {
         disableSelectMenu("account", c.investment[5]);
@@ -426,7 +440,7 @@ function showSheetStocksPopup(adp, c, s, i) {
  * Function:    showSheetSavingsPopup
  *
  * Created on Jun 19, 2024
- * Updated on Jun 20, 2024
+ * Updated on Jul 28, 2024
  *
  * Description:  Shows the popup content for the savings page.
  *
@@ -465,9 +479,11 @@ function showSheetSavingsPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.savings[4], cells[0].split("_")[1], "service");
+    //addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.savings[4], cells[0].split("_")[1], "service");
+    addSelectMenu(c, "get_select_savings", "type=service", "service", c.savings[4], cells[0].split("_")[1], "service");
     if (cells[5]) {
-        addSelectMenu(c, "get_accounts", "sort=account&type=savings&hide=true&sid=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], "account");
+        //addSelectMenu(c, "get_accounts", "sort=account&type=savings&hide=true&sid=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_savings", "type=account&id=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], "account");
     }
     else {
         disableSelectMenu("account", c.savings[5]);
@@ -482,7 +498,7 @@ function showSheetSavingsPopup(adp, c, s, i) {
  * Function:    showSheetCryptoPopup
  *
  * Created on Jun 20, 2024
- * Updated on Jun 23, 2024
+ * Updated on Jul 27, 2024
  *
  * Description:  Shows the popup content for the crypto page.
  *
@@ -519,9 +535,11 @@ function showSheetCryptoPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.crypto[4], cells[0].split("_")[1], "service");
+    //addSelectMenu(c, "get_services", "sort=service&type=" + s[i].name, "service", c.crypto[4], cells[0].split("_")[1], "service");
+    addSelectMenu(c, "get_select_crypto", "type=service", "service", c.crypto[4], cells[0].split("_")[1], "service");
     if (cells[5]) {
-        addSelectMenu(c, "get_accounts", "sort=account&type=crypto&hide=true&sid=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], "account");
+        //addSelectMenu(c, "get_accounts", "sort=account&type=crypto&hide=true&sid=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_crypto", "type=account&id=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], "account");
     }
     else {
         disableSelectMenu("account", c.crypto[5]);
@@ -532,7 +550,8 @@ function showSheetCryptoPopup(adp, c, s, i) {
     
     // Add crypto select menu.
     if (cells[7]) {    
-        addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[2], "symbol");
+        //addSelectMenu(c, "get_wallets", "sort=symbol&aid=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[2], "symbol");
+        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[3], "symbol");
     }
     else {
         disableSelectMenu("crypto", c.crypto[7]);
@@ -578,7 +597,7 @@ function addSortButtons(set) {
  * Function:    setSortButtons
  *
  * Created on Jun 14, 2024
- * Updated on Jun 14, 2024
+ * Updated on Jul 28, 2024
  *
  * Description:  Set the sort buttons for the finances page.
  *
@@ -602,7 +621,7 @@ function setSortButton(c, s, i, btn, e) {
                 case "finance" :
                     phg = c.payment[6];
                     pha = c.payment[7];
-                    page = "get_businesses";
+                    page = "get_select_finances";
                 break;
             
             case "stock" :
@@ -630,7 +649,8 @@ function setSortButton(c, s, i, btn, e) {
             if (result.button === 0) 
             {
                 removeSelectMenu("service"); 
-                addSelectMenu(c, "get_groups", "hide=true&rank=" + rank, "service", phg, 0, "group");
+                //addSelectMenu(c, "get_groups", "hide=true&rank=" + rank, "service", phg, 0, "group");
+                addSelectMenu(c, page, "type=group&rank=" + rank, "service", phg, 0, "group");
                 removeSelectMenu("account"); 
                 disableSelectMenu("account", pha);
             }
@@ -638,7 +658,8 @@ function setSortButton(c, s, i, btn, e) {
             {                    
                 let id = $("#service").next().find(".selected").attr('data-value');
                 removeSelectMenu("account"); 
-                addSelectMenu(c, page, "rank=" + rank + "&hide=true&gid=" + id, "account", pha, 0, "business"); 
+                //addSelectMenu(c, page, "rank=" + rank + "&hide=true&gid=" + id, "account", pha, 0, "business"); 
+                addSelectMenu(c, page, "type=business&rank=" + rank + "&id=" + id, "account", pha, 0, "business");
             }
         }
         else {
@@ -1097,7 +1118,7 @@ function GetAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 20, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1130,8 +1151,8 @@ function modifyStocks(c, s, btn) {
             
             let set = JSON.parse(s[5].value);            
             var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
-                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
-                       '&desc=' + encodeURIComponent(input[4]) + '&id=' + id + '&action=' + action; 
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
+                       '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
             
             // debug
             //console.log(send);
@@ -1222,7 +1243,7 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 20, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1254,8 +1275,8 @@ function modifySavings(c, s, btn) {
             
             let set = JSON.parse(s[5].value);            
             var send = 'date=' + input[0] + '&type=' + input[1] + '&sign=' + set.sign +
-                       '&amount=' + correctAmount(s, amount) + '&service=' + input[2] + '&account=' + input[3] + 
-                       '&desc=' + encodeURIComponent(input[4]) + '&id=' + id + '&action=' + action; 
+                       '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
+                       '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
             
             // debug
             //console.log(send);

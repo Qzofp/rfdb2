@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jul 24, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -406,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on May 20, 2024
+ * Updated on Jul 28, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -487,7 +487,8 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {
                 setPageButton(s[1], 2, -1);
-                showTable("tbl_groups", c.groups, s, slide, "get_groups","hide=false&rank=true");           
+                //showTable("tbl_groups", c.groups, s, slide, "get_groups","hide=false&rank=true");
+                showTable("tbl_groups", c.groups, s, slide, "get_groups","");
             }
             break;
             
@@ -497,7 +498,8 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {            
                 setPageButton(s[1], 3, -1);
-                showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","gid=0&rank=true");
+                //showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","gid=0&rank=true");
+                showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","");
             }
             break;
             
@@ -675,7 +677,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Jun 25, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Get the choosen select value and process that value.
  *

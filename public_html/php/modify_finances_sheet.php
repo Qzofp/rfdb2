@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 05, 2024
- * Updated on Jul 22, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -73,7 +73,7 @@ function ModifyFinances()
  * Function:    AddFinances
  *
  * Created on Jul 05, 2024
- * Updated on Jul 16, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Add the input to the tbl_finances table.
  *
@@ -83,7 +83,11 @@ function ModifyFinances()
  */    
 function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
 {          
-    $response = AddRankings($gid, $bid);
+    $response = UpdateHistory($bid, $type, $desc);
+    if ($response['success']) {
+        $response = AddRankings($gid, $bid);
+    }
+    
     if ($response['success'])
     {
         try 
@@ -106,9 +110,6 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
                 case 3: $typcol = "other";  
                         $other = $sign." -".$amount;
                     break;
-                
-                default :
-                    break;
             }
             
             // Convert the and amount (currency).
@@ -121,10 +122,7 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
             
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-                    break;
-                
-                default :
-                    break;                
+                    break;               
             }        
             
             $query = "INSERT INTO tbl_finances (`date`,`aid`,`$typcol`,`bid`, `description`) ".
@@ -161,10 +159,48 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
 }
 
 /*
+ * Function:    UpdateHistory
+ *
+ * Created on Jul 29, 2024
+ * Updated on Jul 29, 2024
+ *
+ * Description: Update the history in the tbl_businesses table.
+ *
+ * In:  $bid, $type, $desc
+ * Out: $response
+ *
+ */
+function UpdateHistory($bid, $type, $desc)
+{
+    $response = [];   
+    try 
+    { 
+        $db = OpenDatabase();
+        
+        $query = "UPDATE tbl_businesses SET `rad_history`='$type', `desc_history`='$desc' ".
+                 "WHERE id = $bid;";
+        $select = $db->prepare($query);
+        $select->execute();        
+
+        $response['success'] = true;         
+    }    
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
+    
+    // Close database connection.
+    $db = null;        
+    
+    return $response;   
+}
+
+/*
  * Function:    AddRankings
  *
  * Created on Jul 08, 2024
- * Updated on Jul 08, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Add group id and business id to the tbl_rankings table.
  *
@@ -175,7 +211,6 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
 function AddRankings($gid, $bid)
 {
     $response = [];
-    
     try 
     { 
         $db = OpenDatabase();
@@ -208,7 +243,7 @@ function AddRankings($gid, $bid)
  * Function:    EditFinances
  *
  * Created on Jul 07, 2024
- * Updated on Jul 16, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Edit the tbl_finances table with the input.
  *
@@ -218,54 +253,51 @@ function AddRankings($gid, $bid)
  */    
 function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
 {   
-    try 
-    {                
-        $db = OpenDatabase();
+    $response = UpdateHistory($bid, $type, $desc);
+    if ($response['success']) 
+    {
+        try 
+        {                
+            $db = OpenDatabase();
             
-        // Convert the and amount (currency).
-        switch ($sign) 
-        {
-            case "$" :
-            case "£" :
-                $amtcol = "REPLACE('$amount',',','')";
-                break;
+            // Convert the and amount (currency).
+            switch ($sign) 
+            {
+                case "$" :
+                case "£" :
+                    $amtcol = "REPLACE('$amount',',','')";
+                    break;
             
-            case "€"  :
-                $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-                break;
-                                             
-            default :
-                break;             
-        }
+                case "€"  :
+                    $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
+                    break;           
+            }
         
-        // Determine type (income, fixed or other).
-        $income = "";
-        $fixed  = "";
-        $other  = "";        
-        switch ($type) {
-            case 1: 
-                $incol = "`income`=$amtcol";
-                $fxcol = "`fixed`=null";
-                $otcol = "`other`=null";
-                $income = $sign." ".$amount;
-                break;
+            // Determine type (income, fixed or other).
+            $income = "";
+            $fixed  = "";
+            $other  = "";        
+            switch ($type) {
+                case 1: 
+                    $incol = "`income`=$amtcol";
+                    $fxcol = "`fixed`=null";
+                    $otcol = "`other`=null";
+                    $income = $sign." ".$amount;
+                    break;
                 
-            case 2:
-                $incol = "`income`=null";
-                $fxcol = "`fixed`=$amtcol";
-                $otcol = "`other`=null";
-                $fixed = $sign." -".$amount;
-                break;
+                case 2:
+                    $incol = "`income`=null";
+                    $fxcol = "`fixed`=$amtcol";
+                    $otcol = "`other`=null";
+                    $fixed = $sign." -".$amount;
+                    break;
                 
-            case 3: 
-                $incol = "`income`=null";
-                $fxcol = "`fixed`=null";
-                $otcol = "`other`=$amtcol";
-                $other = $sign." -".$amount;
-                break;
-                                               
-            default :
-                break;             
+                case 3: 
+                    $incol = "`income`=null";
+                    $fxcol = "`fixed`=null";
+                    $otcol = "`other`=$amtcol";
+                    $other = $sign." -".$amount;
+                    break;           
         }        
         
         $query = "UPDATE tbl_finances SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
@@ -293,6 +325,7 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
     {    
         $response['message'] = $e->getMessage();
         $response['success'] = false;
+    }
     }
     
     // Close database connection.

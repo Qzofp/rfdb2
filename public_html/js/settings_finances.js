@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Jun 18, 2024
+ * Updated on Jul 29, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -343,7 +343,7 @@ function modifyGroups(c, btn) {
  * Function:    showFinancesPopupBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on May 26, 2024
+ * Updated on Jul 29, 2024
  *
  * Description:  Shows the businesses popup content for the finances page.
  *
@@ -385,7 +385,8 @@ function showFinancesPopupBusinesses(c, s, h) {
     );     
     
     removeSelectMenu();
-    addSelectMenu(c, "get_groups", "hide=true&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
+    //addSelectMenu(c, "get_groups", "hide=true&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
+    addSelectMenu(c, "get_select_finances", "type=group&rank=false", "groups", c.businesses[1], cells[0].split("_")[1], "group");
     
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
@@ -628,7 +629,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Jun 18, 2024
+ * Updated on Jul 29, 2024
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -675,7 +676,7 @@ function showCryptoPopupWallets(c, s, h) {
     }
     
     if (cells[3]) {
-        addSelectMenu(c, "get_cryptos", "sort=symbol", "cryptos", c.wallets[3], cells[0].split("_")[3], "symbol");
+        addSelectMenu(c, "get_cryptos", "sort=symbol&hide=false", "cryptos", c.wallets[3], cells[0].split("_")[3], "symbol");
     }
     else {
         disableSelectMenu("cryptos", c.wallets[3]);

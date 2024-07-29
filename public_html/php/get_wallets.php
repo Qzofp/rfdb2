@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on Jun 24, 2024
+ * Updated on Jul 27, 2024
  *
  * Description: Check if the user is signed in and get the wallets from the databases tbl_wallets table.
  * Dependenties: config.php
@@ -25,10 +25,10 @@ else {
 }
 
 /*
- * Function:    GetCryptos
+ * Function:    GetWallets
  *
  * Created on May 19, 2024
- * Updated on Jun 24, 2024
+ * Updated on Jul 27, 2024
  *
  * Description: Get the wallets from the databases tbl_wallets table.
  *
@@ -38,11 +38,13 @@ else {
  */
 function GetWallets()
 {   
-    $aid  = filter_input(INPUT_POST, 'aid', FILTER_SANITIZE_STRING);
+    //$aid  = filter_input(INPUT_POST, 'aid' , FILTER_SANITIZE_STRING);
     $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
     
     $response = [];
     
+
+    /*
     // Determine the where clause.
     $where = "";
     if ($aid) 
@@ -54,25 +56,27 @@ function GetWallets()
         $id = "CONCAT(tbl_wallets.`id`, '_',tbl_services.`id`, '_', tbl_accounts.`id`, '_', tbl_cryptocurrenties.`id`) ";   
         $where = "WHERE tbl_accounts.`hide` = 0 AND tbl_cryptocurrenties.`hide` = 0 ";
     }
+    */
   
     try 
     {
         $db = OpenDatabase();
-           
+        
+        $id = "CONCAT(tbl_wallets.`id`, '_',tbl_services.`id`, '_', tbl_accounts.`id`, '_', tbl_cryptocurrenties.`id`) "; 
         $query = "SELECT $id AS id,tbl_wallets.`hide` AS hide,`service`,`account`,`symbol`,tbl_wallets.`description` ". 
                  "FROM tbl_wallets ".
                  "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                  "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
-                 $where .
+                 //"WHERE tbl_accounts.`hide` = 0 AND tbl_cryptocurrenties.`hide` = 0 ".
+                 //$where .
                  "ORDER BY `$sort`;";
     
         $select = $db->prepare($query);
         $select->execute();
 
         $accounts = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $accounts;       
- 
+        $response['data'] = $accounts;        
         $response['success'] = true;
     }
     catch (PDOException $e) 
