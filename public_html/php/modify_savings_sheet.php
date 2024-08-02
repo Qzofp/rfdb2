@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 13, 2024
- * Updated on Jul 22, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_savings table.
  * Dependenties: config.php
@@ -72,7 +72,7 @@ function ModifySavings()
  * Function:    AddSavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 16, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_savings table.
  *
@@ -130,10 +130,7 @@ function AddSavings($date, $type, $sign, $amount, $sid, $aid, $desc)
         $response['service']    = $sid;
         $response['account']    = $aid;
         $response['desc']       = $desc;
-            
-        // debug
-        //$response['query'] = $query;                    
-           
+                            
         $response['success'] = true;  
     }
     catch (PDOException $e) 
@@ -152,7 +149,7 @@ function AddSavings($date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    EditSavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 13, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_savings table with the input.
  *
@@ -176,16 +173,14 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-                break;
-                
-            default :
                 break;            
         }
         
         // Determine type (deposit or withdrawal).
         $deposit = "";
         $withdrawal = "";            
-        switch ($type) {
+        switch ($type) 
+        {
             case 1: 
                 $depcol = "`deposit`=$amtcol";
                 $witcol = "`withdrawal`=null";
@@ -196,10 +191,7 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
                 $depcol = "`deposit`=null";
                 $witcol = "`withdrawal`=$amtcol";
                 $withdrawal = $sign." -".$amount;
-                break;
-                                      
-            default :
-                break;            
+                break;           
         }        
         
         $query = "UPDATE tbl_savings SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
@@ -214,10 +206,7 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
         $response['withdrawal'] = $withdrawal ? $withdrawal : "";
         $response['service']    = $sid;
         $response['account']    = $aid;
-        $response['desc']       = $desc;
-            
-        // debug
-        //$response['query'] = $query;                
+        $response['desc']       = $desc;            
             
         $response['success'] = true;  
     }
@@ -237,7 +226,7 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    DeleteSavings
  *
  * Created on Jul 13, 2024
- * Updated on Jul 13, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Delete the row with id in the tbl_savings table.
  *
@@ -247,8 +236,7 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
  */    
 function DeleteSavings($id)
 {   
-    $response = [];  
-       
+    $response = [];      
     try 
     {    
         $db = OpenDatabase();

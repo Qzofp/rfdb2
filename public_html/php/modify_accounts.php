@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Jul 25, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -71,7 +71,7 @@ function ModifyAccount()
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on May 15, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
@@ -94,9 +94,6 @@ function ModifyAccount()
                      "VALUES ('$account',CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),'$serv','$aTypes[$type]','$desc');";            
             $select = $db->prepare($query);
             $select->execute();
-            
-            // debug
-            //$response['query'] = $query;
                         
             $response['id']    = $db->lastInsertId();            
             $response['date']  = $date;
@@ -123,7 +120,7 @@ function ModifyAccount()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on May 13, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
@@ -146,10 +143,7 @@ function ModifyAccount()
                             "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);
-            $select->execute();
-            
-            // debug
-            // $response['query'] = $query;            
+            $select->execute();          
                     
             $response['id']   = $id;
             $response['hide'] = $hide;
@@ -267,7 +261,7 @@ function CheckAccount($id, $account)
  * Function:    CheckAccountInSheets
  *
  * Created on Jul 24, 2024
- * Updated on Jul 25, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the account exists in the sheets tables (tbl_finances, tbl_stocks, tbl_savings and tbl_wallets).
  *
@@ -289,9 +283,6 @@ function CheckAccountInSheets($id, $type)
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();
-
-        // debug
-        //$response['query'] = $query;
         
         $response['exists'] = false; 
         if ($result > 0) {

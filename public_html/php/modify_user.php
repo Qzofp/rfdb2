@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the user in the tbl_users table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyUser
  *
  * Created on Jan 23, 2024
- * Updated on Feb 03, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Modify (add, edit or delete) the user in the tbl_users table if the user doesn't exists.
  *
@@ -44,8 +44,7 @@ function ModifyUser()
     $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_STRING);
     $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_STRING);
 
-    $response = [];
-    
+    $response = [];   
     switch ($action)
     {
         case "add" :
@@ -157,7 +156,7 @@ function ModifyUser()
  * Function:    DeleteUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Delete the user in the tbl_users table.
  *
@@ -167,8 +166,6 @@ function ModifyUser()
  */    
  function DeleteUser($id)
  {   
-    //$response = [];  
-    
     $response = CheckLastUser(); 
     if ($response['success'] && !$response['last'])
     {        
@@ -199,7 +196,7 @@ function ModifyUser()
  * Function:    CheckUser
  *
  * Created on Feb 03, 2024
- * Updated on Feb 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user exists in the user table.
  *
@@ -209,8 +206,7 @@ function ModifyUser()
  */
 function CheckUser($id, $user)
 {
-    $response = [];
-    
+    $response = [];   
     try 
     { 
         $db = OpenDatabase();
@@ -249,7 +245,7 @@ function CheckUser($id, $user)
  * Function:    CheckLastUser
  *
  * Created on Feb 24, 2024
- * Updated on Feb 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is not the last user in the table.
  *
@@ -260,12 +256,10 @@ function CheckUser($id, $user)
 function CheckLastUser() 
 {
     $response = [];
-
     try 
     { 
         $db = OpenDatabase();
-        
-            
+                
         // Check if user aleready exists in the tbl_users table.
         $query = "SELECT count(0) FROM `tbl_users`;";       
         $select = $db->prepare($query);

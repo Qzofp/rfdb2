@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 05, 2024
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the users from the databases tbl_users table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetUsers
  *
  * Created on Jan 05, 2024
- * Updated on Feb 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the users from the databases tbl_users table.
  *
@@ -42,8 +42,6 @@ function GetUsers()
     $sort = filter_input(INPUT_POST, 'sort' , FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Get the settings.
     try 
     {
         $db = OpenDatabase();

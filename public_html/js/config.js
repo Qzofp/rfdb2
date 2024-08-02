@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on May 17, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -17,7 +17,6 @@
 // Define constants
 const cVersion = "0.1";
 const cDate = new Date();
-//const cDate = new Date('02/19/2023');
 
 /*
  * Function:    getAjaxRequest

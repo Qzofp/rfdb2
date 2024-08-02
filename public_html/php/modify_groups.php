@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 01, 2024
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_groups table.
  * Dependenties: config.php
@@ -69,7 +69,7 @@ function ModifyGroup()
  * Function:    AddGroup
  *
  * Created on Apr 01, 2024
- * Updated on Apr 02, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_groups table if the account doesn't exists.
  *
@@ -90,9 +90,6 @@ function ModifyGroup()
                      "VALUES ('$group', '$desc');";          
             $select = $db->prepare($query);
             $select->execute();
-            
-            // debug
-            //$response['query'] = $query;
                         
             $response['id']      = $db->lastInsertId();            
             $response['group']   = $group;
@@ -118,7 +115,7 @@ function ModifyGroup()
  * Function:    EditGroup
  *
  * Created on Apr 02, 2024
- * Updated on Apr 07, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_groups table with the input if the group doesn't exists.
  *
@@ -139,10 +136,7 @@ function ModifyGroup()
             
             $select = $db->prepare($query);
             $select->execute();
-            
-            // debug
-            // $response['query'] = $query;            
-                    
+                            
             $response['id']      = $id;
             $response['hide']    = $hide;
             $response['group']   = $group;
@@ -168,7 +162,7 @@ function ModifyGroup()
  * Function:    CheckGroup
  *
  * Created on Apr 01, 2024
- * Updated on Apr 01, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the group exists in the tbl_groups table.
  *
@@ -178,8 +172,7 @@ function ModifyGroup()
  */
 function CheckGroup($id, $group)
 {
-    $response = [];
-    
+    $response = [];  
     try 
     { 
         $db = OpenDatabase();
@@ -258,7 +251,7 @@ function CheckGroup($id, $group)
  * Function:    CheckGroupInBusinesses
  *
  * Created on Mar 24, 2024
- * Updated on Mar 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the group exists in the tbl_businesses table.
  *
@@ -268,8 +261,7 @@ function CheckGroup($id, $group)
  */
 function CheckGroupInBusinesses($id)
 {
-    $response = [];
-    
+    $response = [];  
     try 
     { 
         $db = OpenDatabase();

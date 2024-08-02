@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 21, 2024
- * Updated on Jul 22, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_crypto table.
  * Dependenties: config.php
@@ -74,7 +74,7 @@ function ModifyCrypto()
  * Function:    AddCrypto
  *
  * Created on Jul 21, 2024
- * Updated on Jul 21, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_crypto table.
  *
@@ -140,10 +140,7 @@ function AddCrypto($date, $type, $sign, $amount, $sid, $aid, $number, $cid, $des
             $response['number']     = $number;            
             $response['crypto']     = $cid;              
             $response['desc']       = $desc;
-            
-            // debug
-            //$response['query'] = $query;                    
-           
+                           
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -163,7 +160,7 @@ function AddCrypto($date, $type, $sign, $amount, $sid, $aid, $number, $cid, $des
  * Function:    EditCrypto
  *
  * Created on Jul 22, 2024
- * Updated on Jul 22, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_crypto table with the input.
  *
@@ -234,10 +231,7 @@ function EditCrypto($id, $date, $type, $sign, $amount, $sid, $aid, $number, $cid
             $response['number']     = $number;            
             $response['crypto']     = $cid;               
             $response['desc']       = $desc;
-            
-            // debug
-            //$response['query'] = $query;                
-            
+                        
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -257,7 +251,7 @@ function EditCrypto($id, $date, $type, $sign, $amount, $sid, $aid, $number, $cid
  * Function:    GetWalletId
  *
  * Created on Jul 21, 2024
- * Updated on Jul 21, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the wallet id from tbl_wallets table.
  *
@@ -267,8 +261,7 @@ function EditCrypto($id, $date, $type, $sign, $amount, $sid, $aid, $number, $cid
  */ 
 function GetWalletId($aid, $cid)
 {
-    $response = [];
-    
+    $response = [];    
     try 
     { 
         $db = OpenDatabase();
@@ -298,7 +291,7 @@ function GetWalletId($aid, $cid)
  * Function:    DeleteCrypto
  *
  * Created on Jul 22, 2024
- * Updated on Jul 22, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Delete the row with id in the tbl_crypto table.
  *
@@ -308,8 +301,7 @@ function GetWalletId($aid, $cid)
  */    
 function DeleteCrypto($id)
 {   
-    $response = [];  
-       
+    $response = [];     
     try 
     {    
         $db = OpenDatabase();

@@ -6,10 +6,9 @@
  *
  * File:    get_select_finances.php
  * Used in: js\sheet_edit.js
- *          js\settings_finances.js
  *
  * Created on Jul 27, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the finances sheet popup.
  * Dependenties: config.php
@@ -67,7 +66,7 @@ function GetSelectMenu()
  * Function:    GetAccountMenu
  *
  * Created on Jul 27, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select account menu from the databases tbl_accounts table.
  *
@@ -77,6 +76,7 @@ function GetSelectMenu()
  */
 function GetAccountMenu()
 {
+    $response = [];  
     try 
     {
         $db = OpenDatabase();
@@ -110,7 +110,7 @@ function GetAccountMenu()
  * Function:    GetGroupMenu
  *
  * Created on Jul 28, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select group menu from the databases tbl_groups table.
  *
@@ -120,6 +120,7 @@ function GetAccountMenu()
  */
 function GetGroupMenu($rank)
 {
+    $response = [];    
     try 
     {
         $db = OpenDatabase();
@@ -159,7 +160,7 @@ function GetGroupMenu($rank)
  * Function:    GetBusinessMenu
  *
  * Created on Jul 28, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select business menu from the databases tbl_businesses table.
  *
@@ -169,6 +170,7 @@ function GetGroupMenu($rank)
  */
 function GetBusinessMenu($id, $rank)
 {
+    $response = [];
     try 
     {
         $db = OpenDatabase();

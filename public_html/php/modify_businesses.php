@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 06, 2024
- * Updated on Jul 25, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_businesses table.
  * Dependenties: config.php
@@ -70,7 +70,7 @@ function ModifyBusinesses()
  * Function:    AddBusinesses
  *
  * Created on Apr 06, 2024
- * Updated on Apr 07, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_businesses table if the group and businesses doesn't exists.
  *
@@ -97,10 +97,7 @@ function ModifyBusinesses()
             $response['business'] = $business;
             $response['ranking']  = $rank;       
             $response['website']  = $website;
-
-            // debug
-            //$response['query'] = $query;                    
-            
+                        
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -120,7 +117,7 @@ function ModifyBusinesses()
  * Function:    EditBusinesses
  *
  * Created on Apr 07, 2024
- * Updated on Apr 07, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_businesses table with the input if the group and business doesn't exists.
  *
@@ -149,10 +146,7 @@ function ModifyBusinesses()
             $response['business'] = $business;
             $response['ranking']  = $rank;       
             $response['website']  = $website;
-            
-            // debug
-            //$response['query'] = $query;                
-            
+                          
             $response['success'] = true;  
         }
         catch (PDOException $e) 

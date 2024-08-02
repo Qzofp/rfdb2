@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Jul 28, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Jun 25, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Shows the settings page.
  *
@@ -106,7 +106,7 @@ function showSettings(c, s) {
 
     // Select event is triggered.
     $("#popup_content").on('click', '.list .selected', function() {
-        getSelectAndProcessChoice(c, s, this);
+        getSelectAndProcessChoice(c, this);
     });
     
     // Show the page theme.
@@ -406,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -447,7 +447,7 @@ function showSettingButtonAction(adp, c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable("tbl_services", services, s, 5, "get_services", "sort=service&type=");             
+                showTable("tbl_services", services, s, 5, "get_services", "sort=service");             
             }
             break;              
                        
@@ -477,7 +477,7 @@ function showSettingButtonAction(adp, c, s, that) {
             {     
                 setPageButton(s[slide], 1, -1);
                 let items = setAccountItems(c, slide);    
-                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=date");                
+                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=tbl_accounts.`date`");                
             }      
             break;
         
@@ -487,7 +487,6 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {
                 setPageButton(s[1], 2, -1);
-                //showTable("tbl_groups", c.groups, s, slide, "get_groups","hide=false&rank=true");
                 showTable("tbl_groups", c.groups, s, slide, "get_groups","");
             }
             break;
@@ -498,7 +497,6 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {            
                 setPageButton(s[1], 3, -1);
-                //showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","gid=0&rank=true");
                 showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","");
             }
             break;
@@ -677,32 +675,31 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
- * In:  c, s, that
+ * In:  c, that
  * Out: -
  *
  */
-function getSelectAndProcessChoice(c, s, that) {
+function getSelectAndProcessChoice(c, that) {
 
     var popup = $('#popup_content').attr('class');
     if (popup === "gen_wallets") 
     {
-        var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
         var select = $(that).parents(':eq(3)').find('select').attr('id');
         var id = $(that).attr('data-value');
         
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
-            addSelectMenu(c, "get_accounts", "sort=account&hide=true&sid=" + id + "&type=" + s[slide].name, "accounts", c.wallets[2], 0, "account", 0);
+            addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + id, "accounts", c.wallets[2], 0, "account");
         }
         else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {
             removeSelectMenu("cryptos");
-            addSelectMenu(c, "get_cryptos", "sort=symbol&hide=true", "cryptos", c.wallets[3], 0, "symbol");
+            addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], 0, "symbol");
         }     
     }     
 }

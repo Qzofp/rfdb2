@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Dec 04, 2023
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the configs from the databases tbl_config table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetConfigs
  *
  * Created on Dec 23, 2023
- * Updated on Jan 28, 2023
+ * Updated on Aug 01, 2024
  *
  * Description: Get the configs from the databases tbl_config table.
  *
@@ -39,8 +39,6 @@ else {
 function GetConfigs()
 {   
     $response = [];
-
-    // Get the settings.
     try 
     {
         $db = OpenDatabase();

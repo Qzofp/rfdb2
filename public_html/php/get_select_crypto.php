@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 27, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the crypto sheet popup.
  * Dependenties: config.php
@@ -64,7 +64,7 @@ function GetSelectMenu()
  * Function:    GetServiceMenu
  *
  * Created on Jul 27, 2024
- * Updated on Jul 27, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select service menu from the databases tbl_wallets table.
  *
@@ -74,6 +74,7 @@ function GetSelectMenu()
  */
 function GetServiceMenu()
 {
+    $response = []; 
     try 
     {
         $db = OpenDatabase();
@@ -110,7 +111,7 @@ function GetServiceMenu()
  * Function:    GetAccountMenu
  *
  * Created on Jul 27, 2024
- * Updated on Jul 27, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select account menu from the databases tbl_wallets table.
  *
@@ -120,6 +121,7 @@ function GetServiceMenu()
  */
 function GetAccountMenu($id)
 {
+    $response = []; 
     try 
     {
         $db = OpenDatabase();
@@ -156,7 +158,7 @@ function GetAccountMenu($id)
  * Function:    GetCryptoMenu
  *
  * Created on Jul 27, 2024
- * Updated on Jul 27, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select crypto (symbol) menu from the databases tbl_wallets table.
  *
@@ -166,6 +168,7 @@ function GetAccountMenu($id)
  */
 function GetCryptoMenu($id)
 {
+    $response = []; 
     try 
     {
         $db = OpenDatabase();

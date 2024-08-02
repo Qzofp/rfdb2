@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 05, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Check if the user is signed in and get the businesses from the databases tbl_businesses table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Get the businesses from the databases tbl_businesses table.
  *
@@ -38,36 +38,11 @@ else {
  */
 function GetBusinesses()
 {   
-    //$gid  = filter_input(INPUT_POST, 'gid', FILTER_SANITIZE_STRING);
-    //$rank = filter_input(INPUT_POST, 'rank', FILTER_SANITIZE_STRING);
-    //$hide = filter_input(INPUT_POST, 'hide', FILTER_SANITIZE_STRING);
             
-    $response = [];
-    
+    $response = [];  
     try 
     {
-        $db = OpenDatabase();
-         
-        /*
-        if ($gid > 0) {
-            $id = "tbl_businesses.`id`";
-            $group = "AND tbl_groups.`id` = $gid "; 
-        }
-        else {
-            $id = "CONCAT(tbl_businesses.`id`,'_',tbl_groups.`id`)";
-            $group = "";
-        }
-        
-        $ranking = "";
-        if ($rank == "true") {
-            $ranking = "ranking DESC,";
-        }
-        
-        $hiding = "";
-        if ($hide == "true") {
-            $hiding = "AND tbl_businesses.`hide` = 0";
-        }
-        */        
+        $db = OpenDatabase();      
         
         $id = "CONCAT(tbl_businesses.`id`,'_',tbl_groups.`id`)";
         $query = "SELECT $id AS id, tbl_businesses.`hide`, tbl_groups.`group`, tbl_businesses.`business`, count(0) AS ranking, tbl_businesses.`website` ".

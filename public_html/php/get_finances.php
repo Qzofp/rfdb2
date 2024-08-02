@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Jun 23, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Jun 23, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -158,11 +158,7 @@ function GetFinances()
         $select->execute();
 
         $finances = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $finances;    
- 
-        // Debug
-        //$response['query'] = $query;
-        
+        $response['data'] = $finances;       
         $response['success'] = true;
     }
     catch (PDOException $e) 

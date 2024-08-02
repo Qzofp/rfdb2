@@ -8,7 +8,7 @@
  * Used in: js\common.js
  *
  * Created on Apr 15, 2024
- * Updated on Apr 15, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and change for the page the start year in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeYear
  *
  * Created on Apr 15, 2024
- * Updated on Apr 15, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Change the start year in the tbl_settings table.
  *
@@ -43,8 +43,6 @@ function ChangeStartYear()
     $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Change the scale setting.
     try 
     {
         $db = OpenDatabase();

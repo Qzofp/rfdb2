@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 28, 2024
- * Updated on May 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_cryptocurrenties table.
  * Dependenties: config.php
@@ -69,7 +69,7 @@ function ModifyCryptoCurrenties()
  * Function:    AddCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on May 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_cryptocurrenties table if the name or symbol doesn't exists.
  *
@@ -90,9 +90,6 @@ function ModifyCryptoCurrenties()
                      "VALUES ('$name', '$symbol', '$web');";          
             $select = $db->prepare($query);
             $select->execute();
-            
-            // debug
-            //$response['query'] = $query;
                         
             $response['id']     = $db->lastInsertId();            
             $response['name']   = $name;
@@ -118,7 +115,7 @@ function ModifyCryptoCurrenties()
  * Function:    EditCryptoCurrenties
  *
  * Created on May 29, 2024
- * Updated on May 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_cryptocurrenties table with the input if the name or symbol doesn't exists.
  *
@@ -139,10 +136,7 @@ function ModifyCryptoCurrenties()
             
             $select = $db->prepare($query);
             $select->execute();
-            
-            // debug
-            // $response['query'] = $query;            
-                    
+          
             $response['id']     = $id;
             $response['hide']   = $hide;
             $response['name']   = $name;
@@ -168,7 +162,7 @@ function ModifyCryptoCurrenties()
  * Function:    CheckCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on May 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the name or crypto exists in the tbl_cryptocurrenties table.
  *
@@ -178,8 +172,7 @@ function ModifyCryptoCurrenties()
  */
 function CheckCryptoCurrenties($id, $name, $symbol)
 {
-    $response = [];
-    
+    $response = [];   
     try 
     { 
         $db = OpenDatabase();
@@ -260,7 +253,7 @@ function CheckCryptoCurrenties($id, $name, $symbol)
  * Function:    CheckCryptoInWallets
  *
  * Created on May 29, 2024
- * Updated on May 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the crypto exists in the tbl_wallets table.
  *
@@ -270,8 +263,7 @@ function CheckCryptoCurrenties($id, $name, $symbol)
  */
 function CheckCryptoInWallets($id)
 {
-    $response = [];
-    
+    $response = [];   
     try 
     { 
         $db = OpenDatabase();

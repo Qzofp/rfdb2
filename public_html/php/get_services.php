@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 10, 2024
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the services from the databases tbl_services table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetServices
  *
  * Created on Feb 10, 2024
- * Updated on Mar 13, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the services from the databases tbl_services table.
  *
@@ -39,10 +39,8 @@ else {
 function GetServices()
 {   
     $sort = filter_input(INPUT_POST, 'sort' , FILTER_SANITIZE_STRING);
-    $type = filter_input(INPUT_POST, 'type' , FILTER_SANITIZE_STRING);
 
     $response = [];
-
     try 
     {
         $db = OpenDatabase();
@@ -63,23 +61,16 @@ function GetServices()
                 $pages .= ",`" . $link['name'] . "`";
             }
         }
-
-        $where = "";
-        if ($type) {
-           $where = "WHERE $type = '&#9745;' AND hide = 0 ";
-        }
         
         $query = "SELECT `id`,`hide`,`service`$pages,`website`".
                  "FROM `tbl_services` ".
-                 $where.
                  "ORDER BY `$sort`;";
              
         $select = $db->prepare($query);
         $select->execute();
 
         $services = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $services;       
- 
+        $response['data'] = $services;
         $response['success'] = true;
     }
     catch (PDOException $e) 

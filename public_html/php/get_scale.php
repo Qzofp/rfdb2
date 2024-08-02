@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 17, 2023
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the scale from the tbl_settings table.
  * Dependenties: config.php
@@ -42,8 +42,6 @@ function GetScale()
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Change the scale setting.
     try 
     {
         $db = OpenDatabase();
@@ -54,8 +52,7 @@ function GetScale()
         $select->execute();    
     
         $data = $select->fetchAll(PDO::FETCH_ASSOC);  
-        $response['data'] = $data;
-    
+        $response['data'] = $data;    
         $response['success'] = true;
     }
     catch (PDOException $e) 

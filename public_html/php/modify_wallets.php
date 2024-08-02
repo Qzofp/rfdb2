@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 31, 2024
- * Updated on Jul 25, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -70,7 +70,7 @@ function ModifyWallets()
  * Function:    AddWallet
  *
  * Created on May 31, 2024
- * Updated on May 31, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_wallet table if the wallet doesn't exists.
  *
@@ -98,9 +98,6 @@ function ModifyWallets()
             $response['crypto']  = $cid;  
             $response['desc']    = $desc;
             
-            // debug
-            //$response['query'] = $query;                    
-            
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -120,7 +117,7 @@ function ModifyWallets()
  * Function:    EditWallet
  *
  * Created on Jun 01, 2024
- * Updated on Jun 21, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_wallet table with the input if the wallet doesn't exists.
  *
@@ -149,11 +146,8 @@ function ModifyWallets()
             $response['account'] = $aid;
             $response['crypto']  = $cid;  
             $response['desc']    = $desc;
-            
-            // debug
-            //$response['query'] = $query;                
-            
-                $response['success'] = true;  
+                          
+            $response['success'] = true;  
         }
         catch (PDOException $e) 
         {    
@@ -172,7 +166,7 @@ function ModifyWallets()
  * Function:    CheckWallet
  *
  * Created on May 31, 2024
- * Updated on May 31, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the wallet (aid and cid) exists in the tbl_wallet table.
  *
@@ -183,7 +177,6 @@ function ModifyWallets()
 function CheckWallet($id, $aid, $cid)
 {
     $response = [];
-    
     try 
     { 
         $db = OpenDatabase();
@@ -262,7 +255,7 @@ function CheckWallet($id, $aid, $cid)
  * Function:    CheckWalletInCrypto
  *
  * Created on Jul 25, 2024
- * Updated on Jul 25, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the wallet exists in the tbl_crypto table.
  *
@@ -272,8 +265,7 @@ function CheckWallet($id, $aid, $cid)
  */
 function CheckWalletInCrypto($id)
 {  
-    $response = [];
-    
+    $response = [];    
     try 
     { 
         $db = OpenDatabase();

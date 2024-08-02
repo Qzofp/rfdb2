@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 12, 2024
- * Updated on Jul 22, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php
@@ -72,7 +72,7 @@ function ModifyStocks()
  * Function:    AddStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 16, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_stocks table.
  *
@@ -96,10 +96,7 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
                 
             case 2: $typcol = "withdrawal";
                 $withdrawal = $sign." -".$amount;
-                break;
-                
-            default :
-                break;                
+                break;               
         }
             
         // Convert the and amount (currency).
@@ -113,9 +110,6 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
                break;
-                
-            default :
-                break;
         }        
             
         $query = "INSERT INTO tbl_stocks (`date`,`aid`,`$typcol`,`description`) ".
@@ -130,10 +124,7 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
         $response['service']    = $sid;
         $response['account']    = $aid;
         $response['desc']       = $desc;
-            
-        // debug
-        //$response['query'] = $query;                    
-           
+                           
         $response['success'] = true;  
     }
     catch (PDOException $e) 
@@ -152,7 +143,7 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    EditStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_stocks table with the input.
  *
@@ -176,9 +167,6 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-                break;
-                
-            default :
                 break;            
         }
         
@@ -196,10 +184,7 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
                 $depcol = "`deposit`=null";
                 $witcol = "`withdrawal`=$amtcol";
                 $withdrawal = $sign." -".$amount;
-                break;
-                                      
-            default :
-                break;            
+                break;        
         }        
         
         $query = "UPDATE tbl_stocks SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
@@ -215,10 +200,7 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
         $response['service']    = $sid;
         $response['account']    = $aid;
         $response['desc']       = $desc;
-            
-        // debug
-        //$response['query'] = $query;                
-            
+                          
         $response['success'] = true;  
     }
     catch (PDOException $e) 
@@ -237,7 +219,7 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    DeleteStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Delete the row with id in the tbl_stocks table.
  *
@@ -247,8 +229,7 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
  */    
 function DeleteStocks($id)
 {   
-    $response = [];  
-       
+    $response = [];      
     try 
     {    
         $db = OpenDatabase();

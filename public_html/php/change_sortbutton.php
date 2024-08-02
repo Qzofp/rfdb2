@@ -8,7 +8,7 @@
  * Used in: js\sheet.js
  *
  * Created on Jun 14, 2024
- * Updated on Jun 14, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and change the sort button in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeSortButton
  *
  * Created on Jun 14, 2024
- * Updated on Jun 14, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: change the sort button in the tbl_settings table.
  *
@@ -44,8 +44,6 @@ function ChangeSortButton()
     $sel    = filter_input(INPUT_POST, 'sel', FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Change the sort button setting.
     try 
     {
         $db = OpenDatabase();

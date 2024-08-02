@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 09, 2024
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and change the show setting (true or false) in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeShowRows
  *
  * Created on Feb 09, 2024
- * Updated on Feb 09, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Change the show setting (true or false) in the tbl_settings table.
  *
@@ -43,8 +43,6 @@ function ChangeShowRows()
     $show  = filter_input(INPUT_POST, 'show'  , FILTER_SANITIZE_STRING);    
  
     $response = [];
-
-    // Change the page settings.
     try 
     {    
         switch ($slide) 

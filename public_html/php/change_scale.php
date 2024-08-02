@@ -8,7 +8,7 @@
  * Used in: js\sheet.js
  *
  * Created on Nov 15, 2023
- * Updated on Dec 24, 2023
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and change the scale in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeScale
  *
  * Created on Dec 24, 2023
- * Updated on Dec 24, 2023
+ * Updated on Aug 01, 2024
  *
  * Description: change the scale in the tbl_settings table.
  *
@@ -43,8 +43,6 @@ function ChangeScale()
     $scale = filter_input(INPUT_POST, 'scale', FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Change the scale setting.
     try 
     {
         $db = OpenDatabase();

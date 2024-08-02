@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 29, 2023
- * Updated on Apr 12, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Check if the user is signed in and change the language in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeLanguage
  *
  * Created on Dec 24, 2023
- * Updated on Dec 24, 2023
+ * Updated on Aug 02, 2024
  *
  * Description: Change the language in the tbl_settings table.
  *
@@ -42,8 +42,6 @@ function ChangeLanguage()
     $language  = filter_input(INPUT_POST, 'language', FILTER_SANITIZE_STRING);
 
     $response = [];
-
-    // Change the language setting.
     try 
     {
         $db = OpenDatabase();
@@ -63,7 +61,7 @@ function ChangeLanguage()
         // Update the settings table.
         $query = "UPDATE `tbl_settings` ".
                  "SET `value` = JSON_REPLACE(`value`,'$.language','$native'), ".
-                 "     `value` = JSON_REPLACE(`value`,'$.code','$code') ".
+                 "    `value` = JSON_REPLACE(`value`,'$.code','$code') ".
                  "WHERE `name` = \"language\";";    
     
         $select = $db->prepare($query);

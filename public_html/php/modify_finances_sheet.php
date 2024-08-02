@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 05, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -73,7 +73,7 @@ function ModifyFinances()
  * Function:    AddFinances
  *
  * Created on Jul 05, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Add the input to the tbl_finances table.
  *
@@ -98,7 +98,8 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
             $income = "";
             $fixed  = "";
             $other  = "";            
-            switch ($type) {
+            switch ($type) 
+            {
                 case 1: $typcol = "income";
                         $income = $sign." ".$amount;
                     break;
@@ -139,10 +140,7 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
             $response['service'] = $gid;
             $response['account'] = $bid;
             $response['desc']    = $desc;
-            
-            // debug
-            //$response['query'] = $query;                    
-           
+                             
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -243,7 +241,7 @@ function AddRankings($gid, $bid)
  * Function:    EditFinances
  *
  * Created on Jul 07, 2024
- * Updated on Jul 29, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_finances table with the input.
  *
@@ -316,9 +314,6 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
         $response['account'] = $bid;
         $response['desc']    = $desc;
             
-        // debug
-        //$response['query'] = $query;                
-            
         $response['success'] = true;  
     }
     catch (PDOException $e) 
@@ -338,7 +333,7 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
  * Function:    DeleteFinances
  *
  * Created on Jul 08, 2024
- * Updated on Jul 08, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Delete the row with id in the tbl_finances table.
  *
@@ -348,8 +343,7 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
  */    
 function DeleteFinances($id)
 {   
-    $response = [];  
-       
+    $response = [];      
     try 
     {    
         $db = OpenDatabase();

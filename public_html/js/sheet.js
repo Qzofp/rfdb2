@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Jul 19, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -170,7 +170,7 @@ function openSheetPage(c, s, i) {
     // Select event is triggered.
     $("#popup_content").on('click', '.list .selected', function() {       
         getPopupSelectAndProcessChoice(c, i, this);
-    });            
+    });         
                   
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {      
@@ -388,7 +388,6 @@ function getSelectedDateFromPage() {
     return $date;
 }
 
-
 /*
  * Function:    updateAirDataPicker
  *
@@ -451,7 +450,6 @@ function updateAirDataPicker(adp, date) {
         maxDate: maxdate
     });                   
 }
-
 
 /*
  * Function:    fillSheetSlideMenu
@@ -539,7 +537,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on Jun 03, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -566,9 +564,6 @@ function showSheetContent(adp, c, s, i, sort_date) {
     
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
            "&sign=" + set.sign + sort + "&name=" + s[i].name;
-   
-    // Debug
-    //console.log(send);
     
     switch (s[i].name) {
         case "finance" :
@@ -599,7 +594,7 @@ function showSheetContent(adp, c, s, i, sort_date) {
  * Function:    getAndShowTableTotals
  *
  * Created on May 05, 2024
- * Updated on Jul 10, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get and show the totals of the finances table.
  *
@@ -614,16 +609,12 @@ function getAndShowTableTotals(page, send, c, s, i) {
     // Show the balance label.
     $("#balance u").html(c.misc[1]); 
     
-    //send += "&name=" + s[i].name;
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
         if (result.success) {         
             
             var currency = JSON.parse(s[5].value);
-            
-            // debug.
-            //console.log(result.query);
-            
+                        
             if (result.data[0].balance.includes("-")) {
                 $("#balance span").css("color", "#C11B17");
             }

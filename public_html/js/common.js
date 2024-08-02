@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jul 12, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -374,7 +374,7 @@ function showTable(tblclass, items, s, n, page, send) {
  * Function:    fillTable
  *
  * Created on Jan 08, 2024
- * Updated on May 17, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the data from the database and fill the table with that data.
  *
@@ -390,9 +390,6 @@ function fillTable(s, page, l, send) {
     var setting = JSON.parse(s[5].value);
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
-        
-        // Debug
-        //console.log(result.query);
         
         // Hide loading spinner.
         $("#loading").hide();
@@ -757,7 +754,7 @@ function initAirDatePicker(c) {
  * Function:   serAirDatePicker
  *
  * Created on Mar 13, 2024
- * Updated on Mar 18, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Sets the Air datepicker.
  *
@@ -769,8 +766,7 @@ function setAirDatePicker(adp, date) {
     
     if (date) {
         let p = date.split("-");
-        adp.selectDate(p[2] + "-" + p[1] + "-" + p[0]); 
-        //adp.setViewDate(p[1] + "-" + p[0] + "-" + p[2]);
+        adp.selectDate(p[2] + "-" + p[1] + "-" + p[0]);
     }
     else {       
         adp.setViewDate(cDate); 
@@ -782,7 +778,7 @@ function setAirDatePicker(adp, date) {
  * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on May 27, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Add the select menu.
  *
@@ -823,7 +819,7 @@ function addSelectMenu(c, page, send, id, name, value, item, n=1) {
             options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
-            // Select placeholder fix. And shows the selected item if there is only one.
+            // Select placeholder fix. and shows the selected item if there is only one.
             if (!value && result.data.length > n) {
                 db.clear();
             }
@@ -855,7 +851,7 @@ function addSelectMenu(c, page, send, id, name, value, item, n=1) {
  * Function:   removeSelectMenu
  *
  * Created on May 26, 2024
- * Updated on May 26, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Remove the select menu.
  *
@@ -867,10 +863,7 @@ function removeSelectMenu(id="") {
     
     // Check if nice-select menu exists.
     if ($("#popup_content .nice-select").length) 
-    {
-        // debug.
-        //console.log( $("#" + id).next() );
-        
+    {        
         if (id) { // Remove nice-select by the select id.
             if ($("#" + id).next().length) {
                 $("#" + id).next().remove();

@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 29, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the groups from the databases tbl_groupss table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetGroups
  *
  * Created on Mar 29, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the gropus from the databases tbl_groups table.
  *
@@ -37,30 +37,14 @@ else {
  *
  */
 function GetGroups()
-{   
-    //$hide = filter_input(INPUT_POST, 'hide', FILTER_SANITIZE_STRING);
-    //$rank = filter_input(INPUT_POST, 'rank', FILTER_SANITIZE_STRING);
-            
+{               
     $response = [];    
     try 
     {
         $db = OpenDatabase();
-     
-        /*
-        $where = "";
-        if ($hide == "true") {
-            $where = "WHERE hide = 0 ";
-        }        
-        
-        $ranking = "";
-        if ($rank == "true") {
-            $ranking = "ranking DESC,";
-        }
-        */
-              
+                
         $query = "SELECT tbl_groups.`id`, tbl_groups.`hide`, tbl_groups.`group`, count(0) AS ranking, tbl_groups.`description` ".
                  "FROM `tbl_groups` LEFT JOIN tbl_rankings ON tbl_groups.`id` = tbl_rankings.`gid` ".
-                 //$where.
                  "GROUP BY tbl_groups.`id`, tbl_groups.`group` ".
                  "ORDER BY ranking DESC, `group`;";
     

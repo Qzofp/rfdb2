@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Jul 24, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Jul 24, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -39,47 +39,28 @@ else {
 function GetAccounts()
 {   
     $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
-    $hide = filter_input(INPUT_POST, 'hide', FILTER_SANITIZE_STRING);
     $sign = filter_input(INPUT_POST, 'sign', FILTER_SANITIZE_STRING);    
     $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
-    $sid  = filter_input(INPUT_POST, 'sid', FILTER_SANITIZE_STRING);
     
-    $response = [];
-    
+    $response = [];    
     try 
     {
         $db = OpenDatabase();
         
-        // Date format.
+        // Format date.
         if ($sign == "$" ) {
             $date = "DATE_FORMAT(tbl_accounts.`date`,'%m-%d-%Y') AS `date`";  
         }
         else {
             $date = "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y') AS `date`";   
         }
-     
-        // Determine the where clause.
-        $where = "WHERE tbl_accounts.`type` = '$type' ";      
-        if ($sid)
-        {
-            $id = "tbl_accounts.`id` ";       
-            if ($sid > 0) {
-                $where .= "AND tbl_accounts.`sid` = $sid ";
-            }
-        }
-        else {
-            $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
-        }
-      
-        if ($hide) {
-            $where .= "AND tbl_accounts.`hide` = 0 ";
-        }
-        
+                
+        $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
         $query = "SELECT $id AS id,tbl_accounts.`hide`,". 
                     "$date, tbl_services.`service`,tbl_accounts.`account` AS account, tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                 $where.
+                 "WHERE tbl_accounts.`type` = '$type' AND tbl_services.`hide` = 0 ".
                  "ORDER BY $sort;";
     
         $select = $db->prepare($query);

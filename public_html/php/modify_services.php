@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on May 26, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -122,7 +122,7 @@ function ModifyService()
  * Function:    CheckService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the service exists in the tbl_services table.
  *
@@ -133,7 +133,6 @@ function ModifyService()
 function CheckService($id, $srv)
 {
     $response = [];
-    
     try 
     { 
         $db = OpenDatabase();
@@ -218,7 +217,7 @@ function CreateInsertNamesAndValues($aNames, $aValues)
  * Function:    EditService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 24, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Edit the tbl_services table with the input if the service doesn't exists.
  *
@@ -230,7 +229,6 @@ function CreateInsertNamesAndValues($aNames, $aValues)
  {   
     $options    = "";
     $opt_values = "";
-    
     
     $response = CheckService($id, $srv);    
     if ($response['success'] && !$response['exists'])
@@ -358,7 +356,7 @@ function CreateUpdateNamesAndValues($aNames, $aValues)
  * Function:    CheckServiceInAccounts
  *
  * Created on Mar 24, 2024
- * Updated on May 26, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the service exists in the tbl_accounts table.
  *
@@ -369,7 +367,6 @@ function CreateUpdateNamesAndValues($aNames, $aValues)
 function CheckServiceInAccounts($id)
 {
     $response = [];
-    
     try 
     { 
         $db = OpenDatabase();

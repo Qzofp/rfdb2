@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Nov 30, 2023
- * Updated on Apr 12, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and change the pages (true or false) in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangePages
  *
  * Created on Dec 24, 2023
- * Updated on Dec 24, 2023
+ * Updated on Aug 01, 2024
  *
  * Description: Change the pages (true or false) in the tbl_settings table.
  *
@@ -44,8 +44,6 @@ function ChangePages()
     $aPages = json_decode($pages);
 
     $response = [];
-
-    // Change the page settings.
     try 
     {    
         $db = OpenDatabase();

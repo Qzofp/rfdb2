@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 28, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the savings sheet popup.
  * Dependenties: config.php
@@ -60,7 +60,7 @@ function GetSelectMenu()
  * Function:    GetServiceMenu
  *
  * Created on Jul 28, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select service menu from the databases tbl_services table.
  *
@@ -70,15 +70,11 @@ function GetSelectMenu()
  */
 function GetServiceMenu()
 {
+    $response = [];    
     try 
     {
         $db = OpenDatabase();
-        
-        $ranking = "";
-        if ($rank == "true") {
-            $ranking = "ranking DESC,";
-        }
-        
+    
         $query = "SELECT `id`,`service` ". 
                  "FROM `tbl_services`  ".
                  "WHERE savings = '&#9745;' AND hide = 0 ".
@@ -107,7 +103,7 @@ function GetServiceMenu()
  * Function:    GetAccountMenu
  *
  * Created on Jul 27, 2024
- * Updated on Jul 28, 2024
+ * Updated on Aug 01, 2024
  *
  * Description: Get the select account menu from the databases tbl_accounts table.
  *
@@ -117,6 +113,7 @@ function GetServiceMenu()
  */
 function GetAccountMenu($id)
 {
+    $response = [];      
     try 
     {
         $db = OpenDatabase();
