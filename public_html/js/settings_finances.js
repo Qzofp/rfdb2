@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 03, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -90,7 +90,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     });
         
     $("#popup_content .shw").hide();
-    if ($("#table_container tbody .marked").length) {        
+    if ($("#table_container tbody .marked").length) {
         $("#popup_content .shw").show();
     }            
 
@@ -103,7 +103,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 03, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -181,6 +181,7 @@ function modifyAccounts(adp, c, btn) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.services[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
                             }
+                            $("#serv").val("");
                                                     
                             $("#acct").val(""); 
                             $("#desc").val(""); 
@@ -396,7 +397,7 @@ function showFinancesPopupBusinesses(c, s, h) {
  * Function:    modifyBusinesses
  *
  * Created on Apr 06, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 03, 2024
  *
  * Description: Check the businesses input and add, edit or remove the businesses in the database.
  *
@@ -465,7 +466,8 @@ function modifyBusinesses(c, btn) {
                             if ($("#groups > option").length > 1) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.businesses[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }                            
+                            }
+                            $("#groups").val("");
                             
                             // Reset input.
                             $("#business").val(""); 
@@ -684,7 +686,7 @@ function showCryptoPopupWallets(c, s, h) {
  * Function:    modifyCryptoWallets
  *
  * Created on May 31, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 03, 2024
  *
  * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
  *
@@ -767,17 +769,20 @@ function modifyCryptoWallets(c, btn) {
                             if ($("#services > option").length >= 1) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.wallets[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }     
+                            }
+                            $("#services").val("");
 
                             if ($("#accounts > option").length >= 1) {
                                 $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.wallets[2] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }   
+                            }  
+                            $("#accounts").val("");
                             
                             if ($("#cryptos > option").length >= 1) {
                                 $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.wallets[3] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }                               
+                            } 
+                            $("#cryptos").val("");
                             
                             // Reset input.
                             $("#desc").val("");                             

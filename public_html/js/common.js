@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 02, 2024
+ * Updated on Aug 05, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -775,18 +775,21 @@ function setAirDatePicker(adp, date) {
 }
 
 /*
- * Function:   addSelectMenu
+ * Function:   addSelectMenu (OLD WILL BE REPLACE)
  *
  * Created on Mar 11, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 04, 2024
  *
  * Description: Add the select menu.
  *
  * In:  c, page, send, id, name, value, item, n
+ * 
+ *      c, page, send, id, column, menu, value, name, n 
+ *      
  * Out: -
  *
  */
-function addSelectMenu(c, page, send, id, name, value, item, n=1) {
+function addSelectMenu(c, page, send, id, menu, value, column, n=1) {
 
     var empty, options, plh;
     var request = getAjaxRequest(page, send);      
@@ -797,36 +800,128 @@ function addSelectMenu(c, page, send, id, name, value, item, n=1) {
         empty = true;
         if (result.success) {         
             let sel = "";
-            $.each(result.data, function (n, field) {  
+            let match = false;
+            $.each(result.data, function (i, field) {  
                               
                 if (field.id === Number(value)) {
                     sel = " selected";
+                    match = true;
                 }
                 else {
                     sel = "";
                 }
 
-                $.each(field, function(key, val){                    
-                    if (key === item) {
-                        $("#" + id).append('<option value="'+ field.id + '"' + sel + '>'+ val + '</option>'); 
+                $.each(field, function(key, item){                   
+                    if (key === column) {
+                        $("#" + id).append('<option value="'+ field.id + '"' + sel + '>'+ item + '</option>'); 
                     }    
                 }); 
                 empty = false;
-            });  
-                
+            });
+                       
             // Set the nice-select menu.
-            plh = '<span class="placeholder">' + name + '</span>';
+            plh = '<span class="placeholder">' + menu + '</span>';
             options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
-            // Select placeholder fix. and shows the selected item if there is only one.
+            // Select placeholder fix and shows the selected item if there is only one.
             if (!value && result.data.length > n) {
                 db.clear();
             }
             
+            // The select menu is empty.
             $("#popup_content .msg").html("&nbsp;");
             if (empty) {
-                $("#popup_content .msg").html(c.messages[4].replace("#", name) + " " + c.messages[5]);
+                $("#popup_content .msg").html(c.messages[4].replace("#", menu) + " " + c.messages[5]);
+                db.disable();
+            }
+            
+            // Windows scroll bar FF fix.
+            if (navigator.appVersion.indexOf("Win") !== -1 && navigator.userAgent.indexOf("Firefox") !== -1) {
+                $(".nice-select .list:-moz-read-only").css("scrollbar-width", "thin");
+            }       
+        }
+        else {
+            showDatabaseError(result);
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();
+}
+
+/*
+ * Function:   addSelectMenu (NEW)
+ *
+ * Created on Mar 11, 2024
+ * Updated on Aug 05, 2024
+ *
+ * Description: Add the select menu.
+ *
+ * In:  c, page, send, id, menu, value, name, n 
+ *      
+ * Out: -
+ *
+ */
+function addSelectMenu2(c, page, send, id, menu, value, name, n) {
+
+    var empty, options, plh;
+    var request = getAjaxRequest(page, send);      
+    request.done(function(result) {
+        
+        $("#" + id + " option").remove();
+        
+        empty = true;
+        if (result.success) {         
+            let s = "";
+            let match = false;
+            
+            $.each(result.data, function (i, field) {  
+                 
+                //console.log(Object.keys(field));
+                
+                if (field.id === Number(value)) {
+                    s = " selected";
+                    match = true;
+                }
+                else {
+                    s = "";
+                }
+
+                $.each(field, function(key, item){
+                    // Get the item from the 2nd column of the query.
+                    if (key === Object.keys(field)[1]) {
+                        $("#" + id).append('<option value="'+ field.id + '"' + s + '>'+ item + '</option>'); 
+                    }    
+                }); 
+                empty = false;
+            });
+            
+            // Add select menu item if the name doesn't exists (hidden), only for the edit row mode.
+            if (!match && $("#table_container tbody .marked").length) 
+            {                
+                $("#" + id).append('<option value="'+ value + '" selected>' + name + '</option>');               
+                sortSelectOptions("#" + id, false);           
+                empty = false;
+            }
+          
+            // Set the nice-select menu.
+            plh = '<span class="placeholder">' + menu + '</span>';
+            options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
+            var db = NiceSelect.bind(document.getElementById(id), options);
+            
+            // Select placeholder fix and shows the selected item if there is only one.
+            if (!value && result.data.length > n) {
+                db.clear();
+            }
+            
+            // The select menu is empty.
+            $("#popup_content .msg").html("&nbsp;");
+            if (empty) {
+                $("#popup_content .msg").html(c.messages[4].replace("#", menu) + " " + c.messages[5]);
                 db.disable();
             }
             
@@ -997,3 +1092,36 @@ $.fn.currencyToNumber = function() {
         
     return Number($el)/100;
 };
+
+/*
+ * Function:   sortSelectOptions
+ *
+ * Created on Aug 05, 2024
+ * Updated on Aug 05, 2024
+ *
+ * Description: Sorts the select menu options.
+ *
+ * In:  selector, skip_first
+ * Out: 
+ * 
+ * Links: https://stackoverflow.com/questions/12073270/sorting-options-elements-alphabetically-using-jquery
+ *
+ */
+function sortSelectOptions(selector, skip_first) {
+    var options = (skip_first) ? $(selector + ' option:not(:first)') : $(selector + ' option');
+    var arr = options.map(function(_, o) { return { t: $(o).text(), v: o.value, s: $(o).prop('selected') }; }).get();
+    arr.sort(function(o1, o2) {
+      var t1 = o1.t.toLowerCase(), t2 = o2.t.toLowerCase();
+      return t1 > t2 ? 1 : t1 < t2 ? -1 : 0;
+    }); 
+    options.each(function(i, o) {
+        o.value = arr[i].v;
+        $(o).text(arr[i].t);
+        if (arr[i].s) {
+            $(o).attr('selected', 'selected').prop('selected', true);
+        } else {
+            $(o).removeAttr('selected');
+            $(o).prop('selected', false);
+        }
+    }); 
+}

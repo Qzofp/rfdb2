@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Aug 02, 2024
+ * Updated on Aug 05, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -357,7 +357,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 05, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -394,13 +394,16 @@ function showSheetFinancePopup(adp, c, s, i) {
     $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
     label = addAmountAndRadioButton(c.misc[2], c, s[i].name, cells[3], cells[4], cells[5]);    
     changePopupMessageRow(label, 2, 3, 10);    
-      
+            
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], "account");  
-    addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group", 0);     
-    if (cells[6]) {
-        addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");    
+    //addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], "account");  
+    addSelectMenu2(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], cells[2], 1);
+    //addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group", 0);
+    addSelectMenu2(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], cells[6], 0);
+    if (cells[7]) {
+        //addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");    
+        addSelectMenu2(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], cells[7], 1);
     }
     else {
         disableSelectMenu("account", c.payment[7]);

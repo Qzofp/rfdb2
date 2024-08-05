@@ -352,7 +352,7 @@ CREATE TABLE `tbl_settings` (
 
 INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 (1, 'dashboard', '{\"page\": \"true\", \"theme\": {\"color\": \"#6c3483\"}}'),
-(2, 'finance', '{\"page\": \"true\", \"show\": \"true\", \"sort\": {\"bsn\": \"true\", \"grp\": \"true\"}, \"scale\": \"months\", \"start\": \"\", \"theme\": {\"color\": \"#ffd700\"}}'),
+(2, 'finance', '{\"page\": \"true\", \"show\": \"true\", \"sort\": {\"bsn\": \"false\", \"grp\": \"false\"}, \"scale\": \"months\", \"start\": \"\", \"theme\": {\"color\": \"#ffd700\"}}'),
 (3, 'stock', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"\", \"theme\": {\"color\": \"#228b22\"}}'),
 (4, 'savings', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"quarters\", \"start\": \"\", \"theme\": {\"color\": \"#4169e1\"}}'),
 (5, 'crypto', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"\", \"theme\": {\"color\": \"#ff8f00\"}}'),
