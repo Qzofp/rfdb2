@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -58,7 +58,7 @@ function GetFinances()
             case "$" :
             case "£" :
                 $format = "en_US";
-                $date_format = "%m-%d-%Y";
+                $date_format = "%m/%d/%Y";
                 break;
             
             case "€"  :

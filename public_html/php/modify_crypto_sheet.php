@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 21, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_crypto table.
  * Dependenties: config.php
@@ -74,7 +74,7 @@ function ModifyCrypto()
  * Function:    AddCrypto
  *
  * Created on Jul 21, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the input to the tbl_crypto table.
  *
@@ -101,33 +101,29 @@ function AddCrypto($date, $type, $sign, $amount, $sid, $aid, $number, $cid, $des
                 
                 case 2: $typcol = "withdrawal";
                     $withdrawal = $sign." -".$amount;
-                    break;
-                
-                default :
-                    break;                
+                    break;             
             }
             
-            // Convert the and amount (currency).
+            // Convert the and amount (currency) and determine the data format.
             switch ($sign) 
             {
                 case "$" :
                 case "£" :
                     $amtcol = "REPLACE('$amount',',','')";
-                    $numcol = "REPLACE('$number',',','')";                    
+                    $numcol = "REPLACE('$number',',','')";
+                    $format = "%m/%d/%Y";
                     break;
             
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
                     $numcol = "REPLACE(REPLACE('$number','.',''),',','.')";
-                    break;
-                
-                default :
+                    $format = "%d-%m-%Y";
                     break;
             }        
            
             $wid = $response['id'];
             $query = "INSERT INTO tbl_crypto (`date`,`wid`,`$typcol`,`amount`,`description`) ".
-                     "VALUES (STR_TO_DATE('$date','%d-%m-%Y'),'$wid',$amtcol,$numcol,'$desc');";       
+                     "VALUES (STR_TO_DATE('$date','$format'),'$wid',$amtcol,$numcol,'$desc');";     
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -160,7 +156,7 @@ function AddCrypto($date, $type, $sign, $amount, $sid, $aid, $number, $cid, $des
  * Function:    EditCrypto
  *
  * Created on Jul 22, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Edit the tbl_crypto table with the input.
  *
@@ -177,22 +173,21 @@ function EditCrypto($id, $date, $type, $sign, $amount, $sid, $aid, $number, $cid
         {                
             $db = OpenDatabase();
             
-            // Convert the and amount (currency).
+            // Convert the and amount (currency) and determine the data format.
             switch ($sign) 
             {
                 case "$" :
                 case "£" :
                     $amtcol = "REPLACE('$amount',',','')";
                     $numcol = "REPLACE('$number',',','')";  
+                    $format = "%m/%d/%Y";
                     break;
             
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
                     $numcol = "REPLACE(REPLACE('$number','.',''),',','.')";
-                    break;
-                
-                default :
-                    break;            
+                    $format = "%d-%m-%Y";
+                    break;          
             }
         
             // Determine type (deposit or withdrawal).
@@ -209,14 +204,11 @@ function EditCrypto($id, $date, $type, $sign, $amount, $sid, $aid, $number, $cid
                     $depcol = "`deposit`=null";
                     $witcol = "`withdrawal`=$amtcol";
                     $withdrawal = $sign." -".$amount;
-                    break;
-                                      
-                default :
-                    break;            
+                    break;           
             }        
         
             $wid = $response['id'];
-            $query = "UPDATE tbl_crypto SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`wid`=$wid,".
+            $query = "UPDATE tbl_crypto SET `date`=STR_TO_DATE('$date','$format'),`wid`=$wid,".
                      "$depcol,$witcol,`amount`=$numcol,  `description`='$desc' WHERE `id`=$id";
             
             $select = $db->prepare($query);

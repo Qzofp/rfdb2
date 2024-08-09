@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 05, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -688,7 +688,7 @@ function removeAddRowMarker() {
  * Function:   getPopupEnterKey
  *
  * Created on Feb 06, 2024
- * Updated on Mar 22, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: When the <enter> key is pressed get the right button and click it.
  *
@@ -720,12 +720,24 @@ function getPopupEnterKey(e) {
  *
  * Description: Initialize the Air datepicker.
  *
- * In:  c
+ * In:  c, s
  * Out: adp
  *
  */
-function initAirDatePicker(c) {
+function initAirDatePicker(c, s) {
 
+    var df, set = JSON.parse(s[5].value);
+    switch (set.sign) {
+        case "$" :
+        case "£" :  
+            df = 'MM/dd/yyyy';
+            break;
+            
+        case "€"  :
+            df = 'dd-MM-yyyy';    
+            break;
+    }    
+    
     var local = {
         days: [c.days[0],c.days[1],c.days[2],c.days[3],c.days[4],c.days[5],c.days[6]],
         daysShort: [c.days[0].slice(0,2),c.days[1].slice(0,2),c.days[2].slice(0,2),c.days[3].slice(0,2),c.days[4].slice(0,2),c.days[5].slice(0,2),c.days[6].slice(0,2)],
@@ -734,7 +746,7 @@ function initAirDatePicker(c) {
         monthsShort: [c.smonths[0].slice(0,3),c.smonths[1].slice(0,3),c.smonths[2].slice(0,3),c.smonths[3].slice(0,3),c.smonths[4].slice(0,3),c.smonths[5].slice(0,3),c.smonths[6].slice(0,3),c.smonths[7].slice(0,3),c.smonths[8].slice(0,3),c.smonths[9].slice(0,3),c.smonths[10].slice(0,3),c.smonths[11].slice(0,3)],
         today: 'Today',
         clear: 'Clear',
-        dateFormat: 'dd-MM-yyyy',
+        dateFormat: df,
         timeFormat: 'HH:mm',
         firstDay: 1
     };
@@ -775,113 +787,28 @@ function setAirDatePicker(adp, date) {
 }
 
 /*
- * Function:   addSelectMenu (OLD WILL BE REPLACE)
+ * Function:   addSelectMenu
  *
  * Created on Mar 11, 2024
- * Updated on Aug 04, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the select menu.
  *
- * In:  c, page, send, id, name, value, item, n
- * 
- *      c, page, send, id, column, menu, value, name, n 
- *      
+ * In:  c, page, send, id, menu, value, name, n       
  * Out: -
  *
  */
-function addSelectMenu(c, page, send, id, menu, value, column, n=1) {
+function addSelectMenu(c, page, send, id, menu, value, name, n) {
 
-    var empty, options, plh;
+    var options, plh;
     var request = getAjaxRequest(page, send);      
     request.done(function(result) {
         
         $("#" + id + " option").remove();
-        
-        empty = true;
+
         if (result.success) {         
-            let sel = "";
-            let match = false;
+            let s, match = false;            
             $.each(result.data, function (i, field) {  
-                              
-                if (field.id === Number(value)) {
-                    sel = " selected";
-                    match = true;
-                }
-                else {
-                    sel = "";
-                }
-
-                $.each(field, function(key, item){                   
-                    if (key === column) {
-                        $("#" + id).append('<option value="'+ field.id + '"' + sel + '>'+ item + '</option>'); 
-                    }    
-                }); 
-                empty = false;
-            });
-                       
-            // Set the nice-select menu.
-            plh = '<span class="placeholder">' + menu + '</span>';
-            options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
-            var db = NiceSelect.bind(document.getElementById(id), options);
-            
-            // Select placeholder fix and shows the selected item if there is only one.
-            if (!value && result.data.length > n) {
-                db.clear();
-            }
-            
-            // The select menu is empty.
-            $("#popup_content .msg").html("&nbsp;");
-            if (empty) {
-                $("#popup_content .msg").html(c.messages[4].replace("#", menu) + " " + c.messages[5]);
-                db.disable();
-            }
-            
-            // Windows scroll bar FF fix.
-            if (navigator.appVersion.indexOf("Win") !== -1 && navigator.userAgent.indexOf("Firefox") !== -1) {
-                $(".nice-select .list:-moz-read-only").css("scrollbar-width", "thin");
-            }       
-        }
-        else {
-            showDatabaseError(result);
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-    });  
-     
-    closeErrorMessage();
-}
-
-/*
- * Function:   addSelectMenu (NEW)
- *
- * Created on Mar 11, 2024
- * Updated on Aug 05, 2024
- *
- * Description: Add the select menu.
- *
- * In:  c, page, send, id, menu, value, name, n 
- *      
- * Out: -
- *
- */
-function addSelectMenu2(c, page, send, id, menu, value, name, n) {
-
-    var empty, options, plh;
-    var request = getAjaxRequest(page, send);      
-    request.done(function(result) {
-        
-        $("#" + id + " option").remove();
-        
-        empty = true;
-        if (result.success) {         
-            let s = "";
-            let match = false;
-            
-            $.each(result.data, function (i, field) {  
-                 
-                //console.log(Object.keys(field));
                 
                 if (field.id === Number(value)) {
                     s = " selected";
@@ -896,31 +823,32 @@ function addSelectMenu2(c, page, send, id, menu, value, name, n) {
                     if (key === Object.keys(field)[1]) {
                         $("#" + id).append('<option value="'+ field.id + '"' + s + '>'+ item + '</option>'); 
                     }    
-                }); 
-                empty = false;
+                });
             });
             
             // Add select menu item if the name doesn't exists (hidden), only for the edit row mode.
-            if (!match && $("#table_container tbody .marked").length) 
+            if (!match && $("#table_container tbody .marked").length && name) 
             {                
-                $("#" + id).append('<option value="'+ value + '" selected>' + name + '</option>');               
-                sortSelectOptions("#" + id, false);           
-                empty = false;
+                $("#" + id).append('<option value="'+ value + '" selected>' + name + '</option>');             
+                if (!send.includes('rank=true')) {
+                    sortSelectOptions("#" + id, false);
+                }
             }
-          
+            
             // Set the nice-select menu.
             plh = '<span class="placeholder">' + menu + '</span>';
-            options = { searchable: !empty, searchtext: c.misc[0], placeholder: plh };
+            options = { searchable: true, searchtext: c.misc[0], placeholder: plh };
             var db = NiceSelect.bind(document.getElementById(id), options);
             
             // Select placeholder fix and shows the selected item if there is only one.
             if (!value && result.data.length > n) {
                 db.clear();
             }
-            
+             
             // The select menu is empty.
             $("#popup_content .msg").html("&nbsp;");
-            if (empty) {
+            if ($("#" + id + " > option").length <= 0) 
+            {
                 $("#popup_content .msg").html(c.messages[4].replace("#", menu) + " " + c.messages[5]);
                 db.disable();
             }
@@ -1124,4 +1052,24 @@ function sortSelectOptions(selector, skip_first) {
             $(o).prop('selected', false);
         }
     }); 
+}
+
+/*
+ * Function:   decodeHTML
+ *
+ * Created on Aug 07, 2024
+ * Updated on Aug 07, 2024
+ *
+ * Description: Decode HTML code characters, i.e. decode &amp; to &.
+ *
+ * In:  encodedString
+ * Out: 
+ * 
+ * Links: https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+ *
+ */
+function decodeHTML(encodedString) {
+    var textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedString;
+    return textArea.value;
 }

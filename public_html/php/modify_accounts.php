@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on jul 24, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -47,39 +47,102 @@ function ModifyAccount()
     $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_STRING);
     $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_STRING);
     $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_STRING);
-
-    $response = [];    
-    switch ($action)
-    {
-        case "add" :
-            $response = AddAccount($date, $serv, $type, $account, $desc);
-            break;
+    
+    $response = GetDateFormat();    
+    if ($response['success'])
+    {    
+        $format = $response['format'];       
+        switch ($action)
+        {
+            case "add" :
+                $response = AddAccount($date, $format, $serv, $type, $account, $desc);
+                break;
             
-        case "edit" :
-            $response = EditAccount($id, $hide, $date, $serv, $type, $account, $desc);
-            break;
+            case "edit" :
+                $response = EditAccount($id, $hide, $date, $format, $serv, $type, $account, $desc);
+                break;
             
-        case "delete" :
-            $response = DeleteAccount($id, $type);
-            break;                
-    }    
+            case "delete" :
+                $response = DeleteAccount($id, $type);
+                break;                
+        } 
+    }
     
     echo $json = json_encode($response);
-}    
+} 
+
+/*
+ * Function:    GetDateFormat
+ *
+ * Created on Aug 09, 2024
+ * Updated on Aug 09, 2024
+ *
+ * Description: Get the currency sign from the tbl_settings table and determine the date format.
+ *
+ * In:  -
+ * Out: $format
+ *
+ */   
+function GetDateFormat()
+{
+    $response = [];    
+    try 
+    { 
+        $db = OpenDatabase();
+             
+        // Check if user aleready exists in the tbl_accounts table.
+        $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`value` , '$.sign')) AS `sign` ".
+                 "FROM `tbl_settings` ".
+                 "WHERE `name` = 'settings';";      
+        
+        $select = $db->prepare($query);
+        $select->execute();        
+        $results = $select->fetchAll(PDO::FETCH_ASSOC);  
+        foreach($results as $row=>$link) {
+            $sign = $link['sign'];
+        }  
+        
+        // Determine the date format based on the currency sign.
+        switch ($sign) 
+        {
+            case "$" :
+            case "£" :
+                $format = "%m/%d/%Y";
+                break;
+            
+            case "€"  :
+                $format = "%d-%m-%Y";
+                break;               
+        }         
+        
+        $response['format'] = $format;
+        $response['success'] = true;         
+    }    
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    } 
     
+    // Close database connection.
+    $db = null;        
+    
+    return $response;
+}
+
 /*
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
- * In:  $date, $serv, $type, $account, $desc
+ * In:  $date, $format, $serv, $type, $account, $desc
  * Out: $response
  *
  */    
- function AddAccount($date, $serv, $type, $account, $desc)
+ function AddAccount($date, $format, $serv, $type, $account, $desc)
  {          
     $aTypes   = ["","finance","stock","savings","crypto"];
     
@@ -89,9 +152,9 @@ function ModifyAccount()
         try 
         {    
             $db = OpenDatabase();
-                 
+            
             $query = "INSERT INTO tbl_accounts (`account`,`date`,`sid`,`type`,`description`) ".
-                     "VALUES ('$account',CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),'$serv','$aTypes[$type]','$desc');";            
+                     "VALUES ('$account',CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),'$serv','$aTypes[$type]','$desc');";            
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -100,7 +163,7 @@ function ModifyAccount()
             $response['serv']  = $serv;
             $response['acct']  = $account;
             $response['desc']  = $desc;
-
+            
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -120,15 +183,15 @@ function ModifyAccount()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
- * In:  $id, $hide, $date, $serv, $type, $account, $desc
+ * In:  $id, $hide, $date, $format, $serv, $type, $account, $desc
  * Out: $response
  *
  */    
- function EditAccount($id, $hide, $date, $serv, $type, $account, $desc)
+ function EditAccount($id, $hide, $date, $format, $serv, $type, $account, $desc)
  {   
     $aTypes   = ["","finance","stock","savings","crypto"];    
     
@@ -139,8 +202,8 @@ function ModifyAccount()
         {                
             $db = OpenDatabase();
                 
-            $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`='$account',`date`=CONCAT(STR_TO_DATE('$date','%d-%m-%Y'),' ',CURTIME()),".
-                            "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
+            $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`='$account',`date`=CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),".
+                     "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);
             $select->execute();          
@@ -211,7 +274,7 @@ function ModifyAccount()
  * Function:    CheckAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 19, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the account exists in the tbl_account table.
  *
@@ -221,8 +284,7 @@ function ModifyAccount()
  */
 function CheckAccount($id, $account)
 {
-    $response = [];
-    
+    $response = [];    
     try 
     { 
         $db = OpenDatabase();
@@ -278,7 +340,7 @@ function CheckAccountInSheets($id, $type)
     { 
         $db = OpenDatabase();
                 
-        // Check if user aleready exists in the tbl_accounts table.
+        // Check if user already exists in the tbl_accounts table.
         $query = "SELECT count(0) FROM `$aTables[$type]` WHERE `aid` = $id;";       
         $select = $db->prepare($query);
         $select->execute();        
@@ -301,4 +363,4 @@ function CheckAccountInSheets($id, $type)
     $db = null;        
     
     return $response;        
-}        
+}

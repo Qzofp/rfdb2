@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Aug 03, 2024
+ * Updated on Aug 07, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 07, 2024
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -79,7 +79,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     setAirDatePicker(adp, cells[1]);
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], "service");
+    addSelectMenu(c, "get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], cells[2], 1);
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
     $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
@@ -103,7 +103,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Aug 03, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -136,7 +136,7 @@ function modifyAccounts(adp, c, btn) {
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
             var request = getAjaxRequest("modify_accounts", send);
-            request.done(function(result) {
+            request.done(function(result) {  
                 if (result.success) {    
                     if (result.exists) {
                         showModifyMessage(c, input[2], action);               
@@ -180,8 +180,8 @@ function modifyAccounts(adp, c, btn) {
                             if ($("#serv > option").length > 1) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.services[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#serv").val("");
                             }
-                            $("#serv").val("");
                                                     
                             $("#acct").val(""); 
                             $("#desc").val(""); 
@@ -341,7 +341,7 @@ function modifyGroups(c, btn) {
  * Function:    showFinancesPopupBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 07, 2024
  *
  * Description:  Shows the businesses popup content for the finances page.
  *
@@ -383,7 +383,7 @@ function showFinancesPopupBusinesses(c, s, h) {
     );     
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=group&slide=finance", "groups", c.businesses[1], cells[0].split("_")[1], "group");
+    addSelectMenu(c, "get_select_settings", "type=group&slide=finance", "groups", c.businesses[1], cells[0].split("_")[1], "", 1);
     
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
@@ -397,7 +397,7 @@ function showFinancesPopupBusinesses(c, s, h) {
  * Function:    modifyBusinesses
  *
  * Created on Apr 06, 2024
- * Updated on Aug 03, 2024
+ * Updated on Aug 06, 2024
  *
  * Description: Check the businesses input and add, edit or remove the businesses in the database.
  *
@@ -466,8 +466,8 @@ function modifyBusinesses(c, btn) {
                             if ($("#groups > option").length > 1) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.businesses[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            }
-                            $("#groups").val("");
+                                $("#groups").val("");
+                            }                          
                             
                             // Reset input.
                             $("#business").val(""); 
@@ -621,7 +621,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 07, 2024
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -658,17 +658,17 @@ function showCryptoPopupWallets(c, s, h) {
     );     
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=service&slide=crypto", "services", c.wallets[1], cells[0].split("_")[1], "service", 0);
+    addSelectMenu(c, "get_select_settings", "type=service&slide=crypto", "services", c.wallets[1], cells[0].split("_")[1], "", 0);
     
     if (cells[2]) {
-        addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], cells[2], 1);
     }
     else {
         disableSelectMenu("accounts", c.wallets[2]);  
     }
     
     if (cells[3]) {
-        addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], cells[0].split("_")[3], "symbol");
+        addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], cells[0].split("_")[3], cells[3], 1);
     }
     else {
         disableSelectMenu("cryptos", c.wallets[3]);
@@ -686,7 +686,7 @@ function showCryptoPopupWallets(c, s, h) {
  * Function:    modifyCryptoWallets
  *
  * Created on May 31, 2024
- * Updated on Aug 03, 2024
+ * Updated on Aug 06, 2024
  *
  * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
  *
@@ -769,21 +769,23 @@ function modifyCryptoWallets(c, btn) {
                             if ($("#services > option").length >= 1) {
                                 $(".nice-select .current:first").html('<span class="placeholder">' + c.wallets[1] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#services").val("");   
                             }
-                            $("#services").val("");
+                            
 
                             if ($("#accounts > option").length >= 1) {
                                 $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.wallets[2] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#accounts").val(""); 
                             }  
-                            $("#accounts").val("");
+
                             
                             if ($("#cryptos > option").length >= 1) {
                                 $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.wallets[3] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#cryptos").val("");  
                             } 
-                            $("#cryptos").val("");
-                            
+                                                    
                             // Reset input.
                             $("#desc").val("");                             
                         }

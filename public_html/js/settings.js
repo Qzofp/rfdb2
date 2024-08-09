@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Aug 02, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadSettings() {
  * Function:    showSettings
  *
  * Created on Nov 13, 2023
- * Updated on Aug 02, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Shows the settings page.
  *
@@ -71,7 +71,7 @@ function showSettings(c, s) {
     fillHamburgerMenu(c, s, 5);        
     
     // Initialize the datepicker.
-    var $adp = initAirDatePicker(c);
+    var $adp = initAirDatePicker(c, s);
     
     // Remove de "Pages" item and fill the slide menu.
     var items = c.settings.slice();
@@ -406,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -418,6 +418,8 @@ function showSettingButtonAction(adp, c, s, that) {
     
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
+    var set = JSON.parse(s[5].value);
+    
     switch(that.alt) {
         case "language" :  
             showGeneralPopupLanguage(c, s);
@@ -477,7 +479,7 @@ function showSettingButtonAction(adp, c, s, that) {
             {     
                 setPageButton(s[slide], 1, -1);
                 let items = setAccountItems(c, slide);    
-                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sort=tbl_accounts.`date`");                
+                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sign=" + set.sign + "&sort=tbl_accounts.`date`");           
             }      
             break;
         
@@ -675,7 +677,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -694,12 +696,12 @@ function getSelectAndProcessChoice(c, that) {
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
-            addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + id, "accounts", c.wallets[2], 0, "account");
+            addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + id, "accounts", c.wallets[2], 0, "", 0);
         }
         else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {
             removeSelectMenu("cryptos");
-            addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], 0, "symbol");
+            addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], 0, "", 1);
         }     
     }     
 }

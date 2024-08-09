@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Jul 19, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Open the sheet page.
  *
@@ -125,7 +125,7 @@ function openSheetPage(c, s, i) {
     setSlideMenuScale(s[i]);
 
     // Initialize the datepicker.
-    $adp = initAirDatePicker(c);       
+    $adp = initAirDatePicker(c, s);       
     
     // Add Yearpicker popup box and process year selection (also update the slide menu and the sheet table).
     addYearPicker($adp, c, s, i);

@@ -83,5 +83,7 @@ ToDo
 11. Bug: Bij Settings -> Accounts, 2 verschillende services (diensten) kunnen niet dezelfde account numbers hebben. Kans is klein dat dit voorkomt, maar zou wel moeten kunnen.
 
 12. Bug: Datum in popup verandert niet als bij de configuraties $ of £ is gekozen.
+   - Opgelost.
 
 13. Bug: De select menu laat hidden waardes niet zien.
+   - Opgelost.

@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php
@@ -72,7 +72,7 @@ function ModifyStocks()
  * Function:    AddStocks
  *
  * Created on Jul 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the input to the tbl_stocks table.
  *
@@ -99,21 +99,23 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
                 break;               
         }
             
-        // Convert the and amount (currency).
+        // Convert the and amount (currency) and determine the data format.
         switch ($sign) 
         {
             case "$" :
             case "£" :
                 $amtcol = "REPLACE('$amount',',','')";
+                $format = "%m/%d/%Y";
                 break;
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-               break;
+                $format = "%d-%m-%Y";
+                break;
         }        
             
         $query = "INSERT INTO tbl_stocks (`date`,`aid`,`$typcol`,`description`) ".
-                 "VALUES (STR_TO_DATE('$date','%d-%m-%Y'),'$aid',$amtcol,'$desc');";        
+                 "VALUES (STR_TO_DATE('$date','$format'),'$aid',$amtcol,'$desc');";     
         $select = $db->prepare($query);
         $select->execute();
                         
@@ -143,7 +145,7 @@ function AddStocks($date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    EditStocks
  *
  * Created on Jul 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Edit the tbl_stocks table with the input.
  *
@@ -157,16 +159,18 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
     {                
         $db = OpenDatabase();
             
-        // Convert the and amount (currency).
+        // Convert the and amount (currency) and determine the data format.
         switch ($sign) 
         {
             case "$" :
             case "£" :
                 $amtcol = "REPLACE('$amount',',','')";
+                $format = "%m/%d/%Y";
                 break;
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
+                $format = "%d-%m-%Y";
                 break;            
         }
         
@@ -187,7 +191,7 @@ function EditStocks($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
                 break;        
         }        
         
-        $query = "UPDATE tbl_stocks SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
+        $query = "UPDATE tbl_stocks SET `date`=STR_TO_DATE('$date','$format'),`aid`='$aid',".
                  "$depcol,$witcol,`description`='$desc' WHERE `id`=$id"; 
             
         $select = $db->prepare($query);

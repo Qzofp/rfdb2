@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 13, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_savings table.
  * Dependenties: config.php
@@ -72,7 +72,7 @@ function ModifySavings()
  * Function:    AddSavings
  *
  * Created on Jul 13, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the input to the tbl_savings table.
  *
@@ -102,24 +102,23 @@ function AddSavings($date, $type, $sign, $amount, $sid, $aid, $desc)
                 break;                
         }
             
-        // Convert the and amount (currency).
+        // Convert the and amount (currency) and determine the data format.
         switch ($sign) 
         {
             case "$" :
             case "£" :
                 $amtcol = "REPLACE('$amount',',','')";
+                $format = "%m/%d/%Y";
                 break;
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
-               break;
-                
-            default :
+                $format = "%d-%m-%Y";
                 break;
         }        
             
         $query = "INSERT INTO tbl_savings (`date`,`aid`,`$typcol`,`description`) ".
-                 "VALUES (STR_TO_DATE('$date','%d-%m-%Y'),'$aid',$amtcol,'$desc');";        
+                 "VALUES (STR_TO_DATE('$date','$format'),'$aid',$amtcol,'$desc');";    
         $select = $db->prepare($query);
         $select->execute();
                         
@@ -149,7 +148,7 @@ function AddSavings($date, $type, $sign, $amount, $sid, $aid, $desc)
  * Function:    EditSavings
  *
  * Created on Jul 13, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Edit the tbl_savings table with the input.
  *
@@ -169,10 +168,12 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
             case "$" :
             case "£" :
                 $amtcol = "REPLACE('$amount',',','')";
+                $format = "%m/%d/%Y";
                 break;
             
             case "€"  :
                 $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
+                $format = "%d-%m-%Y";
                 break;            
         }
         
@@ -194,7 +195,7 @@ function EditSavings($id, $date, $type, $sign, $amount, $sid, $aid, $desc)
                 break;           
         }        
         
-        $query = "UPDATE tbl_savings SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
+        $query = "UPDATE tbl_savings SET `date`=STR_TO_DATE('$date','$format'),`aid`='$aid',".
                  "$depcol,$witcol,`description`='$desc' WHERE `id`=$id"; 
             
         $select = $db->prepare($query);

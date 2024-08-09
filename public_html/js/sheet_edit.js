@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Aug 05, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -99,7 +99,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -113,7 +113,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
     request.done(function(result) {
         if (result.success) {   
     
-            let ph, set, page, send, item, n;
+            let ph, set, page, send, n;
             let select = $(that).parents(':eq(3)').find('select').attr('id');
             let id = $(that).attr('data-value');
             
@@ -124,7 +124,6 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                     set = JSON.parse(s[1].value);
                     page = "get_select_finances";
                     send = "type=business&rank=" + set.sort.bsn + "&id=" + id;
-                    item = "business";
                     n = 0;
                 break;
             
@@ -132,23 +131,20 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                 ph = c.investment[5];
                 page = "get_select_stocks";
                 send = "type=account&id=" + id;
-                item = "account";
                 n = 1;
                 break;
             
             case "savings" :
                 ph = c.savings[5];
                 page = "get_select_savings";
-                send = "type=account&id=" + id;
-                item = "account";     
+                send = "type=account&id=" + id;    
                 n = 1;
                 break;
             
             case "crypto" :
                 ph = c.crypto[5];
                 page = "get_select_crypto";
-                send = "type=account&id=" + id;
-                item = "account";  
+                send = "type=account&id=" + id; 
                 n = 0;
                 break;         
             }
@@ -161,13 +157,13 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                     }
                     else if (s[i].name === "crypto") {
                         removeSelectMenu("crypto");
-                        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + id, "crypto", c.crypto[7], 0, "symbol");                        
+                        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + id, "crypto", c.crypto[7], 0, "", 1); 
                     }                    
                     break;
                     
                 case "service" :
-                    removeSelectMenu("account"); 
-                    addSelectMenu(c, page, send, "account", ph, 0, item, n);    
+                    removeSelectMenu("account");   
+                    addSelectMenu(c, page, send, "account", ph, 0, "", n);                    
                     break;
             }
         }
@@ -357,7 +353,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Aug 05, 2024
+ * Updated on Aug 08, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -393,24 +389,21 @@ function showSheetFinancePopup(adp, c, s, i) {
     // Add radio buttons and label.
     $("#popup_content .popup_table_finance .sign").html(set.sign + "&nbsp;&nbsp;");    
     label = addAmountAndRadioButton(c.misc[2], c, s[i].name, cells[3], cells[4], cells[5]);    
-    changePopupMessageRow(label, 2, 3, 10);    
+    changePopupMessageRow(label, 2, 3, 10);
             
     // Add Select Menus.
     removeSelectMenu(); 
-    //addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], "account");  
-    addSelectMenu2(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], cells[2], 1);
-    //addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], "group", 0);
-    addSelectMenu2(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], cells[6], 0);
-    if (cells[7]) {
-        //addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], "business");    
-        addSelectMenu2(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], cells[7], 1);
+    addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], cells[2], 1);
+    addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], cells[6], 0);
+    if (cells[7]) {  
+        addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], cells[7], 1);
     }
     else {
         disableSelectMenu("account", c.payment[7]);
     }    
-    
+        
     // Add description.
-    $("#popup_content .popup_table_finance #description").attr("placeholder", c.payment[8]).val(cells[8]);  
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.payment[8]).val(decodeHTML(cells[8]));
     $("#popup_container").fadeIn("slow");    
 }
 
@@ -418,7 +411,7 @@ function showSheetFinancePopup(adp, c, s, i) {
  * Function:    showSheetStocksPopup
  *
  * Created on Jun 15, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 09, 2024
  *
  * Description:  Shows the popup content for the stocks page.
  *
@@ -428,7 +421,7 @@ function showSheetFinancePopup(adp, c, s, i) {
  */
 function showSheetStocksPopup(adp, c, s, i) {
 
-    var cells, label, hide;
+    var cells, label;
     var set = JSON.parse(s[5].value);
     
     // Get row input, is empty when row is empty or not selected.
@@ -457,16 +450,16 @@ function showSheetStocksPopup(adp, c, s, i) {
        
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_stocks", "type=service", "service", c.investment[4], cells[0].split("_")[1], "service", 0);
+    addSelectMenu(c, "get_select_stocks", "type=service", "service", c.investment[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_stocks", "type=account&id=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_stocks", "type=account&id=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.investment[5]);
     } 
      
     // Add description.
-    $("#popup_content .popup_table_finance #description").attr("placeholder", c.investment[6]).val(cells[6]);        
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.investment[6]).val(decodeHTML(cells[6]));        
     $("#popup_container").fadeIn("slow");    
 }
 
@@ -474,7 +467,7 @@ function showSheetStocksPopup(adp, c, s, i) {
  * Function:    showSheetSavingsPopup
  *
  * Created on Jun 19, 2024
- * Updated on Aug 02, 2024
+ * Updated on Aug 09, 2024
  *
  * Description:  Shows the popup content for the savings page.
  *
@@ -513,16 +506,16 @@ function showSheetSavingsPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_savings", "type=service", "service", c.savings[4], cells[0].split("_")[1], "service", 0);
+    addSelectMenu(c, "get_select_savings", "type=service", "service", c.savings[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_savings", "type=account&id=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_savings", "type=account&id=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.savings[5]);
     } 
      
     // Add description.
-    $("#popup_content .popup_table_finance #description").attr("placeholder", c.savings[6]).val(cells[6]);       
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.savings[6]).val(decodeHTML(cells[6]));       
     $("#popup_container").fadeIn("slow");    
 }
 
@@ -530,7 +523,7 @@ function showSheetSavingsPopup(adp, c, s, i) {
  * Function:    showSheetCryptoPopup
  *
  * Created on Jun 20, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description:  Shows the popup content for the crypto page.
  *
@@ -567,9 +560,9 @@ function showSheetCryptoPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_crypto", "type=service", "service", c.crypto[4], cells[0].split("_")[1], "service");
+    addSelectMenu(c, "get_select_crypto", "type=service", "service", c.crypto[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_crypto", "type=account&id=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], "account");
+        addSelectMenu(c, "get_select_crypto", "type=account&id=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.crypto[5]);
@@ -579,15 +572,15 @@ function showSheetCryptoPopup(adp, c, s, i) {
     $("#popup_content .popup_table_finance #number").attr("placeholder", c.crypto[6]).val(cells[6]);      
     
     // Add crypto select menu.
-    if (cells[7]) {    
-        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[3], "symbol");
+    if (cells[7]) {
+        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[3], cells[7], 1);
     }
     else {
         disableSelectMenu("crypto", c.crypto[7]);
     }
       
     // Add description input field.
-    $("#popup_content .popup_table_finance #description").attr("placeholder", c.crypto[8]).val(cells[8]);       
+    $("#popup_content .popup_table_finance #description").attr("placeholder", c.crypto[8]).val(decodeHTML(cells[8]));
     $("#popup_container").fadeIn("slow");      
 }
 
@@ -626,7 +619,7 @@ function addSortButtons(set) {
  * Function:    setSortButtons
  *
  * Created on Jun 14, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 07, 2024
  *
  * Description:  Set the sort buttons for the finances page.
  *
@@ -678,7 +671,7 @@ function setSortButton(c, s, i, btn, e) {
             if (result.button === 0) 
             {
                 removeSelectMenu("service"); 
-                addSelectMenu(c, page, "type=group&rank=" + rank, "service", phg, 0, "group");
+                addSelectMenu(c, page, "type=group&rank=" + rank, "service", phg, 0, "", 1);
                 removeSelectMenu("account"); 
                 disableSelectMenu("account", pha);
             }
@@ -686,7 +679,7 @@ function setSortButton(c, s, i, btn, e) {
             {                    
                 let id = $("#service").next().find(".selected").attr('data-value');
                 removeSelectMenu("account");
-                addSelectMenu(c, page, "type=business&rank=" + rank + "&id=" + id, "account", pha, 0, "business");
+                addSelectMenu(c, page, "type=business&rank=" + rank + "&id=" + id, "account", pha, 0, "", 1);
             }        
         }
         else {
@@ -932,7 +925,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -1012,13 +1005,13 @@ function modifyFinances(c, s, btn) {
                         $("#date").val("");   
                         
                         // Reset nice-select menu if there is more then 1 item.
-                        if ($("#payment > option").length >= 1) 
+                        if ($("#payment > option").length > 1) 
                         { 
                             $(".nice-select .current:first").html('<span class="placeholder">' + c.payment[2] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");                       
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");  
+                            $("#payment").val(""); 
                         }                             
-                        $("#payment").val("");
-                        
+                                               
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
                         $(".popup_table_finance .label").html("&nbsp;");
@@ -1026,19 +1019,22 @@ function modifyFinances(c, s, btn) {
                         
                         $("#amount").val(""); 
 
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#service > option").length >= 1) 
                         {
                                 $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.payment[6] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#service").val("");
                         }                        
-                        $("#service").val("");
+                        
 
                         if ($("#account > option").length >= 1) 
                         {
                                 $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.payment[7] + '</span>');
                                 $(".nice-select-dropdown .list li").removeClass("selected focus");
+                                $("#account").val("");   
                         }   
-                        $("#account").val("");                        
+                                                
                         $("#description").val("");    
                     }
                     
@@ -1140,7 +1136,7 @@ function getAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1222,20 +1218,21 @@ function modifyStocks(c, s, btn) {
                         
                         $("#amount").val(""); 
 
-                        // Reset nice-select menu if there is more then 1 item.
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#service > option").length >= 1) 
                         {
                             $(".nice-select .current:first").html('<span class="placeholder">' + c.investment[4] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $("#service").val(""); 
                         }                        
-                        $("#service").val("");
+                        
 
                         if ($("#account > option").length >= 1) 
                         {
                             $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.investment[5] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
-                        }   
-                        $("#account").val("");                           
+                            $("#account").val("");    
+                        }                                                  
                         
                         $("#description").val("");    
                     }
@@ -1260,7 +1257,7 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1341,21 +1338,22 @@ function modifySavings(c, s, btn) {
                         
                         $("#amount").val(""); 
 
-                        // Reset nice-select menu if there is more then 1 item.
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#service > option").length >= 1) 
                         {
                             $(".nice-select .current:first").html('<span class="placeholder">' + c.savings[4] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $("#service").val("");   
                         }                        
-                        $("#service").val("");
+                        
 
                         if ($("#account > option").length >= 1) 
                         {
                             $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $("#account").val("");  
                         }   
-                        $("#account").val("");                           
-                        
+                                                                           
                         $("#description").val("");    
                     }
                     
@@ -1379,7 +1377,7 @@ function modifySavings(c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 08, 2024
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
@@ -1474,25 +1472,26 @@ function modifyCrypto(c, s, btn) {
                         if ($("#service > option").length >= 1) 
                         {
                             $(".nice-select .current:first").html('<span class="placeholder">' + c.crypto[4] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $(".nice-select-dropdown .list li").removeClass("selected focus");   
+                            $("#service").val("");   
                         }                        
-                        $("#service").val("");
+                        
 
                         if ($("#account > option").length >= 1) 
                         {
                             $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.crypto[5] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
+                            $("#account").val("");    
                         }   
-                        $("#account").val("");                           
-                        
+                                                  
                         $("#number").val(""); 
                         
                         if ($("#crypto > option").length >= 1) 
                         {
                             $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.crypto[7] + '</span>');
                             $(".nice-select-dropdown .list li").removeClass("selected focus");
-                        }   
-                        $("#crypto").val("");
+                            $("#crypto").val("");  
+                        }                      
                         
                         $("#description").val("");    
                     }

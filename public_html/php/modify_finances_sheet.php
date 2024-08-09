@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -73,7 +73,7 @@ function ModifyFinances()
  * Function:    AddFinances
  *
  * Created on Jul 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Add the input to the tbl_finances table.
  *
@@ -113,21 +113,23 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
                     break;
             }
             
-            // Convert the and amount (currency).
+            // Convert the and amount (currency) and determine the data format.
             switch ($sign) 
             {
                 case "$" :
                 case "£" :
                     $amtcol = "REPLACE('$amount',',','')";
+                    $format = "%m/%d/%Y";
                     break;
             
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
+                    $format = "%d-%m-%Y";
                     break;               
             }        
             
             $query = "INSERT INTO tbl_finances (`date`,`aid`,`$typcol`,`bid`, `description`) ".
-                     "VALUES (STR_TO_DATE('$date','%d-%m-%Y'),'$aid',$amtcol,'$bid','$desc');";        
+                     "VALUES (STR_TO_DATE('$date','$format'),'$aid',$amtcol,'$bid','$desc');";     
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -241,7 +243,7 @@ function AddRankings($gid, $bid)
  * Function:    EditFinances
  *
  * Created on Jul 07, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 09, 2024
  *
  * Description: Edit the tbl_finances table with the input.
  *
@@ -258,16 +260,18 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
         {                
             $db = OpenDatabase();
             
-            // Convert the and amount (currency).
+            // Convert the and amount (currency) and determine the data format.
             switch ($sign) 
             {
                 case "$" :
                 case "£" :
                     $amtcol = "REPLACE('$amount',',','')";
+                    $format = "%m/%d/%Y";
                     break;
             
                 case "€"  :
                     $amtcol = "REPLACE(REPLACE('$amount','.',''),',','.')";
+                    $format = "%d-%m-%Y";
                     break;           
             }
         
@@ -298,7 +302,7 @@ function EditFinances($id, $date, $aid, $type, $sign, $amount, $gid, $bid, $desc
                     break;           
         }        
         
-        $query = "UPDATE tbl_finances SET `date`=STR_TO_DATE('$date','%d-%m-%Y'),`aid`='$aid',".
+        $query = "UPDATE tbl_finances SET `date`=STR_TO_DATE('$date','$format'),`aid`='$aid',".
                  "$incol,$fxcol,$otcol,`bid`='$bid',`description`='$desc' WHERE `id`=$id";  
             
         $select = $db->prepare($query);
