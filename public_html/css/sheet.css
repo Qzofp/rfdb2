@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Jul 17, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -205,7 +205,7 @@
 }
 
 .tbl_finances thead th:nth-child(3) {
- width: 10%;
+ width: 12%;
 }
 
 .tbl_finances thead th:nth-child(4),

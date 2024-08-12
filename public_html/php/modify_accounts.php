@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -75,7 +75,7 @@ function ModifyAccount()
  * Function:    GetDateFormat
  *
  * Created on Aug 09, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 11, 2024
  *
  * Description: Get the currency sign from the tbl_settings table and determine the date format.
  *
@@ -90,7 +90,7 @@ function GetDateFormat()
     { 
         $db = OpenDatabase();
              
-        // Check if user aleready exists in the tbl_accounts table.
+        // Get the currency sign from the settings.
         $query = "SELECT JSON_UNQUOTE(JSON_EXTRACT(`value` , '$.sign')) AS `sign` ".
                  "FROM `tbl_settings` ".
                  "WHERE `name` = 'settings';";      
@@ -134,7 +134,7 @@ function GetDateFormat()
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
@@ -152,9 +152,11 @@ function GetDateFormat()
         try 
         {    
             $db = OpenDatabase();
+            $key = cKEY;
             
             $query = "INSERT INTO tbl_accounts (`account`,`date`,`sid`,`type`,`description`) ".
-                     "VALUES ('$account',CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),'$serv','$aTypes[$type]','$desc');";            
+                     "VALUES (AES_ENCRYPT('$account', '$key'), CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),"
+                           ."'$serv', '$aTypes[$type]', '$desc');";
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -183,7 +185,7 @@ function GetDateFormat()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
@@ -201,8 +203,10 @@ function GetDateFormat()
         try 
         {                
             $db = OpenDatabase();
+            $key = cKEY;
                 
-            $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`='$account',`date`=CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),".
+            $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`=AES_ENCRYPT('$account','$key'),"
+                    ."`date`=CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),".
                      "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);

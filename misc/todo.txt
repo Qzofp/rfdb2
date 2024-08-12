@@ -87,3 +87,6 @@ ToDo
 
 13. Bug: De select menu laat hidden waardes niet zien.
    - Opgelost.
+
+14. Bug: Als de SALT phrase wordt aangepast dan moet de pagina worden ververst, anders wordt het wachtwoord gewijzigd met de oude SALT phrase.
+   - Opgelost.

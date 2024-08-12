@@ -8,7 +8,7 @@
  * Used in: *.php
  *
  * Created on Oct 14, 2023
- * Updated on May 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: .
  * Dependenties: -
@@ -23,6 +23,9 @@ define("cUSER",  "rfdb2_dbo");
 define("cPASS",  "Put your password here!");
 //define("cDBASE", "rfdb2");
 define("cDBASE", "rfdb2_empty");
+
+// Encryption and decryption key, which is used on some database table columns for privacy reasons.
+define("cKEY", "Put your encryption key or phrase here!");
 
 /*
  * Function:    OpenDatabase

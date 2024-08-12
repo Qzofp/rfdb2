@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Aug 09, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -51,6 +51,7 @@ function GetFinances()
     try 
     {
         $db = OpenDatabase();
+        $key = cKEY;
         
         // Determine the date and currency format.
         switch ($sign) 
@@ -68,6 +69,7 @@ function GetFinances()
         } 
          
         // Create the first part of the query.
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";
         switch($name) 
         {
             case "finance" :
@@ -78,7 +80,7 @@ function GetFinances()
                 $other   = "COALESCE(CONCAT('$sign -', NULLIF(FORMAT(`other`,2,'$format'), null )), '') AS `other`";                  
                 $table   = "tbl_finances";    
                 
-                $query = "SELECT $id AS id, $date, `account`, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
+                $query = "SELECT $id AS id, $date, $account AS account, $income, $fixed, $other, `group`, `business`, tbl_finances.`description` ".
                          "FROM tbl_finances ".
                          "LEFT JOIN tbl_accounts ON tbl_finances.aid = tbl_accounts.id ".
                          "LEFT JOIN tbl_businesses ON tbl_finances.bid = tbl_businesses.id ".

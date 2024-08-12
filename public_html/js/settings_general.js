@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on May 01, 2024
+ * Updated on Aug 11, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -935,7 +935,7 @@ function showGeneralPopupConfigs(c, s) {
  * Function:    modifyConfigs
  *
  * Created on Apr 19, 2024
- * Updated on May 01, 2024
+ * Updated on Aug 11, 2024
  *
  * Description: Check the configs (settings) input and modify it in the tbl_settings table.
  *
@@ -975,7 +975,7 @@ function modifyConfigs(c, s) {
                     closePopupWindow(); 
                     
                     // Reload page if the number of rows or salt phrase is changes.
-                    if (input[0] || input[1]) {       
+                    if (input[0] || input[2]) {       
                         setTimeout(function(){
                             window.location.reload();
                         }, 600);                          

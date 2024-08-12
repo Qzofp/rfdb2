@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 09, 2024
+ * Updated on Aug 10, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -390,7 +390,7 @@ function fillTable(s, page, l, send) {
     var setting = JSON.parse(s[5].value);
     var request = getAjaxRequest(page, send);
     request.done(function(result) {
-        
+
         // Hide loading spinner.
         $("#loading").hide();
         

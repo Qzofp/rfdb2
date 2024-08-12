@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Aug 08, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Aug 08, 2024
+ * Updated on Aug 12, 2024
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -46,6 +46,7 @@ function GetAccounts()
     try 
     {
         $db = OpenDatabase();
+        $key = cKEY;
         
         // Format date.
         if ($sign == "$" ) {
@@ -56,8 +57,9 @@ function GetAccounts()
         }
                 
         $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";    
         $query = "SELECT $id AS id,tbl_accounts.`hide`,". 
-                    "$date, tbl_services.`service`,tbl_accounts.`account` AS account, tbl_accounts.`description`".
+                    "$date, tbl_services.`service`,$account AS account, tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".
@@ -68,7 +70,7 @@ function GetAccounts()
 
         $accounts = $select->fetchAll(PDO::FETCH_ASSOC);  
         $response['data'] = $accounts;       
- 
+         
         $response['success'] = true;
     }
     catch (PDOException $e) 
