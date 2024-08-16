@@ -336,3 +336,30 @@ LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id`
 WHERE tbl_wallets.`hide` = 0 AND tbl_accounts.`id` = 6
 GROUP BY id
 ORDER BY `symbol`
+
+
+Dashboard ideëen
+================
+
+Activa Tabblad
+--------------
+Input (bv. elke maand):
+- finance 
+	- accounts totals
+- stock
+	- accounts totals
+- savings
+	- accounts totals
+- crypto
+	- wallets totals
+	- crypto values
+
+Verzamel bv. maandelijks de totale waardes van alles rekeningen, wallets en de waarde van de cryptos. Sla deze op in eigen tabellen. 
+De inputvelden zijn afhankelijk van de gekozen pagina's (finance, stock, savings en crypto) en de opgegeven services met bijbehorende accounts. 
+
+
+Donutgrafiek met:
+- finance
+- stock
+- savings
+- crypto

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2024 at 10:53 AM
+-- Generation Time: Aug 16, 2024 at 11:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,11 +18,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `rfdb2`
+-- Database: `rfdb2_empty`
 --
-DROP DATABASE IF EXISTS `rfdb2`;
-CREATE DATABASE IF NOT EXISTS `rfdb2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `rfdb2`;
+DROP DATABASE IF EXISTS `rfdb2_empty`;
+CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `rfdb2_empty`;
 
 -- --------------------------------------------------------
 
@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `tbl_accounts`;
 CREATE TABLE `tbl_accounts` (
   `id` int(11) NOT NULL,
   `hide` tinyint(4) DEFAULT 0,
-  `account` varchar(45) NOT NULL,
+  `account` varbinary(200) NOT NULL,
   `date` datetime DEFAULT NULL,
   `sid` int(11) DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
@@ -257,7 +257,7 @@ CREATE TABLE `tbl_groups` (
   `id` int(11) NOT NULL,
   `hide` tinyint(4) DEFAULT 0,
   `group` varchar(50) NOT NULL,
-  `description` varchar(50) DEFAULT NULL
+  `description` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

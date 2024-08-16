@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Aug 12, 2024
+ * Updated on Aug 14, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,9 +28,9 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Aug 12, 2024
+ * Updated on Aug 14, 2024
  *
- * Description: Get the fiannces from the databases tbl_finances table.
+ * Description: Get the finances from the databases tbl_finances table. The account column is encrypted.
  *
  * In:  -
  * Out: -
@@ -94,7 +94,7 @@ function GetFinances()
                 $date       = "DATE_FORMAT(tbl_stocks.`date`,'$date_format') AS `date`";
                 $table      = "tbl_stocks";
                 
-                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, tbl_stocks.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, $account AS account, tbl_stocks.`description` ".
                          "FROM tbl_stocks ".
                          "LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id` ".
                          "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
@@ -107,7 +107,7 @@ function GetFinances()
                 $date       = "DATE_FORMAT(tbl_savings.`date`,'$date_format') AS `date`";
                 $table      = "tbl_savings";
                 
-                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, tbl_savings.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, $account AS account, tbl_savings.`description` ".
                          "FROM tbl_savings ".
                          "LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id` ".
                          "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ";
@@ -121,7 +121,7 @@ function GetFinances()
                 $date       = "DATE_FORMAT(tbl_crypto.`date`,'$date_format') AS `date`";
                 $table      = "tbl_crypto";
                 
-                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, `account`, $amount, `symbol`, tbl_crypto.`description` ".
+                $query = "SELECT $id AS id, $date, $deposit, $withdrawal, `service`, $account AS account, $amount, `symbol`, tbl_crypto.`description` ".
                          "FROM tbl_crypto ".
                          "LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id` ".
                          "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".

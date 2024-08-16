@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 28, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 14, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the savings sheet popup.
  * Dependenties: config.php
@@ -103,9 +103,9 @@ function GetServiceMenu()
  * Function:    GetAccountMenu
  *
  * Created on Jul 27, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 14, 2024
  *
- * Description: Get the select account menu from the databases tbl_accounts table.
+ * Description: Get the select account menu from the databases tbl_accounts table. The account column is encrypted.
  *
  * In:  $id
  * Out: $response
@@ -117,9 +117,11 @@ function GetAccountMenu($id)
     try 
     {
         $db = OpenDatabase();
-           
-        $query = "SELECT tbl_accounts.`id` AS id,`account` ". 
-                 "FROM tbl_accounts  ".
+        $key = cKEY;        
+        
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";           
+        $query = "SELECT tbl_accounts.`id` AS id, $account AS account ". 
+                 "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`hide` = 0 AND tbl_accounts.`type` = 'savings' AND tbl_services.`id` = $id ".
                  "ORDER BY `account`;";
