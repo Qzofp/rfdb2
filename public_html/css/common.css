@@ -2,7 +2,7 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    common.css
  * Used in: index.html
@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Jun 04, 2024
+ * Updated on Aug 16, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -373,7 +373,7 @@ h2 {
 }
 
 #table_container .marked td {
- background-color: #fffdd0; /* Test #ffc87c*/
+ background-color: #fffdd0;
  transition-property: all;
  transition-duration: 1s;
 }

@@ -82,7 +82,7 @@ function showSettings(c, s) {
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {               
         showSettingsContent(Number(this.value), c, s);     
-    });      
+    }); 
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   

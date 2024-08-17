@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    common.js
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 10, 2024
+ * Updated on Aug 16, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -86,7 +86,7 @@ function fillSlideMenu(items, s) {
  * Function:    showPageTitles
  *
  * Created on Nov 08, 2023
- * Updated on Nov 13, 2023
+ * Updated on Aug 16, 2024
  *
  * Description: Show the page titles and the footer.
  *
@@ -98,7 +98,7 @@ function showPageTitles(c, i, add) {
         
     $("title").html(c.project);  
     $("header h1").html(c.titles[i] + add);
-    $("footer h3").html(c.footer);
+    $("footer h3").html(c.footer + " " + cVersion);
 }
 
 /*

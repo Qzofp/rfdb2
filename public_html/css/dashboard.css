@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+/*
+ * Title:   Rizzo's Finances Database 2
+ * Author:  Rizzo Productions
+ * Version: 0.2
+ *
+ * File:    dashboard.css
+ * Used in: dashbord.php
+ *
+ * Created on Oct 18, 2023
+ * Updated on Aug 16, 2024
+ *
+ * Description: The css tabs demo 1 page.
+ * Build for: Chromium based and Firefox browsers. 
+ *
+ */
+
+/* Tip 1: top, right, bottom, left */
+/* Tip 2: 0.8em = 8px, 1em = 10px, 1.2em = 12px */
+
+/* Body and main parts of the page. */
+
+/* Initialize slides (hide inactive slides) */
+#test01, /* These slides are only for test purposes. */
+#test02 {
+ display: none;
+}
+
+/* Test */
+.row {
+ display: flex;
+}
+
+.column {
+ flex: 1 1 auto;
+ border: 1px solid black; /* Test */
+ height: 350px; /* Test */
+}
+
+.left {
+  width: 60%;
+}
+
+.right {
+  width: 40%;
+}
+

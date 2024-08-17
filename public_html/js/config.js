@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    config.js
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Aug 01, 2024
+ * Updated on Aug 16, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -15,7 +15,7 @@
  */
 
 // Define constants
-const cVersion = "0.1";
+const cVersion = "v0.2";
 const cDate = new Date();
 
 /*
@@ -46,7 +46,7 @@ const cDate = new Date();
  * Function:    processDashboardContants
  *
  * Created on Nov 12, 2023
- * Updated on Apr 08, 2024
+ * Updated on Aug 18, 2024
  *
  * Description: Process the constants and settings from the database tblConfig table for the dashboard page.
  *
@@ -65,9 +65,9 @@ function processDashboardConstants(data) {
        project:  tmp[0],
        footer:   tmp[1],
        pages:    tmp[2].split(","),
-       titles:   tmp[3].split(","),
+       titles:   tmp[3].split(",")
        
-       salt:     tmp[4]     
+       //salt:     tmp[4]     
     };
 
     var set = [];

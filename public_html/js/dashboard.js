@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
- * File:    index.js
- * Used in: index.html
+ * File:    dashboard.js
+ * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jul 22, 2024
+ * Updated on Aug 16, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Jul 22, 2023
+ * Updated on Aug 16, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -74,7 +74,13 @@ function showDashboard(c, s) {
     // Fill hamburger menu.
     fillHamburgerMenu(c, s, 0);        
     
+    // Show the dashboard content.
+    showDashboardContent(0, c, s);
     
+    // Slidemenu button is pressed.
+    $(".slidemenu input[name='slideItem']").change(function() {               
+        showDashboardContent(Number(this.value), c, s);
+    });
     
     
     
@@ -110,4 +116,39 @@ function removeOldRankings(n) {
     });  
      
     closeErrorMessage(); 
+}
+
+/*
+ * Function:    showDashboardContent
+ *
+ * Created on Aug 16, 2024
+ * Updated on Aug 16, 2024
+ *
+ * Description: Shows the dashboard content for the chosen slide.
+ *
+ * In:  slide, c, s
+ * Out: -
+ *
+ */
+function showDashboardContent(slide, c, s) {
+    
+    switch(slide) {
+        case 0: $("#activa").show(); 
+                $("#test01").hide();
+                $("#test02").hide();
+                
+                // debug
+                //console.log( c );
+            break;
+        
+        case 1: $("#test01").show();
+                $("#activa").hide();
+                $("#test02").hide();            
+            break;
+            
+        case 2: $("#test02").show();  
+                $("#activa").hide();
+                $("#test01").hide();            
+            break;
+    }      
 }
