@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Aug 16, 2024
+ * Updated on Aug 18, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -88,40 +88,37 @@ if(!$user){
                     <input type="radio" name="slideItem" id="slide6-item-5" class="slide-toggle"/>
                     <label for="slide6-item-5"><p></p><span></span></label>
   
-                    <div class="clear"></div>
-  
+                    <div class="clear"></div>  
+                    
                     <!-- Bar -->
                     <div class="slider">
                         <div class="bar"></div>
                     </div>
+                
+                </nav>      
+                
 
-                    <!-- Show the Activa slide content -->
-                    <div id="activa">
+                <!-- Show the Activa slide content -->
+                <div id ="activa_main">
 
-                        <!-- Test -->
-                        <div class="row">
-                            <div class="column left">
-                            1 of 3
-                            </div>
-                            <div class="column right">
-                            2 of 3
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="column">
-                            3 of 3
-                            </div>
-                        </div>                        
-                                            
-                    </div>   
+                    <div class="flex-container">
+                        <div class="flex-items">Table</div>
+                        <div class="flex-items">Donut Graph</div>
+                    </div>
 
-                    <!-- Show the Test 1 slide content -->                    
-                    <div id="test01">Test 1</div>   
-
-                    <!-- Show the Test 2 slide content -->                    
-                    <div id="test02">Test 2</div>   
+                    <div class="flex-container">
+                        <div class="flex-bottom">Graph</div>
+                    </div>                    
                     
-                </nav>                
+                </div>
+
+
+                <!-- Show the Test 1 slide content -->                    
+                <div id="test01">Test 1</div>   
+
+                <!-- Show the Test 2 slide content -->                    
+                <div id="test02">Test 2</div>                   
+                
                 
                 <!-- Error popup window. -->
                 <div id="popup_error">

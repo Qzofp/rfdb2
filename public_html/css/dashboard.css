@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Aug 16, 2024
+ * Updated on Aug 18, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -21,27 +21,51 @@
 /* Body and main parts of the page. */
 
 /* Initialize slides (hide inactive slides) */
+#activa_main { 
+  height: calc(100% - 38px);
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  height: 50%;  
+  
+  background-color: #ECEFF1;
+}
+
+.flex-items:nth-child(1) {
+  flex: 0 1 auto;  
+  height: 100%;
+  width: 60%;  
+  
+  background-color: #c2fbd7;
+}
+
+.flex-items:nth-child(2) {
+  flex: 0 1 auto;    
+  height: 100%;
+  width: 40%;   
+  
+  background-color: #ffffc1;
+}
+
+.flex-bottom {
+  flex: 0 1 auto;    
+  height: 100%;
+  width: 100%;   
+  
+  background-color: #afdcec;
+}
+
+
 #test01, /* These slides are only for test purposes. */
 #test02 {
  display: none;
 }
 
-/* Test */
-.row {
- display: flex;
-}
 
-.column {
- flex: 1 1 auto;
- border: 1px solid black; /* Test */
- height: 350px; /* Test */
-}
-
-.left {
-  width: 60%;
-}
-
-.right {
-  width: 40%;
-}
 

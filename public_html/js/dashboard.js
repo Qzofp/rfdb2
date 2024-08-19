@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Aug 16, 2024
+ * Updated on Aug 18, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -122,7 +122,7 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Aug 16, 2024
+ * Updated on Aug 18, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
@@ -133,7 +133,7 @@ function removeOldRankings(n) {
 function showDashboardContent(slide, c, s) {
     
     switch(slide) {
-        case 0: $("#activa").show(); 
+        case 0: $("#activa_main").show(); 
                 $("#test01").hide();
                 $("#test02").hide();
                 
@@ -142,12 +142,12 @@ function showDashboardContent(slide, c, s) {
             break;
         
         case 1: $("#test01").show();
-                $("#activa").hide();
+                $("#activa_main").hide();
                 $("#test02").hide();            
             break;
             
         case 2: $("#test02").show();  
-                $("#activa").hide();
+                $("#activa_main").hide();
                 $("#test01").hide();            
             break;
     }      
