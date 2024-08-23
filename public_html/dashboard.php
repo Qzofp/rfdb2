@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Aug 18, 2024
+ * Updated on Aug 21, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -97,19 +97,39 @@ if(!$user){
                 
                 </nav>      
                 
-
                 <!-- Show the Activa slide content -->
                 <div id ="activa_main">
-
-                    <div class="flex-container">
-                        <div class="flex-items">Table</div>
-                        <div class="flex-items">Donut Graph</div>
+                    <div class="flex_container">
+                        <div class="flex_top">
+                            
+                            <!-- The list, add (edit) and crypto or account buttons -->
+                            <div id="page_buttons">
+                                <img src="img/list.png" alt="list"/>
+                                <img src="img/edit.png" alt="edit"/>
+                                <img src="img/crypto.png" alt="crypto"/>
+                                <img src="img/expand.png" alt="expand"/>                                
+                            </div>                            
+                            
+                            <!-- Display the balance under the slides. -->
+                            <div id="input_date">
+                                <u>Input Date</u><br/>
+                                <span>20-08-2024</span>
+                            </div>                               
+                            
+                            <!-- Table label -->
+                            <div class="label"><span>Value Accounts</span></div>
+                        </div>                     
+                        <div class="flex_top">
+                            <!-- Donut label -->
+                            <div class="label"><span>Donut Graph</span></div>   
+                        </div>
                     </div>
-
-                    <div class="flex-container">
-                        <div class="flex-bottom">Graph</div>
-                    </div>                    
-                    
+                    <div class="flex_container">
+                        <div class="flex_bottom">
+                            <!-- Graph label -->
+                            <div class="label"><span>Value Development</span></div>                               
+                        </div>
+                    </div>                                        
                 </div>
 
 

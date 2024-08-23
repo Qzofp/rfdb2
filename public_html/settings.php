@@ -119,7 +119,7 @@ if(!$user){
                     <img src="" alt=""/>    
                     <img src="" alt=""/>
                     <img src="" alt=""/>                    
-		</div>                
+		</div>          
                 
                 <!-- Display the settings in the slide. -->
                 <div id="settings">

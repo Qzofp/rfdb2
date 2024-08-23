@@ -281,7 +281,6 @@ Financiën pagina's (geldt ook voor de beleggen, sparen en crypto pagina's)
 
 Financiën Tabel 
 
-
 Inkomsten	Vaste Kosten	Overige Kosten
 
 Bij         Afv             Afo
@@ -363,3 +362,274 @@ Donutgrafiek met:
 - stock
 - savings
 - crypto
+
+Value Accounts (Waarde Rekeningen) tabel
+----------------------------------------
+*  Datum: 21-08-2024 (laat alleen de gegegens zien van bv. deze datum).
+** Deze tabel laat de totalen zien van alle types:
+
+	 Type		Accounts					Ratio %		Value
+--------------------------------------------------------------	
+[x]	Finance		all							10%		€ 1000,00
+[x] Stock		all							30%		€ 3000,00					
+[x]	Savings		all							25%		€ 2500,00
+[x] Crypto		all							35%		€ 3500,00
+
+											100%	€ 10000,00
+
+** Deze tabel laat alle types en alle accounts zien:
+
+	 Type		Accounts					Ratio %		Value
+--------------------------------------------------------------	
+[x]	Finance		NL86 INGB 000x xxxx 01		8%		€ 800,00
+[x] Finance		NL02 ABNA 000x xxxx 02      2%      € 200,00
+[x] Stock		ING-BLG-002					20%		€ 2000,00
+[x] Stock		BB-BLG-01					10%     € 1000,00
+[x]	Savings		BA-SAV-01					15%		€ 1500,00
+[x] Savings		BB-SAV-02					10%		€ 1000,00
+[x] Crypto		Wallet #1					30%		€ 3000,00
+[x] Crypto		Exchange A Wallet #1		5%		€ 500,00
+
+											100%	€ 10000,00
+
+Database tabellen
+-----------------
+tbl_value_accounts (zonder waarde crypto's)
+id	hide	date (index)	aid		value
+1	0		2024-08-21		1		800.00
+2	0		2024-08-21		2		200.00
+3	0		2024-08-21		3		2000.00
+4	0		2024-08-21		4		1000.00
+5	0		2024-08-21		5		1500.00		
+6	0		2024-08-21		6		1000.00
+
+7	0		2024-09-23		1		850.00
+8	0		2024-09-23		2		250.00
+9	0		2024-09-23		3		2100.00
+10	0		2024-09-23		4		1050.00
+11	0		2024-09-23		5		1600.00		
+12	0		2024-09-23		6		1200.00
+
+Queries
+-------
+-- Totale waarde per type (alle accounts).
+SELECT 
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+	END AS type,
+	'all' AS `account`,       
+	ROUND(SUM(value) * 100 / (SELECT SUM(value) AS v FROM tbl_value_accounts WHERE tbl_value_accounts .`date` = '2024-04-22'),2) AS `ratio`,
+    SUM(`value`) AS `value`
+FROM tbl_value_accounts 
+INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+WHERE tbl_value_accounts .`date` = '2024-04-22'
+GROUP BY type
+ORDER BY FIELD(type, 'finance', 'stock', 'savings');
+
+-- Waarde per account.
+SELECT 
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+	END AS type,
+	CAST(AES_DECRYPT(tbl_accounts.`account`,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, 
+    ROUND(value * 100 / (SELECT SUM(value) AS v FROM tbl_value_accounts WHERE tbl_value_accounts .`date` = '2024-04-22'),2) AS `ratio`, value
+FROM tbl_value_accounts 
+INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+WHERE tbl_value_accounts .`date` = '2024-04-22'
+ORDER BY FIELD(type, 'finance', 'stock', 'savings'), account;
+
+
+SELECT tbl_value_accounts .`date`, tbl_accounts.`type` AS type, service, CAST(AES_DECRYPT(tbl_accounts.`account`,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, value
+FROM tbl_value_accounts 
+INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`
+WHERE tbl_value_accounts .`aid` = 1
+ORDER BY tbl_value_accounts .`date`;
+
+
+tbl_value_cryptos
+id (vid)	date (index)	cid		value
+1			2024-08-21		1		51000.00
+2			2024-08-21		2		2100.00
+
+3			2024-09-23		1		54000.00
+4			2024-09-23		2		2250.00
+
+tbl_amount_wallets (deze tabel wordt gevuld met de waardes van de wallets uit de tbl_crypto tabel <= aan de gezochte datum)
+id	hide	vid		wid		amount (totaal)
+1	0		1		1		0,03424
+2	0		1		2		0,00827
+3	0		2		3		0,12421	
+4	0		2		4		0,05212
+
+
+Queries
+-------
+SELECT type, service, CAST(AES_DECRYPT(tbl_accounts.`account`,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, amount, symbol, ROUND(amount*value, 2) AS value
+FROM tbl_value_cryptos
+LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id`
+WHERE tbl_value_cryptos.`date` = '2024-07-22'
+
+
+
+Combineer accounts zonder cryto met accounts met crypto
+-------------------------------------------------------
+
+SELECT type, 'all' AS `account`, SUM(`value`) AS `value`
+FROM tbl_value_accounts 
+INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+WHERE tbl_value_accounts .`date` = '2024-07-22'
+GROUP BY type
+ORDER BY FIELD(type, 'finance', 'stock', 'savings');
+
+
+SELECT type, 'all' AS `account`, ROUND(SUM(amount*value),2) AS `value`
+FROM tbl_value_cryptos
+LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+WHERE tbl_value_cryptos.`date` = '2024-07-22'
+GROUP BY type
+
+-- Totale waarde per type (alle accounts).
+SELECT 	
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+		WHEN `type` = 'crypto'  then 'Crypto'
+	END AS type, 'all' AS `service`, 'all' AS `account`, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, SUM(`value`) AS `value`
+FROM (
+	SELECT type, SUM(`value`) AS `value`
+	FROM tbl_value_accounts 
+	INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+	WHERE tbl_value_accounts .`date` = '2024-07-22'
+	GROUP BY type
+	UNION
+	SELECT type, ROUND(SUM(amount*value),2) AS `value`
+	FROM tbl_value_cryptos
+	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+	LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+	WHERE tbl_value_cryptos.`date` = '2024-07-22'
+) total
+GROUP BY type
+ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
+
+-- Waarde per account.
+SELECT 	
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+		WHEN `type` = 'crypto'  then 'Crypto'
+	END AS type,
+	CAST(AES_DECRYPT(account,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, `value`
+FROM (
+	SELECT type, tbl_accounts.`account` AS account, `value`
+	FROM tbl_value_accounts 
+	INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+	WHERE tbl_value_accounts .`date` = '2024-07-22'
+	-- GROUP BY type
+	UNION
+	SELECT type, tbl_accounts.`account` AS account, ROUND(amount*value,2) AS `value`
+	FROM tbl_value_cryptos
+	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+	LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+	WHERE tbl_value_cryptos.`date` = '2024-07-22'
+) total
+ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
+
+-- Met services erbij.
+SELECT 	
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+		WHEN `type` = 'crypto'  then 'Crypto'
+	END AS type, service,
+	CAST(AES_DECRYPT(account,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, `value`
+FROM (
+	SELECT type, tbl_services.`service` AS service, tbl_accounts.`account` AS account, `value`
+	FROM tbl_value_accounts 
+	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+	WHERE tbl_value_accounts .`date` = '2024-07-22'
+	UNION
+	SELECT type, tbl_services.`service` AS service, tbl_accounts.`account` AS account, ROUND(amount*value,2) AS `value`
+	FROM tbl_value_cryptos
+	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+	LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+	WHERE tbl_value_cryptos.`date` = '2024-07-22'
+) total
+-- WHERE type IN ('finance','crypto')
+ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
+
+-- Met services en amount en crypto symbol erbij.
+SELECT 	
+	CASE 
+		WHEN `type` = 'finance' then 'Financiën'
+		WHEN `type` = 'stock'   then 'Aandelen'
+		WHEN `type` = 'savings' then 'Spaargeld'
+		WHEN `type` = 'crypto'  then 'Crypto'
+	END AS type, service,
+	CAST(AES_DECRYPT(account,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, `amount`, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, `value`
+FROM (
+	SELECT type, tbl_services.`service` AS service, tbl_accounts.`account` AS account, '-' AS `amount`, `value`
+	FROM tbl_value_accounts 
+	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+	WHERE tbl_value_accounts .`date` = '2024-07-22'
+	UNION
+	SELECT type, tbl_services.`service` AS service, tbl_accounts.`account` AS account, CONCAT(`amount`, ' ', `symbol`) AS `amount`, ROUND(amount*value,2) AS `value`
+	FROM tbl_value_cryptos
+	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
+	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+    LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id`    
+	LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+	WHERE tbl_value_cryptos.`date` = '2024-07-22'
+) total
+-- WHERE type IN ('finance','crypto')
+ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
+
+
+Crypto aantallen
+----------------
+
+Service		Wallet		Crypto		Aantal (totaal)
+---------------------------------------------------
+Trezor		Wallet #1	BTC			0,03424
+Trezor		Wallet #1	ETH			0,12421
+Trezor		Wallet #2	BTC			0,00827
+Exchange A  Wallet #1	ETH			0,05212
+
+Queries
+-------
+
+SELECT `service`, CAST(AES_DECRYPT(tbl_accounts.`account`,'Put your encryption key or phrase here!') AS CHAR(45)) AS account, `symbol`, SUM(`amount`)
+FROM tbl_wallets
+LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`
+LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id`
+LEFT JOIN tbl_crypto ON tbl_wallets.`id` = tbl_crypto.`wid`
+GROUP BY `service`, account, `symbol`
+
+SELECT tbl_wallets.`id`, SUM(`amount`)
+FROM tbl_wallets
+LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`
+LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id`
+LEFT JOIN tbl_crypto ON tbl_wallets.`id` = tbl_crypto.`wid`
+GROUP BY tbl_wallets.`id`

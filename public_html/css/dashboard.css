@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Aug 18, 2024
+ * Updated on Aug 20, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -25,7 +25,8 @@
   height: calc(100% - 38px);
 }
 
-.flex-container {
+/* Activa flex containers and items. */
+#activa_main .flex_container {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -34,38 +35,60 @@
   align-content: stretch;
   height: 50%;  
   
-  background-color: #ECEFF1;
+/*  background-color: #ECEFF1; /* Test */
 }
 
-.flex-items:nth-child(1) {
+#activa_main .flex_top:nth-child(1) {
   flex: 0 1 auto;  
   height: 100%;
   width: 60%;  
   
-  background-color: #c2fbd7;
+/* background-color: #c2fbd7; /* Test */
 }
 
-.flex-items:nth-child(2) {
+#activa_main .flex_top:nth-child(2) {
   flex: 0 1 auto;    
   height: 100%;
   width: 40%;   
   
-  background-color: #ffffc1;
+  background-color: #ffffc1; /* Test */
 }
 
-.flex-bottom {
+#activa_main .flex_bottom {
   flex: 0 1 auto;    
   height: 100%;
   width: 100%;   
   
-  background-color: #afdcec;
+  background-color: #afdcec; /* Test */
 }
 
-
+/* Other slide content (TEST) */
 #test01, /* These slides are only for test purposes. */
 #test02 {
  display: none;
 }
 
+/* Inpunt date */
+#input_date {
+ text-align: center;
+ padding-top: 10px;
+ font-size: 0.9em;
+}
 
+#input_date span {
+ font-family: verdana;
+}
+
+/* Labels */
+.label {
+ margin: 10px 50px 15px 50px;
+ font-size: 1.1em;
+}
+
+.label span {
+ display: inline-block;
+ width: 200px;
+ background-color: #f5f5f5;
+ padding: 3px;
+}
 

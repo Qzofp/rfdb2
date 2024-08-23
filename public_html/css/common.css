@@ -294,7 +294,7 @@ h2 {
  z-index: 1;
  margin: auto;
  overflow: auto;
- height: 350px;
+ /*height: 350px;*/
 }
 
 #table_container:-moz-read-only {
