@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Aug 20, 2024
+ * Updated on Aug 24, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -68,7 +68,12 @@
  display: none;
 }
 
-/* Inpunt date */
+/* Page buttons, hide crypto button */
+#page_buttons img:nth-child(3) {
+ display: none;
+}
+
+/* Input date */
 #input_date {
  text-align: center;
  padding-top: 10px;

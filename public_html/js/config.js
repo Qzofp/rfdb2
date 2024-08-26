@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Aug 16, 2024
+ * Updated on Aug 25, 2024
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -46,7 +46,7 @@ const cDate = new Date();
  * Function:    processDashboardContants
  *
  * Created on Nov 12, 2023
- * Updated on Aug 18, 2024
+ * Updated on Aug 25, 2025
  *
  * Description: Process the constants and settings from the database tblConfig table for the dashboard page.
  *
@@ -62,12 +62,16 @@ function processDashboardConstants(data) {
     });
 
     var con = {
-       project:  tmp[0],
-       footer:   tmp[1],
-       pages:    tmp[2].split(","),
-       titles:   tmp[3].split(",")
+       project:     tmp[0],
+       footer:      tmp[1],
+       pages:       tmp[2].split(","),
+       titles:      tmp[3].split(","),
+       slides:      tmp[4].split(","),
        
-       //salt:     tmp[4]     
+       misc:        tmp[5].split(","),
+       labels:      tmp[6].split(","),       
+       accounts:    tmp[7].split(",")  
+
     };
 
     var set = [];

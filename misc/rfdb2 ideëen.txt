@@ -459,12 +459,14 @@ id (vid)	date (index)	cid		value
 3			2024-09-23		1		54000.00
 4			2024-09-23		2		2250.00
 
-tbl_amount_wallets (deze tabel wordt gevuld met de waardes van de wallets uit de tbl_crypto tabel <= aan de gezochte datum)
+tbl_amount_wallets*
 id	hide	vid		wid		amount (totaal)
 1	0		1		1		0,03424
 2	0		1		2		0,00827
 3	0		2		3		0,12421	
 4	0		2		4		0,05212
+
+* Deze tabel wordt gevuld met de waardes van de wallets uit de tbl_crypto tabel <= aan de gezochte datum. Tabel steeds leeg maken (truncate) voor het vullen.
 
 
 Queries
@@ -506,22 +508,25 @@ SELECT
 		WHEN `type` = 'stock'   then 'Aandelen'
 		WHEN `type` = 'savings' then 'Spaargeld'
 		WHEN `type` = 'crypto'  then 'Crypto'
-	END AS type, 'all' AS `service`, 'all' AS `account`, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, SUM(`value`) AS `value`
+	END AS type, `service` AS services, `account` AS accounts, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, SUM(`value`) AS `value`
 FROM (
-	SELECT type, SUM(`value`) AS `value`
+	SELECT type, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(`value`) AS `value`
 	FROM tbl_value_accounts 
-	INNER JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
-	WHERE tbl_value_accounts .`date` = '2024-07-22'
+	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+	WHERE tbl_value_accounts.`date` = '2024-07-22'
 	GROUP BY type
 	UNION
-	SELECT type, ROUND(SUM(amount*value),2) AS `value`
+	SELECT type, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, ROUND(SUM(amount*value),2) AS `value`
 	FROM tbl_value_cryptos
 	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
 	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
 	LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
 	WHERE tbl_value_cryptos.`date` = '2024-07-22'
+    GROUP BY type
 ) total
-GROUP BY type
+GROUP BY type, service, account, value
 ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
 
 -- Waarde per account.

@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Aug 21, 2024
+ * Updated on Aug 25, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -76,11 +76,11 @@ if(!$user){
                 <nav class="slidemenu">
   
                     <input type="radio" name="slideItem" value="0" id="slide6-item-0" class="slide-toggle" checked/>
-                    <label for="slide6-item-0"><p></p><span>Activa</span></label>
+                    <label for="slide6-item-0"><p></p><span></span></label>
                     <input type="radio" name="slideItem" value="1" id="slide6-item-1" class="slide-toggle"/>
-                    <label for="slide6-item-1"><p></p><span>Test 1</span></label>
+                    <label for="slide6-item-1"><p></p><span></span></label>
                     <input type="radio" name="slideItem" value="2" id="slide6-item-2" class="slide-toggle"/>
-                    <label for="slide6-item-2"><p></p><span>Test 2</span></label>
+                    <label for="slide6-item-2"><p></p><span></span></label>
                     <input type="radio" name="slideItem" id="slide6-item-3" class="slide-toggle"/>
                     <label for="slide6-item-3"><p></p><span></span></label>
                     <input type="radio" name="slideItem" id="slide6-item-4" class="slide-toggle" />
@@ -112,12 +112,25 @@ if(!$user){
                             
                             <!-- Display the balance under the slides. -->
                             <div id="input_date">
-                                <u>Input Date</u><br/>
-                                <span>20-08-2024</span>
+                                <u></u><br/>
+                                <span></span>
                             </div>                               
                             
                             <!-- Table label -->
                             <div class="label"><span>Value Accounts</span></div>
+                            
+                            <!-- Settings table -->
+                            <div id="table_container">
+                                <table>
+                                    <thead>                        
+                                    </thead>
+                                    <tbody>                       
+                                    </tbody>                    
+                                    <tfoot>                       
+                                    </tfoot>
+                                </table>
+                            </div>                              
+                            
                         </div>                     
                         <div class="flex_top">
                             <!-- Donut label -->
@@ -152,8 +165,7 @@ if(!$user){
         
             <!-- Right side bar -->
             <aside class="side"></aside>
-            
-            
+                      
         </div>     
             
         <!-- Footer -->
