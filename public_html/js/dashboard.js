@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Aug 26, 2024
+ * Updated on Aug 30, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -123,7 +123,7 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 30, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
@@ -134,7 +134,7 @@ function removeOldRankings(n) {
 function showDashboardContent(slide, c, s) {
     
     switch(slide) {
-        case 0: showDashboardActivaContent(c, s, "");
+        case 0: showDashboardActivaContent(c, s, "22-07-2024"); // Test date!
                 break;
         
         case 1: $("#test01").show();
@@ -153,7 +153,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showDashboardActivaContent
  *
  * Created on Aug 24, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: Shows the dashboard activa slide content.
  *
@@ -167,12 +167,12 @@ function showDashboardActivaContent(c, s, date) {
     request.done(function(result) {
         if (result.success) {       
             
-            //console.log( result.query );
-                       
+            // Debug.
+            //console.log( result );                       
     
             var crypto = JSON.parse(s[4].value);
      
-            $("#activa_main").show(); 
+            $("#activa_main").fadeIn("slow");
             $("#test01").hide();
             $("#test02").hide();
     
@@ -191,8 +191,8 @@ function showDashboardActivaContent(c, s, date) {
             // Show the labels.
             ShowDashboardActivaLabels(c, s);
 
-            // Show the tabel.
-            ShowDashboardActivaTable(c, s);
+            // Show the table.
+            ShowDashboardActivaAccountsTable(c, s, result.date, true);
         }
         else {
             showDatabaseError(result); 
@@ -229,18 +229,18 @@ function ShowDashboardActivaLabels(c, s) {
 }
 
 /*
- * Function:    ShowDashboardActivaTable
+ * Function:    ShowDashboardActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: Shows the dashboard activa table.
  *
- * In:  c, s
+ * In:  c, s, date
  * Out: -
  *
  */
-function ShowDashboardActivaTable(c, s) {
+function ShowDashboardActivaAccountsTable(c, s, date) {
     
     var set = JSON.parse(s[0].value);  
     
@@ -260,7 +260,7 @@ function ShowDashboardActivaTable(c, s) {
     
     // Fill the table body.   
     $("#table_container tbody tr").remove(); 
-    fillDashboardActivaTable(s, c.accounts.length);       
+    fillDashboardActivaAccountsTable(s, c.accounts.length + 1, date);       
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
@@ -272,19 +272,84 @@ function ShowDashboardActivaTable(c, s) {
 }
 
 /*
- * Function:    fillDashboardActivaTable
+ * Function:    fillDashboardActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 30, 2024
  *
- * Description: Get the data from the database and fill the dashboard activa table with that data.
+ * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
- * In:  s, l
+ * In:  s, l, date
  * Out: -
  *
  */
-function fillDashboardActivaTable(s, l) {
+function fillDashboardActivaAccountsTable(s, l, date, group) {
 
-    //console.log( $("#input_date span").html() );
+    // Show loading spinner.
+    $("#loading").show(); 
     
+    var request = getAjaxRequest("get_value_accounts", "date=" + date + "&group=" + group);
+    request.done(function(result) {
+
+        // Hide loading spinner.
+        $("#loading").hide();
+        
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );
+            
+            let i = 0, rows = 10;             
+            $.each(result.data, function (n, field) {  
+                
+                var hclass = "";
+                if (field.hide !== undefined && field.hide === 1) {
+                    hclass = 'class="hide"';
+                }
+                                         
+                i++;
+                $("#table_container tbody").append('<tr ' + hclass + '>');
+          
+                $.each(field, function(key, value){                    
+                    if (key !== "hide") {
+                        $("#table_container tbody tr").last().append("<td>" + value + "</td>");
+                    }    
+                });
+                               
+                $("#table_container tbody").append("</tr>");   
+            });  
+
+            // Add empty rows.
+            for (let j = i; j <= rows; j++) {
+               $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
+            }
+            
+            // Hide or show the hidden rows.   
+            /*
+            if($("#table_container tbody tr").hasClass("hide")) {
+                
+                let slide = Number($('input[name="slideItem"]:checked').val());
+                if (slide === 0) { slide = 5; }
+
+                let set = JSON.parse(s[slide].value);                
+                if (set.show === "true") {
+                    $("#table_container tbody .hide").show();
+                }
+                else {
+                    $("#table_container tbody .hide").hide(); 
+                }                
+            }            
+            */
+           
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
 }

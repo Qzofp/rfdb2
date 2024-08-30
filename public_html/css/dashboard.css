@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Aug 24, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -56,7 +56,7 @@
 
 #activa_main .flex_bottom {
   flex: 0 1 auto;    
-  height: 100%;
+  height: calc(100% - 39px);
   width: 100%;   
   
   background-color: #afdcec; /* Test */

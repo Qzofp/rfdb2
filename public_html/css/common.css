@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Aug 16, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -554,7 +554,7 @@ h2 {
  height: 100%;
  top: 0;
  left: 0;
- z-index: 999;
+ z-index: 9;
  background: url("../img/loading.gif") center no-repeat;
 }
 

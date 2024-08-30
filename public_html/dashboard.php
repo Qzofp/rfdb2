@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Aug 25, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -152,6 +152,8 @@ if(!$user){
                 <!-- Show the Test 2 slide content -->                    
                 <div id="test02">Test 2</div>                   
                 
+                <!-- Loading spinner -->
+                <div id="loading"></div>    
                 
                 <!-- Error popup window. -->
                 <div id="popup_error">

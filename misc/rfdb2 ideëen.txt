@@ -502,22 +502,22 @@ WHERE tbl_value_cryptos.`date` = '2024-07-22'
 GROUP BY type
 
 -- Totale waarde per type (alle accounts).
-SELECT 	
+SELECT type AS id,
 	CASE 
 		WHEN `type` = 'finance' then 'Financiën'
 		WHEN `type` = 'stock'   then 'Aandelen'
 		WHEN `type` = 'savings' then 'Spaargeld'
 		WHEN `type` = 'crypto'  then 'Crypto'
-	END AS type, `service` AS services, `account` AS accounts, ROUND(100 * `value` / SUM(value) OVER (),2) ratio, SUM(`value`) AS `value`
+	END AS type, hide, `service` AS services, `account` AS accounts, ROUND(100 * `value` / SUM(`value`) OVER (),2) ratio, SUM(`value`) AS `value`
 FROM (
-	SELECT type, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(`value`) AS `value`
+	SELECT type, tbl_value_accounts.`hide` AS hide,count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(IF(tbl_value_accounts.`hide` = 0, `value`, 0)) AS `value`
 	FROM tbl_value_accounts 
 	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
     LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
 	WHERE tbl_value_accounts.`date` = '2024-07-22'
 	GROUP BY type
 	UNION
-	SELECT type, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, ROUND(SUM(amount*value),2) AS `value`
+	SELECT type, tbl_amount_wallets.`hide` AS hide, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, ROUND(SUM(IF(tbl_amount_wallets.`hide` = 0, amount*`value`, 0)),2) AS `value`
 	FROM tbl_value_cryptos
 	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid`
 	LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
@@ -526,7 +526,7 @@ FROM (
 	WHERE tbl_value_cryptos.`date` = '2024-07-22'
     GROUP BY type
 ) total
-GROUP BY type, service, account, value
+GROUP BY service, account, total.`value`
 ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto');
 
 -- Waarde per account.

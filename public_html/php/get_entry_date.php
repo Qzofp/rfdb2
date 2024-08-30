@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_entry_date.php
  * Used in: js\dashboard.js
  *
  * Created on Aug 26, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: Check if the user is signed in and get the date from de database tbl_value_accounts table.
  * 
@@ -29,7 +29,7 @@ else {
  * Function:    GetEntryDate
  *
  * Created on Aug 26, 2024
- * Updated on Aug 26, 2024
+ * Updated on Aug 28, 2024
  *
  * Description: Get the date from de database tbl_value_accounts table.
  *
@@ -68,6 +68,10 @@ function GetEntryDate()
             $select->execute();    
             
             $data = $select->fetchAll(PDO::FETCH_ASSOC); 
+            
+            
+            // Remove sign from the response array.
+            unset($response['sign']);
             
             // Debug
             //$response['query']   = $query;
