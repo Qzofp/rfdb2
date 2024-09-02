@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Aug 30, 2024
+ * Updated on Sep 02, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Aug 24, 2024
+ * Updated on Sep 02, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -83,7 +83,13 @@ function showDashboard(c, s) {
         showDashboardContent(Number(this.value), c, s);
     });
     
-    
+    // Page button is pressed.
+    $("#page_buttons").on('click', 'img', function() {   
+        showDashboardActivaButton(c, s, this);   
+        
+        // console.log(this);
+        
+    });
     
     
     
@@ -123,7 +129,7 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Aug 30, 2024
+ * Updated on Sep 01, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
@@ -134,7 +140,7 @@ function removeOldRankings(n) {
 function showDashboardContent(slide, c, s) {
     
     switch(slide) {
-        case 0: showDashboardActivaContent(c, s, "22-07-2024"); // Test date!
+        case 0: showDashboardActivaContent(c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024 !
                 break;
         
         case 1: $("#test01").show();
@@ -153,7 +159,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showDashboardActivaContent
  *
  * Created on Aug 24, 2024
- * Updated on Aug 28, 2024
+ * Updated on Sep 02, 2024
  *
  * Description: Shows the dashboard activa slide content.
  *
@@ -168,7 +174,7 @@ function showDashboardActivaContent(c, s, date) {
         if (result.success) {       
             
             // Debug.
-            //console.log( result );                       
+            // console.log( result );                       
     
             var crypto = JSON.parse(s[4].value);
      
@@ -232,21 +238,31 @@ function ShowDashboardActivaLabels(c, s) {
  * Function:    ShowDashboardActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Aug 28, 2024
+ * Updated on Sep 01, 2024
  *
  * Description: Shows the dashboard activa table.
  *
- * In:  c, s, date
+ * In:  c, s, date, group
  * Out: -
  *
  */
-function ShowDashboardActivaAccountsTable(c, s, date) {
-    
+function ShowDashboardActivaAccountsTable(c, s, date, group) {
+        
     var set = JSON.parse(s[0].value);  
     
     // Calculate table height.
     var y = $(".flex_top").height() - 98;
     $("#table_container").css("height", y);     
+    
+    // Remove the old and add the new class.
+    var tblclass;
+    if (group) {
+        tblclass = "tbl_collapse";
+    }
+    else {
+        tblclass = "tbl_expand";
+    }
+    $("#table_container table").removeClass().addClass(tblclass);    
     
     // Fill the table header.
     $("#table_container thead tr").remove(); 
@@ -260,7 +276,7 @@ function ShowDashboardActivaAccountsTable(c, s, date) {
     
     // Fill the table body.   
     $("#table_container tbody tr").remove(); 
-    fillDashboardActivaAccountsTable(s, c.accounts.length + 1, date);       
+    fillDashboardActivaAccountsTable(c.accounts.length + 1, date, group);       
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
@@ -275,15 +291,15 @@ function ShowDashboardActivaAccountsTable(c, s, date) {
  * Function:    fillDashboardActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Aug 30, 2024
+ * Updated on Sep 02, 2024
  *
  * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
- * In:  s, l, date
+ * In:  l, date, group
  * Out: -
  *
  */
-function fillDashboardActivaAccountsTable(s, l, date, group) {
+function fillDashboardActivaAccountsTable(l, date, group) {
 
     // Show loading spinner.
     $("#loading").show(); 
@@ -323,24 +339,6 @@ function fillDashboardActivaAccountsTable(s, l, date, group) {
             for (let j = i; j <= rows; j++) {
                $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
             }
-            
-            // Hide or show the hidden rows.   
-            /*
-            if($("#table_container tbody tr").hasClass("hide")) {
-                
-                let slide = Number($('input[name="slideItem"]:checked').val());
-                if (slide === 0) { slide = 5; }
-
-                let set = JSON.parse(s[slide].value);                
-                if (set.show === "true") {
-                    $("#table_container tbody .hide").show();
-                }
-                else {
-                    $("#table_container tbody .hide").hide(); 
-                }                
-            }            
-            */
-           
         }
         else {
             showDatabaseError(result);         
@@ -352,4 +350,65 @@ function fillDashboardActivaAccountsTable(s, l, date, group) {
     });  
     
     closeErrorMessage();    
+}
+
+/*
+ * Function:    showDashboardActivaButton
+ *
+ * Created on Sep 02, 2024
+ * Updated on Sep 02, 2024
+ *
+ * Description: Shows the action when the page button is pressed for the dashboard activa page.
+ *
+ * In:  c, s, that
+ * Out: -
+ *
+ */
+function showDashboardActivaButton(c, s, that) {
+    
+    switch (that.alt) {
+        case "list" :
+            break;
+        
+        case "edit" :
+            break;
+        
+        case "crypto"     :    
+            break;
+            
+        case "expand" :
+            changeDashboardActivaAccountsTable(c, s, false);
+            break;
+            
+        case "collapse" : 
+            changeDashboardActivaAccountsTable(c, s, true);
+            break;
+    }    
+}
+
+/*
+ * Function:    changeDashboardActivaAccountsTable
+ *
+ * Created on Sep 02, 2024
+ * Updated on Sep 02, 2024
+ *
+ * Description: Change the dashboard activa accounts table.
+ *
+ * In:  c, s, group
+ * Out: -
+ *
+ */
+function changeDashboardActivaAccountsTable(c, s, group) {
+    
+    var date = $("#input_date span").html();
+    if (group) 
+    {      
+        ShowDashboardActivaAccountsTable(c, s, date, group);   
+        $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
+    }
+    else
+    {
+        ShowDashboardActivaAccountsTable(c, s, date, group);       
+        $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
+    }        
 }

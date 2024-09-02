@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Aug 30, 2024
+ * Updated on Sep 01, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -29,7 +29,7 @@ else {
  * Function:    GetValueAccounts
  *
  * Created on Aug 28, 2024
- * Updated on Aug 30, 2024
+ * Updated on Aug 31, 2024
  *
  * Description: Get the data from de database tbl_value_accounts table.
  *
@@ -55,11 +55,13 @@ function GetValueAccounts()
             {
                 case "$" :
                 case "£" :
-                    $format = "STR_TO_DATE('$date', '%m/%d/%Y')";
+                    $format = "en_US";
+                    $date_format = "STR_TO_DATE('$date', '%m/%d/%Y')";
                     break;
             
                 case "€"  :
-                    $format = "STR_TO_DATE('$date', '%d-%m-%Y')";
+                    $format = "de_DE";
+                    $date_format = "STR_TO_DATE('$date', '%d-%m-%Y')";
                     break;               
             }
             
@@ -79,7 +81,7 @@ function GetValueAccounts()
             // Remove the last comma.
             $field = substr_replace($field, '', -1);
                     
-            $query = CreateQuery($format, $group, $case, $field);
+            $query = CreateQuery($input['sign'], $format, $date_format, $group, $case, $field);
             $select = $db->prepare($query);
             $select->execute();    
             
@@ -87,7 +89,6 @@ function GetValueAccounts()
                     
             // Debug
             //$response['query']   = $query;  
-            //$response = $input; // debug.
             
             $response['data'] = $data;
             $response['success'] = true;
@@ -255,15 +256,15 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Aug 30, 2024
+ * Updated on Sep 01, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
- * In:  $format, $group, $case, $field
+ * In:  $sign, $format, $date, $group, $case, $field
  * Out: $query
  *
  */
-function CreateQuery($format, $group, $case, $field)
+function CreateQuery($sign, $format, $date, $group, $case, $field)
 {
     $query = "";
     
@@ -273,48 +274,72 @@ function CreateQuery($format, $group, $case, $field)
     else {
         $type = "`type`";
     }
-    
-    
-    
+
     if ($field) 
     {
-        $where = "WHERE type IN ($field) ";
-        $order = "ORDER BY FIELD(type, $field) ";
+        $where = "WHERE `type` IN ($field) ";
+        $order = "ORDER BY FIELD(type, $field)";
     }
     else 
     {
-        $where = "WHERE type = '' ";
+        $where = "WHERE `type` = '' ";
         $order = "";
     }
      
-    if ($group) 
-    {
-        $query = "SELECT type AS id, $type, hide, `service` AS services, `account` AS accounts, '-' AS number, ".
-                        "ROUND(100 * `value` / SUM(`value`) OVER (),2) ratio, SUM(`value`) AS `value` ".
+    if ($group == "true") 
+    {       
+        $ratio = "FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format') AS ratio ";
+        $value = "CONCAT('$sign ', FORMAT(SUM(`value`), 2, '$format')) AS `value` ";        
+        $query = "SELECT type AS id, $type, `hide`, `service` AS services, `account` AS accounts, '-' AS number, $ratio, $value ".
                  "FROM (".
-                        "SELECT type, tbl_value_accounts.`hide` AS hide, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(IF(tbl_value_accounts.`hide` = 0, `value`, 0)) AS `value` ".
+                        "SELECT `type`, tbl_value_accounts.`hide` AS hide, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(IF(tbl_value_accounts.`hide` = 0, `value`, 0)) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                        "WHERE tbl_value_accounts.`date` = $format ".
-                        "GROUP BY type ".
+                        "WHERE tbl_value_accounts.`date` = $date ".
+                        "GROUP BY `type`, tbl_value_accounts.`hide` ".
                         "UNION ".
-                        "SELECT type, tbl_amount_wallets.`hide` AS hide, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, ROUND(SUM(IF(tbl_amount_wallets.`hide` = 0, amount*`value`, 0)),2) AS `value` ".
+                        "SELECT `type`, tbl_amount_wallets.`hide` AS hide, count(DISTINCT `service`) AS `service`, count(`account`) AS `account`, SUM(IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0)) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                        "WHERE tbl_value_cryptos.`date` = $format ".
-                        "GROUP BY type ".
+                        "WHERE tbl_value_cryptos.`date` = $date ".
+                        "GROUP BY `type`, tbl_amount_wallets.`hide` ".
                  ") total ".
                  "$where ".
-                 "GROUP BY service, account, total.`value`".
+                 "GROUP BY total.`type`, total.`hide`, service, account, total.`value` ".
                  "$order;";
     }
     else
     {
+        $key = cKEY;
+        $account = "CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ";
         
+        $ratio  = "FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format') AS ratio ";
+        $value  = "CONCAT('$sign ', FORMAT(`value`, 2, '$format')) AS `value` ";
+        $amount = "CONCAT(FORMAT(`amount`,8,'$format'), ' ', `symbol`) AS `amount` ";
+      
+        $query = "SELECT `id`, $type, `hide`, `service`, $account, `amount`, $ratio, $value ".
+                 "FROM (".
+                    "SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`, '-' AS `amount`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                    "FROM tbl_value_accounts ".
+                    "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                    "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                    "WHERE tbl_value_accounts .`date` = $date ".
+                    "UNION ".
+                    "SELECT tbl_amount_wallets.`id` AS `id`, tbl_amount_wallets.`hide` AS hide, `type`, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, $amount, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                    "FROM tbl_value_cryptos ".
+                    "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                    "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                    "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                    "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                    "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                    "WHERE tbl_value_cryptos.`date` = $date ".
+                 ") total ".
+                 "$where ".
+                 "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;";
     }
     
     return $query;
