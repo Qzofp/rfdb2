@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Sep 02, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -98,15 +98,14 @@
 }
 
 /* Dashboard tables */
+/*
 .tbl_collapse {
  width: calc(95% - 90px) !important; 
-}
+}*/
 
 .tbl_collapse thead th:nth-child(3),
-/*.tbl_collapse thead th:nth-child(4),*/
 .tbl_collapse thead th:nth-child(5),
 .tbl_collapse tbody td:nth-child(3),
-/*.tbl_collapse tbody td:nth-child(4),*/
 .tbl_collapse tbody td:nth-child(5) {
  display: none;
 }
@@ -124,3 +123,15 @@
  font-size: 0.8em !important;
 }
 
+.tbl_expand tfoot td:nth-last-child(2), 
+.tbl_collapse tfoot td:nth-last-child(2) {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+}
+
+.tbl_expand tfoot td:last-child, 
+.tbl_collapse tfoot td:last-child {
+ font-family: verdana;  
+ font-size: 0.8em !important;
+ color: green;
+}

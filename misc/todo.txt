@@ -81,6 +81,7 @@ ToDo
    - Opgelost.
 
 11. Bug: Bij Settings -> Accounts, 2 verschillende services (diensten) kunnen niet dezelfde account numbers hebben. Kans is klein dat dit voorkomt, maar zou wel moeten kunnen.
+  - Opgelost (index account verwijderd).
 
 12. Bug: Datum in popup verandert niet als bij de configuraties $ of £ is gekozen.
    - Opgelost.

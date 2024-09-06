@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 01, 2024
+ * Updated on Sep 04, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -88,7 +88,7 @@ function GetValueAccounts()
             $data = $select->fetchAll(PDO::FETCH_ASSOC); 
                     
             // Debug
-            //$response['query']   = $query;  
+            $response['query']   = $query;  
             
             $response['data'] = $data;
             $response['success'] = true;
@@ -256,7 +256,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Sep 01, 2024
+ * Updated on Sep 04, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -288,7 +288,7 @@ function CreateQuery($sign, $format, $date, $group, $case, $field)
      
     if ($group == "true") 
     {       
-        $ratio = "FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format') AS ratio ";
+        $ratio = "CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'),'%') AS ratio ";
         $value = "CONCAT('$sign ', FORMAT(SUM(`value`), 2, '$format')) AS `value` ";        
         $query = "SELECT type AS id, $type, `hide`, `service` AS services, `account` AS accounts, '-' AS number, $ratio, $value ".
                  "FROM (".
@@ -317,7 +317,7 @@ function CreateQuery($sign, $format, $date, $group, $case, $field)
         $key = cKEY;
         $account = "CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ";
         
-        $ratio  = "FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format') AS ratio ";
+        $ratio  = "CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'), '%') AS ratio ";
         $value  = "CONCAT('$sign ', FORMAT(`value`, 2, '$format')) AS `value` ";
         $amount = "CONCAT(FORMAT(`amount`,8,'$format'), ' ', `symbol`) AS `amount` ";
       

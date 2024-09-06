@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 02, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Sep 02, 2024
+ * Updated on Sep 05, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -85,7 +85,7 @@ function showDashboard(c, s) {
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showDashboardActivaButton(c, s, this);   
+        showActivaButtonAction(c, s, this);   
         
         // console.log(this);
         
@@ -129,7 +129,7 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Sep 01, 2024
+ * Updated on Sep 05, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
@@ -139,8 +139,12 @@ function removeOldRankings(n) {
  */
 function showDashboardContent(slide, c, s) {
     
+    // Check if the Crypto page is enabled or disabled.
+    var set = JSON.parse(s[4].value);
+    var crypto = (set.page === "true");
+    
     switch(slide) {
-        case 0: showDashboardActivaContent(c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024 !
+        case 0: showActivaAccountsContent(crypto, c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
                 break;
         
         case 1: $("#test01").show();
@@ -156,49 +160,50 @@ function showDashboardContent(slide, c, s) {
 }
 
 /*
- * Function:    showDashboardActivaContent
+ * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Sep 02, 2024
+ * Updated on Sep 06, 2024
  *
- * Description: Shows the dashboard activa slide content.
+ * Description: Shows the dashboard activa (account) slide content.
  *
- * In:  c, s, date
+ * In:  crypto, c, s, date
  * Out: -
  *
  */
-function showDashboardActivaContent(c, s, date) {   
+function showActivaAccountsContent(crypto, c, s, date) {   
 
     var request = getAjaxRequest("get_entry_date", "date=" + date);    
     request.done(function(result) {
-        if (result.success) {       
-            
-            // Debug.
-            // console.log( result );                       
-    
-            var crypto = JSON.parse(s[4].value);
+        if (result.success) {                    
      
             $("#activa_main").fadeIn("slow");
             $("#test01").hide();
             $("#test02").hide();
     
             // Show crypto button if page exists.
-            if (crypto.page === "true") {
-            $("#page_buttons img").eq(2).css("display", "inline");
+            if (crypto) {
+                $("#page_buttons img").eq(2).attr({src:"img/crypto.png", alt:"crypto"}).css("display", "inline");
             }
             else {
                 $("#page_buttons img").eq(2).css("display", "none"); 
             }
+    
+            // Reset button(s).
+            $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"}).show();  
     
             // Show the entry date. 
             $("#input_date u").html(c.misc[0]);
             $("#input_date span").html(result.date); 
     
             // Show the labels.
-            ShowDashboardActivaLabels(c, s);
+            showActivaLabels(c, s, true);
 
             // Show the table.
-            ShowDashboardActivaAccountsTable(c, s, result.date, true);
+            showActivaAccountsTable(c, s, result.date, true);
+            
+            // Get and show the table totals.
+            getAndShowAccountTotals(s, result.date);    
         }
         else {
             showDatabaseError(result); 
@@ -213,42 +218,52 @@ function showDashboardActivaContent(c, s, date) {
 }
 
 /*
- * Function:    ShowDashboardActivaLabels
+ * Function:    showActivaLabels
  *
  * Created on Aug 25, 2024
- * Updated on Aug 25, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: Shows the dashboard activa labels.
  *
- * In:  c, s
+ * In:  c, s, accounts
  * Out: -
  *
  */
-function ShowDashboardActivaLabels(c, s) {
+function showActivaLabels(c, s, accounts) {
     
     var set = JSON.parse(s[0].value);   
-    for (let i = 0; i < 3; i++) 
+    var start;
+    
+    if (accounts) {
+       start = 0;
+    }
+    else {
+       start = 3;
+    }
+    
+    for (let i = 0, j = start; i < 3; i++, j++)
     {
-        $(".label span").eq(i).html(c.labels[i]);
+        $(".label span").eq(i).html(c.labels[j]);
         $(".label span").eq(i).css("border-left","3px solid " + set.theme.color);           
     }      
 }
 
 /*
- * Function:    ShowDashboardActivaAccountsTable
+ * Function:    ShowActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Sep 01, 2024
+ * Updated on Sep 06, 2024
  *
- * Description: Shows the dashboard activa table.
+ * Description: Shows the dashboard activa accounts table.
  *
  * In:  c, s, date, group
  * Out: -
  *
  */
-function ShowDashboardActivaAccountsTable(c, s, date, group) {
+function showActivaAccountsTable(c, s, date, group) {
         
     var set = JSON.parse(s[0].value);  
+    var items = c.accounts.slice();
     
     // Calculate table height.
     var y = $(".flex_top").height() - 98;
@@ -256,50 +271,56 @@ function ShowDashboardActivaAccountsTable(c, s, date, group) {
     
     // Remove the old and add the new class.
     var tblclass;
-    if (group) {
+    if (group) 
+    {
+        items.splice(3,1);
         tblclass = "tbl_collapse";
     }
-    else {
+    else 
+    {
+        items.splice(2,1);
         tblclass = "tbl_expand";
     }
-    $("#table_container table").removeClass().addClass(tblclass);    
+    $("#table_container table").removeClass().addClass(tblclass);
     
     // Fill the table header.
     $("#table_container thead tr").remove(); 
     $("#table_container thead").append("<tr><th></th>");     
     
-    for (let i = 0; i < c.accounts.length; i++) {
-        $("#table_container thead tr").append("<th>" + c.accounts[i] + "</th>");
+    for (let i = 0; i < items.length; i++) {        
+        $("#table_container thead tr").append("<th>" + items[i] + "</th>");
     } 
     
     $("#table_container thead").append("</tr>");    
     
-    // Fill the table body.   
-    $("#table_container tbody tr").remove(); 
-    fillDashboardActivaAccountsTable(c.accounts.length + 1, date, group);       
+    // Fill the table body.
+    fillActivaAccountsTable(c.accounts.length, s, date, group);       
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
-    $("#table_container tfoot").append('<tr><td colspan="' + Number(c.accounts.length + 1) + '">&nbsp;</td></tr>');
+    $("#table_container tfoot").append('<tr><td colspan="' + c.accounts.length + '">&nbsp;</td></tr>');
     
     // Set theme.
     $("#table_container thead th").css("border-bottom", "2px solid " + set.theme.color);
-    $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);      
+    $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);
+    
+    // Show table effect.
+    $("#table_container table").hide(0).show( "slow" );
 }
 
 /*
- * Function:    fillDashboardActivaAccountsTable
+ * Function:    fillActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Sep 02, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
- * In:  l, date, group
+ * In:  l, s, date, group
  * Out: -
  *
  */
-function fillDashboardActivaAccountsTable(l, date, group) {
+function fillActivaAccountsTable(l, s, date, group) {
 
     // Show loading spinner.
     $("#loading").show(); 
@@ -309,11 +330,16 @@ function fillDashboardActivaAccountsTable(l, date, group) {
 
         // Hide loading spinner.
         $("#loading").hide();
-        
+             
         if (result.success) {         
         
             // Debug
-            //console.log( result.query );
+            // console.log( result.query );
+            
+            var crypto = JSON.parse(s[4].value);
+            
+            // Remove the old table body.
+            $("#table_container tbody tr").remove();
             
             let i = 0, rows = 10;             
             $.each(result.data, function (n, field) {  
@@ -339,6 +365,13 @@ function fillDashboardActivaAccountsTable(l, date, group) {
             for (let j = i; j <= rows; j++) {
                $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
             }
+            
+            // Don't show the crypto number row if the page is disabled.
+            if (crypto.page === "false") 
+            {
+               $(".tbl_expand thead th:nth-child(5)").hide();
+               $(".tbl_expand tbody td:nth-child(5)").hide();
+            }     
         }
         else {
             showDatabaseError(result);         
@@ -353,10 +386,75 @@ function fillDashboardActivaAccountsTable(l, date, group) {
 }
 
 /*
- * Function:    showDashboardActivaButton
+ * Function:    getAndShowAccountTotals
+ *
+ * Created on Sep 06, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Get and show the totals of the account table totals.
+ *
+ * In:  s, date
+ * Out: -
+ *
+ */
+function getAndShowAccountTotals(s, date) {
+        
+    var request = getAjaxRequest("get_value_totals", "date=" + date);
+    request.done(function(result) {
+        if (result.success) {         
+            
+            //console.log( result.query );
+    
+            var set = JSON.parse(s[0].value);
+            var col = $("#table_container thead").find("tr:first th:visible").length - 2;
+            
+            $("#table_container tfoot td").remove();           
+            $("#table_container tfoot tr").append(
+                '<td colspan="' + col + '"></td>' +
+                '<td></td>' +
+                '<td></td>'
+            );                   
+            $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);
+            
+            var currency = JSON.parse(s[5].value);
+            
+            // Ratio counter.
+            if (result.data[0].ratio !== "&nbsp;") 
+            {
+                $("#table_container tfoot td:nth-child(2)").data('value', result.data[0].ratio);
+                $("#table_container tfoot td:nth-child(2)").startRatio(0, 1500, currency.sign);
+            }
+            else {
+                $("#table_container tfoot td:nth-child(2)").html(result.data[0].ratio);
+            }    
+    
+            // Value counter.
+            if (result.data[0].value !== "&nbsp;") 
+            {
+                $("#table_container tfoot td:nth-child(3)").data('value', result.data[0].value);
+                $("#table_container tfoot td:nth-child(3)").startCounter(0, 1500, currency.sign);
+            }
+            else {
+                $("#table_container tfoot td:nth-child(3)").html(result.data[0].value);
+            }              
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();
+}
+
+/*
+ * Function:    showActivaButtonAction
  *
  * Created on Sep 02, 2024
- * Updated on Sep 02, 2024
+ * Updated on Sep 05, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -364,7 +462,11 @@ function fillDashboardActivaAccountsTable(l, date, group) {
  * Out: -
  *
  */
-function showDashboardActivaButton(c, s, that) {
+function showActivaButtonAction(c, s, that) {
+
+    // Check if the Crypto page is enabled or disabled.
+    var set = JSON.parse(s[4].value);
+    var crypto = (set.page === "true");    
     
     switch (that.alt) {
         case "list" :
@@ -373,24 +475,29 @@ function showDashboardActivaButton(c, s, that) {
         case "edit" :
             break;
         
-        case "crypto"     :    
+        case "accounts" :
+            showActivaAccountsContent(crypto, c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
+            break;
+          
+        case "crypto"     :             
+            showActivaCryptoContent(c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
             break;
             
         case "expand" :
-            changeDashboardActivaAccountsTable(c, s, false);
+            changeActivaAccountsTable(c, s, false);
             break;
             
         case "collapse" : 
-            changeDashboardActivaAccountsTable(c, s, true);
+            changeActivaAccountsTable(c, s, true);
             break;
     }    
 }
 
 /*
- * Function:    changeDashboardActivaAccountsTable
+ * Function:    changeActivaAccountsTable
  *
  * Created on Sep 02, 2024
- * Updated on Sep 02, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: Change the dashboard activa accounts table.
  *
@@ -398,17 +505,169 @@ function showDashboardActivaButton(c, s, that) {
  * Out: -
  *
  */
-function changeDashboardActivaAccountsTable(c, s, group) {
+function changeActivaAccountsTable(c, s, group) {
     
     var date = $("#input_date span").html();
     if (group) 
     {      
-        ShowDashboardActivaAccountsTable(c, s, date, group);   
+        showActivaAccountsTable(c, s, date, group);
+        getAndShowAccountTotals(s, date); 
         $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
     }
     else
     {
-        ShowDashboardActivaAccountsTable(c, s, date, group);       
+        showActivaAccountsTable(c, s, date, group);
+        getAndShowAccountTotals(s, date); 
         $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
     }        
+}
+
+/*
+ * Function:    showdActivaCryptoContent
+ *
+ * Created on Aug 24, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Shows the dashboard activa (crypto) slide content.
+ *
+ * In:  c, s, date
+ * Out: -
+ *
+ */
+function showActivaCryptoContent(c, s, date) {   
+
+    var request = getAjaxRequest("get_entry_date", "date=" + date);    
+    request.done(function(result) {
+        if (result.success) {                    
+     
+            // Reset buttons.
+            $("#page_buttons img").eq(2).attr({src:"img/accounts.png", alt:"accounts"});
+            $("#page_buttons img").eq(3).hide();  
+                
+            // Show the labels.
+            showActivaLabels(c, s, false);
+
+            // Show the table.
+            showActivaCryptoTable(c, s, result.date);
+        }
+        else {
+            showDatabaseError(result); 
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+     
+    closeErrorMessage();        
+}
+
+/*
+ * Function:    showActivaCryptoTable
+ *
+ * Created on Sep 05, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Shows the dashboard activa crypto table.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showActivaCryptoTable(c, s, date) {
+    
+    var set = JSON.parse(s[0].value);  
+    
+    // Calculate table height.
+    var y = $(".flex_top").height() - 98;
+    $("#table_container").css("height", y);     
+    
+    $("#table_container table").removeClass().addClass("tbl_crypto");
+    
+    // Fill the table header.
+    $("#table_container thead tr").remove(); 
+    $("#table_container thead").append("<tr><th></th>");     
+    
+    for (let i = 0; i < c.crypto.length; i++) {        
+        $("#table_container thead tr").append("<th>" + c.crypto[i] + "</th>");
+    } 
+    
+    $("#table_container thead").append("</tr>");    
+    
+    // Fill the table body.   
+    fillActivaCryptoTable(c.crypto.length + 1, date);       
+
+    // Fill the table footer.
+    $("#table_container tfoot tr").remove();      
+    $("#table_container tfoot").append('<tr><td colspan="' + Number(c.accounts.length + 1) + '">&nbsp;</td></tr>');
+    
+    // Set theme.
+    $("#table_container thead th").css("border-bottom", "2px solid " + set.theme.color);
+    $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);
+    
+    // Show table effect.
+    $("#table_container table").hide(0).show( "slow" );
+}
+
+/*
+ * Function:    fillActivaAccountsTable
+ *
+ * Created on Sep 06, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Get the data from the database and fill the dashboard activa cryptos table with that data.
+ *
+ * In:  l, date
+ * Out: -
+ *
+ */
+function fillActivaCryptoTable(l, date) {
+
+    // Show loading spinner.
+    $("#loading").show(); 
+    
+    var request = getAjaxRequest("get_value_cryptos", "date=" + date);
+    request.done(function(result) {
+
+        // Hide loading spinner.
+        $("#loading").hide();
+             
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );       
+            
+            // Remove the old table body.
+            $("#table_container tbody tr").remove();
+            
+            let i = 0, rows = 10;             
+            $.each(result.data, function (n, field) {  
+                                                         
+                i++;
+                $("#table_container tbody").append('<tr>');
+          
+                $.each(field, function(key, value){                    
+                    if (key !== "hide") {
+                        $("#table_container tbody tr").last().append("<td>" + value + "</td>");
+                    }    
+                });
+                               
+                $("#table_container tbody").append("</tr>");   
+            });  
+
+            // Add empty rows.
+            for (let j = i; j <= rows; j++) {
+               $("#table_container tbody").append('<tr><td colspan="' + l + '">&nbsp;</td></tr>');
+            }           
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
 }

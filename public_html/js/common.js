@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Aug 16, 2024
+ * Updated on Sep 06, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -959,9 +959,9 @@ function setStartYear(page, year) {
  * Function:   startCounter
  *
  * Created on May 14, 2024
- * Updated on Jul 11, 2024
+ * Updated on Sep 06, 2024
  *
- * Description: Start the counter, i.e. $(".count").startCounter(200, 1500, "€ ", "de-DE");
+ * Description: Start the counter, i.e. $(".count").startCounter(200, 1500, "€ ");
  *
  * In:  start, duration, sign
  * Out: 
@@ -994,6 +994,49 @@ $.fn.startCounter = function(start, duration, sign) {
         },
         complete: function () {                      
             $(this).text(sign + " " +  this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }    
+    });
+};
+
+/*
+ * Function:   startRatio
+ *
+ * Created on May 14, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Start the counter, i.e. $(".count").startRatio(200, 1500, "€ "));
+ *
+ * In:  start, duration, sign
+ * Out: 
+ *
+ */
+$.fn.startRatio = function(start, duration, sign) {
+                 
+    var format, $el;
+    
+    // Determine the currency format.
+    switch (sign) 
+    {
+        case "$" :
+        case "£" :
+            format = "en-US";
+            break;
+            
+        case "€"  :
+            format = "de-DE";     
+            break;
+    } 
+            
+    $el = this;  
+    $el.prop('Counter',start).animate({Counter: $el.data('value')}, 
+    {
+        duration: duration,
+        easing: 'swing',
+        step: function () {
+            $(this).text(this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%");
+        },
+        complete: function () {                      
+            $(this).text(this.Counter.toLocaleString(format, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%");
         }    
     });
 };
