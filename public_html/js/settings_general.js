@@ -1,7 +1,7 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    settings_general.js
  * Used in: settings.php
@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Aug 11, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -60,7 +60,7 @@ function showGeneralPopupLanguage(c, s) {
  * Function:    showGeneralPopupPages
  *
  * Created on Nov 22, 2023
- * Updated on Mar 09, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Shows the pages popup content for the general page.
  *
@@ -76,7 +76,7 @@ function showGeneralPopupPages(c, s) {
     set = JSON.parse(s[5].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);     
     
-    set = JSON.parse(s[7].value);   
+    //set = JSON.parse(s[7].value);   
 
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);

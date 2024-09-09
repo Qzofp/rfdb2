@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Check if the user is signed in and get the value totals from the databases tbl_value_accounts 
  *              and tbl_value_cryptos tables.
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Get the value totals from the databases tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -85,7 +85,7 @@ function GetValueTotals()
                 $where = "WHERE `type` = ''";
             }
             
-            $ratio = "COALESCE(NULLIF(100 * `value` / SUM(`value`) OVER(), null), '&nbsp;') AS ratio";
+            $ratio = "COALESCE(NULLIF(ANY_VALUE(200 * `value` / SUM(`value`) OVER()), null), '&nbsp;') AS ratio";
             //$ratio = "COALESCE(NULLIF(ROUND(100 * `value` / SUM(`value`) OVER(),0), null), '&nbsp;') AS ratio";
             $value = "COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value`";
             $query = "SELECT $ratio, $value ".
@@ -106,11 +106,11 @@ function GetValueTotals()
         
             $select = $db->prepare($query);
             $select->execute();
+            $totals = $select->fetchAll(PDO::FETCH_ASSOC);  
 
             // Debug
-            //$response['query'] = $query;              
-            
-            $totals = $select->fetchAll(PDO::FETCH_ASSOC);  
+            $response['query'] = $query;              
+                       
             $response['data'] = $totals; 
             $response['success'] = true;
         }

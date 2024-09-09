@@ -171,7 +171,7 @@ function openSheetPage(c, s, i) {
     $("#popup_content").on('click', '.list .selected', function() {       
         getPopupSelectAndProcessChoice(c, i, this);
     });         
-                  
+
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {      
         showSheetContent($adp, c, s, i, false);    

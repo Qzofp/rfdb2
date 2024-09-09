@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Sep 06, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -959,7 +959,7 @@ function setStartYear(page, year) {
  * Function:   startCounter
  *
  * Created on May 14, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 07, 2024
  *
  * Description: Start the counter, i.e. $(".count").startCounter(200, 1500, "€ ");
  *

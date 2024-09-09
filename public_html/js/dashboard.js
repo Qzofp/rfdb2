@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 06, 2024
+ * Updated on Sep 09, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Sep 05, 2024
+ * Updated on Sep 08, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -65,6 +65,11 @@ function loadMain() {
  */
 function showDashboard(c, s) {
 
+    var $adp;
+        
+    // Initialize the datepicker.
+    $adp = initAirDatePicker(c, s);   
+    
     // Remove the old rankings (only for the finances sheet).
     removeOldRankings(3);
     
@@ -85,16 +90,31 @@ function showDashboard(c, s) {
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showActivaButtonAction(c, s, this);   
-        
-        // console.log(this);
-        
+        showDashboardButtonAction($adp, c, s, this);
     });
     
+    // Table row is pressed.
+    //$("#table_container").on('click', 'tbody tr', function(){        
+        //showSheetEditPopup($adp, c, i, this);
+    //});    
     
+    // Popup button is pressed.  
+    $("#popup_content").on("submit","form",function(e) {   
+        setDashboardPopupChoice(e, c, s);
+    });    
+ 
+ 
+ 
+ 
+ 
     
     // Show the page theme.
     showPageTheme(s[0]); 
+     
+    // Close popup windows.       
+    $("#popup_container .close").on("click", function() {
+        closePopupWindow();
+    });    
 }
 
 /*
@@ -451,28 +471,58 @@ function getAndShowAccountTotals(s, date) {
 }
 
 /*
- * Function:    showActivaButtonAction
+ * Function:    showDashboardButtonAction
  *
  * Created on Sep 02, 2024
- * Updated on Sep 05, 2024
+ * Updated on Sep 09, 2024
  *
- * Description: Shows the action when the page button is pressed for the dashboard activa page.
+ * Description: Shows the action when the page button is pressed for the dashboard page.
  *
- * In:  c, s, that
+ * In:  adp, c, s, that
  * Out: -
  *
  */
-function showActivaButtonAction(c, s, that) {
+function showDashboardButtonAction(adp, c, s, that) {
 
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
     var crypto = (set.page === "true");    
     
+    // Get the active slide.
+    var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);  
+    switch (slide) {
+        case 0 : // Activa Slide
+            showActivaButtonAction(adp, c, s, that, crypto);
+            break;
+            
+        case 1 : // Slide Test 1
+            break;
+            
+        case 2 : // Slide Test 2
+            break;
+    }
+}
+
+/*
+ * Function:    showActivaButtonAction
+ *
+ * Created on Sep 09, 2024
+ * Updated on Sep 09, 2024
+ *
+ * Description: Shows the action when the page button is pressed for the dashboard activa page.
+ *
+ * In:  adp, c, s, that, crypto
+ * Out: -
+ *
+ */
+function showActivaButtonAction(adp, c, s, that, crypto) {
+    
     switch (that.alt) {
         case "list" :
             break;
         
-        case "edit" :
+        case "add" :
+            showActivaEditPopup(adp, c, s);
             break;
         
         case "accounts" :
@@ -490,36 +540,42 @@ function showActivaButtonAction(c, s, that) {
         case "collapse" : 
             changeActivaAccountsTable(c, s, true);
             break;
-    }    
+            
+        case "del" :
+            break;
+    }     
 }
 
 /*
- * Function:    changeActivaAccountsTable
+ * Function:    showActivaEditPopup
  *
- * Created on Sep 02, 2024
- * Updated on Sep 06, 2024
+ * Created on Sep 07, 2024
+ * Updated on Sep 09, 2024
  *
- * Description: Change the dashboard activa accounts table.
+ * Description: Shows the popup when the page edit button is pressed.
  *
- * In:  c, s, group
+ * In:  adp, c, s
  * Out: -
  *
  */
-function changeActivaAccountsTable(c, s, group) {
+function showActivaEditPopup(adp, c, s) {
+
+    var set = JSON.parse(s[5].value);
     
-    var date = $("#input_date span").html();
-    if (group) 
-    {      
-        showActivaAccountsTable(c, s, date, group);
-        getAndShowAccountTotals(s, date); 
-        $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
-    }
-    else
-    {
-        showActivaAccountsTable(c, s, date, group);
-        getAndShowAccountTotals(s, date); 
-        $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
-    }        
+    // Find all popup_table classes and hide them.
+    $("#popup_content").find("[class^=popup_table]").hide();
+    
+    // Show the popup_table activa class.
+    $(".popup_table_activa").show();
+
+    $("#popup_content h2").html("Edit Test");
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
+    
+      
+      
+      
+  
+    $("#popup_container").fadeIn("slow");         
 }
 
 /*
@@ -670,4 +726,55 @@ function fillActivaCryptoTable(l, date) {
     });  
     
     closeErrorMessage();    
+}
+
+/*
+ * Function:    changeActivaAccountsTable
+ *
+ * Created on Sep 02, 2024
+ * Updated on Sep 06, 2024
+ *
+ * Description: Change the dashboard activa accounts table.
+ *
+ * In:  c, s, group
+ * Out: -
+ *
+ */
+function changeActivaAccountsTable(c, s, group) {
+    
+    var date = $("#input_date span").html();
+    if (group) 
+    {      
+        showActivaAccountsTable(c, s, date, group);
+        getAndShowAccountTotals(s, date); 
+        $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
+    }
+    else
+    {
+        showActivaAccountsTable(c, s, date, group);
+        getAndShowAccountTotals(s, date); 
+        $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
+    }        
+}
+
+/*
+ * Function:    setDashboardPopupChoice
+ *
+ * Created on Sep 08, 2024
+ * Updated on Sep 08, 2024
+ *
+ * Description: Set the choice made in the dashboard popup window.
+ *
+ * In:  e, c, s
+ * Out: -
+ *
+ */
+function setDashboardPopupChoice(e, c, s) {
+    
+    e.preventDefault();     
+    var btn = e.originalEvent.submitter.alt;          
+
+    // Debug.
+    console.log( btn );
+
 }

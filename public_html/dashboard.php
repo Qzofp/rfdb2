@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Aug 28, 2024
+ * Updated on Sep 09, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -31,9 +31,11 @@ if(!$user){
         <title>Rizzo's Finances Database 2</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/common.css">     
+        <link rel="stylesheet" href="css/common.css">  
+        <link rel="stylesheet" href="css/ext/air-datepicker.css">   
         <link rel="stylesheet" href="css/dashboard.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>
+        <script src="js/ext/air-datepicker.js"></script> 
         <script src="js/config.js"></script>       
         <script src="js/common.js"></script>        
         <script src="js/dashboard.js"></script>
@@ -105,9 +107,10 @@ if(!$user){
                             <!-- The list, add (edit) and crypto or account buttons -->
                             <div id="page_buttons">
                                 <img src="img/list.png" alt="list"/>
-                                <img src="img/edit.png" alt="edit"/>
+                                <img src="img/add.png" alt="add"/>
                                 <img src="img/crypto.png" alt="crypto"/>
-                                <img src="img/expand.png" alt="expand"/>                                
+                                <img src="img/expand.png" alt="expand"/>
+                                <img src="img/pencil.png" alt="edit"/>
                             </div>                            
                             
                             <!-- Display the balance under the slides. -->
@@ -151,6 +154,68 @@ if(!$user){
 
                 <!-- Show the Test 2 slide content -->                    
                 <div id="test02">Test 2</div>                   
+                                
+                <!-- Dashboard popup window. -->
+                <div id="popup_container"> 
+                    <div id="popup_content"> 
+                        <h2></h2>                        
+                        <form method="POST">                           
+                            
+                            <!-- Popup for the activa input (is also needed for the datepicker). -->
+                            <table class="popup_table_activa"><!-- This table is needed for the datepicker. -->
+                                <tr>                              
+                                    <td><input id="date" type="text" name="date" placeholder="" value="" /></td>              
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="15">&nbsp;<td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Popup for the tbl_collapse table -->
+                            <table class="popup_table_collapse">
+                                <tr>                              
+                                    <td>Test Accounts Collapse</td>              
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="15">&nbsp;<td>
+                                </tr>
+                            </table>                            
+                            
+                            <!-- Popup for the tbl_expand table -->
+                            <table class="popup_table_expand">
+                                <tr>                              
+                                    <td>Test Accounts Expand</td>              
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="15">&nbsp;<td>
+                                </tr>
+                            </table>                               
+                            
+                            <!-- Popup for the tbl_crypto table -->
+                            <table class="popup_table_crypto">
+                                <tr>                              
+                                    <td>Test Crypto</td>              
+                                </tr>
+                                <tr>
+                                    <td class="msg" colspan="15">&nbsp;<td>
+                                </tr>
+                            </table> 
+                            
+                            <!-- Popup for the other slide tables -->                 
+                            
+                            
+                            
+                            
+                            
+                            
+                            <a class="close" href="javascript:void(0)">x</a>   
+                            <div class="choice">
+                                <input class="ok" type="image" name="submit" src="img/ok.png" alt="ok" />
+                                <input class="close" type="image" name="cancel" src="img/cancel.png" alt="cancel" />                         
+                            </div>                        
+                       </form>
+                    </div>
+                </div>
                 
                 <!-- Loading spinner -->
                 <div id="loading"></div>    

@@ -2,7 +2,7 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:         sheet.php
  * Dependencies: css/common.css
@@ -20,7 +20,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Jun 10, 2024
+ * Updated on Sep 09, 2024
  *
  * Description: Sheet framework page.
  *
@@ -152,7 +152,7 @@ if(!$user){
                 <!-- Scale (months, quarters, year), add and chart image buttons -->
 		<div id="page_buttons">
                     <img src="img/quarters.png" alt="quarters"/>
-                    <img src="img/edit.png" alt="edit"/>
+                    <img src="img/addrow.png" alt="edit"/>
                     <img src="img/chart.png" alt="chart"/>
 		</div>
             
