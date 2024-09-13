@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 09, 2024
+ * Updated on Sep 13, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -183,7 +183,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -220,7 +220,7 @@ function showActivaAccountsContent(crypto, c, s, date) {
             showActivaLabels(c, s, true);
 
             // Show the table.
-            showActivaAccountsTable(c, s, result.date, true);
+            showActivaAccountsTable(c, s, result.date, "collapse");
             
             // Get and show the table totals.
             getAndShowAccountTotals(s, result.date);    
@@ -272,15 +272,15 @@ function showActivaLabels(c, s, accounts) {
  * Function:    ShowActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Shows the dashboard activa accounts table.
  *
- * In:  c, s, date, group
+ * In:  c, s, date, action
  * Out: -
  *
  */
-function showActivaAccountsTable(c, s, date, group) {
+function showActivaAccountsTable(c, s, date, action) {
         
     var set = JSON.parse(s[0].value);  
     var items = c.accounts.slice();
@@ -291,7 +291,7 @@ function showActivaAccountsTable(c, s, date, group) {
     
     // Remove the old and add the new class.
     var tblclass;
-    if (group) 
+    if (action === "collapse") 
     {
         items.splice(3,1);
         tblclass = "tbl_collapse";
@@ -314,7 +314,7 @@ function showActivaAccountsTable(c, s, date, group) {
     $("#table_container thead").append("</tr>");    
     
     // Fill the table body.
-    fillActivaAccountsTable(c.accounts.length, s, date, group);       
+    fillActivaAccountsTable(c.accounts.length, s, date, action);       
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
@@ -332,20 +332,20 @@ function showActivaAccountsTable(c, s, date, group) {
  * Function:    fillActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
- * In:  l, s, date, group
+ * In:  l, s, date, action
  * Out: -
  *
  */
-function fillActivaAccountsTable(l, s, date, group) {
+function fillActivaAccountsTable(l, s, date, action) {
 
     // Show loading spinner.
     $("#loading").show(); 
     
-    var request = getAjaxRequest("get_value_accounts", "date=" + date + "&group=" + group);
+    var request = getAjaxRequest("get_value_accounts", "date=" + date + "&action=" + action);
     request.done(function(result) {
 
         // Hide loading spinner.
@@ -507,7 +507,7 @@ function showDashboardButtonAction(adp, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Sep 09, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -522,7 +522,7 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
             break;
         
         case "add" :
-            showActivaEditPopup(adp, c, s);
+            showActivaAddPopup(adp, crypto, c, s);
             break;
         
         case "accounts" :
@@ -534,11 +534,11 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
             break;
             
         case "expand" :
-            changeActivaAccountsTable(c, s, false);
+            changeActivaAccountsTable(c, s, "expand");
             break;
             
         case "collapse" : 
-            changeActivaAccountsTable(c, s, true);
+            changeActivaAccountsTable(c, s, "collapse");
             break;
             
         case "del" :
@@ -547,20 +547,22 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
 }
 
 /*
- * Function:    showActivaEditPopup
+ * Function:    showActivaAddPopup
  *
  * Created on Sep 07, 2024
- * Updated on Sep 09, 2024
+ * Updated on Sep 11, 2024
  *
- * Description: Shows the popup when the page edit button is pressed.
+ * Description: Shows the popup when the page add button is pressed.
  *
- * In:  adp, c, s
+ * In:  adp, crypto, c, s
  * Out: -
  *
  */
-function showActivaEditPopup(adp, c, s) {
+function showActivaAddPopup(adp, crypto, c, s) {
 
-    var set = JSON.parse(s[5].value);
+    var set = JSON.parse(s[0].value);
+    
+    $("#popup_content").removeClass().addClass("popup_activa"); 
     
     // Find all popup_table classes and hide them.
     $("#popup_content").find("[class^=popup_table]").hide();
@@ -568,15 +570,96 @@ function showActivaEditPopup(adp, c, s) {
     // Show the popup_table activa class.
     $(".popup_table_activa").show();
 
-    $("#popup_content h2").html("Edit Test");
+    var title = c.labels[0];
+    //if (crypto) {
+    //    title += " & " + c.labels[3];
+    //}
+    $("#popup_content h2").html(title);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);     
     
-      
+    fillActivaAddPopup(c);
+    
+    
+    
       
       
   
     $("#popup_container").fadeIn("slow");         
 }
+
+/*
+ * Function:    showActivaAddPopup
+ *
+ * Created on Sep 11, 2024
+ * Updated on Sep 13, 2024
+ *
+ * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
+ *
+ * In:  c
+ * Out: -
+ *
+ */
+function fillActivaAddPopup(c) {
+    
+    // Fill first row and column with the entry date.
+    $(".popup_table_activa tr:first td:first").html(c.misc[0]);
+   
+    var request = getAjaxRequest("get_value_accounts", "date=null&action=add");
+    request.done(function(result) {
+             
+        if (result.success) {         
+        
+            // Debug
+            // console.log( result.query );
+                        
+            // Remove all rows except the first and last rows.
+            $(".popup_table_activa tbody tr").not(":first").remove();
+
+            console.log( result.data[0] );
+
+            // Build table with the accounts and input fields.
+            
+            var type = "";
+            result.data.forEach((item, key) => {
+                
+                if (type !== item.kind) 
+                {
+                    $(".popup_table_activa tbody").append(
+                        '<tr>' +
+                            '<td colspan="2">' + item.type + '</td>' +
+                        '</tr>');                    
+                                   
+                    type = item.kind;
+                }
+                
+                
+                
+                
+                
+                $(".popup_table_activa tbody").append(
+                    '<tr>' +
+                        '<td>- ' + item.account + '</td>' +
+                        '<td><input id="' + item.kind + '_' + key + '" type="text" name="' + item.kind + '_' + key + '" placeholder="" value="" /></td>' +
+                    '</tr>');
+                
+                
+                
+                
+            });
+
+                
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
+}    
 
 /*
  * Function:    showdActivaCryptoContent
@@ -732,26 +815,26 @@ function fillActivaCryptoTable(l, date) {
  * Function:    changeActivaAccountsTable
  *
  * Created on Sep 02, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Change the dashboard activa accounts table.
  *
- * In:  c, s, group
+ * In:  c, s, action
  * Out: -
  *
  */
-function changeActivaAccountsTable(c, s, group) {
+function changeActivaAccountsTable(c, s, action) {
     
     var date = $("#input_date span").html();
-    if (group) 
+    if (action === "collapse") 
     {      
-        showActivaAccountsTable(c, s, date, group);
+        showActivaAccountsTable(c, s, date, action);
         getAndShowAccountTotals(s, date); 
         $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
     }
     else
     {
-        showActivaAccountsTable(c, s, date, group);
+        showActivaAccountsTable(c, s, date, action);
         getAndShowAccountTotals(s, date); 
         $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
     }        
@@ -761,7 +844,7 @@ function changeActivaAccountsTable(c, s, group) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Sep 08, 2024
+ * Updated on Sep 11, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
@@ -775,6 +858,6 @@ function setDashboardPopupChoice(e, c, s) {
     var btn = e.originalEvent.submitter.alt;          
 
     // Debug.
-    console.log( btn );
+    // console.log( btn );
 
 }

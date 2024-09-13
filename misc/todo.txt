@@ -93,6 +93,8 @@ ToDo
    - Opgelost.
 
 15. Bug: In de sheet popup voor het bedrag blijft het min (-) teken staan als afVast of afOverig is gekozen als er op plus (+) is gedrukt.
+   - Opgelost.
 
 16. Verbetering (?): In de sheet popup de datum laten staan als er op plus (+) is gedrukt. Zo hoeft dezelfde datum niet opnieuw gekozen te worden.
+    - Aangepast. De datum blijft nu staan.
 

@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Sep 09, 2024
+ * Updated on Sep 13, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -161,23 +161,18 @@ if(!$user){
                         <h2></h2>                        
                         <form method="POST">                           
                             
-                            <!-- Popup for the activa input (is also needed for the datepicker). -->
-                            <table class="popup_table_activa"><!-- This table is needed for the datepicker. -->
+                            <!-- Popup for the activa input (is needed for the datepicker). -->
+                            <table class="popup_table_activa">
                                 <tr>                              
+                                    <td></td>
                                     <td><input id="date" type="text" name="date" placeholder="" value="" /></td>              
-                                </tr>
-                                <tr>
-                                    <td class="msg" colspan="15">&nbsp;<td>
                                 </tr>
                             </table>
                             
                             <!-- Popup for the tbl_collapse table -->
                             <table class="popup_table_collapse">
                                 <tr>                              
-                                    <td>Test Accounts Collapse</td>              
-                                </tr>
-                                <tr>
-                                    <td class="msg" colspan="15">&nbsp;<td>
+                                    <td>Test Accounts Collapse</td>
                                 </tr>
                             </table>                            
                             
@@ -186,18 +181,12 @@ if(!$user){
                                 <tr>                              
                                     <td>Test Accounts Expand</td>              
                                 </tr>
-                                <tr>
-                                    <td class="msg" colspan="15">&nbsp;<td>
-                                </tr>
                             </table>                               
                             
                             <!-- Popup for the tbl_crypto table -->
                             <table class="popup_table_crypto">
                                 <tr>                              
                                     <td>Test Crypto</td>              
-                                </tr>
-                                <tr>
-                                    <td class="msg" colspan="15">&nbsp;<td>
                                 </tr>
                             </table> 
                             
@@ -206,7 +195,8 @@ if(!$user){
                             
                             
                             
-                            
+                            <!-- Message field -->
+                            <div class="msg">&nbsp; Test Message!</div> 
                             
                             <a class="close" href="javascript:void(0)">x</a>   
                             <div class="choice">

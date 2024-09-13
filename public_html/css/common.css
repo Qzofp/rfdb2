@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Aug 28, 2024
+ * Updated on Sep 13, 2024
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -467,10 +467,12 @@ h2 {
  font-size: 0.9em;
 }
 
-#popup_content table .msg {
+#popup_content .msg {
  text-align: center;
  color: maroon;
  font-weight: bold;
+ font-size: 0.9em;
+ padding: 10px 0px;
 }
 
 #popup_content table .warning {

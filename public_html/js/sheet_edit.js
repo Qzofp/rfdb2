@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    sheet.js
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Aug 09, 2024
+ * Updated on Sep 10, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -925,7 +925,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Aug 08, 2024
+ * Updated on Sep 10, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -1001,8 +1001,8 @@ function modifyFinances(c, s, btn) {
                     }
                     else 
                     {           
-                        // Reset input.
-                        $("#date").val("");   
+                        // Reset date input.
+                        //$("#date").val("");   
                         
                         // Reset nice-select menu if there is more then 1 item.
                         if ($("#payment > option").length > 1) 
@@ -1017,8 +1017,12 @@ function modifyFinances(c, s, btn) {
                         $(".popup_table_finance .label").html("&nbsp;");
                         $(".popup_table_finance .msg").html("&nbsp;");
                         
+                        // Reset minus sign and amount.
+                        $(".popup_table_finance .sign").html(function(i, text) { 
+                            return text.replace("-", "&nbsp;");
+                        });                        
                         $("#amount").val(""); 
-
+                        
                         // Reset nice-select menu if there is one or more items.
                         if ($("#service > option").length >= 1) 
                         {
@@ -1136,7 +1140,7 @@ function getAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Aug 08, 2024
+ * Updated on Sep 10, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1209,13 +1213,17 @@ function modifyStocks(c, s, btn) {
                     else 
                     {           
                         // Reset input.
-                        $("#date").val("");   
+                        //$("#date").val("");   
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
                         $(".popup_table_finance .label").html("&nbsp;");
                         $(".popup_table_finance .msg").html("&nbsp;");
-                        
+
+                        // Reset minus sign and amount.
+                        $(".popup_table_finance .sign").html(function(i, text) { 
+                            return text.replace("-", "&nbsp;");
+                        });                        
                         $("#amount").val(""); 
 
                         // Reset nice-select menu if there is one or more items.
@@ -1257,7 +1265,7 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Aug 08, 2024
+ * Updated on Sep 10, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1329,13 +1337,17 @@ function modifySavings(c, s, btn) {
                     else 
                     {           
                         // Reset input.
-                        $("#date").val("");   
+                        //$("#date").val("");   
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
                         $(".popup_table_finance .label").html("&nbsp;");
                         $(".popup_table_finance .msg").html("&nbsp;");
                         
+                        // Reset minus sign and amount.
+                        $(".popup_table_finance .sign").html(function(i, text) { 
+                            return text.replace("-", "&nbsp;");
+                        });                        
                         $("#amount").val(""); 
 
                         // Reset nice-select menu if there is one or more items.
@@ -1377,7 +1389,7 @@ function modifySavings(c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Aug 08, 2024
+ * Updated on Sep 10, 2024
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
@@ -1459,13 +1471,17 @@ function modifyCrypto(c, s, btn) {
                     else 
                     {           
                         // Reset input.
-                        $("#date").val("");   
+                        //$("#date").val("");   
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
                         $(".popup_table_finance .label").html("&nbsp;");
                         $(".popup_table_finance .msg").html("&nbsp;");
                         
+                        // Reset minus sign and amount.
+                        $(".popup_table_finance .sign").html(function(i, text) { 
+                            return text.replace("-", "&nbsp;");
+                        });                        
                         $("#amount").val(""); 
 
                         // Reset nice-select menu if there is more then 1 item.
