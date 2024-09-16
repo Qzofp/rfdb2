@@ -98,3 +98,5 @@ ToDo
 16. Verbetering (?): In de sheet popup de datum laten staan als er op plus (+) is gedrukt. Zo hoeft dezelfde datum niet opnieuw gekozen te worden.
     - Aangepast. De datum blijft nu staan.
 
+17. Controleer ook of accounts verwijderd kunnen worden als ze niet worden gebruikt op de Dashboard pagina.
+

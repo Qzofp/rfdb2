@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 13, 2024
+ * Updated on Sep 14, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -88,7 +88,7 @@ function GetValueAccounts()
             $data = $select->fetchAll(PDO::FETCH_ASSOC); 
                     
             // Debug
-            //$response['query']   = $query;  
+            $response['query']   = $query;  
             
             $response['data'] = $data;
             $response['success'] = true;
@@ -256,7 +256,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Sep 13, 2024
+ * Updated on Sep 14, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -352,10 +352,11 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
                         "SELECT tbl_accounts.`id` AS id, type, tbl_services.`service` AS `service`, $account ".
                         "FROM tbl_accounts ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                        "WHERE type NOT IN ('crypto') ".
+                        "WHERE `type` NOT IN ('crypto') AND tbl_accounts.`hide` = 0 ".
                         "UNION ".
-                        "SELECT `id`, 'crypto' AS `type`, `name`, `symbol` ".
-                        "FROM `tbl_cryptocurrenties` ".
+                        "SELECT `id`, 'crypto' AS `type`, `symbol`, CAST(`name` AS CHAR(45)) AS `name` ".
+                        "FROM tbl_cryptocurrenties ".
+                        "WHERE tbl_cryptocurrenties.`hide` = 0 ".
                      ") total ".
                      "$where ".
                      "ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;";

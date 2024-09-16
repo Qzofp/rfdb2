@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 13, 2024
+ * Updated on Sep 16, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Sep 08, 2024
+ * Updated on Sep 15, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -100,7 +100,7 @@ function showDashboard(c, s) {
     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
-        setDashboardPopupChoice(e, c, s);
+        setDashboardPopupChoice($adp, e, c, s);
     });    
  
  
@@ -409,7 +409,7 @@ function fillActivaAccountsTable(l, s, date, action) {
  * Function:    getAndShowAccountTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 14, 2024
  *
  * Description: Get and show the totals of the account table totals.
  *
@@ -423,7 +423,8 @@ function getAndShowAccountTotals(s, date) {
     request.done(function(result) {
         if (result.success) {         
             
-            //console.log( result.query );
+            // Debug
+            // console.log( result.query );
     
             var set = JSON.parse(s[0].value);
             var col = $("#table_container thead").find("tr:first th:visible").length - 2;
@@ -550,7 +551,7 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
  * Function:    showActivaAddPopup
  *
  * Created on Sep 07, 2024
- * Updated on Sep 11, 2024
+ * Updated on Sep 15, 2024
  *
  * Description: Shows the popup when the page add button is pressed.
  *
@@ -562,7 +563,7 @@ function showActivaAddPopup(adp, crypto, c, s) {
 
     var set = JSON.parse(s[0].value);
     
-    $("#popup_content").removeClass().addClass("popup_activa"); 
+    $("#popup_content").removeClass().addClass("activa_add"); 
     
     // Find all popup_table classes and hide them.
     $("#popup_content").find("[class^=popup_table]").hide();
@@ -591,7 +592,7 @@ function showActivaAddPopup(adp, crypto, c, s) {
  * Function:    showActivaAddPopup
  *
  * Created on Sep 11, 2024
- * Updated on Sep 13, 2024
+ * Updated on Sep 15, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -615,39 +616,48 @@ function fillActivaAddPopup(c) {
             // Remove all rows except the first and last rows.
             $(".popup_table_activa tbody tr").not(":first").remove();
 
-            console.log( result.data[0] );
+            // console.log( result.data[0] );
 
-            // Build table with the accounts and input fields.
-            
-            var type = "";
-            result.data.forEach((item, key) => {
+            // Build table with the accounts and input fields.            
+            var i = 0, kind = "";
+            var id, type;
+            result.data.forEach((item) => {
                 
-                if (type !== item.kind) 
+                // Create a separate row for the accounts / crypto titles (kind).
+                if (kind !== item.kind) 
                 {
                     $(".popup_table_activa tbody").append(
                         '<tr>' +
                             '<td colspan="2">' + item.type + '</td>' +
                         '</tr>');                    
                                    
-                    type = item.kind;
+                    kind = item.kind;
+                    
+                    if (item.kind !== "crypto") 
+                    {
+                        id   = "aid";
+                        type = "account";
+                    }
+                    else 
+                    {
+                        id   = "cid";
+                        type = "crypto";
+                        i = 0;
+                    }          
                 }
-                
-                
-                
-                
-                
+                     
+                // Create the input rows for accounts / crypto values.
                 $(".popup_table_activa tbody").append(
                     '<tr>' +
                         '<td>- ' + item.account + '</td>' +
-                        '<td><input id="' + item.kind + '_' + key + '" type="text" name="' + item.kind + '_' + key + '" placeholder="" value="" /></td>' +
+                        '<td>'+
+                            '<input id="' + id + '_' + i + '" name="' + id + '[]" value="' + item.id + '" type="hidden" />' +
+                            '<input id="' + type + '_' + i + '" name="' + type + '[]" placeholder="" value="" type="text" />' +                             
+                        '</td>' +    
                     '</tr>');
-                
-                
-                
-                
-            });
-
-                
+            
+                i++;
+            });             
         }
         else {
             showDatabaseError(result);         
@@ -844,7 +854,7 @@ function changeActivaAccountsTable(c, s, action) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Sep 11, 2024
+ * Updated on Sep 15, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
@@ -852,12 +862,97 @@ function changeActivaAccountsTable(c, s, action) {
  * Out: -
  *
  */
-function setDashboardPopupChoice(e, c, s) {
+function setDashboardPopupChoice(adp, e, c, s) {
     
     e.preventDefault();     
-    var btn = e.originalEvent.submitter.alt;          
-
-    // Debug.
-    // console.log( btn );
-
+    var btn = e.originalEvent.submitter.alt;
+    var popup  = $('#popup_content').attr('class');
+      
+    switch (popup) {
+        case "activa_list" :
+            break;
+        
+        case "activa_add"  : // Change it to activa_modify?
+            modifyActivaValues(adp, c, s, btn);
+            break;
+            
+        case "activa_edit" : // Change it to activa_modify?
+            break;
+            
+        case "activa_value"  : // For the expand and collapse table
+            break;
+            
+        case "activa_crypto" :
+            break;     
+    }
 }
+
+/*
+ * Function:    modifyActivaValues
+ *
+ * Created on Sep 15, 2024
+ * Updated on Sep 16, 2024
+ *
+ * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
+ *
+ * In:  adp, c, s, btn
+ * Out: -
+ *
+ */
+function modifyActivaValues(adp, c, s, btn) {
+    
+    // Check if the Crypto page is enabled or disabled.
+    var set = JSON.parse(s[4].value);
+    var crypto = (set.page === "true");    
+    
+    if (btn === "cancel") { 
+        adp.clear(); // Reset the date.
+    }
+    else 
+    {
+        var date, aids, accounts, cids, coins;
+        
+        // Get the input values.
+        date     = $("#date").val();
+        aids     = getMultipleItems(".activa_add input[name^=aid");
+        accounts = getMultipleItems(".activa_add input[name^=account");       
+        if (crypto) 
+        {
+            cids  = getMultipleItems(".activa_add input[name^=cid");
+            coins = getMultipleItems(".activa_add input[name^=crypto");
+        }         
+        
+        //console.log( date, aids, accounts, cids, coins );
+        
+        // Validate input.
+        
+        
+        
+
+        // Send and get the ajax results.
+        //var send = "date=" + date + "&aids=" + aids + "&accounts=" + accounts;
+        var send = { aids:aids, accounts:accounts };
+        
+        //console.log(send);
+        
+        var request = getAjaxRequest("modify_values", send);
+        request.done(function(result) {
+            if (result.success) {      
+                                    
+                console.log( result );
+                
+                closePopupWindow();       
+            }
+            else {
+                showDatabaseError(result.message);
+            }
+        });
+    
+        request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+        });  
+           
+        closeErrorMessage();              
+    }
+}
+

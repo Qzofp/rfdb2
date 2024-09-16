@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 10, 2024
+ * Updated on Sep 14, 2024
  *
  * Description: Check if the user is signed in and get the value totals from the databases tbl_value_accounts 
  *              and tbl_value_cryptos tables.
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 10, 2024
+ * Updated on Sep 14, 2024
  *
  * Description: Get the value totals from the databases tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -85,17 +85,17 @@ function GetValueTotals()
                 $where = "WHERE `type` = ''";
             }
             
-            //$ratio = "COALESCE(NULLIF(ANY_VALUE(200 * `value` / SUM(`value`) OVER()), null), '&nbsp;') AS ratio"; // ANY_VALUE not supported by MariaDB
-            $ratio = "COALESCE(NULLIF(ROUND(100 * `value` / SUM(`value`) OVER(),0), null), '&nbsp;') AS ratio";
+            $ratio = "COALESCE(NULLIF(ROUND(SUM(`ratio`)/2, 2), null), '&nbsp;') AS ratio";
             $value = "COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value`";
+            $rto   = "100 * `value` / SUM(`value`) OVER() AS ratio";
             $query = "SELECT $ratio, $value ".
                      "FROM (".
-                        "SELECT `type`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                        "SELECT `type`, $rto, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "WHERE tbl_value_accounts .`date` = $date_format ".
                         "UNION ".
-                        "SELECT `type`, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                        "SELECT `type`, $rto, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Sep 07, 2024
+ * Updated on Sep 16, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -953,6 +953,27 @@ function setStartYear(page, year) {
     closeErrorMessage();    
 
     return year;
+}
+
+/*
+ * Function:    getMultipleItems
+ *
+ * Created on Sep 16, 2024
+ * Updated on Sep 16, 2024
+ *
+ * Description: Get multiple input items.
+ *
+ * In:  name
+ * Out: items
+ *
+ */
+function getMultipleItems(name) {
+
+    var items = $(name).map(function(idx, elem) {
+        return $(elem).val();
+    }).get();     
+    
+    return items;
 }
 
 /*

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 09, 2024 at 02:14 PM
+-- Generation Time: Sep 16, 2024 at 02:58 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.18
 
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `rfdb2_empty`
 --
-DROP DATABASE IF EXISTS `rfdb2_empty`;
 CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `rfdb2_empty`;
 
@@ -46,8 +45,8 @@ CREATE TABLE `tbl_accounts` (
 --
 
 INSERT INTO `tbl_accounts` (`id`, `hide`, `account`, `date`, `sid`, `type`, `description`) VALUES
-(1, 0, 0xaf4625a6843646707b0f5f09e5992d1bc69ff9e57288fd858c0f1889eeccec17, '2001-04-04 10:18:52', 1, 'finance', 'ING betaalrekening van Rizzo'),
-(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 10:19:23', 2, 'finance', 'ABN AMRO 2de betaalrekening van Rizzo'),
+(1, 0, 0xaf4625a6843646707b0f5f09e5992d1bc69ff9e57288fd858c0f1889eeccec17, '2001-04-04 13:53:34', 1, 'finance', 'ING betaalrekening van Rizzo'),
+(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 13:53:19', 2, 'finance', 'ABN AMRO 2de betaalrekening van Rizzo'),
 (3, 0, 0xf88222f64335d3d233895fb2919b2b34, '2005-09-22 10:32:37', 1, 'stock', 'ING beleggingsrekening'),
 (4, 0, 0xb20fed245787d866d957497b4c301e36, '2016-03-10 10:34:05', 4, 'stock', 'Bank B belegginsrekening'),
 (5, 0, 0x1a813d0f78e1d93eb79ad3f4661b6dc4, '2008-07-15 14:51:01', 3, 'savings', 'Bank A spaarrekening'),
@@ -487,7 +486,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-09-09 13:12:37', '2024-09-08 14:08:10');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-09-16 13:09:34', '2024-09-15 12:03:26');
 
 -- --------------------------------------------------------
 
