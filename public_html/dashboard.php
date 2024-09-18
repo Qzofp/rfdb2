@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Sep 13, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -196,7 +196,7 @@ if(!$user){
                             
                             
                             <!-- Message field -->
-                            <div class="msg">&nbsp; Test Message!</div> 
+                            <div class="msg">&nbsp;</div> 
                             
                             <a class="close" href="javascript:void(0)">x</a>   
                             <div class="choice">

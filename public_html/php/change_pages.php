@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_pages.php
  * Used in: js\settings.js
  *
  * Created on Nov 30, 2023
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change the pages (true or false) in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangePages
  *
  * Created on Dec 24, 2023
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Change the pages (true or false) in the tbl_settings table.
  *
@@ -39,7 +39,7 @@ else {
 function ChangePages() 
 {
     // Get data from ajax call.
-    $pages  = filter_input(INPUT_POST, 'pages', FILTER_SANITIZE_STRING);
+    $pages  = filter_input(INPUT_POST, 'pages', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $name = ["finance","stock","savings","crypto"];
     $aPages = json_decode($pages);
 

@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_showrows.php
  * Used in: js\settings.js
  *
  * Created on Feb 09, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change the show setting (true or false) in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeShowRows
  *
  * Created on Feb 09, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Change the show setting (true or false) in the tbl_settings table.
  *
@@ -39,8 +39,8 @@ else {
 function ChangeShowRows() 
 {
     // Get data from ajax call.
-    $slide = filter_input(INPUT_POST, 'slide' , FILTER_SANITIZE_STRING);
-    $show  = filter_input(INPUT_POST, 'show'  , FILTER_SANITIZE_STRING);    
+    $slide = filter_input(INPUT_POST, 'slide' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $show  = filter_input(INPUT_POST, 'show'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
  
     $response = [];
     try 

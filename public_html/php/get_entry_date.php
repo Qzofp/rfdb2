@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 26, 2024
- * Updated on Aug 28, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the date from de database tbl_value_accounts table.
  * 
@@ -29,7 +29,7 @@ else {
  * Function:    GetEntryDate
  *
  * Created on Aug 26, 2024
- * Updated on Aug 28, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the date from de database tbl_value_accounts table.
  *
@@ -39,7 +39,7 @@ else {
  */
 function GetEntryDate()
 {    
-    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);       
+    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);       
     
     // Get the currency sign to determine the date format
     $response = GetCurrencySign();

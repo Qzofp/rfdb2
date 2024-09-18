@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Jan 23, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the user in the tbl_users table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyUser
  *
  * Created on Jan 23, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the user in the tbl_users table if the user doesn't exists.
  *
@@ -39,10 +39,10 @@ else {
 function ModifyUser() 
 {
     // Get data from ajax call.
-    $user   = filter_input(INPUT_POST, 'user'   , FILTER_SANITIZE_STRING);
-    $hash   = filter_input(INPUT_POST, 'pass'   , FILTER_SANITIZE_STRING);
-    $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_STRING);
-    $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_STRING);
+    $user   = filter_input(INPUT_POST, 'user'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hash   = filter_input(INPUT_POST, 'pass'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];   
     switch ($action)

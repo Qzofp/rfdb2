@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_accounts.php
  * Used in: js\settings.js
  *
  * Created on Mar 19, 2024
- * Updated on Aug 12, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on Aug 09, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -39,14 +39,14 @@ else {
 function ModifyAccount() 
 {
     // Get data from ajax call.
-    $date    = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_STRING);
-    $serv    = filter_input(INPUT_POST, 'serv'    , FILTER_SANITIZE_STRING);
-    $type    = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_STRING);    
-    $account = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_STRING); 
-    $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_STRING); 
-    $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_STRING);
-    $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_STRING);
-    $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_STRING);
+    $date    = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $serv    = filter_input(INPUT_POST, 'serv'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $type    = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $account = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = GetDateFormat();    
     if ($response['success'])

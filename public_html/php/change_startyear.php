@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_startyear.php
  * Used in: js\common.js
  *
  * Created on Apr 15, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change for the page the start year in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeYear
  *
  * Created on Apr 15, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Change the start year in the tbl_settings table.
  *
@@ -39,8 +39,8 @@ else {
 function ChangeStartYear()
 {
     // Get data from ajax call.
-    $page = filter_input(INPUT_POST, 'page', FILTER_SANITIZE_STRING);
-    $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_STRING);
+    $page = filter_input(INPUT_POST, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $year = filter_input(INPUT_POST, 'year', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

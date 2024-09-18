@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_popup_history.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 31, 2024
- * Updated on Jul 31, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the popup history (radio button and description).
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetPopupHistory
  *
  * Created on Jul 31, 2024
- * Updated on Jul 31, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the popup history (radio button and description).
  *
@@ -38,8 +38,8 @@ else {
  */
 function GetPopupHistory()
 {   
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $id   = filter_input(INPUT_POST, 'id'  , FILTER_SANITIZE_STRING);
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id   = filter_input(INPUT_POST, 'id'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];    
     switch ($name)

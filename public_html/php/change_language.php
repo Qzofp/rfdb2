@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_language.php
  * Used in: js\settings.js
  *
  * Created on Nov 29, 2023
- * Updated on Aug 02, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change the language in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeLanguage
  *
  * Created on Dec 24, 2023
- * Updated on Aug 02, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Change the language in the tbl_settings table.
  *
@@ -39,7 +39,7 @@ else {
 function ChangeLanguage() 
 {
     // Get data from ajax call.
-    $language  = filter_input(INPUT_POST, 'language', FILTER_SANITIZE_STRING);
+    $language  = filter_input(INPUT_POST, 'language', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

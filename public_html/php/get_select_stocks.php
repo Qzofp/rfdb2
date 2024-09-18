@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_select_stocks.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 28, 2024
- * Updated on Aug 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the stocks sheet popup.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetSelectMenu
  *
  * Created on Jul 28, 2024
- * Updated on Jul 28, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the select menus for the stocks sheet popup.
  *
@@ -38,8 +38,8 @@ else {
  */
 function GetSelectMenu()
 {   
-    $id   = filter_input(INPUT_POST, 'id'  , FILTER_SANITIZE_STRING);
-    $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_STRING);
+    $id   = filter_input(INPUT_POST, 'id'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = [];  
     switch($type) 

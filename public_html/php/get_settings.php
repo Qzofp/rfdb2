@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_settings.php
  * Used in: js\config.js
  *
  * Created on Feb 09, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the settings from de databases tbl_settings tables.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetSettings
  *
  * Created on Feb 09, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the settings from the databases tbl_settings tables.
  *

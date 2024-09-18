@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_sortbutton.php
  * Used in: js\sheet.js
  *
  * Created on Jun 14, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change the sort button in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeSortButton
  *
  * Created on Jun 14, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: change the sort button in the tbl_settings table.
  *
@@ -39,9 +39,9 @@ else {
 function ChangeSortButton()
 {
     // Get data from ajax call.
-    $name   = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $btn    = filter_input(INPUT_POST, 'btn', FILTER_SANITIZE_STRING);
-    $sel    = filter_input(INPUT_POST, 'sel', FILTER_SANITIZE_STRING);
+    $name   = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $btn    = filter_input(INPUT_POST, 'btn',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $sel    = filter_input(INPUT_POST, 'sel',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

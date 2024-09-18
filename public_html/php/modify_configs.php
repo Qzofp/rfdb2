@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_configs.php
  * Used in: js\settings.js
  *
  * Created on Apr 21, 2024
- * Updated on Apr 27, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyConfigs
  *
  * Created on Apr 21, 2024
- * Updated on Apr 27, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (edit) the tbl_settings table.
  *
@@ -39,13 +39,13 @@ else {
 function ModifyConfigs()
 {
     // Get data from ajax call.
-    $rows    = filter_input(INPUT_POST, 'rows'    , FILTER_SANITIZE_STRING);
-    $sign    = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_STRING);    
-    $salt    = filter_input(INPUT_POST, 'salt'    , FILTER_SANITIZE_STRING); 
-    $finance = filter_input(INPUT_POST, 'finance' , FILTER_SANITIZE_STRING); 
-    $stock   = filter_input(INPUT_POST, 'stock'   , FILTER_SANITIZE_STRING);
-    $savings = filter_input(INPUT_POST, 'savings' , FILTER_SANITIZE_STRING);
-    $crypto  = filter_input(INPUT_POST, 'crypto'    , FILTER_SANITIZE_STRING);
+    $rows    = filter_input(INPUT_POST, 'rows'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $sign    = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $salt    = filter_input(INPUT_POST, 'salt'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $finance = filter_input(INPUT_POST, 'finance' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $stock   = filter_input(INPUT_POST, 'stock'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $savings = filter_input(INPUT_POST, 'savings' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $crypto  = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response['success'] = true;
     if ($rows) {

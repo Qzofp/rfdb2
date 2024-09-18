@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    delete_rankings.php
  * Used in: js\index.js
  *
  * Created on Jul 22, 2024
- * Updated on Jul 24, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and delete old tbl_rankings table entries.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    DeleteRankings
  *
  * Created on Jul 22, 2024
- * Updated on Jul 24, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Delete rankings olde then n months from the tbl_ranking table.
  *
@@ -39,7 +39,7 @@ else {
 function DeleteRankings()
 {   
     // Get data from ajax call.
-    $n = filter_input(INPUT_POST, 'n', FILTER_SANITIZE_STRING);
+    $n = filter_input(INPUT_POST, 'n', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];        
     try 

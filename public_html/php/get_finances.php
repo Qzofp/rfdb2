@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_finances.php
  * Used in: js\settings.js
  *
  * Created on Apr 26, 2024
- * Updated on Aug 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the finances from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinances
  *
  * Created on Apr 26, 2024
- * Updated on Aug 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the finances from the databases tbl_finances table. The account column is encrypted.
  *
@@ -38,13 +38,13 @@ else {
  */
 function GetFinances()
 {   
-    $scale   = filter_input(INPUT_POST, 'scale'  , FILTER_SANITIZE_STRING);
-    $year    = filter_input(INPUT_POST, 'year'   , FILTER_SANITIZE_STRING);
-    $quarter = filter_input(INPUT_POST, 'quarter', FILTER_SANITIZE_STRING);
-    $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_STRING);
-    $sign    = filter_input(INPUT_POST, 'sign'   , FILTER_SANITIZE_STRING);
-    $sort    = filter_input(INPUT_POST, 'sort'   , FILTER_SANITIZE_STRING);
-    $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_STRING);
+    $scale   = filter_input(INPUT_POST, 'scale'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $year    = filter_input(INPUT_POST, 'year'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $quarter = filter_input(INPUT_POST, 'quarter', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $sign    = filter_input(INPUT_POST, 'sign'   , FILTER_SANITIZE_SPECIAL_CHARS);
+    $sort    = filter_input(INPUT_POST, 'sort'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = [];
     

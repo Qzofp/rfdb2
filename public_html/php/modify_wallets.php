@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_wallets.php
  * Used in: js\settings.js
  *
  * Created on May 31, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyWallets
  *
  * Created on May 31, 2024
- * Updated on Jun 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_wallets table if the wallet doesn't exists.
  *
@@ -39,13 +39,13 @@ else {
 function ModifyWallets() 
 {
     // Get data from ajax call.
-    $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_STRING);
-    $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_STRING);    
-    $cid    = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_STRING); 
-    $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_STRING); 
-    $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_STRING);
-    $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_STRING);
-    $hide   = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_STRING);
+    $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $cid    = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hide   = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];    
     switch ($action)

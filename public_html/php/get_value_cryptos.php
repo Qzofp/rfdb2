@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_cryptos table.
  * 
@@ -29,7 +29,7 @@ else {
  * Function:    GetValueCryptos
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the data from de database tbl_value_cryptos table.
  *
@@ -39,7 +39,7 @@ else {
  */
 function GetValueCryptos()
 {    
-    $date  = filter_input(INPUT_POST, 'date' , FILTER_SANITIZE_STRING);    
+    $date  = filter_input(INPUT_POST, 'date' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     
     // Get the settings, e.g. language code ande the currency sign).
     $input = GetSettings();

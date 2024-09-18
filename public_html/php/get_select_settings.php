@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_select_settings.php
  * Used in: js\settings_finances.js
  *
  * Created on Aug 01, 2024
- * Updated on Aug 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the select menus for the finances settings popups.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetSelectMenu
  *
  * Created on Aug 01, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the select menus for the finances settings popups.
  *
@@ -38,9 +38,9 @@ else {
  */
 function GetSelectMenu()
 {   
-    $id    = filter_input(INPUT_POST, 'id'  , FILTER_SANITIZE_STRING);
-    $type  = filter_input(INPUT_POST, 'type' , FILTER_SANITIZE_STRING);    
-    $slide = filter_input(INPUT_POST, 'slide', FILTER_SANITIZE_STRING);
+    $id    = filter_input(INPUT_POST, 'id'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $type  = filter_input(INPUT_POST, 'type' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $slide = filter_input(INPUT_POST, 'slide', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = [];  
     switch($slide)

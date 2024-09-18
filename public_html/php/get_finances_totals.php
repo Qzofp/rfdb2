@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_finances.php
  * Used in: js\settings.js
  *
  * Created on May 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the finances total from the databases tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetFinancesTotals
  *
  * Created on May 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the fiannces from the databases tbl_finances table.
  *
@@ -38,11 +38,11 @@ else {
  */
 function GetFinancesTotals()
 {   
-    $scale   = filter_input(INPUT_POST, 'scale'  , FILTER_SANITIZE_STRING);
-    $year    = filter_input(INPUT_POST, 'year'   , FILTER_SANITIZE_STRING);
-    $quarter = filter_input(INPUT_POST, 'quarter', FILTER_SANITIZE_STRING);
-    $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_STRING);
-    $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_STRING);
+    $scale   = filter_input(INPUT_POST, 'scale'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $year    = filter_input(INPUT_POST, 'year'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $quarter = filter_input(INPUT_POST, 'quarter', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $month   = filter_input(INPUT_POST, 'month'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = [];
     

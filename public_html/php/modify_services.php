@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_services.php
  * Used in: js\settings.js
  *
  * Created on Feb 20, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_services table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyService
  *
  * Created on Feb 20, 2024
- * Updated on Feb 23, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_services table if the service doesn't exists.
  *
@@ -39,12 +39,12 @@ else {
 function ModifyService() 
 {
     // Get data from ajax call.
-    $srv    = filter_input(INPUT_POST, 'srv'    , FILTER_SANITIZE_STRING);
-    $web    = filter_input(INPUT_POST, 'web'    , FILTER_SANITIZE_STRING);
-    $opt    = filter_input(INPUT_POST, 'opt'    , FILTER_SANITIZE_STRING);    
-    $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_STRING);
-    $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_STRING);
-    $hide   = filter_input(INPUT_POST, 'hide'   , FILTER_SANITIZE_STRING);
+    $srv    = filter_input(INPUT_POST, 'srv'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $web    = filter_input(INPUT_POST, 'web'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $opt    = filter_input(INPUT_POST, 'opt'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $action = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id     = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hide   = filter_input(INPUT_POST, 'hide'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $aNames   = ["finance","stock","savings","crypto"];
     $aOptions = json_decode($opt);

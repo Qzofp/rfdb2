@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the value totals from the databases tbl_value_accounts 
  *              and tbl_value_cryptos tables.
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the value totals from the databases tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -40,7 +40,7 @@ else {
  */
 function GetValueTotals()
 {   
-    $date = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_STRING);
+    $date = filter_input(INPUT_POST, 'date' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // Get the settings, e.g. currency sign and the active pages (finance, stock, savings and crypto).
     $input = GetSettings();  

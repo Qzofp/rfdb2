@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Sep 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -530,6 +530,49 @@ function validateInput(msg, items, input, last) {
     });   
     
     return check;    
+}
+
+/*
+ * Function:    validateDate
+ *
+ * Created on Sep 18, 2024
+ * Updated on Sep 18, 2024
+ *
+ * Description: Validate the date, check if it is not empty and the date is valid.
+ *
+ * In:  c, s, name, date
+ * Out: check
+ *
+ */
+function validateDate(c, s, name, date) {
+
+    var check = true;   
+    if (!date) 
+    {
+        $("#popup_content .msg").html(name + " " + c.messages[5]);
+        check = false;
+    }
+    else
+    {     
+        let regex, set = JSON.parse(s[5].value);
+        switch (set.sign) {
+            case "$" :
+            case "£" :
+                regex = /(0[1-9]|1[1,2])(\/|-)(0[1-9]|[12][0-9]|3[01])(\/|-)(19|20)\d{2}/;         
+                break;
+            
+            case "€"  :
+                regex = /(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[1,2])-(19|20)\d{2}/;
+                break;
+        }
+        
+        if (!regex.test(date) ? true : false) 
+        {
+            $("#popup_content .msg").html(name + " " + c.messages[0]);
+            check = false;
+        }         
+    }
+    return check;
 }
 
 /*

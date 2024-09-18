@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_groups.php
  * Used in: js\settings.js
  *
  * Created on Mar 29, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the groups from the databases tbl_groupss table.
  * Dependenties: config.php
@@ -28,9 +28,9 @@ else {
  * Function:    GetGroups
  *
  * Created on Mar 29, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
- * Description: Get the gropus from the databases tbl_groups table.
+ * Description: Get the groups from the databases tbl_groups table.
  *
  * In:  -
  * Out: -

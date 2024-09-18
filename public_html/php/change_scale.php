@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    change_scale.php
  * Used in: js\sheet.js
  *
  * Created on Nov 15, 2023
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and change the scale in the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ChangeScale
  *
  * Created on Dec 24, 2023
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: change the scale in the tbl_settings table.
  *
@@ -39,8 +39,8 @@ else {
 function ChangeScale()
 {
     // Get data from ajax call.
-    $name  = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-    $scale = filter_input(INPUT_POST, 'scale', FILTER_SANITIZE_STRING);
+    $name  = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $scale = filter_input(INPUT_POST, 'scale', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

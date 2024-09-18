@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_groups.php
  * Used in: js\settings.js
  *
  * Created on Apr 01, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_groups table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyGroup
  *
  * Created on Apr 01, 2024
- * Updated on Apr 02, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_groups table if the account doesn't exists.
  *
@@ -39,12 +39,12 @@ else {
 function ModifyGroup() 
 {
     // Get data from ajax call.
-    $group   = filter_input(INPUT_POST, 'group'   , FILTER_SANITIZE_STRING);
-    $rank    = filter_input(INPUT_POST, 'ranking' , FILTER_SANITIZE_STRING); 
-    $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_STRING); 
-    $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_STRING);
-    $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_STRING);
-    $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_STRING);
+    $group   = filter_input(INPUT_POST, 'group'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $rank    = filter_input(INPUT_POST, 'ranking' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];    
     switch ($action)

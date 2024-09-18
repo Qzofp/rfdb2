@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_scale.php
  * Used in: js\settings.js
  *
  * Created on Nov 17, 2023
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the scale from the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetScale
  *
  * Created on Dec 24, 2023
- * Updated on Dec 24, 2023
+ * Updated on Sep 18, 2024
  *
  * Description: Get the scale from the tbl_settings table.
  *
@@ -39,7 +39,7 @@ else {
 function GetScale()
 {
     // Get data from ajax call.
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_accounts.php
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on Aug 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the wallets from the databases tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetWallets
  *
  * Created on May 19, 2024
- * Updated on Aug 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the wallets from the databases tbl_wallets table. The account column is encrypted.
  *
@@ -38,7 +38,7 @@ else {
  */
 function GetWallets()
 {   
-    $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_STRING);
+    $sort = filter_input(INPUT_POST, 'sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
     $response = [];
     try 

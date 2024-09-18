@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 14, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -29,7 +29,7 @@ else {
  * Function:    GetValueAccounts
  *
  * Created on Aug 28, 2024
- * Updated on Sep 13, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the data from de database tbl_value_accounts table.
  *
@@ -39,8 +39,8 @@ else {
  */
 function GetValueAccounts()
 {    
-    $date   = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_STRING);    
-    $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);  
+    $date   = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS);  
     
     // Get the settings, e.g. currency sign and the active pages (finance, stock, savings and crypto).
     $input = GetInput();  

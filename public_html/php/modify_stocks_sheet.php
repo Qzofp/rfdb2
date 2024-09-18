@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    modify_stocks_sheet.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 12, 2024
- * Updated on Aug 09, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Jul 12, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_stocks table.
  *
@@ -39,15 +39,15 @@ else {
 function ModifyStocks() 
 {
     // Get data from ajax call.
-    $date   = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_STRING);
-    $type   = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_STRING); // Deposit, Withdrawel
-    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_STRING); 
-    $amount = filter_input(INPUT_POST, 'amount'  , FILTER_SANITIZE_STRING);    
-    $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_STRING); 
-    $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_STRING); 
-    $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_STRING); 
-    $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_STRING);
-    $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_STRING);
+    $date   = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $type   = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Deposit, Withdrawel
+    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $amount = filter_input(INPUT_POST, 'amount'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
+    $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];    
     switch ($action)

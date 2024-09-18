@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -891,7 +891,7 @@ function setDashboardPopupChoice(adp, e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Sep 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -905,8 +905,10 @@ function modifyActivaValues(adp, c, s, btn) {
     var set = JSON.parse(s[4].value);
     var crypto = (set.page === "true");    
     
-    if (btn === "cancel") { 
+    if (btn === "cancel") 
+    { 
         adp.clear(); // Reset the date.
+        $("#popup_content .msg").html("&nbsp;");
     }
     else 
     {
@@ -925,34 +927,39 @@ function modifyActivaValues(adp, c, s, btn) {
         //console.log( date, aids, accounts, cids, coins );
         
         // Validate input.
+        if (validateDate(c, s, c.misc[0], date)   )
+        {
+            // Send and get the ajax results.
+            var send = { date:date, aids:aids, accounts:accounts, cids:cids, crypto:coins };
         
+            //console.log(send);
         
-        
-
-        // Send and get the ajax results.
-        //var send = "date=" + date + "&aids=" + aids + "&accounts=" + accounts;
-        var send = { aids:aids, accounts:accounts };
-        
-        //console.log(send);
-        
-        var request = getAjaxRequest("modify_values", send);
-        request.done(function(result) {
-            if (result.success) {      
+            var request = getAjaxRequest("modify_values", send);
+            request.done(function(result) {
+                if (result.success) {      
                                     
-                console.log( result );
+                    console.log( result );
                 
-                closePopupWindow();       
-            }
-            else {
-                showDatabaseError(result.message);
-            }
-        });
+                
+                
+                
+                    // Reset values
+                    adp.clear();
+                    $("#popup_content .msg").html("&nbsp;");
+                
+                    closePopupWindow();       
+                }
+                else {
+                    showDatabaseError(result.message);
+                }
+            });
     
-        request.fail(function(jqXHR, textStatus) {
-            showAjaxError(jqXHR, textStatus);
-        });  
+            request.fail(function(jqXHR, textStatus) {
+                showAjaxError(jqXHR, textStatus);
+            });  
            
-        closeErrorMessage();              
+            closeErrorMessage();              
+        }
     }
 }
 

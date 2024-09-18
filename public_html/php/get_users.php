@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_users.php
  * Used in: js\settings.js
  *
  * Created on Jan 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the users from the databases tbl_users table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetUsers
  *
  * Created on Jan 05, 2024
- * Updated on Aug 01, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the users from the databases tbl_users table.
  *
@@ -39,7 +39,7 @@ else {
 function GetUsers()
 {   
     // Get data from ajax call.
-    $sort = filter_input(INPUT_POST, 'sort' , FILTER_SANITIZE_STRING);
+    $sort = filter_input(INPUT_POST, 'sort' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];
     try 

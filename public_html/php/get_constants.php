@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.2
  *
  * File:    get_constants.php
  * Used in: js\config.js
  *
  * Created on Oct 15, 2023
- * Updated on Sep 07, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and get the constants and settings from de databases 
  *              tbl_config and tbl_settings tables.
@@ -31,7 +31,7 @@ else {
  * Function:    GetConstants
  *
  * Created on Dec 24, 2023
- * Updated on Sep 07, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Get the constants and settings from de databases tbl_config and tbl_settings tables.
  *
@@ -85,7 +85,7 @@ function GetConstants($page)
                 break;
             
             case "dashboard":
-                $where = "WHERE tbl_config.id IN (1,2,3,4,5,18,19,30,31,32,33,34) ";
+                $where = "WHERE tbl_config.id IN (1,2,3,4,5,16,18,19,30,31,32,33,34) ";
                 break;
             
             case "sheet":

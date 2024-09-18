@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 16, 2024
- * Updated on Sep 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_value_accounts and tbl_value_cryptos tables.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyValues
  *
  * Created on Sep 16, 2024
- * Updated on Sep 16, 2024
+ * Updated on Sep 18, 2024
  *
  * Description: Modify the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -39,11 +39,17 @@ else {
 function ModifyValues()
 {
     // Get data from ajax call.
-    $date     = filter_input(INPUT_POST, 'date'     , FILTER_SANITIZE_STRING);  
-    $aids     = filter_input(INPUT_POST, 'aids'     , FILTER_SANITIZE_NUMBER_INT, FILTER_REQUIRE_ARRAY);
-    $accounts = filter_input(INPUT_POST, 'accounts' , FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY);  
-    
+    $date     = filter_input(INPUT_POST, 'date'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS);  
+    $aids     = filter_input(INPUT_POST, 'aids'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
+    $accounts = filter_input(INPUT_POST, 'accounts' , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);  
+    $cids     = filter_input(INPUT_POST, 'cids'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
+    $crypto   = filter_input(INPUT_POST, 'crypto'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);      
 
+    if (isset($cids)) {
+        $response['cids'] = $cids;
+        $response['crypto'] = $crypto;
+    }
+    
     $response['date']  = $date;
     $response['aids']  = $aids;
     $response["accounts"] = $accounts;
@@ -58,44 +64,3 @@ function ModifyValues()
 
 
 
-
-/*
- * Function:    EditSetting
- *
- * Created on Apr 21, 2024
- * Updated on Apr 21, 2024
- *
- * Description: Edit the tbl_groups table with the input if the group doesn't exists.
- *
- * In:  $name, $type, $value
- * Out: $response
- *
- */
-function EditSetting($name, $type, $value)
-{
-    $response = [];
-    try 
-    { 
-        $db = OpenDatabase();
-
-        // Update the number of rows
-        $query = "UPDATE `tbl_settings`"
-                ."SET `value` = JSON_REPLACE(`value`,'$.$type','$value')"
-                ."WHERE `name` = \"$name\";";        
-        
-        $select = $db->prepare($query);
-        $select->execute();           
-        
-        $response['success'] = true;         
-    }    
-    catch (PDOException $e) 
-    {    
-        $response['message'] = $e->getMessage();
-        $response['success'] = false;
-    } 
-    
-    // Close database connection.
-    $db = null;     
-    
-    return $response;
-}
