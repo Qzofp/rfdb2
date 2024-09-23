@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 13, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_savings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_savings table.
  *
@@ -41,7 +41,7 @@ function ModifySavings()
     // Get data from ajax call.
     $date   = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $type   = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Deposit, Withdrawel
-    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_SPECIAL_CHARS); 
     $amount = filter_input(INPUT_POST, 'amount'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 

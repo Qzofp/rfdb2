@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 18, 2024
+ * Updated on Sep 23, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Sep 15, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -100,7 +100,7 @@ function showDashboard(c, s) {
     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
-        setDashboardPopupChoice($adp, e, c, s);
+        setDashboardPopupChoice(e, c, s);
     });    
  
  
@@ -551,7 +551,7 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
  * Function:    showActivaAddPopup
  *
  * Created on Sep 07, 2024
- * Updated on Sep 15, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Shows the popup when the page add button is pressed.
  *
@@ -562,6 +562,12 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
 function showActivaAddPopup(adp, crypto, c, s) {
 
     var set = JSON.parse(s[0].value);
+    
+    // Reset values.
+    adp.clear(); // Reset the date.
+    $("#popup_content .msg").html("&nbsp;");
+    
+    
     
     $("#popup_content").removeClass().addClass("activa_add"); 
     
@@ -589,10 +595,10 @@ function showActivaAddPopup(adp, crypto, c, s) {
 }
 
 /*
- * Function:    showActivaAddPopup
+ * Function:    fillActivaAddPopup
  *
  * Created on Sep 11, 2024
- * Updated on Sep 15, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -620,7 +626,7 @@ function fillActivaAddPopup(c) {
 
             // Build table with the accounts and input fields.            
             var i = 0, kind = "";
-            var id, type;
+            var id, name, type;
             result.data.forEach((item) => {
                 
                 // Create a separate row for the accounts / crypto titles (kind).
@@ -636,12 +642,14 @@ function fillActivaAddPopup(c) {
                     if (item.kind !== "crypto") 
                     {
                         id   = "aid";
-                        type = "account";
+                        name = "account";
+                        type = "avalue";
                     }
                     else 
                     {
                         id   = "cid";
-                        type = "crypto";
+                        name = "crypto";
+                        type = "cvalue";
                         i = 0;
                     }          
                 }
@@ -652,6 +660,7 @@ function fillActivaAddPopup(c) {
                         '<td>- ' + item.account + '</td>' +
                         '<td>'+
                             '<input id="' + id + '_' + i + '" name="' + id + '[]" value="' + item.id + '" type="hidden" />' +
+                            '<input id="' + name + '_' + i + '" name="' + name + '[]" value="' + item.account + '" type="hidden" />' +
                             '<input id="' + type + '_' + i + '" name="' + type + '[]" placeholder="" value="" type="text" />' +                             
                         '</td>' +    
                     '</tr>');
@@ -854,7 +863,7 @@ function changeActivaAccountsTable(c, s, action) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Sep 15, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
@@ -862,18 +871,18 @@ function changeActivaAccountsTable(c, s, action) {
  * Out: -
  *
  */
-function setDashboardPopupChoice(adp, e, c, s) {
+function setDashboardPopupChoice(e, c, s) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;
-    var popup  = $('#popup_content').attr('class');
+    var popup = $('#popup_content').attr('class');
       
     switch (popup) {
         case "activa_list" :
             break;
         
         case "activa_add"  : // Change it to activa_modify?
-            modifyActivaValues(adp, c, s, btn);
+            modifyActivaValues(c, s, btn);
             break;
             
         case "activa_edit" : // Change it to activa_modify?
@@ -891,66 +900,57 @@ function setDashboardPopupChoice(adp, e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 23, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
- * In:  adp, c, s, btn
+ * In:  c, s, btn
  * Out: -
  *
  */
-function modifyActivaValues(adp, c, s, btn) {
+function modifyActivaValues(c, s, btn) {
     
-    // Check if the Crypto page is enabled or disabled.
-    var set = JSON.parse(s[4].value);
-    var crypto = (set.page === "true");    
-    
-    if (btn === "cancel") 
-    { 
-        adp.clear(); // Reset the date.
-        $("#popup_content .msg").html("&nbsp;");
-    }
-    else 
+    if (btn !== "cancel")
     {
-        var date, aids, accounts, cids, coins;
-        
+        var set = JSON.parse(s[4].value);  
+        var date, aids, accounts, avalue, cids, crypto, cvalue;
+        var cpage = (set.page === "true");      
+    
         // Get the input values.
         date     = $("#date").val();
         aids     = getMultipleItems(".activa_add input[name^=aid");
-        accounts = getMultipleItems(".activa_add input[name^=account");       
-        if (crypto) 
+        accounts = getMultipleItems(".activa_add input[name^=account");
+        avalue   = getMultipleItems(".activa_add input[name^=avalue");
+    
+        // Check if the crypto page is enabled.
+        if (cpage)
         {
-            cids  = getMultipleItems(".activa_add input[name^=cid");
-            coins = getMultipleItems(".activa_add input[name^=crypto");
-        }         
-        
-        //console.log( date, aids, accounts, cids, coins );
+            cids   = getMultipleItems(".activa_add input[name^=cid");
+            crypto = getMultipleItems(".activa_add input[name^=crypto");
+            cvalue = getMultipleItems(".activa_add input[name^=cvalue");      
+        }  
         
         // Validate input.
-        if (validateDate(c, s, c.misc[0], date)   )
+        if (validateDate(c, s, c.misc[0], date) && validateAccounts(c, s, accounts, avalue) && validateAccounts(c, s, crypto, cvalue))
         {
             // Send and get the ajax results.
-            var send = { date:date, aids:aids, accounts:accounts, cids:cids, crypto:coins };
+            var send = { date:date, aids:aids, accounts:avalue, cids:cids, crypto:cvalue };
         
             //console.log(send);
         
             var request = getAjaxRequest("modify_values", send);
             request.done(function(result) {
-                if (result.success) {      
+            if (result.success) {      
                                     
-                    console.log( result );
+                console.log( result );
                 
                 
                 
                 
-                    // Reset values
-                    adp.clear();
-                    $("#popup_content .msg").html("&nbsp;");
-                
-                    closePopupWindow();       
-                }
-                else {
-                    showDatabaseError(result.message);
+                closePopupWindow();       
+            }
+            else {
+                showDatabaseError(result.message);
                 }
             });
     
@@ -963,3 +963,28 @@ function modifyActivaValues(adp, c, s, btn) {
     }
 }
 
+/*
+ * Function:    validateAccounts
+ *
+ * Created on Sep 21, 2024
+ * Updated on Sep 21, 2024
+ *
+ * Description: Validate the values of the accounts, check if it is not empty and if it has a correct value.
+ *
+ * In:  c, s, accounts, avalue
+ * Out: check
+ *
+ */
+function validateAccounts(c, s, accounts, values) {
+    
+    var check = true; 
+    
+    if (accounts && accounts.length)
+    {
+        for (let i = 0; i < values.length && check; i++) {
+            check = validateCurrency(c, s, accounts[i], values[i]);        
+        }
+    }   
+    
+    return check;
+}

@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 22, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_cryptos table.
  * 
@@ -16,6 +16,7 @@
  *
  */
 require_once 'config.php';
+require_once 'common.php';
 session_start();
 header("Content-Type:application/json");
 if(isset($_SESSION['user'])) {
@@ -94,60 +95,4 @@ function GetValueCryptos()
 
     // Close database connection
     $db = null;   
-}
-
-/*
- * Function:    GetSettings
- *
- * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
- *
- * Description: Get the settings from the tbl_settings table, e.g. language code and the currency sign.
- *
- * In:  -
- * Out: $data
- *
- */
-function GetSettings() 
-{   
-    $data = [];
-    try 
-    {
-        $db = OpenDatabase();
-
-        $select = $db->prepare("SELECT `name`, `value` FROM `tbl_settings`;");
-        $select->execute();
-
-        $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
-    
-        // Get the currency sign from the tbl_settings table to determine the date format.
-        foreach($settings as $row=>$link) 
-        {            
-            $json = json_decode($link['value']);
-            switch ($link['name'])
-            {
-                case "settings" :
-                    $sign = $json->sign;                    
-                    break;
-                              
-                case "language" :
-                    $code = $json->code;
-                    break;                   
-            }            
-        }
-        
-        $data['sign']    = $sign;
-        $data['code']    = $code;
-        $data['success'] = true;
-    }
-    catch (PDOException $e) 
-    {    
-        $data['message'] = $e->getMessage();
-        $data['success'] = false;
-    }   
-    
-    // Close database connection.
-    $db = null;        
-    
-    return $data;
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 16, 2024 at 02:58 PM
+-- Generation Time: Sep 23, 2024 at 03:08 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.18
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `rfdb2_empty`
 --
+DROP DATABASE IF EXISTS `rfdb2_empty`;
 CREATE DATABASE IF NOT EXISTS `rfdb2_empty` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `rfdb2_empty`;
 
@@ -96,6 +97,18 @@ CREATE TABLE `tbl_businesses` (
   `rad_history` tinyint DEFAULT '-1',
   `desc_history` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_businesses`
+--
+
+INSERT INTO `tbl_businesses` (`id`, `hide`, `business`, `gid`, `website`, `rad_history`, `desc_history`) VALUES
+(1, 0, 'Menzis', 1, 'https://www.menzis.nl', 1, 'Salaris'),
+(2, 0, 'VVE', 2, 'https://www.myriade.nl', 2, 'Bijdrage'),
+(3, 0, 'Gemeente Emmen', 2, 'https://www.gemeente-emmen.nl', 2, 'Gemeentelijke belastingen'),
+(4, 0, 'Shell', 3, 'https://www.shell.nl', -1, NULL),
+(5, 0, 'Esso', 3, 'https://www.esso.nl', -1, NULL),
+(6, 0, 'Eneco', 4, 'www.eneoco.nl', 2, 'Augustus');
 
 -- --------------------------------------------------------
 
@@ -323,6 +336,16 @@ CREATE TABLE `tbl_finances` (
   `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `tbl_finances`
+--
+
+INSERT INTO `tbl_finances` (`id`, `date`, `aid`, `income`, `fixed`, `other`, `bid`, `description`) VALUES
+(1, '2024-08-05', 1, NULL, '90.00', NULL, 3, 'Gemeentelijke belastingen'),
+(2, '2024-08-05', 1, NULL, '150.00', NULL, 2, 'Bijdrage'),
+(3, '2024-08-08', 1, NULL, '65.00', NULL, 6, 'Augustus'),
+(4, '2024-08-21', 2, '1000.00', NULL, NULL, 1, 'Salaris');
+
 -- --------------------------------------------------------
 
 --
@@ -336,6 +359,16 @@ CREATE TABLE `tbl_groups` (
   `group` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_groups`
+--
+
+INSERT INTO `tbl_groups` (`id`, `hide`, `group`, `description`) VALUES
+(1, 0, 'Inkomen', 'Salaris, vergoedingen, e.d.'),
+(2, 0, 'Huis', 'VVE, Gemeentelijke belastingen, etc.'),
+(3, 0, 'Vervoer', 'Brandstof en onderhoud'),
+(4, 0, 'Energie', 'Gas, Water &amp; Licht');
 
 -- --------------------------------------------------------
 
@@ -375,6 +408,22 @@ CREATE TABLE `tbl_rankings` (
   `bid` int DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_rankings`
+--
+
+INSERT INTO `tbl_rankings` (`gid`, `bid`, `timestamp`) VALUES
+(2, 3, '2024-09-21 09:24:39'),
+(2, 3, '2024-09-21 09:25:20'),
+(2, 3, '2024-09-21 09:29:31'),
+(2, 3, '2024-09-21 09:33:38'),
+(2, 3, '2024-09-21 09:34:40'),
+(2, 3, '2024-09-21 09:37:06'),
+(2, 3, '2024-09-21 09:39:13'),
+(2, 2, '2024-09-21 09:42:28'),
+(4, 6, '2024-09-21 09:42:56'),
+(1, 1, '2024-09-21 09:43:16');
 
 -- --------------------------------------------------------
 
@@ -486,7 +535,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-09-16 13:09:34', '2024-09-15 12:03:26');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-09-23 14:58:04', '2024-09-23 13:46:07');
 
 -- --------------------------------------------------------
 
@@ -550,36 +599,18 @@ INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
 (40, 0, '2024-07-22', 4, '700.00'),
 (41, 0, '2024-07-22', 5, '400.00'),
 (42, 0, '2024-07-22', 6, '250.00'),
-(43, 0, '2024-08-19', 1, '140.00'),
-(44, 0, '2024-08-19', 2, '55.00'),
-(45, 0, '2024-08-19', 3, '1700.00'),
-(46, 0, '2024-08-19', 4, '750.00'),
-(47, 0, '2024-08-19', 5, '450.00'),
-(48, 0, '2024-08-19', 6, '275.00'),
-(49, 0, '2024-09-23', 1, '150.00'),
-(50, 0, '2024-09-23', 2, '60.00'),
-(51, 0, '2024-09-23', 3, '1750.00'),
-(52, 0, '2024-09-23', 4, '775.00'),
-(53, 0, '2024-09-23', 5, '450.00'),
-(54, 0, '2024-09-23', 6, '300.00'),
-(55, 0, '2024-10-21', 1, '120.00'),
-(56, 0, '2024-10-21', 2, '75.00'),
-(57, 0, '2024-10-21', 3, '1875.00'),
-(58, 0, '2024-10-21', 4, '900.00'),
-(59, 0, '2024-10-21', 5, '550.00'),
-(60, 0, '2024-10-21', 6, '310.00'),
-(61, 0, '2024-11-18', 1, '200.00'),
-(62, 0, '2024-11-18', 2, '60.00'),
-(63, 0, '2024-11-18', 3, '2000.00'),
-(64, 0, '2024-11-18', 4, '950.00'),
-(65, 0, '2024-11-18', 5, '600.00'),
-(66, 0, '2024-11-18', 6, '350.00'),
-(67, 0, '2024-12-23', 1, '140.00'),
-(68, 0, '2024-12-23', 2, '75.00'),
-(69, 0, '2024-12-23', 3, '2100.00'),
-(70, 0, '2024-12-23', 4, '1000.00'),
-(71, 0, '2024-12-23', 5, '750.00'),
-(72, 0, '2024-12-23', 6, '400.00');
+(73, 0, '2024-08-19', 2, '60.00'),
+(74, 0, '2024-08-19', 1, '175.00'),
+(75, 0, '2024-08-19', 4, '1700.00'),
+(76, 0, '2024-08-19', 3, '750.00'),
+(77, 0, '2024-08-19', 5, '450.00'),
+(78, 0, '2024-08-19', 6, '275.00'),
+(79, 0, '2024-09-23', 2, '65.00'),
+(80, 0, '2024-09-23', 1, '180.00'),
+(81, 0, '2024-09-23', 4, '1750.00'),
+(82, 0, '2024-09-23', 3, '450.00'),
+(83, 0, '2024-09-23', 5, '800.00'),
+(84, 0, '2024-09-23', 6, '300.00');
 
 -- --------------------------------------------------------
 
@@ -783,7 +814,7 @@ ALTER TABLE `tbl_amount_wallets`
 -- AUTO_INCREMENT for table `tbl_businesses`
 --
 ALTER TABLE `tbl_businesses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_config`
@@ -819,13 +850,13 @@ ALTER TABLE `tbl_english`
 -- AUTO_INCREMENT for table `tbl_finances`
 --
 ALTER TABLE `tbl_finances`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_groups`
 --
 ALTER TABLE `tbl_groups`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_language`
@@ -867,7 +898,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_value_accounts`
 --
 ALTER TABLE `tbl_value_accounts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_cryptos`

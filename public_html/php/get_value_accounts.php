@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 22, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -16,6 +16,7 @@
  *
  */
 require_once 'config.php';
+require_once 'common.php';
 session_start();
 header("Content-Type:application/json");
 if(isset($_SESSION['user'])) {
@@ -126,79 +127,6 @@ function GetInput()
     }    
         
     return $input;
-}
-
-/*
- * Function:    GetSettings
- *
- * Created on Aug 28, 2024
- * Updated on Aug 30, 2024
- *
- * Description: Get the settings from the tbl_settings table, e.g. currency sign and the active pages.
- *
- * In:  -
- * Out: $data
- *
- */
-function GetSettings() 
-{   
-    $data = [];
-    try 
-    {
-        $db = OpenDatabase();
-
-        $select = $db->prepare("SELECT `name`, `value` FROM `tbl_settings`;");
-        $select->execute();
-
-        $settings = $select->fetchAll(PDO::FETCH_ASSOC);  
-    
-        // Get the currency sign from the tbl_settings table to determine the date format.
-        foreach($settings as $row=>$link) 
-        {            
-            $json = json_decode($link['value']);
-            switch ($link['name'])
-            {
-                case "settings" :
-                    $sign = $json->sign;                    
-                    break;
-                
-                case "finance" :
-                    $finance = $json->page;
-                    break;
-                
-                case "stock" :
-                    $stock = $json->page;
-                    break;
-
-                case "savings" :
-                    $savings = $json->page;
-                    break;
-
-                case "crypto" :
-                    $crypto = $json->page;
-                    break;                
-                
-                case "language" :
-                    $code = $json->code;
-                    break;                   
-            }            
-        }
-        
-        $data['sign']    = $sign;
-        $data['pages']   = [$finance, $stock, $savings, $crypto];
-        $data['code']    = $code;
-        $data['success'] = true;
-    }
-    catch (PDOException $e) 
-    {    
-        $data['message'] = $e->getMessage();
-        $data['success'] = false;
-    }   
-    
-    // Close database connection.
-    $db = null;        
-    
-    return $data;
 }
 
 /*

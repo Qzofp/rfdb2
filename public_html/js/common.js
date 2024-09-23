@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Sep 18, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -573,6 +573,49 @@ function validateDate(c, s, name, date) {
         }         
     }
     return check;
+}
+
+/*
+ * Function:    validateCurrency
+ *
+ * Created on Sep 21, 2024
+ * Updated on Sep 21, 2024
+ *
+ * Description: Validate the currency, check if it is not empty and if it has a correct value.
+ *
+ * In:  c, s, name, value
+ * Out: check
+ *
+ */
+function validateCurrency(c, s, name, value) {
+   
+    var check = true;
+    if (!value) 
+    {
+        $("#popup_content .msg").html(name + " " + c.messages[5]);
+        check = false;
+    }
+    else 
+    {        
+        let regex, set = JSON.parse(s[5].value);
+        switch (set.sign) {
+            case "$" :
+            case "£" :
+                regex = /^[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,2})?$/;                
+                break;
+            
+            case "€"  :
+                regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{1,2})?$/;           
+                break;
+        }
+        
+        if (!regex.test(value) ? true : false) 
+        {
+            $("#popup_content .msg").html(name + " " + c.messages[0]); 
+            check = false;
+        }     
+    }  
+    return check;       
 }
 
 /*

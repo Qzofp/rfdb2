@@ -960,11 +960,11 @@ function modifyFinances(c, s, btn) {
             var send = 'date=' + input[0] + '&payment=' + input[1] + '&type=' + input[2] + '&sign=' + set.sign +
                        '&amount=' + correctAmount(s, amount) + '&service=' + input[4] + '&account=' + input[5] + 
                        '&desc=' + encodeURIComponent(input[6]) + '&id=' + id + '&action=' + action; 
-                      
+            
             var request = getAjaxRequest("modify_finances_sheet", send);
             request.done(function(result) {              
                 if (result.success) {    
-                   
+                    
                     switch (action) {
                         case "add"    :                        
                             // Correct the id and get the select values.

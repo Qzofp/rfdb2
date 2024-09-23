@@ -8,7 +8,7 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 05, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_finances table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyFinances
  *
  * Created on Jul 05, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 21, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_finances table.
  *
@@ -42,7 +42,7 @@ function ModifyFinances()
     $date   = filter_input(INPUT_POST, 'date'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $aid    = filter_input(INPUT_POST, 'payment' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Payment
     $type   = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Income, xFixed or xOther
-    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $sign   = filter_input(INPUT_POST, 'sign'    , FILTER_SANITIZE_SPECIAL_CHARS); 
     $amount = filter_input(INPUT_POST, 'amount'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     $gid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Group    
     $bid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); // Business  
@@ -132,7 +132,7 @@ function AddFinances($date, $aid, $type, $sign, $amount, $gid, $bid, $desc)
                      "VALUES (STR_TO_DATE('$date','$format'),'$aid',$amtcol,'$bid','$desc');";     
             $select = $db->prepare($query);
             $select->execute();
-                        
+                       
             $response['id']      = $db->lastInsertId(); 
             $response['date']    = $date; 
             $response['payment'] = $aid;        
