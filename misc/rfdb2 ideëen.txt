@@ -663,3 +663,45 @@ WHERE type IN ('finance','stock','savings','crypto')
 ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;
 
 
+-- Insert waardes in de tbl_amount_wallets tabel
+INSERT INTO tbl_amount_wallets (`vid`, `wid`, `amount`)
+SELECT tbl_value_cryptos.`id` AS vid, tbl_wallets.`id` AS wid, SUM(`amount`) as amount
+FROM tbl_crypto 
+LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id` 
+LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid`
+WHERE tbl_value_cryptos.`date` = '2024-07-22' AND tbl_crypto.`date` <= '2024-07-22'
+GROUP BY wid
+
+-- Maak de value tabellen leeg.
+TRUNCATE TABLE `tbl_value_accounts`;
+TRUNCATE TABLE `tbl_value_cryptos`;
+TRUNCATE TABLE `tbl_amount_wallets`;
+
+-- Haal lijst op met accounts en cryptos met de waardes voor het updaten/verwijderen van de waardes
+
+SELECT `id`, 
+	CASE 
+    	WHEN `type` = 'finance' then 'Finances' 
+        WHEN `type` = 'stock' then 'Stocks' 
+        WHEN `type` = 'savings' then 'Savings' 
+        WHEN `type` = 'crypto' then 'Crypto'  
+    END AS `type`, `type` AS `kind`, `service`, `account`, `value`
+FROM (
+    SELECT tbl_accounts.`id` AS `id`, type, tbl_services.`service` AS `service`,
+        CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account`, 
+        tbl_value_accounts.`value` AS `value`
+    FROM tbl_accounts 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    LEFT JOIN tbl_value_accounts ON tbl_accounts.`id` = tbl_value_accounts.`aid`
+    WHERE `type` NOT IN ('crypto') AND tbl_accounts.`hide` = 0 AND tbl_value_accounts.`date` = '2024-08-26'
+    UNION 
+    SELECT tbl_cryptocurrenties.`id` AS `id`, 'crypto' AS `type`, `symbol`, CAST(`name` AS CHAR(45)) AS `name`, tbl_value_cryptos.`value` AS `value`
+    FROM tbl_cryptocurrenties 
+    LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid`
+    WHERE tbl_cryptocurrenties.`hide` = 0 AND tbl_value_cryptos.`date` = '2024-08-26'
+) total 
+WHERE `type` IN ('finance','stock','savings','crypto')  
+ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;
+
+

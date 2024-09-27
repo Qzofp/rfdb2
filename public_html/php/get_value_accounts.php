@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 22, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueAccounts
  *
  * Created on Aug 28, 2024
- * Updated on Sep 18, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Get the data from de database tbl_value_accounts table.
  *
@@ -89,7 +89,7 @@ function GetValueAccounts()
             $data = $select->fetchAll(PDO::FETCH_ASSOC); 
                     
             // Debug
-            $response['query']   = $query;  
+            //$response['query'] = $query;  
             
             $response['data'] = $data;
             $response['success'] = true;

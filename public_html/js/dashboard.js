@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 23, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js
@@ -149,7 +149,7 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Sep 05, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
@@ -164,7 +164,7 @@ function showDashboardContent(slide, c, s) {
     var crypto = (set.page === "true");
     
     switch(slide) {
-        case 0: showActivaAccountsContent(crypto, c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
+        case 0: showActivaAccountsContent(crypto, c, s, ""); // Test date, 22-07-2024 or 07/22/2024!
                 break;
         
         case 1: $("#test01").show();
@@ -508,7 +508,7 @@ function showDashboardButtonAction(adp, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Sep 11, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -517,7 +517,7 @@ function showDashboardButtonAction(adp, c, s, that) {
  *
  */
 function showActivaButtonAction(adp, c, s, that, crypto) {
-    
+       
     switch (that.alt) {
         case "list" :
             break;
@@ -527,11 +527,11 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
             break;
         
         case "accounts" :
-            showActivaAccountsContent(crypto, c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
+            showActivaAccountsContent(crypto, c, s, $("#input_date span").html()); // Test date, 22-07-2024 or 07/22/2024!
             break;
           
-        case "crypto"     :             
-            showActivaCryptoContent(c, s, "22-07-2024"); // Test date, 22-07-2024 or 07/22/2024!
+        case "crypto"     :
+            showActivaCryptoContent(c, s, $("#input_date span").html()); // Test date, 22-07-2024 or 07/22/2024!
             break;
             
         case "expand" :
@@ -542,7 +542,7 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
             changeActivaAccountsTable(c, s, "collapse");
             break;
             
-        case "del" :
+        case "edit" :
             break;
     }     
 }
@@ -598,7 +598,7 @@ function showActivaAddPopup(adp, crypto, c, s) {
  * Function:    fillActivaAddPopup
  *
  * Created on Sep 11, 2024
- * Updated on Sep 21, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -617,7 +617,7 @@ function fillActivaAddPopup(c) {
         if (result.success) {         
         
             // Debug
-            // console.log( result.query );
+            //console.log( result.query );
                         
             // Remove all rows except the first and last rows.
             $(".popup_table_activa tbody tr").not(":first").remove();
@@ -900,7 +900,7 @@ function setDashboardPopupChoice(e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Sep 23, 2024
+ * Updated on Sep 27, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -942,12 +942,16 @@ function modifyActivaValues(c, s, btn) {
             request.done(function(result) {
             if (result.success) {      
                                     
-                console.log( result );
+                // console.log( result );
                 
-                
-                
-                
-                closePopupWindow();       
+                if (result.exists) {
+                    $("#popup_content .msg").html(c.misc[0] + " " + c.messages[1]);
+                }
+                else 
+                {
+                    showActivaAccountsContent(crypto, c, s, date);     
+                    closePopupWindow();       
+                }
             }
             else {
                 showDatabaseError(result.message);

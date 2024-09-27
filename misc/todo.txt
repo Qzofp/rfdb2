@@ -100,3 +100,5 @@ ToDo
 
 17. Controleer ook of accounts verwijderd kunnen worden als ze niet worden gebruikt op de Dashboard pagina.
 
+18. Bug: Dashboard Activa slide laat verkeerde ratio zien als één of meerdere pagina's zijn gedisabled. 
+
