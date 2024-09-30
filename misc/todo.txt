@@ -102,3 +102,5 @@ ToDo
 
 18. Bug: Dashboard Activa slide laat verkeerde ratio zien als één of meerdere pagina's zijn gedisabled. 
 
+19. Bug: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
+

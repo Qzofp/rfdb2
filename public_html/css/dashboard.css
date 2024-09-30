@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Sep 15, 2024
+ * Updated on Sep 29, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -134,4 +134,13 @@
 /* Dashboard popups */
 #popup_container .activa_add {
  width: 35% !important;
+}
+
+#popup_content .msg {
+ padding: 10px 0px;
+}
+
+#popup_content .sign {
+ text-align: right;
+ color: #808080;
 }

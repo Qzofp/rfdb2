@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Sep 18, 2024
+ * Updated on Sep 29, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -37,8 +37,9 @@ if(!$user){
         <script src="js/ext/jquery-3.7.1.min.js"></script>
         <script src="js/ext/air-datepicker.js"></script> 
         <script src="js/config.js"></script>       
-        <script src="js/common.js"></script>        
-        <script src="js/dashboard.js"></script>
+        <script src="js/common.js"></script>  
+        <script src="js/dashboard_edit.js"></script>          
+        <script src="js/dashboard.js"></script>      
     </head>
     <body>                   
         <!-- Header -->
@@ -164,8 +165,9 @@ if(!$user){
                             <!-- Popup for the activa input (is needed for the datepicker). -->
                             <table class="popup_table_activa">
                                 <tr>                              
-                                    <td></td>
-                                    <td><input id="date" type="text" name="date" placeholder="" value="" /></td>              
+                                    <td colspan="2"></td>
+                                    <td><input id="date" type="text" name="date" placeholder="" value="" /></td>
+                                    <td><input class="btn" type="image" name="submit" src="img/del.png" alt="del"></td>
                                 </tr>
                             </table>
                             

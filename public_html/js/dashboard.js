@@ -7,10 +7,10 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 27, 2024
+ * Updated on Sep 29, 2024
  *
  * Description: Javascript functions for the index page.
- * Dependenties: js/config.js
+ * Dependenties: js/config.js, js/dashboard_edit.js
  *
  *
  */
@@ -183,7 +183,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Sep 11, 2024
+ * Updated on Sep 28, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -209,13 +209,21 @@ function showActivaAccountsContent(crypto, c, s, date) {
                 $("#page_buttons img").eq(2).css("display", "none"); 
             }
     
+            // Show edit button if date exists.
+            if (result.date) {
+                $("#page_buttons img").eq(4).show();
+            }
+            else {
+                $("#page_buttons img").eq(4).hide(); 
+            }
+    
             // Reset button(s).
             $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"}).show();  
     
             // Show the entry date. 
             $("#input_date u").html(c.misc[0]);
             $("#input_date span").html(result.date); 
-    
+             
             // Show the labels.
             showActivaLabels(c, s, true);
 
@@ -354,7 +362,7 @@ function fillActivaAccountsTable(l, s, date, action) {
         if (result.success) {         
         
             // Debug
-            // console.log( result.query );
+            //console.log( result.query );
             
             var crypto = JSON.parse(s[4].value);
             
@@ -508,7 +516,7 @@ function showDashboardButtonAction(adp, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Sep 27, 2024
+ * Updated on Sep 28, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -522,8 +530,9 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
         case "list" :
             break;
         
-        case "add" :
-            showActivaAddPopup(adp, crypto, c, s);
+        case "add"  :
+        case "edit" :   
+            showActivaModifyPopup(adp, that.alt, c, s);
             break;
         
         case "accounts" :
@@ -541,144 +550,9 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
         case "collapse" : 
             changeActivaAccountsTable(c, s, "collapse");
             break;
-            
-        case "edit" :
-            break;
     }     
 }
 
-/*
- * Function:    showActivaAddPopup
- *
- * Created on Sep 07, 2024
- * Updated on Sep 21, 2024
- *
- * Description: Shows the popup when the page add button is pressed.
- *
- * In:  adp, crypto, c, s
- * Out: -
- *
- */
-function showActivaAddPopup(adp, crypto, c, s) {
-
-    var set = JSON.parse(s[0].value);
-    
-    // Reset values.
-    adp.clear(); // Reset the date.
-    $("#popup_content .msg").html("&nbsp;");
-    
-    
-    
-    $("#popup_content").removeClass().addClass("activa_add"); 
-    
-    // Find all popup_table classes and hide them.
-    $("#popup_content").find("[class^=popup_table]").hide();
-    
-    // Show the popup_table activa class.
-    $(".popup_table_activa").show();
-
-    var title = c.labels[0];
-    //if (crypto) {
-    //    title += " & " + c.labels[3];
-    //}
-    $("#popup_content h2").html(title);
-    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
-    
-    fillActivaAddPopup(c);
-    
-    
-    
-      
-      
-  
-    $("#popup_container").fadeIn("slow");         
-}
-
-/*
- * Function:    fillActivaAddPopup
- *
- * Created on Sep 11, 2024
- * Updated on Sep 27, 2024
- *
- * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
- *
- * In:  c
- * Out: -
- *
- */
-function fillActivaAddPopup(c) {
-    
-    // Fill first row and column with the entry date.
-    $(".popup_table_activa tr:first td:first").html(c.misc[0]);
-   
-    var request = getAjaxRequest("get_value_accounts", "date=null&action=add");
-    request.done(function(result) {
-             
-        if (result.success) {         
-        
-            // Debug
-            //console.log( result.query );
-                        
-            // Remove all rows except the first and last rows.
-            $(".popup_table_activa tbody tr").not(":first").remove();
-
-            // console.log( result.data[0] );
-
-            // Build table with the accounts and input fields.            
-            var i = 0, kind = "";
-            var id, name, type;
-            result.data.forEach((item) => {
-                
-                // Create a separate row for the accounts / crypto titles (kind).
-                if (kind !== item.kind) 
-                {
-                    $(".popup_table_activa tbody").append(
-                        '<tr>' +
-                            '<td colspan="2">' + item.type + '</td>' +
-                        '</tr>');                    
-                                   
-                    kind = item.kind;
-                    
-                    if (item.kind !== "crypto") 
-                    {
-                        id   = "aid";
-                        name = "account";
-                        type = "avalue";
-                    }
-                    else 
-                    {
-                        id   = "cid";
-                        name = "crypto";
-                        type = "cvalue";
-                        i = 0;
-                    }          
-                }
-                     
-                // Create the input rows for accounts / crypto values.
-                $(".popup_table_activa tbody").append(
-                    '<tr>' +
-                        '<td>- ' + item.account + '</td>' +
-                        '<td>'+
-                            '<input id="' + id + '_' + i + '" name="' + id + '[]" value="' + item.id + '" type="hidden" />' +
-                            '<input id="' + name + '_' + i + '" name="' + name + '[]" value="' + item.account + '" type="hidden" />' +
-                            '<input id="' + type + '_' + i + '" name="' + type + '[]" placeholder="" value="" type="text" />' +                             
-                        '</td>' +    
-                    '</tr>');
-            
-                i++;
-            });             
-        }
-        else {
-            showDatabaseError(result);         
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-    
-    closeErrorMessage();    
-}    
 
 /*
  * Function:    showdActivaCryptoContent
@@ -859,136 +733,3 @@ function changeActivaAccountsTable(c, s, action) {
     }        
 }
 
-/*
- * Function:    setDashboardPopupChoice
- *
- * Created on Sep 08, 2024
- * Updated on Sep 21, 2024
- *
- * Description: Set the choice made in the dashboard popup window.
- *
- * In:  e, c, s
- * Out: -
- *
- */
-function setDashboardPopupChoice(e, c, s) {
-    
-    e.preventDefault();     
-    var btn = e.originalEvent.submitter.alt;
-    var popup = $('#popup_content').attr('class');
-      
-    switch (popup) {
-        case "activa_list" :
-            break;
-        
-        case "activa_add"  : // Change it to activa_modify?
-            modifyActivaValues(c, s, btn);
-            break;
-            
-        case "activa_edit" : // Change it to activa_modify?
-            break;
-            
-        case "activa_value"  : // For the expand and collapse table
-            break;
-            
-        case "activa_crypto" :
-            break;     
-    }
-}
-
-/*
- * Function:    modifyActivaValues
- *
- * Created on Sep 15, 2024
- * Updated on Sep 27, 2024
- *
- * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
- *
- * In:  c, s, btn
- * Out: -
- *
- */
-function modifyActivaValues(c, s, btn) {
-    
-    if (btn !== "cancel")
-    {
-        var set = JSON.parse(s[4].value);  
-        var date, aids, accounts, avalue, cids, crypto, cvalue;
-        var cpage = (set.page === "true");      
-    
-        // Get the input values.
-        date     = $("#date").val();
-        aids     = getMultipleItems(".activa_add input[name^=aid");
-        accounts = getMultipleItems(".activa_add input[name^=account");
-        avalue   = getMultipleItems(".activa_add input[name^=avalue");
-    
-        // Check if the crypto page is enabled.
-        if (cpage)
-        {
-            cids   = getMultipleItems(".activa_add input[name^=cid");
-            crypto = getMultipleItems(".activa_add input[name^=crypto");
-            cvalue = getMultipleItems(".activa_add input[name^=cvalue");      
-        }  
-        
-        // Validate input.
-        if (validateDate(c, s, c.misc[0], date) && validateAccounts(c, s, accounts, avalue) && validateAccounts(c, s, crypto, cvalue))
-        {
-            // Send and get the ajax results.
-            var send = { date:date, aids:aids, accounts:avalue, cids:cids, crypto:cvalue };
-        
-            //console.log(send);
-        
-            var request = getAjaxRequest("modify_values", send);
-            request.done(function(result) {
-            if (result.success) {      
-                                    
-                // console.log( result );
-                
-                if (result.exists) {
-                    $("#popup_content .msg").html(c.misc[0] + " " + c.messages[1]);
-                }
-                else 
-                {
-                    showActivaAccountsContent(crypto, c, s, date);     
-                    closePopupWindow();       
-                }
-            }
-            else {
-                showDatabaseError(result.message);
-                }
-            });
-    
-            request.fail(function(jqXHR, textStatus) {
-                showAjaxError(jqXHR, textStatus);
-            });  
-           
-            closeErrorMessage();              
-        }
-    }
-}
-
-/*
- * Function:    validateAccounts
- *
- * Created on Sep 21, 2024
- * Updated on Sep 21, 2024
- *
- * Description: Validate the values of the accounts, check if it is not empty and if it has a correct value.
- *
- * In:  c, s, accounts, avalue
- * Out: check
- *
- */
-function validateAccounts(c, s, accounts, values) {
-    
-    var check = true; 
-    
-    if (accounts && accounts.length)
-    {
-        for (let i = 0; i < values.length && check; i++) {
-            check = validateCurrency(c, s, accounts[i], values[i]);        
-        }
-    }   
-    
-    return check;
-}

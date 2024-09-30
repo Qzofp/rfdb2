@@ -679,7 +679,6 @@ TRUNCATE TABLE `tbl_value_cryptos`;
 TRUNCATE TABLE `tbl_amount_wallets`;
 
 -- Haal lijst op met accounts en cryptos met de waardes voor het updaten/verwijderen van de waardes
-
 SELECT `id`, 
 	CASE 
     	WHEN `type` = 'finance' then 'Finances' 
@@ -694,14 +693,38 @@ FROM (
     FROM tbl_accounts 
     LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
     LEFT JOIN tbl_value_accounts ON tbl_accounts.`id` = tbl_value_accounts.`aid`
-    WHERE `type` NOT IN ('crypto') AND tbl_accounts.`hide` = 0 AND tbl_value_accounts.`date` = '2024-08-26'
+    WHERE `type` NOT IN ('crypto') AND tbl_accounts.`hide` = 0 AND tbl_value_accounts.`date` = '2024-07-22'
     UNION 
     SELECT tbl_cryptocurrenties.`id` AS `id`, 'crypto' AS `type`, `symbol`, CAST(`name` AS CHAR(45)) AS `name`, tbl_value_cryptos.`value` AS `value`
     FROM tbl_cryptocurrenties 
     LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid`
-    WHERE tbl_cryptocurrenties.`hide` = 0 AND tbl_value_cryptos.`date` = '2024-08-26'
+    WHERE tbl_cryptocurrenties.`hide` = 0 AND tbl_value_cryptos.`date` = '2024-07-22'
 ) total 
-WHERE `type` IN ('finance','stock','savings','crypto')  
+WHERE `type` IN ('finance','stock','savings','crypto') 
 ORDER BY FIELD(type, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;
+
+-- Verwijderen van de accounts en crypto waardes.
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE tbl_amount_wallets, tbl_value_cryptos
+FROM tbl_amount_wallets
+LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
+WHERE tbl_value_cryptos.`date` = '2024-07-22';
+
+DELETE FROM tbl_value_accounts
+WHERE tbl_value_accounts.`date` = '2024-07-22';
+
+SET SQL_SAFE_UPDATES = 1;
+
+
+
+
+
+
+
+
+
+
+
 
 

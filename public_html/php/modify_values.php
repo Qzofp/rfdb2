@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 16, 2024
- * Updated on Sep 27, 2024
+ * Updated on Sep 30, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_value_accounts and tbl_value_cryptos tables.
  * Dependenties: config.php
@@ -29,7 +29,7 @@ else {
  * Function:    ModifyValues
  *
  * Created on Sep 16, 2024
- * Updated on Sep 27, 2024
+ * Updated on Sep 30, 2024
  *
  * Description: Modify the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -44,23 +44,27 @@ function ModifyValues()
     $aids     = filter_input(INPUT_POST, 'aids'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
     $accounts = filter_input(INPUT_POST, 'accounts' , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);  
     $cids     = filter_input(INPUT_POST, 'cids'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
-    $crypto   = filter_input(INPUT_POST, 'crypto'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);      
-
+    $crypto   = filter_input(INPUT_POST, 'crypto'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);  
+    $action   = filter_input(INPUT_POST, 'action'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);  
+    
     // Get the settings, e.g. language code ande the currency sign).
     $input = GetSettings();
     if ($input['success']) 
-    {        
-        $day = DateToMySql($input['sign'], $date);
-        $response = AddAccountValues($input['sign'], $day, $aids, $accounts);
-        
-        // Check if the Crypto page is enabled (true).
-        if ($response['success'] && $input['pages'][3] == "true") 
+    {              
+        switch ($action)
         {
-            $response = AddCryptoValues($input['sign'], $day, $cids, $crypto);
-            if ($response['success'] && !$response['exists']) {
-                 AddWalletAmounts($day);
-            }
-        }       
+            case "add" :
+                $response = AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $crypto);           
+                break;
+            
+            case "edit" :
+                //$response = ;
+                break;
+            
+            case "delete" :
+                //$response = ;
+                break;                
+        }    
     }
     else 
     {
@@ -72,6 +76,23 @@ function ModifyValues()
     
     // Close database connection
     $db = null;      
+}
+
+
+function AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $crypto)
+{
+    $day = DateToMySql($input['sign'], $date);
+    
+    $result = AddAccountValues($input['sign'], $day, $aids, $accounts);
+    if ($result['success'] && $input['pages'][3] == "true") // Also check if the Crypto page is enabled (true).
+    {
+        $result = AddCryptoValues($input['sign'], $day, $cids, $crypto);
+        if ($result['success'] && !$result['exists']) {
+            $result = AddWalletAmounts($day);
+        }
+    }      
+    
+    return $result;
 }
 
 /*
@@ -296,7 +317,7 @@ function CheckCryptoValues($date)
  * Function:    AddWalletAmounts
  *
  * Created on Sep 27, 2024
- * Updated on Sep 27, 2024
+ * Updated on Sep 28, 2024
  *
  * Description: Add the values to the tbl_amount_wallets table.
  *
@@ -312,13 +333,13 @@ function AddWalletAmounts($date)
         $db = OpenDatabase();        
                      
         $query = "INSERT INTO tbl_amount_wallets (`vid`, `wid`, `amount`) ".
-                 "SELECT tbl_value_cryptos.`id` AS vid, tbl_wallets.`id` AS wid, SUM(`amount`) as amount ".
+                 "SELECT tbl_value_cryptos.`id` AS vid, tbl_wallets.`id` AS wlt_id, SUM(`amount`) as amount ".
                  "FROM tbl_crypto ".
                  "LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id` ".
                  "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
                  "LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid` ".
                  "WHERE tbl_value_cryptos.`date` = $date AND tbl_crypto.`date` <= $date ".
-                 "GROUP BY wid;";            
+                 "GROUP BY `vid`, `wlt_id`;";            
       
         $select = $db->prepare($query);
         $select->execute();    
@@ -326,7 +347,7 @@ function AddWalletAmounts($date)
         //$data = $select->fetchAll(PDO::FETCH_ASSOC);                
     
         // Debug
-        //$response['query'] = $query;
+        //$data['query'] = $query;
         
         $data['success'] = true;
     }

@@ -455,7 +455,7 @@ function fillTable(s, page, l, send) {
  * Created on Feb 03, 2024
  * Updated on Jun 01, 2024
  *
- * Description: Check if the edit or delete button is pressed in de popup choice window.
+ * Description: Check if the edit or delete button is pressed in the popup choice window.
  *
  * In:  btn, msg
  * Out: check
