@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Sep 30, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    showActivaModifyPopup
  *
  * Created on Sep 07, 2024
- * Updated on Sep 29, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Shows the popup when the page add or edit button is pressed.
  *
@@ -31,6 +31,21 @@
 function showActivaModifyPopup(adp, btn, c, s) {
 
     var set = JSON.parse(s[0].value);
+    
+    // Get the pages (finance, stock, savings and crypto) and check if one of more is enabled.
+    var sheet, page = false;
+    for (let i = 1; i < 5; i++)
+    {
+        sheet = JSON.parse(s[i].value);        
+        if (sheet.page === "true") {
+            page = true;
+        }
+    }
+    
+    if (page) {
+        console.log("PAGE ENABLED");
+    }
+    
     
     // Reset values.
     setAirDatePicker(adp, ""); // Reset the date.
@@ -208,7 +223,7 @@ function setDashboardPopupChoice(e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Sep 30, 2024
+ * Updated on Oct 02, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -251,14 +266,14 @@ function modifyActivaValues(c, s, btn) {
             var send = { date:date, aids:aids, accounts:avalue, cids:cids, crypto:cvalue, action:action };
         
             // Debug
-            console.log(send);
+            //console.log(send);
         
             var request = getAjaxRequest("modify_values", send);
             request.done(function(result) {
             if (result.success) {      
                                     
                 // Debug
-                //console.log( result );
+                console.log( result );
                 
                 if (result.exists) {
                     $("#popup_content .msg").html(c.misc[0] + " " + c.messages[1]);

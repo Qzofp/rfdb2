@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 16, 2024
- * Updated on Sep 30, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_value_accounts and tbl_value_cryptos tables.
  * Dependenties: config.php
@@ -78,12 +78,30 @@ function ModifyValues()
     $db = null;      
 }
 
-
+/*
+ * Function:    AddAccountAndCryptoValues
+ *
+ * Created on Sep 27, 2024
+ * Updated on Oct 04, 2024
+ *
+ * Description: Add the values to the tbl_value_accounts and/or tbl_value_cryptos tables.
+ *
+ * In:  $input, $date, $aids, $accounts, $cids, $crypto
+ * Out: $result
+ *
+ */
 function AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $crypto)
 {
     $day = DateToMySql($input['sign'], $date);
     
-    $result = AddAccountValues($input['sign'], $day, $aids, $accounts);
+    $pages = array_slice($input['pages'], 0, -1); // Remove the crypto page.
+    if (in_array("true", $pages)) {
+        $result = AddAccountValues($input['sign'], $day, $aids, $accounts);
+    }
+    else {
+        $result['success'] = true;
+    }
+    
     if ($result['success'] && $input['pages'][3] == "true") // Also check if the Crypto page is enabled (true).
     {
         $result = AddCryptoValues($input['sign'], $day, $cids, $crypto);
@@ -96,10 +114,10 @@ function AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $cryp
 }
 
 /*
- * Function:    AddAccountValues
+ * Function:    AddAccountValuesOld
  *
  * Created on Sep 23, 2024
- * Updated on Sep 27, 2024
+ * Updated on Oct 02, 2024
  *
  * Description: Add the values to the tbl_value_accounts table if the date doesn't exists.
  *
@@ -107,7 +125,7 @@ function AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $cryp
  * Out: $data
  *
  */ 
-function AddAccountValues($sign, $date, $ids, $values)
+/*function AddAccountValuesOld($sign, $date, $ids, $values)
 {
 
     // Check if values date already exists.
@@ -137,7 +155,7 @@ function AddAccountValues($sign, $date, $ids, $values)
             //$select->fetchAll(PDO::FETCH_ASSOC);            
         
             // Debug
-            //$response['query'] = $query;
+            $data['query'] = $query;
         
             $data['success'] = true;
         }
@@ -157,6 +175,72 @@ function AddAccountValues($sign, $date, $ids, $values)
         $response['success'] = false;
     }    
     */
+/*    
+    return $data;
+}
+*/
+
+/*
+ * Function:    AddAccountValues
+ *
+ * Created on Oct 02, 2024
+ * Updated on Oct 04, 2024
+ *
+ * Description: Add the values to the tbl_value_accounts table if the date doesn't exists.
+ *
+ * In:  $sign, $date, $ids, $values
+ * Out: $data
+ *
+ */ 
+function AddAccountValues($sign, $date, $ids, $values)
+{
+    $data = []; 
+    try 
+    {         
+        $db = OpenDatabase();        
+
+        $query = "INSERT INTO tbl_value_accounts (`date`, `aid`, `value`) ".
+                 "SELECT `date`, `aid`, `value` ".
+                 "FROM ( ";
+            
+        for ($i = 0; $i < count($ids); $i++) 
+        {
+            if ($i > 0) {
+                $query .= "UNION ";
+            }            
+            $value = AmountToMySql($sign, $values[$i]);    
+            $query .= "SELECT $date AS `date`, '$ids[$i]' AS `aid`, $value AS `value` ";
+        }
+                       
+        $query .= ") tmp ".
+                  "WHERE NOT EXISTS (".
+                    "SELECT * FROM tbl_value_accounts WHERE `date` = $date LIMIT 1 ".
+                  ");";
+        
+        $select = $db->prepare($query);
+        $select->execute();
+            
+        // Check if the values already exists.
+        $rows = $select->rowCount();   
+        $data['exists'] = true; 
+        if ($rows >= 1) {
+            $data['exists'] = false; 
+        }
+            
+        // Debug
+        $data['rows'] = $rows;
+        //$data['query'] = $query;
+        
+        $data['success'] = true;
+    }
+    catch (PDOException $e) 
+    {    
+        $data['message'] = $e->getMessage();
+        $data['success'] = false;
+    }   
+       
+    // Close database connection.
+    $db = null;        
     
     return $data;
 }
@@ -173,7 +257,7 @@ function AddAccountValues($sign, $date, $ids, $values)
  * Out: $response
  *
  */
-function CheckAccountValues($date)
+/*function CheckAccountValues($date)
 {
     $response = [];    
     try 
@@ -202,10 +286,10 @@ function CheckAccountValues($date)
     $db = null;        
     
     return $response;    
-}
+}*/
 
 /*
- * Function:    AddCryptoValues
+ * Function:    AddCryptoValuesOld
  *
  * Created on Sep 24, 2024
  * Updated on Sep 27, 2024
@@ -216,7 +300,7 @@ function CheckAccountValues($date)
  * Out: $data
  *
  */ 
-function AddCryptoValues($sign, $date, $ids, $values)
+/*function AddCryptoValuesOld($sign, $date, $ids, $values)
 {
 
     // Check if values date already exists.
@@ -267,6 +351,70 @@ function AddCryptoValues($sign, $date, $ids, $values)
     }
     */      
    
+/*    return $data;
+}*/
+
+/*
+ * Function:    AddCryptoValues
+ *
+ * Created on Sep 24, 2024
+ * Updated on Oct 04, 2024
+ *
+ * Description: Add the values to the tbl_value_cryptos table if the date doesn't exists.
+ *
+ * In:  $sign, $date, $ids, $values
+ * Out: $data
+ *
+ */ 
+function AddCryptoValues($sign, $date, $ids, $values)
+{
+    try 
+    {         
+        $db = OpenDatabase();        
+                             
+        $query = "INSERT INTO tbl_value_cryptos (`date`, `cid`, `value`) ".
+                 "SELECT `date`, `cid`, `value` ".
+                 "FROM ( ";
+            
+        for ($i = 0; $i < count($ids); $i++) 
+        {
+            if ($i > 0) {
+                $query .= "UNION ";
+            }            
+            $value = AmountToMySql($sign, $values[$i]);    
+            $query .= "SELECT $date AS `date`, '$ids[$i]' AS `cid`, $value AS `value` ";
+        }
+                       
+        $query .= ") tmp ".
+                  "WHERE NOT EXISTS (".
+                    "SELECT * FROM tbl_value_cryptos WHERE `date` = $date LIMIT 1 ".
+                  ");";        
+            
+        $select = $db->prepare($query);
+        $select->execute();
+                
+        // Check if the values already exists.
+        $rows = $select->rowCount();   
+        $data['exists'] = true; 
+        if ($rows >= 1) {
+            $data['exists'] = false; 
+        }
+            
+        // Debug
+        $data['rows'] = $rows;
+        //$data['query'] = $query;
+        
+        $data['success'] = true;
+    }
+    catch (PDOException $e) 
+    {    
+            $data['message'] = $e->getMessage();
+            $data['success'] = false;
+    }   
+        
+    // Close database connection.
+    $db = null;        
+    
     return $data;
 }
 
@@ -282,7 +430,7 @@ function AddCryptoValues($sign, $date, $ids, $values)
  * Out: $response
  *
  */
-function CheckCryptoValues($date)
+/*function CheckCryptoValues($date)
 {
     $response = [];    
     try 
@@ -311,13 +459,13 @@ function CheckCryptoValues($date)
     $db = null;        
     
     return $response;    
-}
+}*/
 
 /*
  * Function:    AddWalletAmounts
  *
  * Created on Sep 27, 2024
- * Updated on Sep 28, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Add the values to the tbl_amount_wallets table.
  *
@@ -327,7 +475,7 @@ function CheckCryptoValues($date)
  */ 
 function AddWalletAmounts($date)
 {
-    $data = [];  
+    //$data = [];  
     try 
     {         
         $db = OpenDatabase();        

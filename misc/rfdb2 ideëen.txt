@@ -718,13 +718,18 @@ SET SQL_SAFE_UPDATES = 1;
 
 
 
+-- Test
+SELECT COUNT(*) INTO @check FROM tbl_value_accounts WHERE `date` = STR_TO_DATE('22-07-2024','%d-%m-%Y');
 
+INSERT INTO tbl_value_accounts (`date`, `aid`, `value`)
+SELECT `date`, `aid`, `value` 
+FROM ( 
+	SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '2' AS `aid`, REPLACE(REPLACE('15','.',''),',','.') AS `value`
+	UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y'), '1', REPLACE(REPLACE('115','.',''),',','.')
+) dummy
+WHERE NOT @check;
 
-
-
-
-
-
+SELECT ROW_COUNT();
 
 
 

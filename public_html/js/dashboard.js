@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Sep 29, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Sep 21, 2024
+ * Updated on Oct 04, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -78,7 +78,7 @@ function showDashboard(c, s) {
                 
     // Fill hamburger and slide menu.
     fillHamburgerMenu(c, s, 0);            
-    fillSlideMenu(c.slides, s);
+    fillDashboardSlideMenu(c.slides, s);
       
     // Show the dashboard content.
     showDashboardContent(0, c, s); 
@@ -143,6 +143,42 @@ function removeOldRankings(n) {
     });  
      
     closeErrorMessage(); 
+}
+
+/*
+ * Function:    fillDashboardSlideMenu
+ *
+ * Created on Oct 04, 2024
+ * Updated on Oct 04, 2024
+ *
+ * Description: Fill the Dashboard Slidemenu bar with the items for the index and settings pages.
+ *
+ * In:  items, s
+ * Out: -
+ *
+ */
+function fillDashboardSlideMenu(items, s) {
+    
+    var tmp;
+
+    // Add labels.
+    var j = 0;
+    for (let i = 0; i < 6; i++) {
+        tmp = JSON.parse(s[i].value);
+        if (i === 0) {
+            $("#slide6-item-" + i).prop('checked', true);
+        }
+            
+        if (i < items.length) {         
+            $("#slide6-item-" + j).val(i).next().find("span").html(items[i]);             
+            j++;                     
+        }
+    }
+    
+    while (j < 6) {        
+        $("#slide6-item-" + j).next().hide(); 
+        j++;
+    }   
 }
 
 /*
