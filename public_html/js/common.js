@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Oct 02, 2024
+ * Updated on Oct 05, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -48,15 +48,15 @@ function fillHamburgerMenu(c, s, exclude) {
  * Function:    fillSlideMenu
  *
  * Created on Nov 16, 2023
- * Updated on Dec 02, 2023
+ * Updated on Oct 05, 2024
  *
  * Description: Fill the Slidemenu bar with the items for the index and settings pages.
  *
- * In:  items, s
+ * In:  items, s, skip (optional)
  * Out: -
  *
  */
-function fillSlideMenu(items, s) {
+function fillSlideMenu(items, s, skip=false) {
     
     var tmp;
 
@@ -69,7 +69,7 @@ function fillSlideMenu(items, s) {
         }
             
         if (i < items.length) {         
-            if (tmp.page === "true") {
+            if (tmp.page === "true" || skip) {
                 $("#slide6-item-" + j).val(i).next().find("span").html(items[i]);             
                 j++;
             }                        

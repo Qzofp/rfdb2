@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Oct 04, 2024
+ * Updated on Oct 05, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Oct 04, 2024
+ * Updated on Oct 05, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -78,7 +78,7 @@ function showDashboard(c, s) {
                 
     // Fill hamburger and slide menu.
     fillHamburgerMenu(c, s, 0);            
-    fillDashboardSlideMenu(c.slides, s);
+    fillSlideMenu(c.slides, s, true);
       
     // Show the dashboard content.
     showDashboardContent(0, c, s); 
@@ -146,42 +146,6 @@ function removeOldRankings(n) {
 }
 
 /*
- * Function:    fillDashboardSlideMenu
- *
- * Created on Oct 04, 2024
- * Updated on Oct 04, 2024
- *
- * Description: Fill the Dashboard Slidemenu bar with the items for the index and settings pages.
- *
- * In:  items, s
- * Out: -
- *
- */
-function fillDashboardSlideMenu(items, s) {
-    
-    var tmp;
-
-    // Add labels.
-    var j = 0;
-    for (let i = 0; i < 6; i++) {
-        tmp = JSON.parse(s[i].value);
-        if (i === 0) {
-            $("#slide6-item-" + i).prop('checked', true);
-        }
-            
-        if (i < items.length) {         
-            $("#slide6-item-" + j).val(i).next().find("span").html(items[i]);             
-            j++;                     
-        }
-    }
-    
-    while (j < 6) {        
-        $("#slide6-item-" + j).next().hide(); 
-        j++;
-    }   
-}
-
-/*
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
@@ -219,7 +183,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Sep 28, 2024
+ * Updated on Oct 05, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -258,7 +222,7 @@ function showActivaAccountsContent(crypto, c, s, date) {
     
             // Show the entry date. 
             $("#input_date u").html(c.misc[0]);
-            $("#input_date span").html(result.date); 
+            $("#input_date span").html(result.date ? result.date : "&nbsp;"); 
              
             // Show the labels.
             showActivaLabels(c, s, true);

@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Sep 29, 2024
+ * Updated on Oct 07, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueAccounts
  *
  * Created on Aug 28, 2024
- * Updated on Sep 28, 2024
+ * Updated on Oct 07, 2024
  *
  * Description: Get the data from de database tbl_value_accounts table.
  *
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Sep 29, 2024
+ * Updated on Oct 07, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -297,13 +297,13 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
             
             $query = "SELECT `id`, $type, `type` AS `kind`, `service`, `account`, $value ".
                      "FROM (".
-                        "SELECT tbl_accounts.`id` AS id, type, tbl_services.`service` AS `service`, $account, tbl_value_accounts.`value` AS `value` ".
+                        "SELECT tbl_value_accounts.`id` AS id, type, tbl_services.`service` AS `service`, $account, tbl_value_accounts.`value` AS `value` ".
                         "FROM tbl_accounts ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "LEFT JOIN tbl_value_accounts ON tbl_accounts.`id` = tbl_value_accounts.`aid` ".
                         "WHERE `type` NOT IN ('crypto') AND tbl_accounts.`hide` = 0  AND tbl_value_accounts.`date` = $date ".
                         "UNION ".
-                        "SELECT tbl_cryptocurrenties.`id` AS `id`, 'crypto' AS `type`, `symbol`, CAST(`name` AS CHAR(45)) AS `name`, tbl_value_cryptos.`value` AS `value` ".
+                        "SELECT tbl_value_cryptos.`id` AS `id`, 'crypto' AS `type`, `symbol`, CAST(`name` AS CHAR(45)) AS `name`, tbl_value_cryptos.`value` AS `value` ".
                         "FROM tbl_cryptocurrenties ".
                         "LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid` ".
                         "WHERE tbl_cryptocurrenties.`hide` = 0 AND tbl_value_cryptos.`date` = $date ".
