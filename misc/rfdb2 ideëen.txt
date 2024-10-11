@@ -716,9 +716,7 @@ WHERE tbl_value_accounts.`date` = '2024-07-22';
 
 SET SQL_SAFE_UPDATES = 1;
 
-
-
--- Test
+-- Test queries
 SELECT COUNT(*) INTO @check FROM tbl_value_accounts WHERE `date` = STR_TO_DATE('22-07-2024','%d-%m-%Y');
 
 INSERT INTO tbl_value_accounts (`date`, `aid`, `value`)
@@ -731,5 +729,62 @@ WHERE NOT @check;
 
 SELECT ROW_COUNT();
 
+SELECT COUNT(*) INTO @check FROM tbl_value_accounts WHERE `date` = STR_TO_DATE('22-07-2024','%d-%m-%Y'); 
+INSERT INTO tbl_value_accounts (`date`, `aid`, `value`) 
+SELECT `date`, `aid`, `value` 
+FROM ( 
+	SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '2' AS `aid`, REPLACE(REPLACE('10','.',''),',','.') AS `value` 
+	UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '1' AS `aid`, REPLACE(REPLACE('100','.',''),',','.') AS `value` 
+	UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '4' AS `aid`, REPLACE(REPLACE('20','.',''),',','.') AS `value`         
+	UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '3' AS `aid`, REPLACE(REPLACE('200','.',''),',','.') AS `value` 
+    UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '5' AS `aid`, REPLACE(REPLACE('30','.',''),',','.') AS `value`         
+	UNION SELECT STR_TO_DATE('22-07-2024','%d-%m-%Y') AS `date`, '6' AS `aid`, REPLACE(REPLACE('300','.',''),',','.') AS `value` 
+) dummy 
+WHERE NOT @check;
+SELECT LAST_INSERT_ID();
 
 
+SELECT tbl_amount_wallets.`id` AS id, tbl_amount_wallets.`vid` AS `vid`, tbl_amount_wallets.`wid` AS `wid`, 
+	SUM(tbl_crypto.`amount`) as amount
+FROM tbl_amount_wallets
+LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
+LEFT JOIN tbl_crypto ON tbl_amount_wallets.`wid` = tbl_crypto.`wid`
+WHERE tbl_value_cryptos.`date` = '2024-09-23' AND tbl_crypto.`date` <= '2024-09-23'
+GROUP BY `vid`, `wid`;
+
+SELECT *
+FROM tbl_amount_wallets
+RIGHT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
+WHERE tbl_value_cryptos.`date` = '2024-07-22'
+
+-- Account totals queries
+SELECT COALESCE(NULLIF(ROUND(SUM(`ratio`)/2, 2), null), '&nbsp;') AS ratio, COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value` 
+FROM (
+    SELECT `type`, 100 * `value` / SUM(`value`) OVER() AS ratio, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` 
+    FROM tbl_value_accounts 
+	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    WHERE tbl_value_accounts .`date` = STR_TO_DATE('22-07-2024', '%d-%m-%Y') 
+    UNION 
+    SELECT `type`, 100 * `value` / SUM(`value`) OVER() AS ratio, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value`       
+	FROM tbl_value_cryptos LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    WHERE tbl_value_cryptos.`date` = STR_TO_DATE('22-07-2024', '%d-%m-%Y') 
+) total 
+WHERE `type` IN ('finance','stock','savings','crypto');
+
+
+SELECT COALESCE(NULLIF(ROUND(SUM(`ratio`), 2), null), '&nbsp;') AS ratio, COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value` 
+FROM (    
+    SELECT 50 * `value` / SUM(`value`) OVER() AS `ratio`, IF(tbl_value_accounts.`hide` = 0, SUM(`value`), 0) AS `value` 
+    FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    WHERE `type` IN ('finance','stock','savings') AND tbl_value_accounts .`date` = STR_TO_DATE('22-07-2024', '%d-%m-%Y') 
+	UNION
+    SELECT 50 * `value` / SUM(`value`) OVER() AS `ratio`, IF(tbl_amount_wallets.`hide` = 0, SUM(`amount`*`value`), 0) AS `value`   
+    FROM tbl_value_cryptos 
+	LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    WHERE `type` IN ('crypto') AND tbl_value_cryptos.`date` = STR_TO_DATE('22-07-2024', '%d-%m-%Y')
+) total 

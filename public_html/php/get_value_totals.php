@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 18, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Check if the user is signed in and get the value totals from the databases tbl_value_accounts 
  *              and tbl_value_cryptos tables.
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 18, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Get the value totals from the databases tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -67,43 +67,50 @@ function GetValueTotals()
             }
             
             // Determine the which value accounts are selected, based on the active pages.
+            $i = 0;
             $field = "";
             $pages = ["finance","stock","savings","crypto"];
             foreach ($input['pages'] as $key=>$value)
             {
-                if ($value == "true") {
+                if ($value == "true") 
+                {
                     $field .= "'$pages[$key]',";
+                    $i++;
                 }
             }            
             // Remove the last comma.
-            $field = substr_replace($field, '', -1);    
-            
+            $field = substr_replace($field, '', -1);            
             if ($field) {
-                $where = "WHERE `type` IN ($field)";
+                $type = "`type` IN ($field)";
             }
             else {
-                $where = "WHERE `type` = ''";
+                $type = "`type` = ''";
             }
             
-            $ratio = "COALESCE(NULLIF(ROUND(SUM(`ratio`)/2, 2), null), '&nbsp;') AS ratio";
+            // Check if the Crypto page is enabled (true) and determine the multiply factor x.
+            $x = 2;
+            if ($i > 1) {
+                $x = 1;
+            }
+                        
+            $ratio = "COALESCE(NULLIF(ROUND(SUM(`ratio`) * $x, 2), null), '&nbsp;') AS ratio";
             $value = "COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value`";
-            $rto   = "100 * `value` / SUM(`value`) OVER() AS ratio";
+            $rto   = "50 * `value` / SUM(`value`) OVER() AS `ratio`";
             $query = "SELECT $ratio, $value ".
                      "FROM (".
-                        "SELECT `type`, $rto, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                        "SELECT $rto, IF(tbl_value_accounts.`hide` = 0, SUM(`value`), null) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
-                        "WHERE tbl_value_accounts .`date` = $date_format ".
+                        "WHERE $type AND tbl_value_accounts .`date` = $date_format ".
                         "UNION ".
-                        "SELECT `type`, $rto, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                        "SELECT $rto, IF(tbl_amount_wallets.`hide` = 0, SUM(`amount`*`value`), null) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
-                        "WHERE tbl_value_cryptos.`date` = $date_format ".                    
-                     ") total ".
-                    "$where;";
-        
+                        "WHERE $type AND tbl_value_cryptos.`date` = $date_format".
+                     ") total;";            
+               
             $select = $db->prepare($query);
             $select->execute();
             $totals = $select->fetchAll(PDO::FETCH_ASSOC);  

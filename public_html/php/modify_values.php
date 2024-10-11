@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 16, 2024
- * Updated on Oct 07, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_value_accounts and tbl_value_cryptos tables.
  * Dependenties: config.php
@@ -248,7 +248,7 @@ function AddCryptoValues($sign, $date, $ids, $values)
  * Function:    AddWalletAmounts
  *
  * Created on Sep 27, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 09, 2024
  *
  * Description: Add the values to the tbl_amount_wallets table.
  *
@@ -269,8 +269,8 @@ function AddWalletAmounts($date)
                  "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
                  "LEFT JOIN tbl_value_cryptos ON tbl_cryptocurrenties.`id` = tbl_value_cryptos.`cid` ".
                  "WHERE tbl_value_cryptos.`date` = $date AND tbl_crypto.`date` <= $date ".
-                 "GROUP BY `vid`, `wlt_id`;";            
-      
+                 "GROUP BY `vid`, `wlt_id`;";    
+  
         $select = $db->prepare($query);
         $select->execute();               
     
@@ -295,7 +295,7 @@ function AddWalletAmounts($date)
  * Function:    EditAccountAndCryptoValues
  *
  * Created on Oct 06, 2024
- * Updated on Oct 07, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Edit the values to the tbl_value_accounts and/or tbl_value_cryptos tables.
  *
@@ -317,9 +317,9 @@ function EditAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $cry
     
     if ($result['success'] && $input['pages'][3] == "true") // Also check if the Crypto page is enabled (true).
     {
-        //$result = EditCryptoValues($input['sign'], $day, $cids, $crypto);
-        if ($result['success'] && !$result['exists']) {
-            //$result = EditWalletAmounts($day);
+        $result = EditCryptoValues($input['sign'], $day, $cids, $crypto);
+        if ($result['success']) {
+            $result = EditWalletAmounts($day);
         }
     }      
      
@@ -332,7 +332,7 @@ function EditAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $cry
  * Function:    EditAccountValues
  *
  * Created on Oct 07, 2024
- * Updated on Oct 07, 2024
+ * Updated on Oct 08, 2024
  *
  * Description: Edit the values of the tbl_value_accounts table.
  *
@@ -358,27 +358,15 @@ function EditAccountValues($sign, $date, $ids, $values)
                 $query .= ",";
             }
             else {
-                $query .= " AS tmp ";
+                $query .= " ";
             }
         }
                        
-        $query .= "ON DUPLICATE KEY UPDATE `date`=tmp.`date`,`value`=tmp.`value`;";
+        $query .= "ON DUPLICATE KEY UPDATE `date`=VALUES(`date`),`value`=VALUES(`value`);";
         
         $select = $db->prepare($query);
         $select->execute();
          
-        /* 
-        // Check if the values already exists.
-        $rows = $select->rowCount();   
-        $data['exists'] = true; 
-        if ($rows >= 1) {
-            $data['exists'] = false; 
-        } 
-        */
-            
-        // Debug
-        //$data['rows'] = $rows;
-        
         // Debug
         //$data['query'] = $query;
         
@@ -396,28 +384,115 @@ function EditAccountValues($sign, $date, $ids, $values)
     return $data;
 }
 
+/*
+ * Function:    EditCryptoValues
+ *
+ * Created on Oct 08, 2024
+ * Updated on Oct 08, 2024
+ *
+ * Description: Edit the values of the tbl_value_cryptos table.
+ *
+ * In:  $sign, $date, $ids, $values
+ * Out: $data
+ *
+ */ 
+function EditCryptoValues($sign, $date, $ids, $values)
+{
+    $data = []; 
+    try 
+    {         
+        $db = OpenDatabase();        
 
+        $query = "INSERT INTO tbl_value_cryptos (`id`, `date`, `cid`, `value`) VALUES ";
+            
+        for ($i = 0; $i < count($ids); $i++) 
+        {          
+            $value = AmountToMySql($sign, $values[$i]);    
+            $query .= "($ids[$i], $date, `cid`, $value)";
+            
+            if ($i < count($ids)-1) {
+                $query .= ",";
+            }
+            else {
+                $query .= " ";
+            }
+        }
+                       
+        $query .= "ON DUPLICATE KEY UPDATE `date`=VALUES(`date`),`value`=VALUES(`value`);";
+        
+        $select = $db->prepare($query);
+        $select->execute();
+         
+        // Debug
+        //$data['query'] = $query;
+        
+        $data['success'] = true;
+    }
+    catch (PDOException $e) 
+    {    
+        $data['message'] = $e->getMessage();
+        $data['success'] = false;
+    }   
+       
+    // Close database connection.
+    $db = null;        
+    
+    return $data;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+ * Function:    EditWalletAmounts
+ *
+ * Created on Oct 09, 2024
+ * Updated on Oct 09, 2024
+ *
+ * Description: Edit the values to the tbl_amount_wallets table.
+ *
+ * In:  $date
+ * Out: $data
+ *
+ */ 
+function EditWalletAmounts($date)
+{
+    $data = [];
+    try 
+    {         
+        $db = OpenDatabase();        
+                     
+        $query = "INSERT INTO tbl_amount_wallets (`id`, `vid`, `wid`, `amount`) ".
+                 "SELECT tbl_amount_wallets.`id` AS id, tbl_amount_wallets.`vid` AS `vid`, tbl_amount_wallets.`wid` AS `wid`, SUM(tbl_crypto.`amount`) AS `amount` ".
+                 "FROM tbl_amount_wallets ".
+                 "LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id` ".
+                 "LEFT JOIN tbl_crypto ON tbl_amount_wallets.`wid` = tbl_crypto.`wid` ".
+                 "WHERE tbl_value_cryptos.`date` = $date AND tbl_crypto.`date` <= $date ".
+                 "GROUP BY `vid`, `wid` ".
+                 "ON DUPLICATE KEY UPDATE `amount`=VALUES(`amount`);";            
+      
+        $select = $db->prepare($query);
+        $select->execute();               
+    
+        // Debug
+        //$data['query'] = $query;
+        
+        $data['success'] = true;
+    }
+    catch (PDOException $e) 
+    {    
+        $data['message'] = $e->getMessage();
+        $data['success'] = false;
+    }   
+        
+    // Close database connection.
+    $db = null;    
+    
+    return $data;
+}
 
 /*
  * Function:    DeleteAccountAndCryptoValues
  *
  * Created on Oct 06, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 09, 2024
  *
  * Description: Delete the rows with the date in tbl_value_accounts, tbl_value_cryptos and tbl_amount_wallets tables.
  *
@@ -444,7 +519,7 @@ function DeleteAccountAndCryptoValues($input, $date)
         // Delete the rows from the tbl_value_cryptos and tbl_amount_wallets tables.
         $query .= "DELETE tbl_amount_wallets, tbl_value_cryptos ".
                   "FROM tbl_amount_wallets ".
-                  "LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id` ".
+                  "RIGHT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id` ".
                   "WHERE tbl_value_cryptos.`date` = $day; ";
             
         // Turn on safe mode.

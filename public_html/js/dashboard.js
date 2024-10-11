@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Oct 05, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Oct 05, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -103,7 +103,10 @@ function showDashboard(c, s) {
         setDashboardPopupChoice(e, c, s);
     });    
  
- 
+     // Settings popup <enter> button is pressed.  
+    $("#popup_content").on("keypress","form",function(e) {
+        getPopupEnterKey(e);
+    });
  
  
  
@@ -280,7 +283,7 @@ function showActivaLabels(c, s, accounts) {
  * Function:    ShowActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Sep 11, 2024
+ * Updated on Oct 08, 2024
  *
  * Description: Shows the dashboard activa accounts table.
  *
@@ -322,7 +325,8 @@ function showActivaAccountsTable(c, s, date, action) {
     $("#table_container thead").append("</tr>");    
     
     // Fill the table body.
-    fillActivaAccountsTable(c.accounts.length, s, date, action);       
+    fillActivaAccountsTable(c.accounts.length, s, date, action);   
+    $("#table_container").scrollTop(0);
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      
@@ -417,7 +421,7 @@ function fillActivaAccountsTable(l, s, date, action) {
  * Function:    getAndShowAccountTotals
  *
  * Created on Sep 06, 2024
- * Updated on Sep 14, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Get and show the totals of the account table totals.
  *
@@ -432,7 +436,7 @@ function getAndShowAccountTotals(s, date) {
         if (result.success) {         
             
             // Debug
-            // console.log( result.query );
+            //console.log( result.query );
     
             var set = JSON.parse(s[0].value);
             var col = $("#table_container thead").find("tr:first th:visible").length - 2;
@@ -598,7 +602,7 @@ function showActivaCryptoContent(c, s, date) {
  * Function:    showActivaCryptoTable
  *
  * Created on Sep 05, 2024
- * Updated on Sep 06, 2024
+ * Updated on Oct 08, 2024
  *
  * Description: Shows the dashboard activa crypto table.
  *
@@ -627,7 +631,8 @@ function showActivaCryptoTable(c, s, date) {
     $("#table_container thead").append("</tr>");    
     
     // Fill the table body.   
-    fillActivaCryptoTable(c.crypto.length + 1, date);       
+    fillActivaCryptoTable(c.crypto.length + 1, date);
+    $("#table_container").scrollTop(0);
 
     // Fill the table footer.
     $("#table_container tfoot tr").remove();      

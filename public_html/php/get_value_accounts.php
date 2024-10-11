@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Oct 07, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Oct 07, 2024
+ * Updated on Oct 11, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
