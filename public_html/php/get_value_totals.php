@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Oct 11, 2024
+ * Updated on Oct 14, 2024
  *
  * Description: Check if the user is signed in and get the value totals from the databases tbl_value_accounts 
  *              and tbl_value_cryptos tables.
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueTotals
  *
  * Created on Sep 06, 2024
- * Updated on Oct 11, 2024
+ * Updated on Oct 14, 2024
  *
  * Description: Get the value totals from the databases tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -77,7 +77,7 @@ function GetValueTotals()
                     $field .= "'$pages[$key]',";
                     $i++;
                 }
-            }            
+            }          
             // Remove the last comma.
             $field = substr_replace($field, '', -1);            
             if ($field) {
@@ -86,29 +86,22 @@ function GetValueTotals()
             else {
                 $type = "`type` = ''";
             }
-            
-            // Check if the Crypto page is enabled (true) and determine the multiply factor x.
-            $x = 2;
-            if ($i > 1) {
-                $x = 1;
-            }
-                        
-            $ratio = "COALESCE(NULLIF(ROUND(SUM(`ratio`) * $x, 2), null), '&nbsp;') AS ratio";
+                                
+            $ratio = "COALESCE(IF(SUM(`ratio`) >= 50, 100, null), '&nbsp;') AS ratio";
             $value = "COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value`";
-            $rto   = "50 * `value` / SUM(`value`) OVER() AS `ratio`";
             $query = "SELECT $ratio, $value ".
                      "FROM (".
-                        "SELECT $rto, IF(tbl_value_accounts.`hide` = 0, SUM(`value`), null) AS `value` ".
+                        "SELECT IF(SUM(`value`), 50, null) AS `ratio`, SUM(`value`) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
-                        "WHERE $type AND tbl_value_accounts .`date` = $date_format ".
+                        "WHERE $type AND tbl_value_accounts.`hide` = 0 AND tbl_value_accounts .`date` = $date_format ".
                         "UNION ".
-                        "SELECT $rto, IF(tbl_amount_wallets.`hide` = 0, SUM(`amount`*`value`), null) AS `value` ".
+                        "SELECT IF(SUM(`value`), 50, null) AS `ratio`, SUM(`amount`*`value`) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
-                        "WHERE $type AND tbl_value_cryptos.`date` = $date_format".
+                        "WHERE $type AND tbl_amount_wallets.`hide` = 0 AND tbl_value_cryptos.`date` = $date_format".
                      ") total;";            
                
             $select = $db->prepare($query);

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 11, 2024
+ * Updated on Oct 14, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -76,7 +76,7 @@ function showActivaModifyPopup(adp, btn, c, s) {
  * Function:    fillActivaModifyPopup
  *
  * Created on Sep 11, 2024
- * Updated on Oct 05, 2024
+ * Updated on Oct 14, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -108,11 +108,11 @@ function fillActivaModifyPopup(adp, btn, c, s) {
             if (result.data.length)
             {
                 // Fill first row and column with the entry date.
-                $(".popup_table_activa tr:first td:first").html(c.misc[0]);
+                $(".popup_table_activa thead tr:first th:first").html(c.misc[0]);
                 $("#popup_content #date").attr("placeholder", c.misc[1]);
             
-                // Remove all rows except the first and last rows.
-                $(".popup_table_activa tbody tr").not(":first").remove();
+                // Remove all rows.
+                $(".popup_table_activa tbody tr").remove();
 
                 //console.log( result.data );
             
@@ -248,7 +248,7 @@ function setDashboardPopupChoice(e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 13, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -298,7 +298,7 @@ function modifyActivaValues(c, s, btn) {
             if (result.success) {      
                                     
                 // Debug
-                console.log( result );
+                //console.log( result );
                 
                 if (result.exists) {
                     $("#popup_content .msg").html(c.misc[0] + " " + c.messages[1]);

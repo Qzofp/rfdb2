@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 16, 2024
- * Updated on Oct 11, 2024
+ * Updated on Oct 13, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_value_accounts and tbl_value_cryptos tables.
  * Dependenties: config.php
@@ -119,7 +119,7 @@ function AddAccountAndCryptoValues($input, $date, $aids, $accounts, $cids, $cryp
  * Function:    AddAccountValues
  *
  * Created on Oct 02, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 13, 2024
  *
  * Description: Add the values to the tbl_value_accounts table if the date doesn't exists.
  *
@@ -163,8 +163,8 @@ function AddAccountValues($sign, $date, $ids, $values)
         }
             
         // Debug
-        $data['rows'] = $rows;
-        $data['query'] = $query;
+        //$data['rows'] = $rows;
+        //$data['query'] = $query;
         
         $data['success'] = true;
     }
@@ -184,7 +184,7 @@ function AddAccountValues($sign, $date, $ids, $values)
  * Function:    AddCryptoValues
  *
  * Created on Sep 24, 2024
- * Updated on Oct 04, 2024
+ * Updated on Oct 13, 2024
  *
  * Description: Add the values to the tbl_value_cryptos table if the date doesn't exists.
  *
@@ -227,7 +227,7 @@ function AddCryptoValues($sign, $date, $ids, $values)
         }
             
         // Debug
-        $data['rows'] = $rows;
+        //$data['rows'] = $rows;
         //$data['query'] = $query;
                 
         $data['success'] = true;
@@ -444,7 +444,7 @@ function EditCryptoValues($sign, $date, $ids, $values)
  * Function:    EditWalletAmounts
  *
  * Created on Oct 09, 2024
- * Updated on Oct 09, 2024
+ * Updated on Oct 13, 2024
  *
  * Description: Edit the values to the tbl_amount_wallets table.
  *
@@ -465,7 +465,7 @@ function EditWalletAmounts($date)
                  "LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id` ".
                  "LEFT JOIN tbl_crypto ON tbl_amount_wallets.`wid` = tbl_crypto.`wid` ".
                  "WHERE tbl_value_cryptos.`date` = $date AND tbl_crypto.`date` <= $date ".
-                 "GROUP BY `vid`, `wid` ".
+                 "GROUP BY `id`, `vid`, `wid` ".
                  "ON DUPLICATE KEY UPDATE `amount`=VALUES(`amount`);";            
       
         $select = $db->prepare($query);

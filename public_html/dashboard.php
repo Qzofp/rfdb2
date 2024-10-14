@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Sep 29, 2024
+ * Updated on Oct 14, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -163,13 +163,19 @@ if(!$user){
                         <form method="POST">                           
                             
                             <!-- Popup for the activa input (is needed for the datepicker). -->
-                            <table class="popup_table_activa">
-                                <tr>                              
-                                    <td colspan="2"></td>
-                                    <td><input id="date" type="text" name="date" placeholder="" value="" /></td>
-                                    <td><input class="btn" type="image" name="submit" src="img/del.png" alt="del"></td>
-                                </tr>
-                            </table>
+                            <div class="popup_scroll_table">
+                                <table class="popup_table_activa">
+                                    <thead>
+                                        <tr>                              
+                                            <th colspan="2"></th>
+                                            <th><input id="date" type="text" name="date" placeholder="" value="" /></th>
+                                            <th><input class="btn" type="image" name="submit" src="img/del.png" alt="del"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                             
                             <!-- Popup for the tbl_collapse table -->
                             <table class="popup_table_collapse">
