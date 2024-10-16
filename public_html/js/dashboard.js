@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Oct 11, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Oct 11, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -94,9 +94,12 @@ function showDashboard(c, s) {
     });
     
     // Table row is pressed.
-    //$("#table_container").on('click', 'tbody tr', function(){        
+    $("#table_container").on('click', 'tbody tr', function(){        
         //showSheetEditPopup($adp, c, i, this);
-    //});    
+        
+        
+        
+    });    
     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
@@ -107,10 +110,7 @@ function showDashboard(c, s) {
     $("#popup_content").on("keypress","form",function(e) {
         getPopupEnterKey(e);
     });
- 
- 
- 
-    
+  
     // Show the page theme.
     showPageTheme(s[0]); 
      

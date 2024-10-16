@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 14, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    showActivaModifyPopup
  *
  * Created on Sep 07, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Shows the popup when the page add or edit button is pressed.
  *
@@ -53,7 +53,11 @@ function showActivaModifyPopup(adp, btn, c, s) {
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
     
     if (page) 
-    {
+    {        
+        // Calculate popup scroll table height.
+        var y = $(".content_main").height() - 200;
+        $(".popup_scroll_table").css("max-height", y);
+        
         // Reset values.
         setAirDatePicker(adp, ""); // Reset the date.
         $("#popup_content .msg").html("&nbsp;");

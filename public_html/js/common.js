@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Oct 05, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -105,7 +105,7 @@ function showPageTitles(c, i, add) {
  * Function:    showPageTheme
  *
  * Created on Oct 29, 2023
- * Updated on Nar 15, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: Show the sheet page theme colors.
  *
@@ -127,8 +127,10 @@ function showPageTheme(s) {
     }
     
     // Windows scroll bar FF fix.
-    if (navigator.appVersion.indexOf("Win") !== -1 && navigator.userAgent.indexOf("Firefox") !== -1) {
+    if (navigator.appVersion.indexOf("Win") !== -1 && navigator.userAgent.indexOf("Firefox") !== -1) 
+    {
         $("#table_container:-moz-read-only").css("scrollbar-width", "thin");
+        $(".popup_scroll_table:-moz-read-only").css("scrollbar-width", "thin");
     }
 }
 

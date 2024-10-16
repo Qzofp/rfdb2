@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Oct 14, 2024
+ * Updated on Oct 16, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -152,7 +152,7 @@
  z-index: 1;
  margin: auto;
  overflow: auto;
- height: 250px; /* Calculate this in de code */
+/* max-height: 250px; /* Calculate this in de code */
 }
 
 .popup_scroll_table:-moz-read-only {
