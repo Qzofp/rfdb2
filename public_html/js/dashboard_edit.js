@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 16, 2024
+ * Updated on Oct 21, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -430,4 +430,56 @@ function getDashboardPopupAction() {
     }
     
     return action;
+}
+
+/*
+ * Function:    showDashboardRowAction
+ *
+ * Created on Oct 21, 2024
+ * Updated on Oct 21, 2024
+ *
+ * Description: Shows the action when a table row is pressed.
+ *
+ * In:  c, that
+ * Out: -
+ *
+ */
+function showDashboardRowAction(c, that) {
+    
+    // Get the active slide.
+    var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
+    switch (slide) {
+        // The Activa slide.
+        case 0 : 
+            showActivaRowAction(c, that);
+            break;
+        
+        // The 2nd slide.
+        case 1 :
+            break;
+            
+        // The 3rd slide.   
+        case 2 :  
+            break;
+    }
+    //console.log( $(that).closest('tr').find('td:first').text() );  
+}
+
+/*
+ * Function:    showActivaRowAction
+ *
+ * Created on Oct 21, 2024
+ * Updated on Oct 21, 2024
+ *
+ * Description: Shows the action when a table row is pressed on the Activa slide.
+ *
+ * In:  c, that
+ * Out: -
+ *
+ */
+function showActivaRowAction(c, that) {
+    
+    // Get the active table name.
+    console.log( $("#table_container table").attr('class') );
+    
 }
