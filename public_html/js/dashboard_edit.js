@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 21, 2024
+ * Updated on Oct 23, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    showActivaModifyPopup
  *
  * Created on Sep 07, 2024
- * Updated on Oct 16, 2024
+ * Updated on Oct 23, 2024
  *
  * Description: Shows the popup when the page add or edit button is pressed.
  *
@@ -65,7 +65,7 @@ function showActivaModifyPopup(adp, btn, c, s) {
         // Show the popup_table activa class.
         $(".popup_table_activa").show(); 
     
-        fillActivaModifyPopup(adp, btn, c, s);    
+        fillActivaModifyPopup(adp, btn, c, s);
     }
     else 
     {        
@@ -80,7 +80,7 @@ function showActivaModifyPopup(adp, btn, c, s) {
  * Function:    fillActivaModifyPopup
  *
  * Created on Sep 11, 2024
- * Updated on Oct 14, 2024
+ * Updated on Oct 23, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -126,7 +126,9 @@ function fillActivaModifyPopup(adp, btn, c, s) {
                 
                     [i, kind] = showActivaAccount(c, s, i, kind, btn, item);
                     i++;
-                }); 
+                });
+                
+                $(".popup_scroll_table").scrollTop(0);
             }
             else 
             {
@@ -436,7 +438,7 @@ function getDashboardPopupAction() {
  * Function:    showDashboardRowAction
  *
  * Created on Oct 21, 2024
- * Updated on Oct 21, 2024
+ * Updated on Oct 22, 2024
  *
  * Description: Shows the action when a table row is pressed.
  *
@@ -444,14 +446,14 @@ function getDashboardPopupAction() {
  * Out: -
  *
  */
-function showDashboardRowAction(c, that) {
+function showDashboardRowAction(adp, c, s, that) {
     
     // Get the active slide.
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);
     switch (slide) {
         // The Activa slide.
         case 0 : 
-            showActivaRowAction(c, that);
+            showActivaRowAction(adp, c, s, that);
             break;
         
         // The 2nd slide.
@@ -469,17 +471,30 @@ function showDashboardRowAction(c, that) {
  * Function:    showActivaRowAction
  *
  * Created on Oct 21, 2024
- * Updated on Oct 21, 2024
+ * Updated on Oct 23, 2024
  *
  * Description: Shows the action when a table row is pressed on the Activa slide.
  *
- * In:  c, that
+ * In:  adp, c, s, that
  * Out: -
  *
  */
-function showActivaRowAction(c, that) {
+function showActivaRowAction(adp, c, s, that) {
     
-    // Get the active table name.
-    console.log( $("#table_container table").attr('class') );
-    
+    var row = $(that).closest('tr').find('td:first').text();
+    if (row.trim())
+    {    
+        // Get the active table name.
+        console.log(row, $("#table_container table").attr('class') );
+        
+        $(that).addClass("marked");
+        
+        //showActivaAccountPopup();
+        
+        
+    }
+    else { // Row is empty
+        showActivaModifyPopup(adp, "add", c, s);
+    }
 }
+

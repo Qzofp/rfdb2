@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Oct 16, 2024
+ * Updated on Oct 22, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -185,7 +185,7 @@
 
 .popup_scroll_table td {  
  padding: 2px;
- vertical-align: top;   
+ /* vertical-align: top; */
 }
 
 .popup_scroll_table thead th {
