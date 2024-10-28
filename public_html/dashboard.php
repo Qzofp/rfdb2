@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Oct 14, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -177,20 +177,12 @@ if(!$user){
                                 </table>
                             </div>
                             
-                            <!-- Popup for the tbl_collapse table -->
-                            <table class="popup_table_collapse">
-                                <tr>                              
-                                    <td>Test Accounts Collapse</td>
+                            <!-- Popup for the tbl_collapse and tbl_expand tables -->
+                            <table class="popup_table_accounts">
+                                <tr>
                                 </tr>
                             </table>                            
-                            
-                            <!-- Popup for the tbl_expand table -->
-                            <table class="popup_table_expand">
-                                <tr>                              
-                                    <td>Test Accounts Expand</td>              
-                                </tr>
-                            </table>                               
-                            
+                                              
                             <!-- Popup for the tbl_crypto table -->
                             <table class="popup_table_crypto">
                                 <tr>                              
@@ -204,7 +196,7 @@ if(!$user){
                             
                             
                             <!-- Message field -->
-                            <div class="msg">&nbsp;</div> 
+                            <div class="msg"></div> 
                             
                             <a class="close" href="javascript:void(0)">x</a>   
                             <div class="choice">

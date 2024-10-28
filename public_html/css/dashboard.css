@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Oct 22, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -196,3 +196,6 @@
  top: 0;
 }
 
+.popup_table_accounts td {
+ padding: 0px 5px;
+}

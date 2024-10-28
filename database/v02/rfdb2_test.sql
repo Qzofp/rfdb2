@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 14, 2024 at 04:39 PM
+-- Generation Time: Oct 28, 2024 at 01:59 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -36,8 +36,8 @@ CREATE TABLE `tbl_accounts` (
   `account` varbinary(200) NOT NULL,
   `date` datetime DEFAULT NULL,
   `sid` int DEFAULT NULL,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -46,11 +46,11 @@ CREATE TABLE `tbl_accounts` (
 
 INSERT INTO `tbl_accounts` (`id`, `hide`, `account`, `date`, `sid`, `type`, `description`) VALUES
 (1, 0, 0xaf4625a6843646707b0f5f09e5992d1bc69ff9e57288fd858c0f1889eeccec17, '2001-04-04 13:53:34', 1, 'finance', 'ING betaalrekening van Rizzo'),
-(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 13:53:19', 2, 'finance', 'ABN AMRO 2de betaalrekening van Rizzo'),
+(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 13:27:52', 2, 'finance', 'ABN AMRO 2de betaalrekening van Rizzo'),
 (3, 0, 0xf88222f64335d3d233895fb2919b2b34, '2005-09-22 10:32:37', 1, 'stock', 'ING beleggingsrekening'),
 (4, 0, 0xb20fed245787d866d957497b4c301e36, '2016-03-10 10:34:05', 4, 'stock', 'Bank B belegginsrekening'),
 (5, 0, 0x1a813d0f78e1d93eb79ad3f4661b6dc4, '2008-07-15 15:16:51', 3, 'savings', 'Bank A spaarrekening'),
-(6, 0, 0x03a4d441647a290e6638cd2e18744b80, '2012-12-14 15:16:54', 4, 'savings', 'Bank B spaarrekening'),
+(6, 1, 0x03a4d441647a290e6638cd2e18744b80, '2012-12-14 13:46:10', 4, 'savings', 'Bank B spaarrekening'),
 (7, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2018-10-17 10:37:51', 6, 'crypto', 'Trezor Wallet #1'),
 (8, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2020-01-16 14:50:15', 5, 'crypto', 'Exchange A Wallet #1'),
 (9, 0, 0xb90d0dc9d300c028e5de721a2bbd725d, '2022-08-18 10:40:06', 6, 'crypto', 'Trezor Wallet #2');
@@ -75,18 +75,18 @@ CREATE TABLE `tbl_amount_wallets` (
 --
 
 INSERT INTO `tbl_amount_wallets` (`id`, `hide`, `vid`, `wid`, `amount`) VALUES
-(8, 0, 4, 1, '0.00500000'),
-(9, 0, 5, 4, '0.05000000'),
-(10, 0, 4, 2, '0.00500000'),
-(11, 0, 5, 3, '0.05000000'),
-(15, 0, 7, 1, '0.01000000'),
-(16, 0, 8, 4, '0.10000000'),
-(17, 0, 7, 2, '0.01000000'),
-(18, 0, 8, 3, '0.10000000'),
-(22, 0, 10, 1, '0.01500000'),
-(23, 0, 11, 4, '0.15000000'),
-(24, 0, 10, 2, '0.01500000'),
-(25, 0, 11, 3, '0.15000000');
+(1, 0, 1, 1, '0.03679673'),
+(2, 0, 2, 4, '0.05308090'),
+(3, 0, 2, 3, '0.00011450'),
+(4, 0, 1, 2, '0.01864570'),
+(8, 0, 4, 1, '0.03679673'),
+(9, 0, 5, 4, '0.05308090'),
+(10, 0, 5, 3, '0.05045750'),
+(11, 0, 4, 2, '0.01864570'),
+(15, 0, 7, 1, '0.03679673'),
+(16, 0, 8, 4, '0.05308090'),
+(17, 0, 8, 3, '0.05045750'),
+(18, 0, 7, 2, '0.01864570');
 
 -- --------------------------------------------------------
 
@@ -98,11 +98,11 @@ DROP TABLE IF EXISTS `tbl_businesses`;
 CREATE TABLE `tbl_businesses` (
   `id` int NOT NULL,
   `hide` tinyint DEFAULT '0',
-  `business` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `business` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `gid` int NOT NULL,
-  `website` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rad_history` tinyint DEFAULT '-1',
-  `desc_history` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `desc_history` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -126,8 +126,8 @@ INSERT INTO `tbl_businesses` (`id`, `hide`, `business`, `gid`, `website`, `rad_h
 DROP TABLE IF EXISTS `tbl_config`;
 CREATE TABLE `tbl_config` (
   `id` int NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -184,7 +184,7 @@ CREATE TABLE `tbl_crypto` (
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
   `amount` decimal(11,8) DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -192,18 +192,16 @@ CREATE TABLE `tbl_crypto` (
 --
 
 INSERT INTO `tbl_crypto` (`id`, `date`, `wid`, `deposit`, `withdrawal`, `amount`, `description`) VALUES
-(1, '2024-07-01', 1, '100.00', NULL, '0.00500000', 'Gekocht van Bitonic'),
-(2, '2024-07-02', 4, '50.00', NULL, '0.05000000', 'Gekocht op Exchange A'),
-(3, '2024-07-03', 2, '100.00', NULL, '0.00500000', 'Gekocht van Bitvavo'),
-(4, '2024-07-04', 3, '50.00', NULL, '0.05000000', 'Gekocht van Bitvavo'),
-(5, '2024-08-01', 4, '60.00', NULL, '0.05000000', 'Gekocht op Exchange A'),
-(6, '2024-08-02', 1, '110.00', NULL, '0.00500000', 'Gekocht van Bitonic'),
-(7, '2024-08-03', 2, '110.00', NULL, '0.00500000', 'Gekocht van Bitvavo'),
-(8, '2024-08-04', 3, '60.00', NULL, '0.05000000', 'Gekocht van Bitvavo'),
-(9, '2024-09-01', 2, '120.00', NULL, '0.00500000', 'Gekocht van Bitonic'),
-(10, '2024-09-02', 4, '70.00', NULL, '0.05000000', 'Gekocht op Exchange A'),
-(11, '2024-09-03', 3, '70.00', NULL, '0.05000000', 'Gekocht van Bitvavo'),
-(12, '2024-09-04', 1, '120.00', NULL, '0.00500000', 'Gekocht op Bitonic');
+(1, '2024-07-02', 1, '100.00', NULL, '0.00002300', 'Gekocht van Bitonic'),
+(2, '2024-07-04', 4, '50.00', NULL, '0.00786120', 'Gekocht op Exchange A'),
+(3, '2024-07-10', 1, '150.00', NULL, '0.01243253', 'Gekocht van Bitonic'),
+(4, '2024-07-12', 4, NULL, '20.00', '-0.00011450', 'Verstuurt naar Trezor Wallet #1, ETH'),
+(5, '2024-07-12', 3, '20.00', NULL, '0.00011450', 'Ontvangen van Exchange A wallet'),
+(6, '2024-07-14', 2, '200.00', NULL, '0.01834340', 'Gekocht van Bitonic'),
+(7, '2024-07-17', 1, '200.00', NULL, '0.02434120', 'Gekocht van Bitonic'),
+(8, '2024-07-20', 4, '150.00', NULL, '0.04533420', 'Gekocht op Exchange A'),
+(9, '2024-07-21', 2, '50.00', NULL, '0.00030230', 'Gekocht van Bitonic'),
+(10, '2024-08-01', 3, '200.00', NULL, '0.05034300', 'Gekocht op Bitvavo');
 
 -- --------------------------------------------------------
 
@@ -215,9 +213,9 @@ DROP TABLE IF EXISTS `tbl_cryptocurrenties`;
 CREATE TABLE `tbl_cryptocurrenties` (
   `id` int NOT NULL,
   `hide` tinyint DEFAULT '0',
-  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `symbol` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `website` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `symbol` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -238,7 +236,7 @@ DROP TABLE IF EXISTS `tbl_dutch`;
 CREATE TABLE `tbl_dutch` (
   `id` int NOT NULL,
   `id_config` int NOT NULL,
-  `value` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
+  `value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -288,7 +286,7 @@ DROP TABLE IF EXISTS `tbl_english`;
 CREATE TABLE `tbl_english` (
   `id` int NOT NULL,
   `id_config` int NOT NULL,
-  `value` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
+  `value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -343,7 +341,7 @@ CREATE TABLE `tbl_finances` (
   `fixed` decimal(11,2) DEFAULT NULL,
   `other` decimal(11,2) DEFAULT NULL,
   `bid` int DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -366,8 +364,8 @@ DROP TABLE IF EXISTS `tbl_groups`;
 CREATE TABLE `tbl_groups` (
   `id` int NOT NULL,
   `hide` tinyint DEFAULT '0',
-  `group` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `group` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -389,9 +387,9 @@ INSERT INTO `tbl_groups` (`id`, `hide`, `group`, `description`) VALUES
 DROP TABLE IF EXISTS `tbl_language`;
 CREATE TABLE `tbl_language` (
   `id` int NOT NULL,
-  `language` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `native` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL
+  `language` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `native` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -448,8 +446,16 @@ CREATE TABLE `tbl_savings` (
   `aid` int NOT NULL,
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_savings`
+--
+
+INSERT INTO `tbl_savings` (`id`, `date`, `aid`, `deposit`, `withdrawal`, `description`) VALUES
+(1, '2024-10-08', 5, '50.00', NULL, 'Van betaalrekening'),
+(2, '2024-10-10', 5, '150.00', NULL, 'Van betaalrekening');
 
 -- --------------------------------------------------------
 
@@ -461,12 +467,12 @@ DROP TABLE IF EXISTS `tbl_services`;
 CREATE TABLE `tbl_services` (
   `id` int NOT NULL,
   `hide` tinyint DEFAULT '0',
-  `service` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `finance` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
-  `stock` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
-  `savings` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
-  `crypto` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
-  `website` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `service` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finance` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `stock` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `savings` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `crypto` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `website` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -477,7 +483,7 @@ INSERT INTO `tbl_services` (`id`, `hide`, `service`, `finance`, `stock`, `saving
 (1, 0, 'ING Particulier', '&#9745;', '&#9745;', '&#9744;', '&#9744;', 'https://www.ing.nl/particulier'),
 (2, 0, 'ABN AMRO Bank', '&#9745;', '&#9744;', '&#9744;', '&#9744;', 'https://www.abnamro.nl/nl/personal/index.html'),
 (3, 0, 'Bank A', '&#9744;', '&#9744;', '&#9745;', '&#9744;', 'https://banka.com'),
-(4, 0, 'Bank B', '&#9744;', '&#9745;', '&#9745;', '&#9744;', 'https://bankb.com'),
+(4, 1, 'Bank B', '&#9744;', '&#9745;', '&#9745;', '&#9744;', 'https://bankb.com'),
 (5, 0, 'Crypto Exchange A', '&#9744;', '&#9744;', '&#9744;', '&#9745;', ''),
 (6, 0, 'Trezor', '&#9744;', '&#9744;', '&#9744;', '&#9745;', '');
 
@@ -490,8 +496,8 @@ INSERT INTO `tbl_services` (`id`, `hide`, `service`, `finance`, `stock`, `saving
 DROP TABLE IF EXISTS `tbl_settings`;
 CREATE TABLE `tbl_settings` (
   `id` int NOT NULL,
-  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -522,7 +528,7 @@ CREATE TABLE `tbl_stocks` (
   `aid` int NOT NULL,
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
-  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -534,8 +540,8 @@ CREATE TABLE `tbl_stocks` (
 DROP TABLE IF EXISTS `tbl_users`;
 CREATE TABLE `tbl_users` (
   `id` int NOT NULL,
-  `user` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(75) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` datetime DEFAULT NULL,
   `last` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -545,7 +551,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-10-14 14:27:34', '2024-10-13 13:13:03');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-10-28 13:17:03', '2024-10-28 11:30:38');
 
 -- --------------------------------------------------------
 
@@ -567,24 +573,24 @@ CREATE TABLE `tbl_value_accounts` (
 --
 
 INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
-(4, 0, '2024-07-22', 2, '10.00'),
-(5, 0, '2024-07-22', 1, '100.00'),
-(6, 0, '2024-07-22', 4, '20.00'),
-(7, 0, '2024-07-22', 3, '200.00'),
-(8, 0, '2024-07-22', 5, '30.00'),
-(9, 0, '2024-07-22', 6, '300.00'),
-(11, 0, '2024-08-19', 2, '11.00'),
-(12, 0, '2024-08-19', 1, '111.00'),
-(13, 0, '2024-08-19', 4, '21.00'),
-(14, 0, '2024-08-19', 3, '221.00'),
-(15, 0, '2024-08-19', 5, '31.00'),
-(16, 0, '2024-08-19', 6, '331.00'),
-(18, 0, '2024-09-23', 2, '12.00'),
-(19, 0, '2024-09-23', 1, '112.00'),
-(20, 0, '2024-09-23', 4, '22.00'),
-(21, 0, '2024-09-23', 3, '222.00'),
-(22, 0, '2024-09-23', 5, '32.00'),
-(23, 0, '2024-09-23', 6, '332.00');
+(1, 0, '2024-07-22', 2, '10.00'),
+(2, 0, '2024-07-22', 1, '100.00'),
+(3, 0, '2024-07-22', 4, '20.00'),
+(4, 0, '2024-07-22', 3, '200.00'),
+(5, 0, '2024-07-22', 5, '30.00'),
+(6, 0, '2024-07-22', 6, '300.00'),
+(8, 0, '2024-08-19', 2, '15.00'),
+(9, 0, '2024-08-19', 1, '115.00'),
+(10, 0, '2024-08-19', 4, '25.00'),
+(11, 0, '2024-08-19', 3, '225.00'),
+(12, 0, '2024-08-19', 5, '35.00'),
+(13, 0, '2024-08-19', 6, '335.00'),
+(15, 0, '2024-09-23', 2, '17.50'),
+(16, 0, '2024-09-23', 1, '117.50'),
+(17, 0, '2024-09-23', 4, '27.50'),
+(18, 0, '2024-09-23', 3, '227.50'),
+(19, 1, '2024-09-23', 5, '37.50'),
+(20, 1, '2024-09-23', 6, '337.50');
 
 -- --------------------------------------------------------
 
@@ -605,12 +611,12 @@ CREATE TABLE `tbl_value_cryptos` (
 --
 
 INSERT INTO `tbl_value_cryptos` (`id`, `date`, `cid`, `value`) VALUES
-(4, '2024-07-22', 1, '50000.00'),
-(5, '2024-07-22', 2, '2000.00'),
-(7, '2024-08-19', 1, '50100.00'),
-(8, '2024-08-19', 2, '2010.00'),
-(10, '2024-09-23', 1, '50200.00'),
-(11, '2024-09-23', 2, '2020.00');
+(1, '2024-07-22', 1, '50000.00'),
+(2, '2024-07-22', 2, '2000.00'),
+(4, '2024-08-19', 1, '50500.00'),
+(5, '2024-08-19', 2, '2050.00'),
+(7, '2024-09-23', 1, '50700.00'),
+(8, '2024-09-23', 2, '2070.00');
 
 -- --------------------------------------------------------
 
@@ -624,7 +630,7 @@ CREATE TABLE `tbl_wallets` (
   `hide` tinyint DEFAULT '0',
   `aid` int NOT NULL,
   `cid` int NOT NULL,
-  `description` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -776,7 +782,7 @@ ALTER TABLE `tbl_accounts`
 -- AUTO_INCREMENT for table `tbl_amount_wallets`
 --
 ALTER TABLE `tbl_amount_wallets`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_businesses`
@@ -794,7 +800,7 @@ ALTER TABLE `tbl_config`
 -- AUTO_INCREMENT for table `tbl_crypto`
 --
 ALTER TABLE `tbl_crypto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_cryptocurrenties`
@@ -836,7 +842,7 @@ ALTER TABLE `tbl_language`
 -- AUTO_INCREMENT for table `tbl_savings`
 --
 ALTER TABLE `tbl_savings`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_services`
@@ -866,13 +872,13 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_value_accounts`
 --
 ALTER TABLE `tbl_value_accounts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_cryptos`
 --
 ALTER TABLE `tbl_value_cryptos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_wallets`

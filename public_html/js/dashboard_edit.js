@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 23, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -220,7 +220,7 @@ function showActivaAccount(c, s, i, kind, btn, item) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Oct 06, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
@@ -233,16 +233,22 @@ function setDashboardPopupChoice(e, c, s) {
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;
     var popup = $('#popup_content').attr('class');
-      
+    
+    // Debug
+    //console.log( popup );
+    
     switch (popup) {
         case "activa_list" :
             break;
         
-        case "activa_modify"  :
+        case "activa_modify"   :     
             modifyActivaValues(c, s, btn);
-            break;
+            break;    
+        
+        case "activa_accounts" : 
+            // modifyActivaAccountRow(btn);
             
-        case "activa_value"  : // For the expand and collapse table
+            checkShowHide(btn);
             break;
             
         case "activa_crypto" :
@@ -254,7 +260,7 @@ function setDashboardPopupChoice(e, c, s) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Oct 13, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -471,7 +477,7 @@ function showDashboardRowAction(adp, c, s, that) {
  * Function:    showActivaRowAction
  *
  * Created on Oct 21, 2024
- * Updated on Oct 23, 2024
+ * Updated on Oct 27, 2024
  *
  * Description: Shows the action when a table row is pressed on the Activa slide.
  *
@@ -483,18 +489,81 @@ function showActivaRowAction(adp, c, s, that) {
     
     var row = $(that).closest('tr').find('td:first').text();
     if (row.trim())
-    {    
-        // Get the active table name.
-        console.log(row, $("#table_container table").attr('class') );
-        
-        $(that).addClass("marked");
-        
-        //showActivaAccountPopup();
-        
-        
+    {             
+        // Get the active table name (collapse or expand).
+        var table = $("#table_container table").attr('class');
+        if (table !== "tbl_crypto") {
+           showActivaAccountRowPopup(c, s, that);
+        }
+        else {
+            showActivaModifyPopup(adp, "edit", c, s);
+        }
     }
     else { // Row is empty
         showActivaModifyPopup(adp, "add", c, s);
     }
+}
+
+/*
+ * Function:    showActivaAccountRowPopup
+ *
+ * Created on Oct 27, 2024
+ * Updated on Oct 28, 2024
+ *
+ * Description: Shows the popup for the activa account row.
+ *
+ * In:  c, s, that
+ * Out: -
+ *
+ */
+function showActivaAccountRowPopup(c, s, that) {
+
+    var set = JSON.parse(s[0].value);
+    var cells = [];
+       
+    $(that).addClass("marked");
+    
+    // Set the popup class.
+    $("#popup_content").removeClass().addClass("activa_accounts");     
+    
+    // Find all popup_table classes and hide them.
+    $("#popup_content").find("[class^=popup_table]").hide();   
+    
+    // Show the title.
+    $("#popup_content h2").html(c.labels[0]);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
+    
+    // Get the row values.
+    $("#table_container tbody .marked").find("td").each(function() {   
+        if (!$(this).is(":hidden")) {
+            cells.push($(this).html());
+        }
+    }); 
+        
+    // Remove all rows.
+    $(".popup_table_accounts td").remove();
+    
+    // Add the table row.
+    $(".popup_table_accounts tr").append(
+        '<td><input class="shw" type="image" name="submit" src="img/show.png" alt="show" style=""></td>'
+    );  
+ 
+    for (let i = 1; i < cells.length; i++) {
+        $(".popup_table_accounts tr").append('<td><input class="dummy" type="text" value="' + cells[i] + '" disabled></td>');
+    }
+         
+    if ($(that).hasClass("hide")) {
+        $(".popup_table_accounts .shw").attr({
+                src: "img/hide.png",
+                alt: "hide"
+        });       
+    }   
+    
+    $(".msg").html("");
+    
+    // Show the popup for the collapse or expand table.
+    $(".popup_table_accounts").show(); 
+
+    $("#popup_container").fadeIn("slow"); 
 }
 

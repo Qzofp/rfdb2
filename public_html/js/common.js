@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Oct 16, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -450,6 +450,44 @@ function fillTable(s, page, l, send) {
     closeErrorMessage();      
 }
 
+/*
+ * Function:    checkShowHide
+ *
+ * Created on Feb 23, 2024
+ * Updated on Feb 23, 2024
+ *
+ * Description: Check if the show or hide button is pressed in de popup choice window.
+ *
+ * In:  btn
+ * Out: check
+ * 
+ */
+function checkShowHide(btn) {  
+    
+    var check = false;
+      
+    if (btn === "show" || btn === "hide") {
+        
+        if (btn === "show") {
+            
+            $("#popup_content .shw").attr({
+                src: "img/hide.png",
+                alt: "hide"
+            });           
+        }
+        else {
+            
+            $("#popup_content .shw").attr({
+                src: "img/show.png",
+                alt: "show"
+            });                            
+        }
+        
+        check = true;
+    }
+    
+    return check;
+}
 
 /*
  * Function:    checkEditDelete

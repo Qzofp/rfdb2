@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Sep 07, 2024
+ * Updated on Oct 28, 2024
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -788,45 +788,6 @@ function showEditService(result) {
     
     $("#table_container tbody .marked td").eq(1).html(result.srv);
     $("#table_container tbody .marked td:last-child").html(result.web);    
-}
-
-/*
- * Function:    checkShowHide
- *
- * Created on Feb 23, 2024
- * Updated on Feb 23, 2024
- *
- * Description: Check if the show or hide button is pressed in de popup choice window.
- *
- * In:  btn
- * Out: check
- * 
- */
-function checkShowHide(btn) {  
-    
-    var check = false;
-      
-    if (btn === "show" || btn === "hide") {
-        
-        if (btn === "show") {
-            
-            $("#popup_content .shw").attr({
-                src: "img/hide.png",
-                alt: "hide"
-            });           
-        }
-        else {
-            
-            $("#popup_content .shw").attr({
-                src: "img/show.png",
-                alt: "show"
-            });                            
-        }
-        
-        check = true;
-    }
-    
-    return check;
 }
 
 /*
