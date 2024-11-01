@@ -773,7 +773,6 @@ FROM (
 ) total 
 WHERE `type` IN ('finance','stock','savings','crypto');
 
-
 SELECT COALESCE(NULLIF(ROUND(SUM(`ratio`), 2), null), '&nbsp;') AS ratio, COALESCE(NULLIF(SUM(`value`), null), '&nbsp;') AS `value` 
 FROM (    
     SELECT 50 * `value` / SUM(`value`) OVER() AS `ratio`, IF(tbl_value_accounts.`hide` = 0, SUM(`value`), 0) AS `value` 
@@ -788,3 +787,24 @@ FROM (
     LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
     WHERE `type` IN ('crypto') AND tbl_value_cryptos.`date` = STR_TO_DATE('22-07-2024', '%d-%m-%Y')
 ) total 
+
+-- Account show / hide update query
+UPDATE tbl_value_accounts 
+LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id`
+SET `tbl_value_accounts`.`hide` = 0
+WHERE tbl_value_accounts.`date` = '2024-09-23' AND tbl_accounts.`type` = 'stock'
+
+SELECT tbl_value_accounts.*
+FROM tbl_value_accounts
+LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id`
+WHERE tbl_value_accounts.`date` = '2024-09-23' AND tbl_accounts.`type` = 'stock'
+
+UPDATE tbl_amount_wallets
+LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
+SET tbl_amount_wallets.`hide` = 0
+WHERE tbl_value_cryptos.`date` = '2024-09-23';
+
+SELECT tbl_amount_wallets.*
+FROM tbl_amount_wallets
+LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
+WHERE tbl_value_cryptos.`date` = '2024-09-23'

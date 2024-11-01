@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Oct 28, 2024
+ * Updated on Nov 01, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -220,7 +220,7 @@ function showActivaAccount(c, s, i, kind, btn, item) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Oct 28, 2024
+ * Updated on Nov 01, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
@@ -246,9 +246,7 @@ function setDashboardPopupChoice(e, c, s) {
             break;    
         
         case "activa_accounts" : 
-            // modifyActivaAccountRow(btn);
-            
-            checkShowHide(btn);
+            modifyActivaAccountRow(c, s, btn);
             break;
             
         case "activa_crypto" :
@@ -567,3 +565,65 @@ function showActivaAccountRowPopup(c, s, that) {
     $("#popup_container").fadeIn("slow"); 
 }
 
+/*
+ * Function:    modifyActivaAccountRow
+ *
+ * Created on Oct 30, 2024
+ * Updated on Nov 01, 2024
+ *
+ * Description: (Check the input and) Modify (it in) the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
+ *
+ * In:  c, s, btn
+ * Out: -
+ *
+ */
+function modifyActivaAccountRow(c, s, btn) {
+    
+    // Get input values.
+    var date = $("#input_date span").html();
+    var tbl  = $("#table_container table").attr('class');
+    var row  = $("#table_container tbody .marked").closest('tr').find('td:first').text();
+    var shw  = $(".popup_table_accounts .shw").attr("alt");
+     
+    checkShowHide(btn);
+    
+    // Debug
+    // console.log( date, tbl, row, shw );
+    
+    if(btn === "ok")
+    {
+        // Send and get the ajax results.
+        var send = { date:date, tbl:tbl, row:row, shw:shw };
+        
+        // Debug
+        //console.log(send);
+        
+        var request = getAjaxRequest("modify_value_row", send);
+        request.done(function(result) {
+            if (result.success) {      
+                                    
+                // Debug
+                //console.log( result );                
+
+                
+                // Show the table.
+                showActivaAccountsTable(c, s, date, "collapse");
+            
+                // Get and show the table totals.
+                getAndShowAccountTotals(s, date);                  
+                
+                
+                closePopupWindow();       
+            }
+            else {
+                showDatabaseError(result.message);
+            }
+        });
+    
+        request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+        });  
+           
+        closeErrorMessage();
+    }
+}

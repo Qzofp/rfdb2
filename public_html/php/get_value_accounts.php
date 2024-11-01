@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Oct 11, 2024
+ * Updated on Nov 01, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Oct 11, 2024
+ * Updated on Nov 01, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -217,7 +217,7 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
     switch ($action) 
     {
         case "collapse" :
-            $ratio = "CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'),'%') AS ratio ";
+            $ratio = "IFNULL(CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'),'%'),'-') AS ratio ";
             $value = "CONCAT('$sign ', FORMAT(SUM(`value`), 2, '$format')) AS `value` ";        
             $query = "SELECT type AS id, $type, `hide`, `service` AS services, `account` AS accounts, '-' AS number, $ratio, $value ".
                      "FROM (".
@@ -246,11 +246,11 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
             $key = cKEY;
             $account = "CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ";
         
-            $ratio  = "CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'), '%') AS ratio ";
+            $ratio  = "IFNULL(CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'), '%'),'-') AS ratio ";
             $value  = "CONCAT('$sign ', FORMAT(`value`, 2, '$format')) AS `value` ";
             $amount = "CONCAT(FORMAT(`amount`,8,'$format'), ' ', `symbol`) AS `amount` ";
       
-            $query = "SELECT `id`, $type, `hide`, `service`, $account, `amount`, $ratio, $value ".
+            $query = "SELECT CONCAT(`id`, '_', `type`), $type, `hide`, `service`, $account, `amount`, $ratio, $value ".
                      "FROM (".
                         "SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`, '-' AS `amount`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
                         "FROM tbl_value_accounts ".
