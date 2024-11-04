@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Oct 28, 2024
+ * Updated on Nov 04, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -646,6 +646,49 @@ function validateCurrency(c, s, name, value) {
             
             case "€"  :
                 regex = /^[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{1,2})?$/;           
+                break;
+        }
+        
+        if (!regex.test(value) ? true : false) 
+        {
+            $("#popup_content .msg").html(name + " " + c.messages[0]); 
+            check = false;
+        }     
+    }  
+    return check;       
+}
+
+/*
+ * Function:    validateCrypto
+ *
+ * Created on Nov 04, 2024
+ * Updated on Nov 04, 2024
+ *
+ * Description: Validate the crypto value, check if it is not empty and if it has a correct value.
+ *
+ * In:  c, s, name, value
+ * Out: check
+ *
+ */
+function validateCrypto(c, s, name, value) {
+   
+    var check = true;
+    if (!value) 
+    {
+        $("#popup_content .msg").html(name + " " + c.messages[5]);
+        check = false;
+    }
+    else 
+    {        
+        let regex, set = JSON.parse(s[5].value);
+        switch (set.sign) {
+            case "$" :
+            case "£" :
+                regex = /^-?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,8})?$/;                
+                break;
+            
+            case "€"  :
+                regex = /^-?[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{1,8})?$/;           
                 break;
         }
         

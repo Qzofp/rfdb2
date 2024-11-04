@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2024 at 01:59 PM
+-- Generation Time: Nov 04, 2024 at 03:11 PM
 -- Server version: 8.0.39-0ubuntu0.22.04.1
 -- PHP Version: 8.1.2-1ubuntu2.19
 
@@ -271,7 +271,7 @@ INSERT INTO `tbl_dutch` (`id`, `id_config`, `value`) VALUES
 (25, 28, 'Cryptomunten,Naam,Symbool,Website'),
 (26, 29, 'Wallets,Dienst,Rekening,Crypto,Beschrijving'),
 (27, 30, 'Activa,Test 1,Test 2'),
-(30, 31, 'Datum Waardes,Datum,Bedrag,Deze waardes,Er zijn geen # geselecteerd!,pagina\'s,rekeningen'),
+(30, 31, 'Datum Waardes,Datum,Bedrag,Deze waardes,Er zijn geen # geselecteerd!,pagina\'s,rekeningen,Aantal'),
 (31, 32, 'Waarde Rekeningen,Rekeningendiagram,Waardeontwikkeling,Crypto Waardes,Crypto-diagram,Crypto-ontwikkeling'),
 (32, 33, 'Type,Dienst,Rekeningen,Rekening,Aantal,Ratio,Waarde'),
 (33, 34, 'Naam,Symbool,Waarde');
@@ -321,7 +321,7 @@ INSERT INTO `tbl_english` (`id`, `id_config`, `value`) VALUES
 (25, 28, 'Crypto Currencies,Name,Symbol,Website'),
 (26, 29, 'Wallets,Service,Account,Crypto,Description'),
 (27, 30, 'Activa,Test 1,Test 2'),
-(28, 31, 'Date Values,Date,Amount,these values,There are no # enabled!,pages,accounts'),
+(28, 31, 'Date Values,Date,Amount,these values,There are no # enabled!,pages,accounts,Number'),
 (29, 32, 'Value Accounts,Accounts Chart,Value Development,Crypto Values,Crypto Chart,Crypto Development'),
 (30, 33, 'Type,Service,Accounts,Account,Number,Ratio,Value'),
 (31, 34, 'Name,Symbol,Value');
@@ -551,7 +551,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-10-28 13:17:03', '2024-10-28 11:30:38');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-11-04 14:52:04', '2024-11-04 13:48:09');
 
 -- --------------------------------------------------------
 
@@ -589,8 +589,8 @@ INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
 (16, 0, '2024-09-23', 1, '117.50'),
 (17, 0, '2024-09-23', 4, '27.50'),
 (18, 0, '2024-09-23', 3, '227.50'),
-(19, 1, '2024-09-23', 5, '37.50'),
-(20, 1, '2024-09-23', 6, '337.50');
+(19, 0, '2024-09-23', 5, '37.50'),
+(20, 0, '2024-09-23', 6, '337.50');
 
 -- --------------------------------------------------------
 

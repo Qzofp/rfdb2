@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Oct 28, 2024
+ * Updated on Nov 03, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -136,13 +136,24 @@
  width: 35% !important;
 }
 
+#popup_container .expand {
+ width: 60% !important;
+}
+
 #popup_content .msg {
  padding: 10px 0px;
 }
 
 #popup_content .sign {
- text-align: right;
+ /*text-align: right;*/
+ padding: 1px 0px 0px 7px;
  color: #808080;
+}
+
+#popup_content .csign {
+ padding: 0px 7px 0px 0px;
+ color: #808080;
+ font-size: 0.8em;
 }
 
 /* Tables popuo container, see also: https://codepen.io/paulobrien/pen/LBrMxa */

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Nov 01, 2024
+ * Updated on Nov 04, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -232,7 +232,7 @@ function setDashboardPopupChoice(e, c, s) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;
-    var popup = $('#popup_content').attr('class');
+    var popup = $('#popup_content').attr('class').split(' ')[0];
     
     // Debug
     //console.log( popup );
@@ -506,7 +506,7 @@ function showActivaRowAction(adp, c, s, that) {
  * Function:    showActivaAccountRowPopup
  *
  * Created on Oct 27, 2024
- * Updated on Oct 28, 2024
+ * Updated on Nov 04, 2024
  *
  * Description: Shows the popup for the activa account row.
  *
@@ -516,20 +516,25 @@ function showActivaRowAction(adp, c, s, that) {
  */
 function showActivaAccountRowPopup(c, s, that) {
 
-    var set = JSON.parse(s[0].value);
-    var cells = [];
+    var dash = JSON.parse(s[0].value);
+    var set  = JSON.parse(s[5].value);
+    var tbl, cells = [];
        
     $(that).addClass("marked");
     
     // Set the popup class.
-    $("#popup_content").removeClass().addClass("activa_accounts");     
+    $("#popup_content").removeClass().addClass("activa_accounts"); 
     
+    // Add the collapse or expand class.
+    tbl = $("#table_container table").attr('class').replace("tbl_","");
+    $("#popup_content").addClass(tbl); 
+      
     // Find all popup_table classes and hide them.
     $("#popup_content").find("[class^=popup_table]").hide();   
     
     // Show the title.
     $("#popup_content h2").html(c.labels[0]);
-    $("#popup_content h2").css("text-decoration-color", set.theme.color);     
+    $("#popup_content h2").css("text-decoration-color", dash.theme.color);     
     
     // Get the row values.
     $("#table_container tbody .marked").find("td").each(function() {   
@@ -546,8 +551,42 @@ function showActivaAccountRowPopup(c, s, that) {
         '<td><input class="shw" type="image" name="submit" src="img/show.png" alt="show" style=""></td>'
     );  
  
-    for (let i = 1; i < cells.length; i++) {
-        $(".popup_table_accounts tr").append('<td><input class="dummy" type="text" value="' + cells[i] + '" disabled></td>');
+    var crypto = [];
+    for (let i = 1; i < cells.length; i++) 
+    {
+        let id = 'class="dummy"';
+        let ph = "";
+        let disabled = "disabled";
+        if (tbl === "expand") {
+            if (!cells[0].includes("crypto") && i === 6) 
+            {
+                id = 'id="amount"';
+                ph = 'placeholder="' + c.misc[2] + '" ';
+                disabled = "";
+            }
+            else if (cells[0].includes("crypto") && i === 4) 
+            {
+                id = 'id="number"';
+                ph = 'placeholder="' + c.misc[7] + '" ';
+                disabled = "";
+                crypto = cells[i].split(" ");
+                cells[i] = crypto[0];
+            }
+        }
+        
+        // Add the currency sign in separate column and remove it from the value.
+        if (cells[i].includes(set.sign)) 
+        {
+            $(".popup_table_accounts tr").append('<td class="sign">' + set.sign + '</td>');
+            cells[i] = cells[i].replace(set.sign + ' ', '');
+        }
+        
+        $(".popup_table_accounts tr").append('<td><input ' + id + ' type="text" ' + ph + 'value="' + cells[i] + '" ' + disabled + '></td>');  
+        
+        // Show the crypto symbol.
+        if (crypto.length > 1 && i === 4) {
+            $(".popup_table_accounts tr").append('<td class="csign">' + crypto[1] + '</td>');
+        }
     }
          
     if ($(that).hasClass("hide")) {
@@ -569,7 +608,7 @@ function showActivaAccountRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Nov 01, 2024
+ * Updated on Nov 04, 2024
  *
  * Description: (Check the input and) Modify (it in) the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
@@ -581,16 +620,28 @@ function modifyActivaAccountRow(c, s, btn) {
     
     // Get input values.
     var date = $("#input_date span").html();
-    var tbl  = $("#table_container table").attr('class');
+    var tbl  = $("#table_container table").attr('class').replace("tbl_","");
     var row  = $("#table_container tbody .marked").closest('tr').find('td:first').text();
     var shw  = $(".popup_table_accounts .shw").attr("alt");
-     
+    
+    var value, check = true;
+    if (tbl === "expand") {
+        if (!row.includes("crypto")) {
+            value = $("#amount").val();
+            check = validateCurrency(c, s, c.misc[2], value);
+        }
+        else {
+            value = $("#number").val();
+            check = validateCrypto(c, s, c.misc[7], value);
+        }
+    }
+    
     checkShowHide(btn);
     
     // Debug
-    // console.log( date, tbl, row, shw );
+    //console.log( date, tbl, row, shw );
     
-    if(btn === "ok")
+    if(btn === "ok" && check)
     {
         // Send and get the ajax results.
         var send = { date:date, tbl:tbl, row:row, shw:shw };
@@ -607,7 +658,7 @@ function modifyActivaAccountRow(c, s, btn) {
 
                 
                 // Show the table.
-                showActivaAccountsTable(c, s, date, "collapse");
+                showActivaAccountsTable(c, s, date, tbl);
             
                 // Get and show the table totals.
                 getAndShowAccountTotals(s, date);                  
