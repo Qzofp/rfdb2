@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Oct 28, 2024
+ * Updated on Nov 08, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -185,10 +185,10 @@ if(!$user){
                                               
                             <!-- Popup for the tbl_crypto table -->
                             <table class="popup_table_crypto">
-                                <tr>                              
-                                    <td>Test Crypto</td>              
+                                <tr>      
                                 </tr>
                             </table> 
+
                             
                             <!-- Popup for the other slide tables -->                 
                             

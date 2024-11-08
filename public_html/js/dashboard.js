@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Oct 22, 2024
+ * Updated on Nov 08, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js
@@ -517,7 +517,7 @@ function showDashboardButtonAction(adp, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Sep 28, 2024
+ * Updated on Nov 08, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -529,6 +529,7 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
        
     switch (that.alt) {
         case "list" :
+            //showActivaListPopup(adp, c, s);
             break;
         
         case "add"  :
