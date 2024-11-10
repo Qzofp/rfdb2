@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Nov 08, 2024
+ * Updated on Nov 10, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    showActivaModifyPopup
  *
  * Created on Sep 07, 2024
- * Updated on Oct 23, 2024
+ * Updated on Nov 10, 2024
  *
  * Description: Shows the popup when the page add or edit button is pressed.
  *
@@ -56,14 +56,14 @@ function showActivaModifyPopup(adp, btn, c, s) {
     {        
         // Calculate popup scroll table height.
         var y = $(".content_main").height() - 200;
-        $(".popup_scroll_table").css("max-height", y);
+        $(".popup_activa_slide").css("max-height", y);
         
         // Reset values.
         setAirDatePicker(adp, ""); // Reset the date.
         $("#popup_content .msg").html("&nbsp;");
     
         // Show the popup_table activa class.
-        $(".popup_table_activa").show(); 
+        $(".popup_table_values").show(); 
     
         fillActivaModifyPopup(adp, btn, c, s);
     }
@@ -80,7 +80,7 @@ function showActivaModifyPopup(adp, btn, c, s) {
  * Function:    fillActivaModifyPopup
  *
  * Created on Sep 11, 2024
- * Updated on Oct 23, 2024
+ * Updated on Nov 10, 2024
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -112,11 +112,11 @@ function fillActivaModifyPopup(adp, btn, c, s) {
             if (result.data.length)
             {
                 // Fill first row and column with the entry date.
-                $(".popup_table_activa thead tr:first th:first").html(c.misc[0]);
+                $(".popup_table_values thead tr:first th:first").html(c.misc[0]);
                 $("#popup_content #date").attr("placeholder", c.misc[1]);
             
                 // Remove all rows.
-                $(".popup_table_activa tbody tr").remove();
+                $(".popup_table_values tbody tr").remove();
 
                 //console.log( result.data );
             
@@ -128,7 +128,7 @@ function fillActivaModifyPopup(adp, btn, c, s) {
                     i++;
                 });
                 
-                $(".popup_scroll_table").scrollTop(0);
+                $(".popup_activa_slide").scrollTop(0);
             }
             else 
             {
@@ -153,7 +153,7 @@ function fillActivaModifyPopup(adp, btn, c, s) {
  * Function:    showActivaAccount
  *
  * Created on Oct 05, 2024
- * Updated on Oct 05, 2024
+ * Updated on Nov 10, 2024
  *
  * Description: Show the activa account in the modify popup window.
  *
@@ -169,7 +169,7 @@ function showActivaAccount(c, s, i, kind, btn, item) {
     // Create a separate row for the accounts / crypto titles (kind).
     if (kind !== item.kind) 
     {
-        $(".popup_table_activa tbody").append(
+        $(".popup_table_values tbody").append(
             '<tr>' +
                 '<td colspan="3"><u>' + item.type + '</u></td>' +
             '</tr>');                    
@@ -202,7 +202,7 @@ function showActivaAccount(c, s, i, kind, btn, item) {
     }
                      
     // Create the input rows for accounts / crypto values.
-    $(".popup_table_activa tbody").append(
+    $(".popup_table_values tbody").append(
         '<tr>' +
                 '<td>&bull; ' + item.account + '</td>' +
                 '<td class="sign">' + set.sign + '</td>' +

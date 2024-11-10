@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Nov 08, 2024
+ * Updated on Nov 10, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -160,11 +160,25 @@ if(!$user){
                 <div id="popup_container"> 
                     <div id="popup_content"> 
                         <h2></h2>                        
-                        <form method="POST">                           
+                        <form method="POST">   
                             
-                            <!-- Popup for the activa input (is needed for the datepicker). -->
-                            <div class="popup_scroll_table">
-                                <table class="popup_table_activa">
+                            <!-- Popup for the activa slide -->
+                            <div class="popup_activa_slide">
+                                
+                                <!-- Popup for the activa list value accounts -->
+                                <table class="popup_table_list">
+                                    <thead>
+                                        <tr>                              
+                                            <th colspan="3"></th>
+                                            <th><select id="list_dates" placeholder=""></select></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                                     
+                                <!-- Popup for the activa input (is needed for the datepicker). -->
+                                <table class="popup_table_values">
                                     <thead>
                                         <tr>                              
                                             <th colspan="2"></th>
@@ -175,23 +189,22 @@ if(!$user){
                                     <tbody>
                                     </tbody>
                                 </table>
-                            </div>
-                            
-                            <!-- Popup for the tbl_collapse and tbl_expand tables -->
-                            <table class="popup_table_accounts">
-                                <tr>
-                                </tr>
-                            </table>                            
+                                                
+                                <!-- Popup for the tbl_collapse and tbl_expand tables -->
+                                <table class="popup_table_accounts">
+                                    <tr>
+                                    </tr>
+                                </table>                            
                                               
-                            <!-- Popup for the tbl_crypto table -->
-                            <table class="popup_table_crypto">
-                                <tr>      
-                                </tr>
-                            </table> 
+                                <!-- Popup for the tbl_crypto table -->
+                                <table class="popup_table_crypto">
+                                    <tr>      
+                                    </tr>
+                                </table>                   
+                            </div>
 
-                            
                             <!-- Popup for the other slide tables -->                 
-                            
+                           
                             
                             
                             
