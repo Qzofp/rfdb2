@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Nov 10, 2024
+ * Updated on Nov 13, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -33,9 +33,11 @@ if(!$user){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/common.css">  
         <link rel="stylesheet" href="css/ext/air-datepicker.css">   
+        <link rel="stylesheet" href="css/ext/nice-select2.css">            
         <link rel="stylesheet" href="css/dashboard.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>
         <script src="js/ext/air-datepicker.js"></script> 
+        <script src="js/ext/nice-select2.js"></script>           
         <script src="js/config.js"></script>       
         <script src="js/common.js"></script>  
         <script src="js/dashboard_edit.js"></script>          

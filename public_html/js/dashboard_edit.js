@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Sep 29, 2024
- * Updated on Nov 10, 2024
+ * Updated on Nov 13, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: js/config.js
@@ -16,11 +16,79 @@
 
 //////////////////////////////////////////      Main Functions     ///////////////////////////////////////////
 
+
+/*
+ * Function:    showActivaListPopup
+ *
+ * Created on Nov 13, 2024
+ * Updated on Nov 13, 2024
+ *
+ * Description: Shows the popup when the page list button is pressed.
+ *
+ * In:  c, s
+ * Out: -
+ *
+ */
+function showActivaListPopup(c, s) {
+    
+    var set = JSON.parse(s[0].value);
+    
+    // Get the pages (finance, stock, savings and crypto) and check if one of more is enabled.
+    var sheet, page = false;
+    for (let i = 1; i < 5; i++)
+    {
+        sheet = JSON.parse(s[i].value);        
+        if (sheet.page === "true") {
+            page = true;
+        }
+    }    
+    
+    // Set the popup class.
+    $("#popup_content").removeClass().addClass("activa_list"); 
+    
+    // Find all popup_table classes and hide them.
+    $("#popup_content").find("[class^=popup_table]").hide();    
+    
+    // Show the title.
+    $("#popup_content h2").html(c.labels[0]);
+    $("#popup_content h2").css("text-decoration-color", set.theme.color);    
+    
+    if (page) 
+    {        
+        // Calculate popup scroll table height.
+        var y = $(".content_main").height() - 200;
+        $(".popup_activa_slide").css("max-height", y);
+        
+        // Reset values.
+        $("#popup_content .msg").html("&nbsp;");
+    
+        // Fill first row and column with the entry date.
+        $(".popup_table_list thead tr:first th:first").html(c.misc[0]);
+     
+        
+        
+        
+        
+        
+        
+        
+        // Show the popup_table activa class.
+        $(".popup_table_list").show();
+    }
+    else 
+    {        
+        $("#popup_content .msg").html(c.misc[4].replace("#", c.misc[5]));
+        $("#popup_content .ok").hide();
+    }    
+      
+    $("#popup_container").fadeIn("slow");  
+}
+
 /*
  * Function:    showActivaModifyPopup
  *
  * Created on Sep 07, 2024
- * Updated on Nov 10, 2024
+ * Updated on Nov 13, 2024
  *
  * Description: Shows the popup when the page add or edit button is pressed.
  *
@@ -61,11 +129,11 @@ function showActivaModifyPopup(adp, btn, c, s) {
         // Reset values.
         setAirDatePicker(adp, ""); // Reset the date.
         $("#popup_content .msg").html("&nbsp;");
-    
-        // Show the popup_table activa class.
-        $(".popup_table_values").show(); 
-    
+  
         fillActivaModifyPopup(adp, btn, c, s);
+        
+        // Show the popup_table activa class.
+        $(".popup_table_values").show();         
     }
     else 
     {        

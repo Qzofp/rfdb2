@@ -808,3 +808,9 @@ SELECT tbl_amount_wallets.*
 FROM tbl_amount_wallets
 LEFT JOIN tbl_value_cryptos ON tbl_amount_wallets.`vid` = tbl_value_cryptos.`id`
 WHERE tbl_value_cryptos.`date` = '2024-09-23'
+
+-- List account value dates
+SELECT `date` FROM `tbl_value_accounts` 
+UNION
+SELECT `date` FROM `tbl_value_cryptos`
+ORDER BY `date` DESC
