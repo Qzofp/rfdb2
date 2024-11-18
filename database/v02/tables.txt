@@ -1,0 +1,13 @@
+Table V02
+---------
+
+New
+- tbl_amount_wallets
+- tbl_value_accounts
+- tbl_value_cryptos
+
+Update
+- tbl_config
+- tbl_dutch
+- tbl_english
+- tbl_settings

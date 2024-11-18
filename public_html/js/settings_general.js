@@ -928,7 +928,7 @@ function modifyConfigs(c, s) {
         var send = 'rows=' + input[0] + '&sign=' + input[1] + '&salt=' + encodeURIComponent(input[2]) + 
                    '&finance=' + input[3] + '&stock=' + input[4] + '&savings=' + input[5] + 
                    '&crypto=' + input[6]; 
-        
+            
         var request = getAjaxRequest("modify_configs", send);
             request.done(function(result) {
                 if (result.success) {      

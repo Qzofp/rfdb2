@@ -13,7 +13,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Nov 13, 2024
+ * Updated on Nov 15, 2024
  *
  * Description: Redirect to the start page.
  * 

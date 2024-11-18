@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 04, 2024
+ * Updated on Nov 16, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -935,7 +935,7 @@ function initAirDatePicker(c, s) {
  * Function:   serAirDatePicker
  *
  * Created on Mar 13, 2024
- * Updated on Aug 01, 2024
+ * Updated on Nov 16, 2024
  *
  * Description: Sets the Air datepicker.
  *
@@ -944,12 +944,22 @@ function initAirDatePicker(c, s) {
  *
  */
 function setAirDatePicker(adp, date) {
-    
-    if (date) {
-        let p = date.split("-");
-        adp.selectDate(p[2] + "-" + p[1] + "-" + p[0]);
+
+    if (date) 
+    {
+        if (date.includes("-")) 
+        {   
+            let p = date.split("-");
+            adp.selectDate(p[2] + "-" + p[1] + "-" + p[0]);
+        }
+        else
+        {
+            let p = date.split("/");
+            adp.selectDate(p[0] + "/" + p[1] + "/" + p[2]);      
+        }
     }
-    else {       
+    else 
+    {       
         adp.setViewDate(cDate); 
         adp.clear();
     }    

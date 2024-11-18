@@ -8,7 +8,7 @@
  * Used in: *.php
  *
  * Created on Sep 22, 2024
- * Updated on Sep 23, 2024
+ * Updated on Nov 16, 2024
  *
  * Description: Common PHP functions.
  * Dependenties: 
@@ -111,6 +111,35 @@ function DateToMySql($sign, $value)
             
         case "€"  :
             $date = "STR_TO_DATE('$value','%d-%m-%Y')";
+            break;             
+    } 
+    
+    return $date;
+}
+
+/*
+ * Function:    MySqlToDate
+ *
+ * Created on Nov 16, 2024
+ * Updated on Nov 16, 2024
+ *
+ * Description: Convert the MYSQL date to a readable (european or US) date.
+ *
+ * In:  $sign, $name (column name)
+ * Out: $date
+ *
+ */
+function MySqlToDate($sign, $name)
+{
+    switch ($sign) 
+    {
+        case "$" :
+        case "£" :
+            $date = "DATE_FORMAT(`$name`,'%m/%d/%Y')";
+            break;
+            
+        case "€"  :
+            $date = "DATE_FORMAT(`$name`,'%d-%m-%Y')";
             break;             
     } 
     
