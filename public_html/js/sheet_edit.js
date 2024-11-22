@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Sep 10, 2024
+ * Updated on Nov 22, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    setSheetPopupChoice
  *
  * Created on Jun 10, 2024
- * Updated on Jul 08, 2024
+ * Updated on Nov 20, 2024
  *
  * Description: Set the choice made in the sheet popup window.
  *
@@ -28,7 +28,7 @@
  * Out: -
  *
  */
-function setSheetPopupChoice(e, c, s, i) {
+function setSheetPopupChoice(e, adp, c, s, i) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;          
@@ -45,7 +45,7 @@ function setSheetPopupChoice(e, c, s, i) {
             break;
             
         default :
-            modifySheets(c, s, i, btn);
+            modifySheets(adp, c, s, i, btn);
             break;
     }
 }
@@ -744,31 +744,31 @@ function addAmountAndRadioButton(ph, c, name, x, y, z="") {
  * Function:    modifySheets
  *
  * Created on Jun 24, 2024
- * Updated on Jul 17, 2024
+ * Updated on Nov 22, 2024
  *
  * Description: Modify one of the finances sheets.
  *
- * In:  c, s, i, btn
+ * In:  adp, c, s, i, btn
  * Out: -
  *
  */
-function modifySheets(c, s, i, btn) {
+function modifySheets(adp, c, s, i, btn) {
     
     switch(s[i].name) {
         case "finance" :    
-            modifyFinances(c, s, btn);
+            modifyFinances(adp, c, s, btn);
             break;
 
         case "stock" :
-            modifyStocks(c, s, btn);
+            modifyStocks(adp, c, s, btn);
             break;
         
         case "savings" :
-            modifySavings(c, s, btn);
+            modifySavings(adp, c, s, btn);
             break;
         
         case "crypto" :
-            modifyCrypto(c, s, btn);
+            modifyCrypto(adp, c, s, btn);
             break;        
     }
 }
@@ -925,15 +925,15 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Sep 10, 2024
+ * Updated on Nov 22, 2024
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
- * In:  c, s, btn
+ * In:  adp, c, s, btn
  * Out: -
  *
  */
-function modifyFinances(c, s, btn) {
+function modifyFinances(adp, c, s, btn) {
     
     var msg, amount, input = [];
     
@@ -1001,8 +1001,8 @@ function modifyFinances(c, s, btn) {
                     }
                     else 
                     {           
-                        // Reset date input.
-                        //$("#date").val("");   
+                        // Reset date.
+                        adp.clear();
                         
                         // Reset nice-select menu if there is more then 1 item.
                         if ($("#payment > option").length > 1) 
@@ -1031,14 +1031,17 @@ function modifyFinances(c, s, btn) {
                                 $("#service").val("");
                         }                        
                         
-
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#account > option").length >= 1) 
                         {
-                                $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.payment[7] + '</span>');
-                                $(".nice-select-dropdown .list li").removeClass("selected focus");
-                                $("#account").val("");   
-                        }   
-                                                
+                                //$(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.payment[7] + '</span>');
+                                //$(".nice-select-dropdown .list li").removeClass("selected focus");
+                                //$("#account").val("");   
+                                removeSelectMenu("account"); 
+                                disableSelectMenu("account", c.payment[7]);
+                        }
+                        
+                        // Reset the description.
                         $("#description").val("");    
                     }
                     
@@ -1140,15 +1143,15 @@ function getAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Sep 10, 2024
+ * Updated on Nov 20, 2024
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
- * In:  c, s, btn
+ * In:  adp, c, s, btn
  * Out: -
  *
  */
-function modifyStocks(c, s, btn) {
+function modifyStocks(adp, c, s, btn) {
     
     var msg, amount, input = [];
     
@@ -1212,8 +1215,8 @@ function modifyStocks(c, s, btn) {
                     }
                     else 
                     {           
-                        // Reset input.
-                        //$("#date").val("");   
+                        // Reset date.
+                        adp.clear();
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
@@ -1234,14 +1237,18 @@ function modifyStocks(c, s, btn) {
                             $("#service").val(""); 
                         }                        
                         
-
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#account > option").length >= 1) 
                         {
-                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.investment[5] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            $("#account").val("");    
+                            //$(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.investment[5] + '</span>');
+                            //$(".nice-select-dropdown .list li").removeClass("selected focus");
+                            //$("#account").val(""); 
+                            
+                            removeSelectMenu("account"); 
+                            disableSelectMenu("account", c.investment[5]);                      
                         }                                                  
                         
+                        // Reset the description.
                         $("#description").val("");    
                     }
                     
@@ -1265,15 +1272,15 @@ function modifyStocks(c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Sep 10, 2024
+ * Updated on Nov 20 10, 2024
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
- * In:  c, s, btn
+ * In:  adp, c, s, btn
  * Out: -
  *
  */
-function modifySavings(c, s, btn) {
+function modifySavings(adp, c, s, btn) {
     
     var msg, amount, input = [];
     
@@ -1336,8 +1343,8 @@ function modifySavings(c, s, btn) {
                     }
                     else 
                     {           
-                        // Reset input.
-                        //$("#date").val("");   
+                        // Reset date.
+                        adp.clear();
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
@@ -1358,14 +1365,18 @@ function modifySavings(c, s, btn) {
                             $("#service").val("");   
                         }                        
                         
-
+                        // Reset nice-select menu if there is one or more items.
                         if ($("#account > option").length >= 1) 
                         {
-                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            $("#account").val("");  
+                            //$(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.savings[5] + '</span>');
+                            //$(".nice-select-dropdown .list li").removeClass("selected focus");
+                            //$("#account").val("");  
+                            
+                            removeSelectMenu("account"); 
+                            disableSelectMenu("account", c.savings[5]);                  
                         }   
-                                                                           
+                        
+                        // Reset the description.
                         $("#description").val("");    
                     }
                     
@@ -1389,15 +1400,15 @@ function modifySavings(c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Sep 10, 2024
+ * Updated on Nov 22, 2024
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
- * In:  c, s, btn
+ * In:  adp, c, s, btn
  * Out: -
  *
  */
-function modifyCrypto(c, s, btn) {
+function modifyCrypto(adp, c, s, btn) {
     
     var msg, input = [];
     var crypto = [];
@@ -1470,8 +1481,8 @@ function modifyCrypto(c, s, btn) {
                     }
                     else 
                     {           
-                        // Reset input.
-                        //$("#date").val("");   
+                        // Reset date.
+                        adp.clear(); 
                                                 
                         // Reset radio buttons.
                         $('input[name="money"]').prop('checked', false);
@@ -1492,23 +1503,32 @@ function modifyCrypto(c, s, btn) {
                             $("#service").val("");   
                         }                        
                         
-
+                        // Reset nice-select menu if there is more then 1 item.
                         if ($("#account > option").length >= 1) 
                         {
-                            $(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.crypto[5] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            $("#account").val("");    
+                            //$(".nice-select .current:eq(1)").html('<span class="placeholder">' + c.crypto[5] + '</span>');
+                            //$(".nice-select-dropdown .list li").removeClass("selected focus");
+                            //$("#account").val("");    
+                            
+                            removeSelectMenu("account"); 
+                            disableSelectMenu("account", c.crypto[5]);   
                         }   
                                                   
+                        // Reset the number.
                         $("#number").val(""); 
                         
+                        // Reset nice-select menu if there is more then 1 item.
                         if ($("#crypto > option").length >= 1) 
                         {
-                            $(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.crypto[7] + '</span>');
-                            $(".nice-select-dropdown .list li").removeClass("selected focus");
-                            $("#crypto").val("");  
-                        }                      
+                            //$(".nice-select .current:eq(2)").html('<span class="placeholder">' + c.crypto[7] + '</span>');
+                            //$(".nice-select-dropdown .list li").removeClass("selected focus");
+                            //$("#crypto").val("");  
+                            
+                            removeSelectMenu("crypto"); 
+                            disableSelectMenu("crypto", c.crypto[7]);                               
+                        }  
                         
+                        // Reset the description.
                         $("#description").val("");    
                     }
                     
