@@ -101,6 +101,8 @@ ToDo
 17. Controleer ook of accounts verwijderd kunnen worden als ze niet worden gebruikt op de Dashboard pagina.
 
 18. Bug: Dashboard Activa slide laat verkeerde ratio zien als één of meerdere pagina's zijn gedisabled. 
+    - Opgelost.
 
 19. Bug: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
 
+20. Bug: Op de sheet pagina's klopt de datum niet meer als er iets is toegevoegd en er wordt daarna van jaar gewisseld (controleren of dit zo is).

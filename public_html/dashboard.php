@@ -6,14 +6,21 @@
  *
  * File:         dashboard.php
  * Dependencies: css/common.css
+ *               css/ext/air-datepicker.css
+ *               css/ext/nice-select2.css
  *               css/dashboard.css
  *               js/ext/jquery-3.7.1.min.js
+ *               js/ext/air-datepicker.js
+ *               js/ext/nice-select2.js
+ *               js/ext/chart-4.4.7.js
  *               js/config.js
  *               js/common.js 
+ *               js/dashboard_chart.js
+ *               js/dashboard_edit.js
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Nov 15, 2024
+ * Updated on Dec 02, 2024
  *
  * Description: Redirect to the start page.
  * 
@@ -37,9 +44,11 @@ if(!$user){
         <link rel="stylesheet" href="css/dashboard.css">
         <script src="js/ext/jquery-3.7.1.min.js"></script>
         <script src="js/ext/air-datepicker.js"></script> 
-        <script src="js/ext/nice-select2.js"></script>           
+        <script src="js/ext/nice-select2.js"></script> 
+        <script src="js/ext/chart-4.4.7.js"></script> 
         <script src="js/config.js"></script>       
         <script src="js/common.js"></script>  
+        <script src="js/dashboard_chart.js"></script>          
         <script src="js/dashboard_edit.js"></script>          
         <script src="js/dashboard.js"></script>      
     </head>
@@ -140,17 +149,19 @@ if(!$user){
                         </div>                     
                         <div class="flex_top">
                             <!-- Donut label -->
-                            <div class="label"><span>Donut Graph</span></div>   
+                            <div class="label"><span></span></div>
+                            <div>
+                                <canvas id="doughnut"></canvas>
+                            </div>
                         </div>
                     </div>
                     <div class="flex_container">
                         <div class="flex_bottom">
                             <!-- Graph label -->
-                            <div class="label"><span>Value Development</span></div>                               
+                            <div class="label"><span></span></div>                               
                         </div>
                     </div>                                        
                 </div>
-
 
                 <!-- Show the Test 1 slide content -->                    
                 <div id="test01">Test 1</div>   

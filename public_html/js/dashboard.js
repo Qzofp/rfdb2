@@ -7,10 +7,10 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Nov 15, 2024
+ * Updated on Dec 02, 2024
  *
  * Description: Javascript functions for the index page.
- * Dependenties: js/config.js, js/dashboard_edit.js
+ * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
  *
  *
  */
@@ -183,7 +183,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Nov 15, 2024
+ * Updated on Dec 02, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -231,7 +231,12 @@ function showActivaAccountsContent(crypto, c, s, date) {
             showActivaAccountsTable(c, s, result.date, "collapse");
             
             // Get and show the table totals.
-            getAndShowAccountTotals(s, result.date);    
+            getAndShowAccountTotals(s, result.date);
+            
+            // Show the test chart.
+            testChart();
+            
+            
         }
         else {
             showDatabaseError(result); 

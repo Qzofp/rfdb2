@@ -4,13 +4,13 @@
  * Version: 0.2
  *
  * File:    dashboard_edit.js
- * Used in: sheet.html
+ * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 02, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
- * Dependenties: js/config.js
+ * Dependenties: 
  *
  */
 
