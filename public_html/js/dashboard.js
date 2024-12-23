@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Dec 02, 2024
+ * Updated on Dec 23, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Oct 22, 2024
+ * Updated on Dec 23, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -65,11 +65,46 @@ function loadMain() {
  */
 function showDashboard(c, s) {
 
-    var $adp;
+    var $adp, $dgc;
         
     // Initialize the datepicker.
     $adp = initAirDatePicker(c, s);   
     
+    // Initialize the doughnut chart.
+    $dgc = initDougnutChart(c);  // $dgc (doughnut chart), $lnc (line chart)
+    
+    // Test: update chart
+/*    setTimeout(function() {     
+        var test = {
+            labels: [
+                'Yellow',
+                'Blue',
+                'Red',
+                'Green'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [100, 300, 50, 150],
+                backgroundColor: [
+                    'rgb(255, 205, 86)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 99, 132)',
+                    'rgb(50,205,50)'
+                ],
+                hoverOffset: 4
+            }]
+        };        
+        
+        
+        $dgc.data.labels = test.labels; 
+        $dgc.data.datasets = test.datasets;
+        $dgc.update();
+    }, 2000);
+*/    
+    
+    
+    
+        
     // Remove the old rankings (only for the finances sheet).
     removeOldRankings(3);
     
@@ -183,7 +218,7 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Dec 02, 2024
+ * Updated on Dec 22, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -233,8 +268,8 @@ function showActivaAccountsContent(crypto, c, s, date) {
             // Get and show the table totals.
             getAndShowAccountTotals(s, result.date);
             
-            // Show the test chart.
-            testChart();
+            // Show the test chart.            
+            //testChart(c.labels[1]);
             
             
         }

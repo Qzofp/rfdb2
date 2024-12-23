@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Nov 15, 2024
+ * Updated on Dec 23, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -47,11 +47,15 @@
 }
 
 #activa_main .flex_top:nth-child(2) {
-  flex: 0 1 auto;    
-  height: 100%;
-  width: 40%;   
+/*  flex: 0 1 auto;  */
+
+  display: flex;
+  height: 100%; 
+  width: 40%;
+  align-items: center;
+  justify-content: center;
   
-  background-color: #ffffc1; /* Test */
+  /* background-color: #ffffc1; /* Test */
 }
 
 #activa_main .flex_bottom {
@@ -130,6 +134,13 @@
  font-size: 0.8em !important;
  color: green;
 }
+
+/* Dashboard charts */
+/*
+.doughnut_container {
+ margin:auto;
+}
+*/
 
 /* Dashboard popups */
 #popup_container .activa_list,
