@@ -25,7 +25,7 @@ if(isset($_SESSION['user'])) {
 else {
     RedirectAjaxRequest();
 }
- 
+
 /*
  * Function:    GetValueAccounts
  *

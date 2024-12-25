@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Dec 23, 2024
+ * Updated on Dec 24, 2024
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -20,7 +20,7 @@
  * Function:    initDougnutChart(
  *
  * Created on Dec 22, 2024
- * Updated on Dec 23, 2024
+ * Updated on Dec 24, 2024
  *
  * Description: Initialize the doughnut chart.
  *
@@ -40,7 +40,7 @@ function initDougnutChart(c) {
             ],
         datasets: [{
             label: 'My First Dataset',
-            data: [300, 50, 100],
+            data: [300.99, 50.25, 100.10],
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
@@ -65,6 +65,9 @@ function initDougnutChart(c) {
      
     return doughnut;
 }
+
+
+
 
 /*
  * Function:    testChart
