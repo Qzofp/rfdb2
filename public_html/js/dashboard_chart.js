@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Dec 24, 2024
+ * Updated on Dec 26, 2024
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -17,10 +17,10 @@
 //////////////////////////////////////////      Main Functions     ///////////////////////////////////////////
 
 /*
- * Function:    initDougnutChart(
+ * Function:    initDougnutChart
  *
  * Created on Dec 22, 2024
- * Updated on Dec 24, 2024
+ * Updated on Dec 26, 2024
  *
  * Description: Initialize the doughnut chart.
  *
@@ -28,24 +28,16 @@
  * Out: doughnut
  *
  */
-function initDougnutChart(c) {
+function initDougnutChart() {
     
     const ctx = document.getElementById('doughnut');
     
     var data = {
-        labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
+        labels: [],
         datasets: [{
-            label: 'My First Dataset',
-            data: [300.99, 50.25, 100.10],
-            backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
-            ],
+            label: '',
+            data: [],
+            backgroundColor: [],
             hoverOffset: 4
         }]
     };
@@ -55,59 +47,89 @@ function initDougnutChart(c) {
                 title: {
                     display: true,
                     align: 'start',
-                    text: c.labels[1]
-                }
+                    text: ''
+                }    
             }
         };
-    
     
     var doughnut = new Chart(ctx, { type: 'doughnut', data, options });
      
     return doughnut;
 }
 
-
-
-
 /*
- * Function:    testChart
+ * Function:    showActivaAccountsDoughnutChart
  *
- * Created on Dec 02, 2024
- * Updated on Dec 21, 2024
+ * Created on Dec 25, 2024
+ * Updated on Dec 26, 2024
  *
- * Description: Shows a test chart.
+ * Description: Show the activa accounts doughnut chart.
  *
- * In:  -
+ * In:  doughnut, c, s, date, action
  * Out: -
  *
  */
-function testChart(title) {
-   
-    const ctx = document.getElementById('doughnut');
+function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
+    
+    var request = getAjaxRequest("get_value_accounts_dgchart", "date=" + date + "&action=" + action);
+    request.done(function(result) {
+            
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );
+            
+            var set, labels = [], data = [], value = [], color = [];
+            $.each(result.data, function (n, field) {  
+                
+                // Get the theme colors.
+                switch (field.id) {
+                    case "finance" :  set = JSON.parse(s[1].value);
+                                      break;
+                                        
+                    case "stock" :    set = JSON.parse(s[2].value);
+                                      break;
+                                        
+                    case "savings" :  set = JSON.parse(s[3].value);
+                                      break;
+                                    
+                    case "crypto" :   set = JSON.parse(s[4].value);
+                                      break;
+                }
+                
+                labels.push(field.type);
+                color.push(set.theme.color);
+                data.push(field.ratio);
+                value.push(field.value);
+                            
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1
-            }]
-        },
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    align: 'start',
-                    text: title
-                }
-            },
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
+            });       
+                                      
+            // Update the doughnut chart.
+            var tmp = {
+                labels: labels,
+                datasets: [{
+                    label: c.accounts[5],
+                    data: data,
+                    backgroundColor: color,
+                    hoverOffset: 4
+                }]
+            };
+            
+            doughnut.data.labels = tmp.labels; 
+            doughnut.data.datasets = tmp.datasets;
+            doughnut.options.locale = getLocale(s);
+            doughnut.options.plugins.title.text = c.labels[1];
+            doughnut.update();            
         }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
     });  
+    
+    closeErrorMessage();
 }

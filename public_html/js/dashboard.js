@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Dec 23, 2024
+ * Updated on Dec 26, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Dec 23, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -71,39 +71,7 @@ function showDashboard(c, s) {
     $adp = initAirDatePicker(c, s);   
     
     // Initialize the doughnut chart.
-    $dgc = initDougnutChart(c);  // $dgc (doughnut chart), $lnc (line chart)
-    
-    // Test: update chart
-/*    setTimeout(function() {     
-        var test = {
-            labels: [
-                'Yellow',
-                'Blue',
-                'Red',
-                'Green'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [100, 300, 50, 150],
-                backgroundColor: [
-                    'rgb(255, 205, 86)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 99, 132)',
-                    'rgb(50,205,50)'
-                ],
-                hoverOffset: 4
-            }]
-        };        
-        
-        
-        $dgc.data.labels = test.labels; 
-        $dgc.data.datasets = test.datasets;
-        $dgc.update();
-    }, 2000);
-*/    
-    
-    
-    
+    $dgc = initDougnutChart();  // $dgc (doughnut chart), $lnc (line chart)
         
     // Remove the old rankings (only for the finances sheet).
     removeOldRankings(3);
@@ -116,16 +84,16 @@ function showDashboard(c, s) {
     fillSlideMenu(c.slides, s, true);
       
     // Show the dashboard content.
-    showDashboardContent(0, c, s); 
+    showDashboardContent($dgc, 0, c, s); 
     
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {               
-        showDashboardContent(Number(this.value), c, s);
+        showDashboardContent($dgc, Number(this.value), c, s);
     });
     
     // Page button is pressed.
     $("#page_buttons").on('click', 'img', function() {   
-        showDashboardButtonAction($adp, c, s, this);
+        showDashboardButtonAction($adp, $dgc, c, s, this);
     });
     
     // Table row is pressed.
@@ -135,7 +103,7 @@ function showDashboard(c, s) {
     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
-        setDashboardPopupChoice(e, c, s);
+        setDashboardPopupChoice($dgc, e, c, s);
     });    
  
      // Settings popup <enter> button is pressed.  
@@ -184,22 +152,22 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Sep 27, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
- * In:  slide, c, s
+ * In:  dgc, slide, c, s
  * Out: -
  *
  */
-function showDashboardContent(slide, c, s) {
+function showDashboardContent(dgc, slide, c, s) {
     
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
     var crypto = (set.page === "true");
     
     switch(slide) {
-        case 0: showActivaAccountsContent(crypto, c, s, ""); // Test date, 22-07-2024 or 07/22/2024!
+        case 0: showActivaAccountsContent(dgc, crypto, c, s, "");
                 break;
         
         case 1: $("#test01").show();
@@ -218,15 +186,15 @@ function showDashboardContent(slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Dec 22, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
- * In:  crypto, c, s, date
+ * In:  dgc, crypto, c, s, date
  * Out: -
  *
  */
-function showActivaAccountsContent(crypto, c, s, date) {   
+function showActivaAccountsContent(dgc, crypto, c, s, date) {   
 
     var request = getAjaxRequest("get_entry_date", "date=" + date);    
     request.done(function(result) {
@@ -268,8 +236,11 @@ function showActivaAccountsContent(crypto, c, s, date) {
             // Get and show the table totals.
             getAndShowAccountTotals(s, result.date);
             
-            // Show the test chart.            
-            //testChart(c.labels[1]);
+            // Show the doughnut chart.            
+            showActivaAccountsDoughnutChart(dgc, c, s, result.date, "collapse");
+            
+            
+            
             
             
         }
@@ -524,15 +495,15 @@ function getAndShowAccountTotals(s, date) {
  * Function:    showDashboardButtonAction
  *
  * Created on Sep 02, 2024
- * Updated on Sep 09, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard page.
  *
- * In:  adp, c, s, that
+ * In:  adp, dgc, c, s, that
  * Out: -
  *
  */
-function showDashboardButtonAction(adp, c, s, that) {
+function showDashboardButtonAction(adp, dgc, c, s, that) {
 
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
@@ -542,7 +513,7 @@ function showDashboardButtonAction(adp, c, s, that) {
     var slide = Number($(".slidemenu input[name='slideItem']:checked")[0].value);  
     switch (slide) {
         case 0 : // Activa Slide
-            showActivaButtonAction(adp, c, s, that, crypto);
+            showActivaButtonAction(adp, dgc, c, s, that, crypto);
             break;
             
         case 1 : // Slide Test 1
@@ -557,15 +528,15 @@ function showDashboardButtonAction(adp, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Nov 13, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
- * In:  adp, c, s, that, crypto
+ * In:  adp, dgc, c, s, that, crypto
  * Out: -
  *
  */
-function showActivaButtonAction(adp, c, s, that, crypto) {
+function showActivaButtonAction(adp, dgc, c, s, that, crypto) {
        
     switch (that.alt) {
         case "list" :
@@ -578,11 +549,11 @@ function showActivaButtonAction(adp, c, s, that, crypto) {
             break;
         
         case "accounts" :
-            showActivaAccountsContent(crypto, c, s, $("#input_date span").html()); // Test date, 22-07-2024 or 07/22/2024!
+            showActivaAccountsContent(dgc, crypto, c, s, $("#input_date span").html());
             break;
           
         case "crypto"     :
-            showActivaCryptoContent(c, s, $("#input_date span").html()); // Test date, 22-07-2024 or 07/22/2024!
+            showActivaCryptoContent(c, s, $("#input_date span").html());
             break;
             
         case "expand" :

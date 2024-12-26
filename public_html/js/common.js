@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 16, 2024
+ * Updated on Dec 26, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1315,4 +1315,35 @@ function decodeHTML(encodedString) {
     var textArea = document.createElement('textarea');
     textArea.innerHTML = encodedString;
     return textArea.value;
+}
+
+/*
+ * Function:   getLocale
+ *
+ * Created on Dec 26, 2024
+ * Updated on Dec 26, 2024
+ *
+ * Description: Get the locale format. Which can be used in the chart.js functions.
+ *
+ * In:  s
+ * Out: locale
+ *
+ */
+function getLocale(s) {
+    
+    var set, locale;
+    
+    set = JSON.parse(s[5].value);
+    switch (set.sign) {
+        case "$" :
+        case "£" :
+            locale = "en-US";        
+            break;
+            
+        case "€"  :
+            locale = "de-DE";        
+            break;
+    }       
+   
+    return locale;
 }

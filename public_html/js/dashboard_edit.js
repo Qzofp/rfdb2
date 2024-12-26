@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Dec 02, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -285,15 +285,15 @@ function showActivaAccount(c, s, i, kind, btn, item) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Set the choice made in the dashboard popup window.
  *
- * In:  e, c, s
+ * In:  dgc, e, c, s
  * Out: -
  *
  */
-function setDashboardPopupChoice(e, c, s) {
+function setDashboardPopupChoice(dgc, e, c, s) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;
@@ -304,16 +304,16 @@ function setDashboardPopupChoice(e, c, s) {
     
     switch (popup) {
         case "activa_list" :
-            showActivaListResults(c, s, btn);
+            showActivaListResults(dgc, c, s, btn);
             break;
         
         case "activa_modify"   :     
-            modifyActivaValues(c, s, btn);
+            modifyActivaValues(dgc, c, s, btn);
             break;    
         
         case "activa_accounts" : 
         case "activa_crypto"   :
-            modifyActivaAccountRow(c, s, btn);
+            modifyActivaAccountRow(dgc, c, s, btn);
             break;
     }
 }
@@ -322,15 +322,15 @@ function setDashboardPopupChoice(e, c, s) {
  * Function:    showActivaListResults
  *
  * Created on Nov 17, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Show the results from the activa list popup choice.
  *
- * In:  c, s, btn
+ * In:  dgc, c, s, btn
  * Out: -
  *
  */
-function showActivaListResults(c, s, btn) {
+function showActivaListResults(dgc, c, s, btn) {
     
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
@@ -340,7 +340,7 @@ function showActivaListResults(c, s, btn) {
     if (btn === "ok" && $("#list_dates").val() === "1") 
     {
         date = $("#list_dates").next().find(".current").text();
-        showActivaAccountsContent(crypto, c, s, date);
+        showActivaAccountsContent(dgc, crypto, c, s, date);
         closePopupWindow();
     }
     else if (btn === "ok") {
@@ -352,15 +352,15 @@ function showActivaListResults(c, s, btn) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Nov 15, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
- * In:  c, s, btn
+ * In:  dgc, c, s, btn
  * Out: -
  *
  */
-function modifyActivaValues(c, s, btn) {
+function modifyActivaValues(dgc, c, s, btn) {
     
     // Debug.
     //console.log(btn);
@@ -409,7 +409,7 @@ function modifyActivaValues(c, s, btn) {
                 }
                 else 
                 {
-                    showActivaAccountsContent(crypto, c, s, result.date);   
+                    showActivaAccountsContent(dgc, crypto, c, s, result.date);   
                     closePopupWindow();       
                 }
             }
@@ -771,15 +771,15 @@ function showActivaCryptoRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 25, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
- * In:  c, s, btn
+ * In:  dgc, c, s, btn
  * Out: -
  *
  */
-function modifyActivaAccountRow(c, s, btn) {
+function modifyActivaAccountRow(dgc, c, s, btn) {
     
     // Get input values.
     var date = $("#input_date span").html();
@@ -831,7 +831,10 @@ function modifyActivaAccountRow(c, s, btn) {
                     showActivaAccountsTable(c, s, date, tbl);
             
                     // Get and show the table totals.
-                    getAndShowAccountTotals(s, date);                  
+                    getAndShowAccountTotals(s, date);    
+                    
+                    // Show the doughnut chart.            
+                    showActivaAccountsDoughnutChart(dgc, c, s, date, "collapse"); // tbl
                 }
                 else 
                 {                
