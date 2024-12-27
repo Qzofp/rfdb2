@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -185,7 +185,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -240,40 +240,31 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
                      "GROUP BY total.`type`, total.`hide`, total.`value` ".
                      "$order;";       
             break;
-        
-        
-        
-        
-        
-        
+          
         case "expand"   :
             $key = cKEY;
-            $account = "CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ";
+            $account = "CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `type` ";
         
-            $ratio  = "IFNULL(CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'), '%'),'-') AS ratio ";
-            $value  = "CONCAT('$sign ', FORMAT(`value`, 2, '$format')) AS `value` ";
-            $amount = "CONCAT(FORMAT(`amount`,8,'$format'), ' ', `symbol`) AS `amount` ";
-      
-            $query = "SELECT CONCAT(`id`, '_', `type`), $type, `hide`, `service`, $account, `amount`, $ratio, $value ".
+            $ratio  = "IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio ";
+            $value  = "FORMAT(`value`, 2) AS `value` ";
+            $query = "SELECT `type` AS id, $account, $ratio, $value ".
                      "FROM (".
-                        "SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`, '-' AS `amount`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                        "SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_accounts.`account` AS `account`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
-                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_accounts .`date` = $date ".
                         "UNION ".
-                        "SELECT tbl_amount_wallets.`id` AS `id`, tbl_amount_wallets.`hide` AS hide, `type`, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, $amount, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                        "SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_accounts.`account` AS `account`, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
-                        "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
-                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_cryptos.`date` = $date ".
                      ") total ".
                      "$where".
-                     "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;";        
-            break;
+                     "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `account`;";        
+            break;    
+        
         
         
         

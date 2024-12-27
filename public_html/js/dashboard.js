@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -71,7 +71,7 @@ function showDashboard(c, s) {
     $adp = initAirDatePicker(c, s);   
     
     // Initialize the doughnut chart.
-    $dgc = initDougnutChart();  // $dgc (doughnut chart), $lnc (line chart)
+    $dgc = initDougnutChart(s);  // $dgc (doughnut chart), $lnc (line chart)
         
     // Remove the old rankings (only for the finances sheet).
     removeOldRankings(3);
@@ -100,6 +100,18 @@ function showDashboard(c, s) {
     $("#table_container").on('click', 'tbody tr', function(){                
         showDashboardRowAction($adp, c, s, this);
     });    
+    
+    
+    
+    // Test hover over table rows
+    $("#table_container").on("mouseover", "tbody tr", function (){
+        
+        if ($(this).find("td").length > 1) {   
+            //console.log(  $(this).index()  );
+        }
+    });
+    
+    
     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
@@ -528,7 +540,7 @@ function showDashboardButtonAction(adp, dgc, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -557,11 +569,11 @@ function showActivaButtonAction(adp, dgc, c, s, that, crypto) {
             break;
             
         case "expand" :
-            changeActivaAccountsTable(c, s, "expand");
+            changeActivaAccountsTable(dgc, c, s, "expand");
             break;
             
         case "collapse" : 
-            changeActivaAccountsTable(c, s, "collapse");
+            changeActivaAccountsTable(dgc, c, s, "collapse");
             break;
     }     
 }
@@ -722,27 +734,33 @@ function fillActivaCryptoTable(l, date) {
  * Function:    changeActivaAccountsTable
  *
  * Created on Sep 02, 2024
- * Updated on Sep 11, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Change the dashboard activa accounts table.
  *
- * In:  c, s, action
+ * In:  dgc, c, s, action
  * Out: -
  *
  */
-function changeActivaAccountsTable(c, s, action) {
+function changeActivaAccountsTable(dgc, c, s, action) {
     
     var date = $("#input_date span").html();
     if (action === "collapse") 
     {      
         showActivaAccountsTable(c, s, date, action);
         getAndShowAccountTotals(s, date); 
+                 
+        showActivaAccountsDoughnutChart(dgc, c, s, date, "collapse");
+        
         $("#page_buttons img").eq(3).attr({src:"img/expand.png", alt:"expand"});   
     }
     else
     {
         showActivaAccountsTable(c, s, date, action);
         getAndShowAccountTotals(s, date); 
+        
+        showActivaAccountsDoughnutChart(dgc, c, s, date, "expand");
+        
         $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
     }        
 }

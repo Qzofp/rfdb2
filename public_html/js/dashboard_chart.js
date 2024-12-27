@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -20,15 +20,15 @@
  * Function:    initDougnutChart
  *
  * Created on Dec 22, 2024
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Initialize the doughnut chart.
  *
- * In:  c
+ * In:  s
  * Out: doughnut
  *
  */
-function initDougnutChart() {
+function initDougnutChart(s) {
     
     const ctx = document.getElementById('doughnut');
     
@@ -48,7 +48,24 @@ function initDougnutChart() {
                     display: true,
                     align: 'start',
                     text: ''
-                }    
+                },                
+               tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                                                
+                            let label = context.dataset.label || '';
+                            let i = context.dataIndex;
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.dataset.data[i] !== null) {
+                                label +=  new Intl.NumberFormat(getLocale(s), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.dataset.data[i]) + '%';
+                            }
+                            return label;
+                        }               
+                    }
+                }              
             }
         };
     
@@ -61,7 +78,7 @@ function initDougnutChart() {
  * Function:    showActivaAccountsDoughnutChart
  *
  * Created on Dec 25, 2024
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Show the activa accounts doughnut chart.
  *
@@ -100,9 +117,7 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
                 labels.push(field.type);
                 color.push(set.theme.color);
                 data.push(field.ratio);
-                value.push(field.value);
-                            
-
+                value.push(field.value);                         
             });       
                                       
             // Update the doughnut chart.
@@ -118,7 +133,6 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
             
             doughnut.data.labels = tmp.labels; 
             doughnut.data.datasets = tmp.datasets;
-            doughnut.options.locale = getLocale(s);
             doughnut.options.plugins.title.text = c.labels[1];
             doughnut.update();            
         }

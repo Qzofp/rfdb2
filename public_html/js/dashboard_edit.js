@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -771,7 +771,7 @@ function showActivaCryptoRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
@@ -834,7 +834,7 @@ function modifyActivaAccountRow(dgc, c, s, btn) {
                     getAndShowAccountTotals(s, date);    
                     
                     // Show the doughnut chart.            
-                    showActivaAccountsDoughnutChart(dgc, c, s, date, "collapse"); // tbl
+                    showActivaAccountsDoughnutChart(dgc, c, s, date, tbl);
                 }
                 else 
                 {                

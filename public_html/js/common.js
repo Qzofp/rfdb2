@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1321,7 +1321,7 @@ function decodeHTML(encodedString) {
  * Function:   getLocale
  *
  * Created on Dec 26, 2024
- * Updated on Dec 26, 2024
+ * Updated on Dec 27, 2024
  *
  * Description: Get the locale format. Which can be used in the chart.js functions.
  *
@@ -1341,7 +1341,7 @@ function getLocale(s) {
             break;
             
         case "€"  :
-            locale = "de-DE";        
+            locale = "nl-NL";        
             break;
     }       
    
