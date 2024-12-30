@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Dec 27, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Dec 27, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: Shows the dashboard page.
  *
@@ -101,18 +101,15 @@ function showDashboard(c, s) {
         showDashboardRowAction($adp, c, s, this);
     });    
     
-    
-    
-    // Test hover over table rows
+    // Table rows on mouse hover action.
     $("#table_container").on("mouseover", "tbody tr", function (){
-        
-        if ($(this).find("td").length > 1) {   
-            //console.log(  $(this).index()  );
-        }
+        showDoughnutChartTooltip($dgc, $(this));
     });
-    
-    
-    
+    $("#table_container").mouseleave(function(){
+        $dgc.setActiveElements([]);
+        $dgc.tooltip.setActiveElements([]);
+    });
+     
     // Popup button is pressed.  
     $("#popup_content").on("submit","form",function(e) {   
         setDashboardPopupChoice($dgc, e, c, s);
@@ -303,7 +300,7 @@ function showActivaLabels(c, s, accounts) {
  * Function:    ShowActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Oct 08, 2024
+ * Updated on Dec 28, 2024
  *
  * Description: Shows the dashboard activa accounts table.
  *
@@ -342,6 +339,7 @@ function showActivaAccountsTable(c, s, date, action) {
         $("#table_container thead tr").append("<th>" + items[i] + "</th>");
     } 
     
+    $("#table_container thead tr").append("<th></th>");
     $("#table_container thead").append("</tr>");    
     
     // Fill the table body.
@@ -364,7 +362,7 @@ function showActivaAccountsTable(c, s, date, action) {
  * Function:    fillActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Sep 11, 2024
+ * Updated on Dec 28, 2024
  *
  * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
@@ -393,23 +391,30 @@ function fillActivaAccountsTable(l, s, date, action) {
             // Remove the old table body.
             $("#table_container tbody tr").remove();
             
-            let i = 0, rows = 10;             
+            let i = 0, t = 0, rows = 10;             
             $.each(result.data, function (n, field) {  
                 
-                var hclass = "";
+                var ti = -1, hclass = "";
                 if (field.hide !== undefined && field.hide === 1) {
                     hclass = 'class="hide"';
+                }
+                else {
+                    ti = t;
+                    t++;
                 }
                                          
                 i++;
                 $("#table_container tbody").append('<tr ' + hclass + '>');
-          
+                
                 $.each(field, function(key, value){                    
                     if (key !== "hide") {
                         $("#table_container tbody tr").last().append("<td>" + value + "</td>");
                     }    
                 });
-                               
+                
+                // Index for the doughnut chart tooltip.
+                $("#table_container tbody tr").last().append("<td>" + ti + "</td>");
+                                              
                 $("#table_container tbody").append("</tr>");   
             });  
 
@@ -441,7 +446,7 @@ function fillActivaAccountsTable(l, s, date, action) {
  * Function:    getAndShowAccountTotals
  *
  * Created on Sep 06, 2024
- * Updated on Oct 11, 2024
+ * Updated on Dec 28, 2024
  *
  * Description: Get and show the totals of the account table totals.
  *
@@ -459,13 +464,13 @@ function getAndShowAccountTotals(s, date) {
             //console.log( result.query );
     
             var set = JSON.parse(s[0].value);
-            var col = $("#table_container thead").find("tr:first th:visible").length - 2;
+            var col = $("#table_container thead").find("tr:first th:visible").length - 3;
             
             $("#table_container tfoot td").remove();           
             $("#table_container tfoot tr").append(
                 '<td colspan="' + col + '"></td>' +
                 '<td></td>' +
-                '<td></td>'
+                '<td colspan="2"></td>' 
             );                   
             $("#table_container tfoot td").css("border-top", "2px solid " + set.theme.color);
             
@@ -540,7 +545,7 @@ function showDashboardButtonAction(adp, dgc, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Dec 27, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -565,7 +570,7 @@ function showActivaButtonAction(adp, dgc, c, s, that, crypto) {
             break;
           
         case "crypto"     :
-            showActivaCryptoContent(c, s, $("#input_date span").html());
+            showActivaCryptoContent(dgc, c, s, $("#input_date span").html());
             break;
             
         case "expand" :
@@ -583,15 +588,15 @@ function showActivaButtonAction(adp, dgc, c, s, that, crypto) {
  * Function:    showdActivaCryptoContent
  *
  * Created on Aug 24, 2024
- * Updated on Sep 06, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Shows the dashboard activa (crypto) slide content.
  *
- * In:  c, s, date
+ * In:  dgc, c, s, date
  * Out: -
  *
  */
-function showActivaCryptoContent(c, s, date) {   
+function showActivaCryptoContent(dgc, c, s, date) {   
 
     var request = getAjaxRequest("get_entry_date", "date=" + date);    
     request.done(function(result) {
@@ -606,6 +611,14 @@ function showActivaCryptoContent(c, s, date) {
 
             // Show the table.
             showActivaCryptoTable(c, s, result.date);
+            
+            // Show the doughnut chart. 
+            showActivaCryptoDoughnutChart(dgc, c, result.date, "crypto");
+            
+            
+            
+            
+            
         }
         else {
             showDatabaseError(result); 
@@ -649,10 +662,11 @@ function showActivaCryptoTable(c, s, date) {
         $("#table_container thead tr").append("<th>" + c.crypto[i] + "</th>");
     } 
     
+    $("#table_container thead tr").append("<th></th>");
     $("#table_container thead").append("</tr>");    
     
     // Fill the table body.   
-    fillActivaCryptoTable(c.crypto.length + 1, date);
+    fillActivaCryptoTable(c.crypto.length + 2, date);
     $("#table_container").scrollTop(0);
 
     // Fill the table footer.
@@ -668,10 +682,10 @@ function showActivaCryptoTable(c, s, date) {
 }
 
 /*
- * Function:    fillActivaAccountsTable
+ * Function:    fillActivaCryptoTable
  *
  * Created on Sep 06, 2024
- * Updated on Sep 06, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: Get the data from the database and fill the dashboard activa cryptos table with that data.
  *
@@ -700,8 +714,7 @@ function fillActivaCryptoTable(l, date) {
             
             let i = 0, rows = 10;             
             $.each(result.data, function (n, field) {  
-                                                         
-                i++;
+                                                                      
                 $("#table_container tbody").append('<tr>');
           
                 $.each(field, function(key, value){                    
@@ -709,6 +722,10 @@ function fillActivaCryptoTable(l, date) {
                         $("#table_container tbody tr").last().append("<td>" + value + "</td>");
                     }    
                 });
+                
+                // Index for the doughnut chart tooltip.
+                $("#table_container tbody tr").last().append("<td>" + i + "</td>");
+                i++;
                                
                 $("#table_container tbody").append("</tr>");   
             });  

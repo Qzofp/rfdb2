@@ -8,7 +8,7 @@
  * Used in: dashbord.php
  *
  * Created on Oct 18, 2023
- * Updated on Dec 23, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -53,7 +53,7 @@
   height: 100%; 
   width: 40%;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   
   /* background-color: #ffffc1; /* Test */
 }
@@ -102,6 +102,12 @@
 }
 
 /* Dashboard tables */
+#table_container thead th:last-child,
+#table_container tbody td:last-child {
+ color:#fff;
+ width: 0.5%;
+}
+
 .tbl_collapse thead th:nth-child(3),
 .tbl_collapse thead th:nth-child(5),
 .tbl_collapse tbody td:nth-child(3),
@@ -136,11 +142,10 @@
 }
 
 /* Dashboard charts */
-/*
-.doughnut_container {
- margin:auto;
-}
-*/
+
+
+
+
 
 /* Dashboard popups */
 #popup_container .activa_list,

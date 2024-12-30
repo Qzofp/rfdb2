@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Sep 22, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_cryptos table.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetValueCryptos
  *
  * Created on Sep 06, 2024
- * Updated on Sep 18, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Get the data from de database tbl_value_cryptos table.
  *
@@ -66,8 +66,9 @@ function GetValueCryptos()
                     break;               
             }
             
+            $ratio = "IFNULL(CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, '$format'),'%'),'-') AS ratio ";
             $value = "CONCAT('$sign ', FORMAT(`value`, 2, '$format')) AS `value` "; 
-            $query = "SELECT tbl_value_cryptos.`id` AS `id`, `name`, `symbol`, $value ".
+            $query = "SELECT tbl_value_cryptos.`id` AS `id`, `name`, `symbol`, $ratio, $value ".
                      "FROM tbl_value_cryptos ".
                      "LEFT JOIN tbl_cryptocurrenties ON tbl_value_cryptos.`cid` = tbl_cryptocurrenties.`id` ".
                      "WHERE tbl_value_cryptos.`date` = $date_format ".

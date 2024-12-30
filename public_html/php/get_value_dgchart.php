@@ -4,11 +4,11 @@
  * Author: Rizzo Productions
  * Version: 0.2
  *
- * File:    get_value_accounts_dgchart.php
+ * File:    get_value_dgchart.php
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Dec 27, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -21,17 +21,17 @@ require_once 'common.php';
 session_start();
 header("Content-Type:application/json");
 if(isset($_SESSION['user'])) {
-    GetValueAccounts();
+    GetValueDoughnutChart();
 }
 else {
     RedirectAjaxRequest();
 }
 
 /*
- * Function:    GetValueAccounts
+ * Function:    GetValueDoughnutChart
  *
  * Created on Dec 24, 2024
- * Updated on Dec 25, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Get the data from de database tbl_value_accounts table for the doughnut chart.
  *
@@ -39,7 +39,7 @@ else {
  * Out: -
  *
  */
-function GetValueAccounts()
+function GetValueDoughnutChart()
 {    
     $date   = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS);  
@@ -185,7 +185,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Dec 27, 2024
+ * Updated on Dec 30, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -249,25 +249,33 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
             $value  = "FORMAT(`value`, 2) AS `value` ";
             $query = "SELECT `type` AS id, $account, $ratio, $value ".
                      "FROM (".
-                        "SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_accounts.`account` AS `account`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                        "SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_accounts .`date` = $date ".
                         "UNION ".
-                        "SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_accounts.`account` AS `account`, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                        "SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_cryptos.`date` = $date ".
                      ") total ".
                      "$where".
-                     "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `account`;";        
+                     "ORDER BY FIELD(`id`, 'finance', 'stock', 'savings', 'crypto'), `service`, `type`;";        
             break;    
         
-        
-        
-        
+        case "crypto" :           
+            $ratio = "IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio ";
+            $value = "FORMAT(`value`, 2) AS `value` "; 
+            $query = "SELECT `symbol` AS `label`, $ratio, $value ".
+                     "FROM tbl_value_cryptos ".
+                     "LEFT JOIN tbl_cryptocurrenties ON tbl_value_cryptos.`cid` = tbl_cryptocurrenties.`id` ".
+                     "WHERE tbl_value_cryptos.`date` = $date ".
+                     "ORDER BY `name`;";                    
+            break;    
     }
     
     return $query;

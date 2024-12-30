@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Dec 27, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -600,7 +600,7 @@ function showActivaRowAction(adp, c, s, that) {
  * Function:    showActivaAccountRowPopup
  *
  * Created on Oct 27, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: Shows the popup for the activa account row.
  *
@@ -646,7 +646,7 @@ function showActivaAccountRowPopup(c, s, that) {
     );  
     
     var crypto = [];
-    for (let i = 1; i < cells.length; i++) 
+    for (let i = 1; i < cells.length-1; i++) 
     {
         let id = 'class="dummy"';
         let ph = "";
@@ -702,7 +702,7 @@ function showActivaAccountRowPopup(c, s, that) {
  * Function:    showActivaCryptoRowPopup
  *
  * Created on Nov 06, 2024
- * Updated on Nov 17, 2024
+ * Updated on Dec 29, 2024
  *
  * Description: Shows the popup for the activa crypto row.
  *
@@ -738,7 +738,7 @@ function showActivaCryptoRowPopup(c, s, that) {
     // Remove all rows.
     $(".popup_table_crypto  td").remove();
      
-    for (let i = 1; i < cells.length; i++) 
+    for (let i = 1; i < cells.length-1; i++) 
     {
         let id = 'class="dummy"';
         let ph = "";
