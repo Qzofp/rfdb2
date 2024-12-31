@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 28, 2024
- * Updated on Sep 18, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Check if the user is signed in and modify the tbl_cryptocurrenties table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Sep 18, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Modify (add, edit or delete) the tbl_cryptocurrenties table if the name doesn't exists.
  *
@@ -41,6 +41,7 @@ function ModifyCryptoCurrenties()
     // Get data from ajax call.
     $name    = filter_input(INPUT_POST, 'name'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $symbol  = filter_input(INPUT_POST, 'symbol' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $color   = filter_input(INPUT_POST, 'color'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $web     = filter_input(INPUT_POST, 'web'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $action  = filter_input(INPUT_POST, 'action' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $id      = filter_input(INPUT_POST, 'id'     , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -50,11 +51,11 @@ function ModifyCryptoCurrenties()
     switch ($action)
     {
         case "add" :
-            $response = AddCryptoCurrenties($name, $symbol, $web);
+            $response = AddCryptoCurrenties($name, $symbol, $color, $web);
             break;
             
         case "edit" :
-            $response = EditCryptoCurrenties($id, $hide, $name, $symbol, $web);
+            $response = EditCryptoCurrenties($id, $hide, $name, $symbol, $color, $web);
             break;
             
         case "delete" :
@@ -69,15 +70,15 @@ function ModifyCryptoCurrenties()
  * Function:    AddCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Aug 01, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Add the input to the tbl_cryptocurrenties table if the name or symbol doesn't exists.
  *
- * In:  $name, $symbol, $web
+ * In:  $name, $symbol, $color, $web
  * Out: $response
  *
  */    
- function AddCryptoCurrenties($name, $symbol, $web)
+ function AddCryptoCurrenties($name, $symbol, $color, $web)
  {              
     $response = CheckCryptoCurrenties(0, $name, $symbol);
     if ($response['success'] && !$response['exists'])
@@ -86,14 +87,15 @@ function ModifyCryptoCurrenties()
         {    
             $db = OpenDatabase();
                  
-            $query = "INSERT INTO tbl_cryptocurrenties (`name`,`symbol`,`website`) ".
-                     "VALUES ('$name', '$symbol', '$web');";          
+            $query = "INSERT INTO tbl_cryptocurrenties (`name`,`symbol`,`color`,`website`) ".
+                     "VALUES ('$name', '$symbol', '$color', '$web');";       
             $select = $db->prepare($query);
             $select->execute();
                         
             $response['id']     = $db->lastInsertId();            
             $response['name']   = $name;
-            $response['symbol'] = $symbol;    
+            $response['symbol'] = $symbol;   
+            $response['color']  = $color;  
             $response['web']    = $web;
 
             $response['success'] = true;  
@@ -115,15 +117,15 @@ function ModifyCryptoCurrenties()
  * Function:    EditCryptoCurrenties
  *
  * Created on May 29, 2024
- * Updated on Aug 01, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Edit the tbl_cryptocurrenties table with the input if the name or symbol doesn't exists.
  *
- * In:  $id, $hide,  $name, $symbol, $web
+ * In:  $id, $hide,  $name, $symbol, $color, $web
  * Out: $response
  *
  */    
- function EditCryptoCurrenties($id, $hide, $name, $symbol, $web)
+ function EditCryptoCurrenties($id, $hide, $name, $symbol, $color, $web)
  {       
     $response = CheckCryptoCurrenties($id, $name, $symbol);
     if ($response['success'] && !$response['exists'])
@@ -132,7 +134,7 @@ function ModifyCryptoCurrenties()
         {                
             $db = OpenDatabase();
                 
-            $query = "UPDATE tbl_cryptocurrenties SET `hide`=$hide,`name`='$name',`symbol`='$symbol', `website`='$web' WHERE `id`=$id";
+            $query = "UPDATE tbl_cryptocurrenties SET `hide`=$hide,`name`='$name',`symbol`='$symbol', `color`='$color', `website`='$web' WHERE `id`=$id";
             
             $select = $db->prepare($query);
             $select->execute();
@@ -140,7 +142,8 @@ function ModifyCryptoCurrenties()
             $response['id']     = $id;
             $response['hide']   = $hide;
             $response['name']   = $name;
-            $response['symbol'] = $symbol;       
+            $response['symbol'] = $symbol;  
+            $response['color']  = $color; 
             $response['web']    = $web;
             
             $response['success'] = true;  

@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Jun 05, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -107,14 +107,18 @@
 }
 
 .tbl_cryptocurrenties th:nth-child(2) {
- width: 25%;
+ width: 20%;
 }
 
 .tbl_cryptocurrenties th:nth-child(3) {
- width: 25%;
+ width: 15%;
 }
 
 .tbl_cryptocurrenties th:nth-child(4) {
+ width: 15%;
+}
+
+.tbl_cryptocurrenties th:nth-child(5) {
  width: 49%;
 }
 
@@ -217,7 +221,7 @@
 }    
 
 .gen_currenties .popup_table_setting td:nth-child(2) {
- width: 35%;
+ width: 30%;
 }
 
 .gen_currenties .popup_table_setting td:nth-child(3) {
@@ -225,7 +229,11 @@
 }
 
 .gen_currenties .popup_table_setting td:nth-child(4) {
- width: 52%;
+ width: 15%;
+}
+
+.gen_currenties .popup_table_setting td:nth-child(5) {
+ width: 42%;
 }
 
 .gen_wallets .popup_table_setting td:nth-child(2),

@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Aug 07, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -493,7 +493,7 @@ function modifyBusinesses(c, btn) {
  * Function:    showCryptoPopupCurrenties
  *
  * Created on May 20, 2024
- * Updated on May 20, 2024
+ * Updated on Dec 31, 2024
  *
  * Description:  Shows the crypto currenties popup content for the crypto page.
  *
@@ -504,7 +504,7 @@ function modifyBusinesses(c, btn) {
 function showCryptoPopupCurrenties(c, s, h) {
     
     var shw, btn, cells, set;
-    [btn, cells] = setPopupTable("gen_currenties", c.cryptos[0], 4);
+    [btn, cells] = setPopupTable("gen_currenties", c.cryptos[0], 5);
     
     $(".popup_table_finance").hide();
     
@@ -522,12 +522,13 @@ function showCryptoPopupCurrenties(c, s, h) {
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><input id="name" type="text" name="name" placeholder="' + c.cryptos[1] + '" value="' + cells[1] + '" /></td>' +
             '<td><input id="crypto" type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
-            '<td><input id="website" type="text" name="website" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input id="color" type="text" name="color" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input id="website" type="text" name="website" placeholder="' + c.cryptos[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
     );     
-        
+
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
         $("#popup_content .shw").show();
@@ -540,7 +541,7 @@ function showCryptoPopupCurrenties(c, s, h) {
  * Function:    modifyCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Aug 01, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Check the crypto currenties input and add, edit or remove the crypto currenties in the database.
  *
@@ -553,7 +554,7 @@ function modifyCryptoCurrenties(c, btn) {
     var msg, input = [];
     
     // Get the input values.
-    input.push($("#name").val(), $("#crypto").val(), $("#website").val());
+    input.push($("#name").val(), $("#crypto").val(), $("#color").val(), $("#website").val());
     
     msg = c.messages[2].replace("#", input[0]); 
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
@@ -564,8 +565,9 @@ function modifyCryptoCurrenties(c, btn) {
             var [id, action] = getRowIdAndAction();            
             var hide = getShowHideRow();
             var send = 'name=' + encodeURIComponent(input[0]) + 
-                       '&symbol=' + encodeURIComponent(input[1])  + 
-                       '&web=' + encodeURIComponent(input[2]) + 
+                       '&symbol=' + encodeURIComponent(input[1]) + 
+                       '&color=' + encodeURIComponent(input[2]) + 
+                       '&web=' + encodeURIComponent(input[3]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide;
              
             var request = getAjaxRequest("modify_cryptocurrenties", send);
@@ -599,6 +601,7 @@ function modifyCryptoCurrenties(c, btn) {
                             // Reset input.
                             $("#name").val(""); 
                             $("#crypto").val("");
+                            $("#color").val("");
                             $("#website").val("");   
                         }
                     }     

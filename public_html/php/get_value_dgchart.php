@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Dec 30, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -185,7 +185,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Dec 30, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -270,7 +270,7 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
         case "crypto" :           
             $ratio = "IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio ";
             $value = "FORMAT(`value`, 2) AS `value` "; 
-            $query = "SELECT `symbol` AS `label`, $ratio, $value ".
+            $query = "SELECT `symbol` AS `label`, `color`, $ratio, $value ".
                      "FROM tbl_value_cryptos ".
                      "LEFT JOIN tbl_cryptocurrenties ON tbl_value_cryptos.`cid` = tbl_cryptocurrenties.`id` ".
                      "WHERE tbl_value_cryptos.`date` = $date ".

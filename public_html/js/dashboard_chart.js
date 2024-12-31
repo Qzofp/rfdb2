@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Dec 30, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -20,7 +20,7 @@
  * Function:    initDougnutChart
  *
  * Created on Dec 22, 2024
- * Updated on Dec 30, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Initialize the doughnut chart.
  *
@@ -47,7 +47,12 @@ function initDougnutChart(s) {
                 title: {
                     display: true,
                     align: 'start',
-                    text: ''
+                    text: '',
+                    /*color: 'black',*/
+                    font: {
+                        size: 14,
+                        family: 'arial'
+                    }                
                 },  
                 legend: {
                     display: true, 
@@ -160,7 +165,7 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
  * Function:    showActivaCryptoDoughnutChart
  *
  * Created on Dec 30, 2024
- * Updated on Dec 30, 2024
+ * Updated on Dec 31, 2024
  *
  * Description: Show the activa crypto doughnut chart.
  *
@@ -178,11 +183,11 @@ function showActivaCryptoDoughnutChart(doughnut, c, date, action) {
             // Debug
             //console.log( result.query );
             
-            var set, labels = [], data = [], value = [], color = ["#ff8c00","#00008b"]; // Get colors from tbl_cryptocurrenties table.
+            var labels = [], data = [], value = [], color = []; // Get colors from tbl_cryptocurrenties table.
             $.each(result.data, function (n, field) {  
 
                 labels.push(field.label);
-                //color.push(set.theme.color);
+                color.push(field.color);
                 data.push(field.ratio);
                 value.push(field.value);                         
             });       
