@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Dec 31, 2024
+ * Updated on Jan 03, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -83,8 +83,55 @@ function initDougnutChart(s) {
         };
     
     var doughnut = new Chart(ctx, { type: 'doughnut', data, options });
-     
+    
     return doughnut;
+}
+
+/*
+ * Function:    initLineChart
+ *
+ * Created on Jan 03, 2025
+ * Updated on Jan 03, 2025
+ *
+ * Description: Initialize the line chart.
+ *
+ * In:  s
+ * Out: line
+ *
+ */
+function initLineChart(s) {
+ 
+    const ctx = document.getElementById('line_chart');    
+       
+    var data = {
+        labels: [],
+        datasets: []
+    };
+    
+    var options = {
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: '',
+                font: {
+                    size: 14,
+                    family: 'arial'
+                }                
+            },             
+            legend: {
+                display: true
+            },
+            tooltip: {
+                enabled: true
+          }
+        }
+    };
+    
+    var line = new Chart(ctx, { type: 'line', data, options });  
+    
+    return line;    
 }
 
 /*
@@ -260,4 +307,36 @@ function showDoughnutChartTooltip(dgc, that) {
     }
     
     dgc.update();
+}
+
+// Test line chart
+function ShowLineChartTest(line, c) {
+  
+    const data = [
+        { year: 2010, count: 10 },
+        { year: 2011, count: 20 },
+        { year: 2012, count: 15 },
+        { year: 2013, count: 25 },
+        { year: 2014, count: 22 },
+        { year: 2015, count: 30 },
+        { year: 2016, count: 28 },
+        { year: 2017, count: 22 },
+        { year: 2018, count: 30 },
+        { year: 2019, count: 28 }
+    ];
+
+    // Update the doughnut chart.
+    const tmp = {
+        labels: data.map(row => row.year),
+        datasets: [{
+            label: 'Line Chart Test',
+            data: data.map(row => row.count),
+            tension: 0.2
+        }]
+    };
+            
+    line.data.labels = tmp.labels; 
+    line.data.datasets = tmp.datasets;
+    line.options.plugins.title.text = c.labels[2];    
+    line.update();
 }

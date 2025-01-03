@@ -20,7 +20,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Dec 21, 2024
+ * Updated on Jan 02, 2025
  *
  * Description: Redirect to the start page.
  * 
@@ -148,9 +148,6 @@ if(!$user){
                             
                         </div>                     
                         <div class="flex_top">
-                            <!-- Donut label 
-                            <div class="label" style="position:fixed"><span></span></div>
-                            -->
                                                         
                             <!-- Donut chart -->
                             <canvas id="doughnut"></canvas>
@@ -160,7 +157,11 @@ if(!$user){
                     <div class="flex_container">
                         <div class="flex_bottom">
                             <!-- Graph label -->
-                            <div class="label"><span></span></div>                               
+                            <!-- <div class="label"><span></span></div>  -->   
+                            
+                            <!-- Line chart -->
+                            <canvas id="line_chart"></canvas>
+                                                   
                         </div>
                     </div>                                        
                 </div>

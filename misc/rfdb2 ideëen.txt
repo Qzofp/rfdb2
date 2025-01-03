@@ -814,3 +814,27 @@ SELECT `date` FROM `tbl_value_accounts`
 UNION
 SELECT `date` FROM `tbl_value_cryptos`
 ORDER BY `date` DESC
+
+-- Line chart accounts collapse
+SELECT type AS id, 
+	CASE 
+    	WHEN `type` = 'finance' then 'Finances' 
+        WHEN `type` = 'stock' then 'Stocks' 
+        WHEN `type` = 'savings' then 'Savings' 
+        WHEN `type` = 'crypto' then 'Crypto'  
+    END AS `type`, `date`, FORMAT(`value`, 2) AS `value`  
+FROM (
+    SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_value_accounts.`date` AS `date`, SUM(IF(tbl_value_accounts.`hide` = 0, `value`, 0)) AS `value` 
+    FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    GROUP BY `type`, `date`, tbl_value_accounts.`hide` 
+    UNION 
+    SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_value_cryptos.`date` AS `date`, SUM(IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0)) AS `value` 
+    FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    GROUP BY `type`, `date`, tbl_amount_wallets.`hide` 
+) total 
+WHERE `type` IN ('finance','stock','savings','crypto') AND `hide` = 0 
+ORDER BY FIELD(type, 'finance','stock','savings','crypto'), `date`;

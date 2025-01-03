@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Dec 30, 2024
+ * Updated on Jan 03, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Dec 29, 2024
+ * Updated on Jan 03, 2025
  *
  * Description: Shows the dashboard page.
  *
@@ -65,14 +65,17 @@ function loadMain() {
  */
 function showDashboard(c, s) {
 
-    var $adp, $dgc;
+    var $adp, $dgc, $lnc;
         
     // Initialize the datepicker.
     $adp = initAirDatePicker(c, s);   
     
     // Initialize the doughnut chart.
-    $dgc = initDougnutChart(s);  // $dgc (doughnut chart), $lnc (line chart)
-        
+    $dgc = initDougnutChart(s);
+    
+    // Initialize the line chart.
+    $lnc = initLineChart(s);
+      
     // Remove the old rankings (only for the finances sheet).
     removeOldRankings(3);
     
@@ -84,11 +87,11 @@ function showDashboard(c, s) {
     fillSlideMenu(c.slides, s, true);
       
     // Show the dashboard content.
-    showDashboardContent($dgc, 0, c, s); 
+    showDashboardContent($dgc, $lnc, 0, c, s); 
     
     // Slidemenu button is pressed.
     $(".slidemenu input[name='slideItem']").change(function() {               
-        showDashboardContent($dgc, Number(this.value), c, s);
+        showDashboardContent($dgc, $lnc, Number(this.value), c, s);
     });
     
     // Page button is pressed.
@@ -161,22 +164,22 @@ function removeOldRankings(n) {
  * Function:    showDashboardContent
  *
  * Created on Aug 16, 2024
- * Updated on Dec 25, 2024
+ * Updated on Jan 03, 2025
  *
  * Description: Shows the dashboard content for the chosen slide.
  *
- * In:  dgc, slide, c, s
+ * In:  dgc, lnc, slide, c, s
  * Out: -
  *
  */
-function showDashboardContent(dgc, slide, c, s) {
+function showDashboardContent(dgc, lnc, slide, c, s) {
     
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
     var crypto = (set.page === "true");
     
     switch(slide) {
-        case 0: showActivaAccountsContent(dgc, crypto, c, s, "");
+        case 0: showActivaAccountsContent(dgc, lnc, crypto, c, s, "");
                 break;
         
         case 1: $("#test01").show();
@@ -195,15 +198,15 @@ function showDashboardContent(dgc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Dec 25, 2024
+ * Updated on Jan 03, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
- * In:  dgc, crypto, c, s, date
+ * In:  dgc, lnc, crypto, c, s, date
  * Out: -
  *
  */
-function showActivaAccountsContent(dgc, crypto, c, s, date) {   
+function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {   
 
     var request = getAjaxRequest("get_entry_date", "date=" + date);    
     request.done(function(result) {
@@ -237,7 +240,7 @@ function showActivaAccountsContent(dgc, crypto, c, s, date) {
             $("#input_date span").html(result.date ? result.date : "&nbsp;"); 
              
             // Show the labels.
-            showActivaLabels(c, s, true);
+            showActivaLabels(c, s);
 
             // Show the table.
             showActivaAccountsTable(c, s, result.date, "collapse");
@@ -248,10 +251,8 @@ function showActivaAccountsContent(dgc, crypto, c, s, date) {
             // Show the doughnut chart.            
             showActivaAccountsDoughnutChart(dgc, c, s, result.date, "collapse");
             
-            
-            
-            
-            
+            // Show the line chart.             
+            ShowLineChartTest(lnc, c);
         }
         else {
             showDatabaseError(result); 
@@ -269,31 +270,20 @@ function showActivaAccountsContent(dgc, crypto, c, s, date) {
  * Function:    showActivaLabels
  *
  * Created on Aug 25, 2024
- * Updated on Sep 06, 2024
+ * Updated on Jan 02, 2025
  *
  * Description: Shows the dashboard activa labels.
  *
- * In:  c, s, accounts
+ * In:  c, s
  * Out: -
  *
  */
-function showActivaLabels(c, s, accounts) {
+function showActivaLabels(c, s) {
     
     var set = JSON.parse(s[0].value);   
-    var start;
-    
-    if (accounts) {
-       start = 0;
-    }
-    else {
-       start = 3;
-    }
-    
-    for (let i = 0, j = start; i < 3; i++, j++)
-    {
-        $(".label span").eq(i).html(c.labels[j]);
-        $(".label span").eq(i).css("border-left","3px solid " + set.theme.color);           
-    }      
+
+    $(".label span").html(c.labels[1]);
+    $(".label span").css("border-left","3px solid " + set.theme.color);           
 }
 
 /*
@@ -588,7 +578,7 @@ function showActivaButtonAction(adp, dgc, c, s, that, crypto) {
  * Function:    showdActivaCryptoContent
  *
  * Created on Aug 24, 2024
- * Updated on Dec 30, 2024
+ * Updated on Jan 02, 2025
  *
  * Description: Shows the dashboard activa (crypto) slide content.
  *
@@ -607,7 +597,7 @@ function showActivaCryptoContent(dgc, c, s, date) {
             $("#page_buttons img").eq(3).hide();  
                 
             // Show the labels.
-            showActivaLabels(c, s, false);
+            showActivaLabels(c, s);
 
             // Show the table.
             showActivaCryptoTable(c, s, result.date);
