@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jan 03, 2025
+ * Updated on Jan 06, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -270,7 +270,7 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
  * Function:    showActivaLabels
  *
  * Created on Aug 25, 2024
- * Updated on Jan 02, 2025
+ * Updated on Jan 06, 2025
  *
  * Description: Shows the dashboard activa labels.
  *
@@ -290,7 +290,7 @@ function showActivaLabels(c, s) {
  * Function:    ShowActivaAccountsTable
  *
  * Created on Aug 25, 2024
- * Updated on Dec 28, 2024
+ * Updated on Jan 06, 2025
  *
  * Description: Shows the dashboard activa accounts table.
  *
@@ -303,9 +303,8 @@ function showActivaAccountsTable(c, s, date, action) {
     var set = JSON.parse(s[0].value);  
     var items = c.accounts.slice();
     
-    // Calculate table height.
-    var y = $(".flex_top").height() - 98;
-    $("#table_container").css("height", y);     
+    // Set the table height.
+    $("#table_container").css("height", "30vh");     
     
     // Remove the old and add the new class.
     var tblclass;
@@ -626,7 +625,7 @@ function showActivaCryptoContent(dgc, c, s, date) {
  * Function:    showActivaCryptoTable
  *
  * Created on Sep 05, 2024
- * Updated on Oct 08, 2024
+ * Updated on Jan 06, 2025
  *
  * Description: Shows the dashboard activa crypto table.
  *
@@ -638,9 +637,8 @@ function showActivaCryptoTable(c, s, date) {
     
     var set = JSON.parse(s[0].value);  
     
-    // Calculate table height.
-    var y = $(".flex_top").height() - 98;
-    $("#table_container").css("height", y);     
+    // Set the table height.
+    $("#table_container").css("height", "30vh");     
     
     $("#table_container table").removeClass().addClass("tbl_crypto");
     

@@ -106,3 +106,5 @@ ToDo
 19. Bug: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
 
 20. Bug: Op de sheet pagina's klopt de datum niet meer als er iets is toegevoegd en er wordt daarna van jaar gewisseld (controleren of dit zo is).
+
+21. Verbetering: Gebruik voor de tabellen height vh i.p.v. het te berekenen in px, zie ook de Dashboard Activa tabellen.

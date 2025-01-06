@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 03, 2025
+ * Updated on Jan 05, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -91,7 +91,7 @@ function initDougnutChart(s) {
  * Function:    initLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 03, 2025
+ * Updated on Jan 05, 2025
  *
  * Description: Initialize the line chart.
  *
@@ -110,10 +110,20 @@ function initLineChart(s) {
     
     var options = {
         maintainAspectRatio: false,
+        layout: {
+            padding: {
+                left: 40,
+                right: 40
+            }
+        },
         plugins: {
             title: {
                 display: true,
                 align: 'start',
+                padding: {
+                    top: 5,
+                    bottom: 0
+                },
                 text: '',
                 font: {
                     size: 14,
