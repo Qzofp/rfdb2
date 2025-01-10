@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Dec 31, 2024
+ * Updated on Jan 10, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetValueDoughnutChart
  *
  * Created on Dec 24, 2024
- * Updated on Dec 30, 2024
+ * Updated on Jan 10, 2025
  *
  * Description: Get the data from de database tbl_value_accounts table for the doughnut chart.
  *
@@ -57,12 +57,10 @@ function GetValueDoughnutChart()
             {
                 case "$" :
                 case "£" :
-                    $format = "en_US";
                     $date_format = "STR_TO_DATE('$date', '%m/%d/%Y')";
                     break;
             
                 case "€" :
-                    $format = "de_DE";
                     $date_format = "STR_TO_DATE('$date', '%d-%m-%Y')";
                     break;               
             }
@@ -83,7 +81,7 @@ function GetValueDoughnutChart()
             // Remove the last comma.
             $field = substr_replace($field, '', -1);
                     
-            $query = CreateQuery($input['sign'], $format, $date_format, $action, $case, $field);
+            $query = CreateQuery($date_format, $action, $case, $field);
             $select = $db->prepare($query);
             $select->execute();    
             
@@ -185,15 +183,15 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Dec 31, 2024
+ * Updated on Jan 10, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
- * In:  $sign, $format, $date, $action, $case, $field
+ * In:  $date, $action, $case, $field
  * Out: $query
  *
  */
-function CreateQuery($sign, $format, $date, $action, $case, $field)
+function CreateQuery($date, $action, $case, $field)
 {
     $query = "";
     

@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jan 06, 2025
+ * Updated on Jan 08, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -198,7 +198,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 03, 2025
+ * Updated on Jan 08, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -252,7 +252,7 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
             showActivaAccountsDoughnutChart(dgc, c, s, result.date, "collapse");
             
             // Show the line chart.             
-            ShowLineChartTest(lnc, c);
+            ShowActivaAccountsLineChart(lnc, c, s, "collapse");
         }
         else {
             showDatabaseError(result); 

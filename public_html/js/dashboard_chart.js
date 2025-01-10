@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 05, 2025
+ * Updated on Jan 10, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -281,7 +281,7 @@ function showActivaCryptoDoughnutChart(doughnut, c, date, action) {
  * Function:    showDoughnutChartTooltip
  *
  * Created on Dec 28, 2024
- * Updated on Dec 29, 2024
+ * Updated on Jan 08, 2025
  *
  * Description: Show the doughnut chart tooltip for the selected table row.
  *
@@ -293,7 +293,7 @@ function showActivaCryptoDoughnutChart(doughnut, c, date, action) {
  */
 function showDoughnutChartTooltip(dgc, that) {
   
-    //Get the value (index) of the last column of the row.
+    // Get the value (index) of the last column of the row.
     var idx = Number(that.find("td:last-child").html());
     
     if (that.find("td").length > 1 && idx > -1) 
@@ -304,7 +304,7 @@ function showDoughnutChartTooltip(dgc, that) {
             index: idx
         }]);
 
-        //Set active tooltip 
+        // Set active tooltip 
         dgc.tooltip.setActiveElements([{
             datasetIndex: 0,
             index: idx
@@ -319,34 +319,94 @@ function showDoughnutChartTooltip(dgc, that) {
     dgc.update();
 }
 
-// Test line chart
-function ShowLineChartTest(line, c) {
+/*
+ * Function:    showActivaAccountsLineChart
+ *
+ * Created on Jan 03, 2025
+ * Updated on Jan 10, 2025
+ *
+ * Description: Show the activa value developement line chart.
+ *
+ * In:  line, c, s, date, action
+ * Out: -
+ *
+ */
+function ShowActivaAccountsLineChart(line, c, s, action) {
   
-    const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-        { year: 2017, count: 22 },
-        { year: 2018, count: 30 },
-        { year: 2019, count: 28 }
-    ];
-
-    // Update the doughnut chart.
-    const tmp = {
-        labels: data.map(row => row.year),
-        datasets: [{
-            label: 'Line Chart Test',
-            data: data.map(row => row.count),
-            tension: 0.2
-        }]
-    };
+    var request = getAjaxRequest("get_value_lnchart", "&action=" + action);
+    request.done(function(result) {
             
-    line.data.labels = tmp.labels; 
-    line.data.datasets = tmp.datasets;
-    line.options.plugins.title.text = c.labels[2];    
-    line.update();
+        if (result.success) {         
+        
+            // Debug
+            // console.log( result.query );
+                       
+            var date = [], finance = [], stock = [], savings = [], crypto = [];
+            var keys = Object.keys(result.data[0]);
+            
+            // Fill the chart datasets values (finance, stock, savings and crypto).
+            $.each(result.data, function (n, field) {  
+
+                $.each(field, function(key, value){                    
+                    
+                    switch (key) {                    
+                        case keys[0]: date.push(value);
+                            break;                        
+                        
+                        case keys[1]: finance.push(value);
+                            break;
+                            
+                        case keys[2]: stock.push(value);
+                            break;
+                        
+                        case keys[3]: savings.push(value);
+                            break;
+                            
+                        case keys[4]: crypto.push(value);
+                            break;                       
+                    };              
+                });      
+            });             
+     
+            // Update the line chart.
+            const tmp = {
+            labels: date,
+            datasets: [{
+                    label: keys[1],
+                    data: finance,
+                    tension: 0.2
+                },
+                {
+                    label: keys[2],
+                    data: stock,
+                    tension: 0.2
+                },
+                {
+                    label: keys[3],
+                    data: savings,
+                    tension: 0.2
+                },
+                {
+                    label: keys[4],
+                    data: crypto,
+                    tension: 0.2
+                }     
+            ]
+        };
+            
+        line.data.labels = tmp.labels; 
+        line.data.datasets = tmp.datasets;
+        line.options.plugins.title.text = c.labels[2];    
+        line.update();                   
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
 }

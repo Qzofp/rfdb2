@@ -838,3 +838,24 @@ FROM (
 ) total 
 WHERE `type` IN ('finance','stock','savings','crypto') AND `hide` = 0 
 ORDER BY FIELD(type, 'finance','stock','savings','crypto'), `date`;
+
+-- Line chart accounts collapse pivot
+SELECT 
+	`Date`, 
+    IFNULL(FORMAT(SUM(CASE WHEN `type` = 'finance' THEN `value` END),2),'NaN') AS `Finance`,
+    IFNULL(FORMAT(SUM(CASE WHEN `type` = 'stock' THEN `value` END),2),'NaN') AS `Stock`,
+    IFNULL(FORMAT(SUM(CASE WHEN `type` = 'savings' THEN `value` END),2),'NaN') AS `Savings`,
+    IFNULL(FORMAT(SUM(CASE WHEN `type` = 'crypto' THEN `value` END),2),'NaN') AS `Crypto`
+FROM (
+	SELECT tbl_value_accounts.`date` AS `Date`, tbl_accounts.`type` AS `type`, tbl_value_accounts.`value` AS `value`
+    FROM tbl_value_accounts 
+	LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    UNION
+    SELECT tbl_value_cryptos.`date` AS `Date`, tbl_accounts.`type` AS `type`, `amount`*`value` AS `value` 
+    FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+) total
+GROUP BY `Date`
+ORDER BY `Date`;
