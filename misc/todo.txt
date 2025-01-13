@@ -109,4 +109,4 @@ ToDo
 
 21. Verbetering: Gebruik voor de tabellen height vh i.p.v. het te berekenen in px, zie ook de Dashboard Activa tabellen.
 
-22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's) zien in het doughnut diagram.
+22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's) zien in het doughnut diagram (Alleen MariaDB?).

@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Jan 10, 2025
+ * Updated on Jan 13, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetValueLineChart
  *
  * Created on Jan 10, 2025
- * Updated on Jan 10, 2025
+ * Updated on Jan 13, 2025
  *
  * Description: Get the data from de database tbl_value_accounts table for the line chart.
  *
@@ -40,50 +40,46 @@ else {
  *
  */
 function GetValueLineChart()
-{    
-    // $date   = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
-    $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS);  
-    
-    // Get the settings, e.g. currency sign and the active pages (finance, stock, savings and crypto).
-    $input = GetInput();  
-    if ($input['success']) 
+{ 
+    $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS);      
+     
+    $response = [];
+    try 
     {
-        try 
+        $db = OpenDatabase();
+                          
+        switch ($action) 
         {
-            $db = OpenDatabase();
+            case "collapse" :
+                $query = CreateCollapseQuery();  
+                break;
+          
+            case "expand"   :  
+                $query = CreateExpandQuery();
+                break;    
+        
+            case "crypto" :    
             
-            // Determine the which value accounts are selected, based on the active pages.
-            $case  = "";
-            $configs = $input['configs'];
-            $pages = ["finance","stock","savings","crypto"];
-            foreach ($input['pages'] as $key=>$value)
-            {
-                if ($value == "true") {
-                    $case .= "IFNULL(SUM(CASE WHEN `type` = '$pages[$key]' THEN `value` END),'NaN') AS `$configs[$key]`,";            
-                }
-            }            
-            // Remove the last comma.
-            $case = substr_replace($case, '', -1);
+                break;    
+        }        
+          
+        $select = $db->prepare($query);
+        $select->execute();    
+           
+        $data = $select->fetchAll(PDO::FETCH_ASSOC); 
                     
-            $query = CreateQuery($action, $case);
-            $select = $db->prepare($query);
-            $select->execute();    
+        // Debug
+        //$response['query'] = $query;  
             
-            $data = $select->fetchAll(PDO::FETCH_ASSOC); 
-                    
-            // Debug
-            //$response['query'] = $query;  
-            
-            $response['data'] = $data;
-            $response['success'] = true;
-        }
-        catch (PDOException $e) 
-        {    
-            $response['message'] = $e->getMessage();
-            $response['success'] = false;
-        }
+        $response['data'] = $data;
+        $response['success'] = true;
     }
-
+    catch (PDOException $e) 
+    {    
+        $response['message'] = $e->getMessage();
+        $response['success'] = false;
+    }
+    
     echo $json = json_encode($response);
 
     // Close database connection
@@ -130,7 +126,7 @@ function GetConfigs($data)
     {
         $db = OpenDatabase();
 
-                // Determine the language table.
+        // Determine the language table.
         switch ($data['code']) 
         {
             case 'NL': $table = "tbl_dutch";
@@ -164,53 +160,63 @@ function GetConfigs($data)
 }
 
 /*
- * Function:    CreateQuery
+ * Function:    CreateCollapseQuery
  *
  * Created on Aug 30, 2024
- * Updated on Jan 10, 2025
+ * Updated on Jan 13, 2025
  *
- * Description: Create the query to get the rows from the tbl_value_accounts.
+ * Description: Create the query to get the rows from the tbl_value_accounts for the collapse table.
  *
- * In:  $action, $case
+ * In:  -
  * Out: $query
  *
  */
-function CreateQuery($action, $case)
-{
-    $query = "";
-    
-    $date = "`Date`";    
-    if ($case) {
-        $date .= ",";
-    }
+function CreateCollapseQuery()
+{    
+    $query = "Empty Query!";
 
-    switch ($action) 
-    {
-        case "collapse" :
-            $query = "SELECT $date $case ".
-                     "FROM (".
-                            "SELECT tbl_value_accounts.`date` AS `Date`, tbl_accounts.`type` AS `type`, tbl_value_accounts.`value` AS `value` ".
-                            "FROM tbl_value_accounts ".
-                            "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
-                            "UNION ".
-                            "SELECT tbl_value_cryptos.`date` AS `Date`, tbl_accounts.`type` AS `type`, `amount`*`value` AS `value` ".
-                            "FROM tbl_value_cryptos ".
-                            "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
-                            "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
-                            "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
-                         ") total ".
-                     "GROUP BY `Date` ".
-                     "ORDER BY `Date`;";       
-            break;
-          
-        case "expand"   :  
-            
-            break;    
+    // Get the settings, e.g. currency sign and the active pages (finance, stock, savings and crypto).
+    $input = GetInput();  
+    if ($input['success']) 
+    {    
         
-        case "crypto" :    
+        $case  = "";
+        $configs = $input['configs'];            
             
-            break;    
+        $pages = ["finance","stock","savings","crypto"];        
+        $i = 0;
+        foreach ($input['pages'] as $key=>$value)
+        {
+            if ($value == "true") {
+                $case .= "IFNULL(SUM(CASE WHEN `type` = '$pages[$key]' THEN `value` END),'NaN') AS `$i"."_"."$configs[$key]`,";             
+            }
+            $i++;
+        }            
+        // Remove the last comma.
+        $case = substr_replace($case, '', -1);        
+
+        $date = "`Date`";    
+        if ($case) {
+            $date .= ",";
+        }
+            
+        $query = "SELECT $date $case ".
+                 "FROM (".
+                    "SELECT tbl_value_accounts.`date` AS `Date`, tbl_accounts.`type` AS `type`, tbl_value_accounts.`value` AS `value` ".
+                    "FROM tbl_value_accounts ".
+                    "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                    "UNION ".
+                    "SELECT tbl_value_cryptos.`date` AS `Date`, tbl_accounts.`type` AS `type`, `amount`*`value` AS `value` ".
+                    "FROM tbl_value_cryptos ".
+                    "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                    "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                    "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                 ") total ".
+                 "GROUP BY `Date` ".
+                 "ORDER BY `Date`;";         
     }
     
     return $query;
 }
+
+

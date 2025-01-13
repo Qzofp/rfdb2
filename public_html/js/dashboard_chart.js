@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 10, 2025
+ * Updated on Jan 13, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -20,7 +20,7 @@
  * Function:    initDougnutChart
  *
  * Created on Dec 22, 2024
- * Updated on Dec 31, 2024
+ * Updated on Jan 11, 2025
  *
  * Description: Initialize the doughnut chart.
  *
@@ -73,7 +73,7 @@ function initDougnutChart(s) {
                                 label += ': ';
                             }
                             if (context.dataset.data[i] !== null) {
-                                label +=  new Intl.NumberFormat(getLocale(s), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.dataset.data[i]) + '%';
+                                label += new Intl.NumberFormat(getLocale(s), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.dataset.data[i]) + '%';
                             }
                             return label;
                         }               
@@ -91,7 +91,7 @@ function initDougnutChart(s) {
  * Function:    initLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 05, 2025
+ * Updated on Jan 12, 2025
  *
  * Description: Initialize the line chart.
  *
@@ -101,6 +101,8 @@ function initDougnutChart(s) {
  */
 function initLineChart(s) {
  
+    var set = JSON.parse(s[5].value);
+    
     const ctx = document.getElementById('line_chart');    
        
     var data = {
@@ -114,6 +116,18 @@ function initLineChart(s) {
             padding: {
                 left: 40,
                 right: 40
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    // Include a Euro sign in the ticks
+                    callback: function(value) {                    
+                        tick = new Intl.NumberFormat(getLocale(s), { style: 'currency', currency: getCurrency(s) }).format(value);             
+                        return tick;
+                    }
+                }
             }
         },
         plugins: {
@@ -131,11 +145,32 @@ function initLineChart(s) {
                 }                
             },             
             legend: {
-                display: true
+                display: true, 
+                //position: 'bottom', 
+                labels: {
+                    boxHeight: 7,
+                    boxWidth: 18       
+                },
+                onClick: null   
             },
             tooltip: {
-                enabled: true
-          }
+                enabled: true,
+                callbacks: {
+                    label: function(context) {
+                                                
+                        let label = context.dataset.label || '';
+                        let i = context.dataIndex;
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.dataset.data[i] !== null) {
+                            label += set.sign + ' ' + new Intl.NumberFormat(getLocale(s), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(context.dataset.data[i]);
+                        }
+                        return label;
+                    }               
+                }                
+            }
         }
     };
     
@@ -323,7 +358,7 @@ function showDoughnutChartTooltip(dgc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 10, 2025
+ * Updated on Jan 13, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -339,65 +374,59 @@ function ShowActivaAccountsLineChart(line, c, s, action) {
         if (result.success) {         
         
             // Debug
-            // console.log( result.query );
-                       
-            var date = [], finance = [], stock = [], savings = [], crypto = [];
+            //console.log( result.query );
+
             var keys = Object.keys(result.data[0]);
+            
+            // Initialize the arrays for the datasets values and fill the color array.
+            var data = [], color = [];
+            keys.forEach((key, i) => {
+                data[key] = [];
+                
+                // Fill the color array.
+                if (i > 0) 
+                {
+                    let n = Number(key.split("_")[0]) + 1;
+                    let set = JSON.parse(s[n].value);            
+                    color[key] = set.theme.color;                   
+                }
+            });   
             
             // Fill the chart datasets values (finance, stock, savings and crypto).
             $.each(result.data, function (n, field) {  
 
-                $.each(field, function(key, value){                    
-                    
-                    switch (key) {                    
-                        case keys[0]: date.push(value);
-                            break;                        
-                        
-                        case keys[1]: finance.push(value);
-                            break;
-                            
-                        case keys[2]: stock.push(value);
-                            break;
-                        
-                        case keys[3]: savings.push(value);
-                            break;
-                            
-                        case keys[4]: crypto.push(value);
-                            break;                       
-                    };              
+                $.each(field, function(key, value) {                    
+
+                    data[key].push(value);
                 });      
-            });             
-     
+            });    
+                        
+            // Create the datasets.
+            var datasets = [];
+            keys.forEach((key, i) => {
+                                
+                if (i < keys.length - 1) 
+                {
+                    datasets[i] = {
+                        label: keys[i+1].split("_")[1],
+                        data: data[keys[i+1]],
+                        backgroundColor: color[keys[i+1]],
+                        borderColor: color[keys[i+1]],
+                        tension: 0.2
+                    };
+                }      
+            });            
+
             // Update the line chart.
             const tmp = {
-            labels: date,
-            datasets: [{
-                    label: keys[1],
-                    data: finance,
-                    tension: 0.2
-                },
-                {
-                    label: keys[2],
-                    data: stock,
-                    tension: 0.2
-                },
-                {
-                    label: keys[3],
-                    data: savings,
-                    tension: 0.2
-                },
-                {
-                    label: keys[4],
-                    data: crypto,
-                    tension: 0.2
-                }     
-            ]
-        };
+                labels: data[keys[0]],
+                datasets: datasets
+            };
             
-        line.data.labels = tmp.labels; 
-        line.data.datasets = tmp.datasets;
-        line.options.plugins.title.text = c.labels[2];    
-        line.update();                   
+            line.data.labels = tmp.labels; 
+            line.data.datasets = tmp.datasets;
+            line.options.plugins.title.text = c.labels[2];    
+            line.update();                   
         }
         else {
             showDatabaseError(result);         

@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Dec 27, 2024
+ * Updated on Jan 12, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1346,4 +1346,37 @@ function getLocale(s) {
     }       
    
     return locale;
+}
+
+/*
+ * Function:   getCurrency
+ *
+ * Created on Jan 12, 2025
+ * Updated on Jan 12, 2025
+ *
+ * Description: Get the currency format. Which can be used in the chart.js functions.
+ *
+ * In:  s
+ * Out: locale
+ *
+ */
+function getCurrency(s) {
+    
+    var set, currency;
+    
+    set = JSON.parse(s[5].value);
+    switch (set.sign) {
+        case "$" :
+            currency = "USD"; 
+            break;
+        case "£" :
+            currency = "GBP";        
+            break;
+            
+        case "€"  :
+            currency = "EUR";        
+            break;
+    }       
+   
+    return currency;
 }
