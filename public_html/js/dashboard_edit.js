@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Dec 29, 2024
+ * Updated on Jan 17, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -285,15 +285,15 @@ function showActivaAccount(c, s, i, kind, btn, item) {
  * Function:    setDashboardPopupChoice
  *
  * Created on Sep 08, 2024
- * Updated on Dec 25, 2024
+ * Updated on Jan 15, 2025
  *
  * Description: Set the choice made in the dashboard popup window.
  *
- * In:  dgc, e, c, s
+ * In:  dgc, lnc, e, c, s
  * Out: -
  *
  */
-function setDashboardPopupChoice(dgc, e, c, s) {
+function setDashboardPopupChoice(dgc, lnc, e, c, s) {
     
     e.preventDefault();     
     var btn = e.originalEvent.submitter.alt;
@@ -304,16 +304,16 @@ function setDashboardPopupChoice(dgc, e, c, s) {
     
     switch (popup) {
         case "activa_list" :
-            showActivaListResults(dgc, c, s, btn);
+            showActivaListResults(dgc, lnc, c, s, btn);
             break;
         
         case "activa_modify"   :     
-            modifyActivaValues(dgc, c, s, btn);
+            modifyActivaValues(dgc, lnc, c, s, btn);
             break;    
         
         case "activa_accounts" : 
         case "activa_crypto"   :
-            modifyActivaAccountRow(dgc, c, s, btn);
+            modifyActivaAccountRow(dgc, lnc, c, s, btn);
             break;
     }
 }
@@ -322,15 +322,15 @@ function setDashboardPopupChoice(dgc, e, c, s) {
  * Function:    showActivaListResults
  *
  * Created on Nov 17, 2024
- * Updated on Dec 25, 2024
+ * Updated on Jan 15, 2025
  *
  * Description: Show the results from the activa list popup choice.
  *
- * In:  dgc, c, s, btn
+ * In:  dgc, lnc, c, s, btn
  * Out: -
  *
  */
-function showActivaListResults(dgc, c, s, btn) {
+function showActivaListResults(dgc, lnc, c, s, btn) {
     
     // Check if the Crypto page is enabled or disabled.
     var set = JSON.parse(s[4].value);
@@ -340,7 +340,7 @@ function showActivaListResults(dgc, c, s, btn) {
     if (btn === "ok" && $("#list_dates").val() === "1") 
     {
         date = $("#list_dates").next().find(".current").text();
-        showActivaAccountsContent(dgc, crypto, c, s, date);
+        showActivaAccountsContent(dgc, lnc, crypto, c, s, date);
         closePopupWindow();
     }
     else if (btn === "ok") {
@@ -352,15 +352,15 @@ function showActivaListResults(dgc, c, s, btn) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Dec 25, 2024
+ * Updated on Jan 15, 2025
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
- * In:  dgc, c, s, btn
+ * In:  dgc, lnc, c, s, btn
  * Out: -
  *
  */
-function modifyActivaValues(dgc, c, s, btn) {
+function modifyActivaValues(dgc, lnc, c, s, btn) {
     
     // Debug.
     //console.log(btn);
@@ -409,7 +409,7 @@ function modifyActivaValues(dgc, c, s, btn) {
                 }
                 else 
                 {
-                    showActivaAccountsContent(dgc, crypto, c, s, result.date);   
+                    showActivaAccountsContent(dgc, lnc, crypto, c, s, result.date);   
                     closePopupWindow();       
                 }
             }
@@ -771,15 +771,15 @@ function showActivaCryptoRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Dec 27, 2024
+ * Updated on Jan 17, 2025
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
- * In:  dgc, c, s, btn
+ * In:  dgc, lnc, c, s, btn
  * Out: -
  *
  */
-function modifyActivaAccountRow(dgc, c, s, btn) {
+function modifyActivaAccountRow(dgc, lnc, c, s, btn) {
     
     // Get input values.
     var date = $("#input_date span").html();
@@ -835,6 +835,9 @@ function modifyActivaAccountRow(dgc, c, s, btn) {
                     
                     // Show the doughnut chart.            
                     showActivaAccountsDoughnutChart(dgc, c, s, date, tbl);
+                    
+                    // Show the line chart.             
+                    ShowActivaAccountsLineChart(lnc, c, s, date, tbl);
                 }
                 else 
                 {                

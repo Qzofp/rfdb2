@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Jan 10, 2025
+ * Updated on Jan 15, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetValueDoughnutChart
  *
  * Created on Dec 24, 2024
- * Updated on Jan 10, 2025
+ * Updated on Jan 15, 2025
  *
  * Description: Get the data from de database tbl_value_accounts table for the doughnut chart.
  *
@@ -48,6 +48,7 @@ function GetValueDoughnutChart()
     $input = GetInput();  
     if ($input['success']) 
     {
+        $response = [];
         try 
         {
             $db = OpenDatabase();

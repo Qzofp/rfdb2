@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Jan 13, 2025
+ * Updated on Jan 17, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetValueLineChart
  *
  * Created on Jan 10, 2025
- * Updated on Jan 13, 2025
+ * Updated on Jan 17, 2025
  *
  * Description: Get the data from de database tbl_value_accounts table for the line chart.
  *
@@ -41,6 +41,7 @@ else {
  */
 function GetValueLineChart()
 { 
+    $date   = filter_input(INPUT_POST, 'date'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS);      
      
     $response = [];
@@ -51,7 +52,7 @@ function GetValueLineChart()
         switch ($action) 
         {
             case "collapse" :
-                $query = CreateCollapseQuery();  
+                $query = CreateCollapseQuery($date);  
                 break;
           
             case "expand"   :  
@@ -69,7 +70,7 @@ function GetValueLineChart()
         $data = $select->fetchAll(PDO::FETCH_ASSOC); 
                     
         // Debug
-        //$response['query'] = $query;  
+        $response['query'] = $query;  
             
         $response['data'] = $data;
         $response['success'] = true;
@@ -163,23 +164,23 @@ function GetConfigs($data)
  * Function:    CreateCollapseQuery
  *
  * Created on Aug 30, 2024
- * Updated on Jan 13, 2025
+ * Updated on Jan 17, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts for the collapse table.
  *
- * In:  -
+ * In:  $date
  * Out: $query
  *
  */
-function CreateCollapseQuery()
+function CreateCollapseQuery($date)
 {    
     $query = "Empty Query!";
 
-    // Get the settings, e.g. currency sign and the active pages (finance, stock, savings and crypto).
-    $input = GetInput();  
+    // Get the settings, e.g. the active pages (finance, stock, savings and crypto).
+    $input = GetInput();   
+    //$input = GetTypes($date);
     if ($input['success']) 
-    {    
-        
+    {        
         $case  = "";
         $configs = $input['configs'];            
             
@@ -219,4 +220,235 @@ function CreateCollapseQuery()
     return $query;
 }
 
+/*
+ * Function:    GetTypes
+ *
+ * Created on Jan 17, 2025
+ * Updated on Jan 17, 2025
+ *
+ * Description: Get the types from de database tbl_value_accounts and tbl_amount_wallets table for the line chart.
+ *
+ * In:  $date
+ * Out: $response
+ *
+ */
+function GetTypes($date)
+{
+    $response = [];
+    
+    // Get the settings, e.g. the active pages (finance, stock, savings and crypto).
+    $input = GetInput();  
+    if ($input['success']) 
+    {  
+        try 
+        {
+            $db = OpenDatabase();
+            
+            $field = "";
+            $pages = ["finance","stock","savings","crypto"];
+            foreach ($input['pages'] as $key=>$value)
+            {
+                if ($value == "true") {
+                    $field .= "'$pages[$key]',";
+                }
+            }      
+            // Remove the last comma.
+            $field = substr_replace($field, '', -1);            
+            
+            $query = "SELECT `id`, COUNT(`hide`) AS `hide`, `service`, ".
+                        "CASE WHEN `type` = 'finance' then 0 ".
+                             "WHEN `type` = 'stock'   then 1 ".
+                             "WHEN `type` = 'savings' then 2 ".
+                             "WHEN `type` = 'crypto'  then 3 ".
+                        "END AS `type`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account` ".
+                     "FROM (".
+                        "SELECT tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "FROM tbl_value_accounts ".
+                        "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                        "UNION ".
+                        "SELECT tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "FROM tbl_value_cryptos ".
+                        "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                        "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                        "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                        "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`".
+                     ") total ".
+                     "WHERE `type` IN ($field) ".
+                     "GROUP BY `type`, `id`, `service`, `account` ".
+                     "ORDER BY FIELD(`type`, $field), `service`, `account`;";
+            
+            $select = $db->prepare($query);
+            $select->execute();
+
+            $accounts = $select->fetchAll(PDO::FETCH_ASSOC);  
+    
+            // Debug
+            $response['query'] = $query;         
+        
+            $response['data'] = $accounts;
+            $response['success'] = true;
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        }   
+    
+        // Close database connection.
+        $db = null;
+    }
+    else {
+        $response = $input;
+    }    
+  
+    return $response;
+}
+
+/*
+ * Function:    CreateExpandQuery
+ *
+ * Created on Jan 15, 2025
+ * Updated on Jan 17, 2025
+ *
+ * Description: Create the query to get the rows from the tbl_value_accounts for the expand table.
+ *
+ * In:  -
+ * Out: $query
+ *
+ */
+function CreateExpandQuery()
+{
+    $query = "Empty Query!";
+    
+    // Get the accounts for the the line chart.
+    $input = GetAccounts();  
+    if ($input['success']) 
+    {  
+        $case  = "";
+        foreach ($input['data'] as $key=>$value)
+        {
+            if ($value['hide'] == 1) {
+                $case .= "IFNULL(SUM(CASE WHEN `id` =".$value['id']." AND `service` = '".$value['service']."' THEN `value` END),'NaN') AS `".$value['type']."_".$value['account']."_".$value['id']."`,";       
+            }
+        }
+        
+        // Remove the last comma.
+        $case = substr_replace($case, '', -1);  
+        
+        $date = "`Date`";    
+        if ($case) {
+            $date .= ",";
+        }
+        
+        $query = "SELECT $date $case ".
+                 "FROM (".
+                    "SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, tbl_value_accounts.`value` AS `value` ".
+                    "FROM tbl_value_accounts ".
+                    "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                    "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                    "UNION ".
+                    "SELECT tbl_value_cryptos.`date` AS `Date`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, `amount`*`value` AS `value` ".
+                    "FROM tbl_value_cryptos ".
+                    "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                    "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                    "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                    "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                    "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`".
+                 ") total ".                
+                 "GROUP BY `Date` ".
+                 "ORDER BY `Date`;";     
+    }
+    
+    //$query = $input['query'];
+      
+    return $query;
+}
+
+/*
+ * Function:    GetAccounts
+ *
+ * Created on Jan 15, 2025
+ * Updated on Jan 15, 2025
+ *
+ * Description: Get the accounts from de database tbl_value_accounts and tbl_amount_wallets tables for the line chart.
+ *
+ * In:  -
+ * Out: $response
+ *
+ */
+function GetAccounts()
+{
+    $response = [];
+    
+    // Get the settings, e.g. the active pages (finance, stock, savings and crypto).
+    $input = GetInput();  
+    if ($input['success']) 
+    {  
+        try 
+        {
+            $db = OpenDatabase();
+            
+            $field = "";
+            $pages = ["finance","stock","savings","crypto"];
+            foreach ($input['pages'] as $key=>$value)
+            {
+                if ($value == "true") {
+                    $field .= "'$pages[$key]',";
+                }
+            }      
+            // Remove the last comma.
+            $field = substr_replace($field, '', -1);            
+            
+            $query = "SELECT `id`, COUNT(`hide`) AS `hide`, `service`, ".
+                        "CASE WHEN `type` = 'finance' then 0 ".
+                             "WHEN `type` = 'stock'   then 1 ".
+                             "WHEN `type` = 'savings' then 2 ".
+                             "WHEN `type` = 'crypto'  then 3 ".
+                        "END AS `type`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account` ".
+                     "FROM (".
+                        "SELECT tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "FROM tbl_value_accounts ".
+                        "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                        "UNION ".
+                        "SELECT tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "FROM tbl_value_cryptos ".
+                        "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                        "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                        "LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                        "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                        "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`".
+                     ") total ".
+                     "WHERE `type` IN ($field) ".
+                     "GROUP BY `type`, `id`, `service`, `account` ".
+                     "ORDER BY FIELD(`type`, $field), `service`, `account`;";
+            
+            $select = $db->prepare($query);
+            $select->execute();
+
+            $accounts = $select->fetchAll(PDO::FETCH_ASSOC);  
+    
+            // Debug
+            $response['query'] = $query;         
+        
+            $response['data'] = $accounts;
+            $response['success'] = true;
+        }
+        catch (PDOException $e) 
+        {    
+            $response['message'] = $e->getMessage();
+            $response['success'] = false;
+        }   
+    
+        // Close database connection.
+        $db = null;
+    }
+    else {
+        $response = $input;
+    }
+
+    return $response;
+}
 

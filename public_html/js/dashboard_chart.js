@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 13, 2025
+ * Updated on Jan 17, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -151,7 +151,7 @@ function initLineChart(s) {
                     boxHeight: 7,
                     boxWidth: 18       
                 },
-                onClick: null   
+                //onClick: null   
             },
             tooltip: {
                 enabled: true,
@@ -358,7 +358,7 @@ function showDoughnutChartTooltip(dgc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 13, 2025
+ * Updated on Jan 17, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -366,15 +366,15 @@ function showDoughnutChartTooltip(dgc, that) {
  * Out: -
  *
  */
-function ShowActivaAccountsLineChart(line, c, s, action) {
+function ShowActivaAccountsLineChart(line, c, s, date, action) {
   
-    var request = getAjaxRequest("get_value_lnchart", "&action=" + action);
+    var request = getAjaxRequest("get_value_lnchart",  "date=" + date + "&action=" + action);
     request.done(function(result) {
             
         if (result.success) {         
         
             // Debug
-            //console.log( result.query );
+            console.log( result.query );
 
             var keys = Object.keys(result.data[0]);
             

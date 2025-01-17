@@ -861,19 +861,19 @@ GROUP BY `Date`
 ORDER BY `Date`;
 
 -- Get all the services and accounts.
-SELECT 
-	CASE WHEN `type` = 'finance' then 0 
+SELECT COUNT(`hide`) AS `hide`, `service`,
+         CONCAT(CASE WHEN `type` = 'finance' then 0 
 		 WHEN `type` = 'stock'   then 1 
 		 WHEN `type` = 'savings' then 2 
          WHEN `type` = 'crypto'  then 3  
-	END AS `type`, `service`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account`
+	END, '_', CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45))) AS `account`
 FROM (
-	SELECT tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`
+	SELECT tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`
 	FROM tbl_value_accounts 
     LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id`
     LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
     UNION 
-    SELECT tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`
+    SELECT tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`
 	FROM tbl_value_cryptos 
     LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
     LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
@@ -885,4 +885,42 @@ WHERE `type` IN ('finance','stock','savings','crypto')
 GROUP BY `type`, `id`, `service`, `account`
 ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;
 
+-- Line chart accounts expand pivot
+SELECT 
+	`Date`, 
+    IFNULL(FORMAT(SUM(CASE WHEN `id` = 2 AND `service` = 'ABN AMRO Bank' THEN `value` END),2),'NaN') AS `0_NL02 ABNA 000x xxxx 02`,
+    IFNULL(FORMAT(SUM(CASE WHEN `id` = 2 AND `service` = 'Trezor' THEN `value` END),2),'NaN') AS `3_Wallet #2`
+FROM (
+	SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, tbl_value_accounts.`value` AS `value`
+	FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id`
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    UNION 
+    SELECT tbl_value_cryptos.`date` AS `Date`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, `amount`*`value` AS `value`
+	FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+) total
+GROUP BY `Date`
+ORDER BY `Date`;
 
+-- Test query
+SELECT `date`, `hide`, `type`, `id`
+FROM (
+	SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, `type`
+	FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id`
+    UNION 
+    SELECT tbl_value_cryptos.`date` AS `date`, tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, `type`
+	FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+) total 
+WHERE `date` = '2024-12-23' AND `type` IN ('finance','stock','savings','crypto')
+-- GROUP BY `date`, `hide`, `type`
+ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto');
