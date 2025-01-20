@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 17, 2025
+ * Updated on Jan 20, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -358,7 +358,7 @@ function showDoughnutChartTooltip(dgc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 17, 2025
+ * Updated on Jan 18, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -374,10 +374,14 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
         if (result.success) {         
         
             // Debug
-            console.log( result.query );
+            //console.log( result.query );
 
-            var keys = Object.keys(result.data[0]);
-            
+            //var keys = Object.keys(result.data[0]);
+            var keys = [];
+            if (result.data[0]) {
+                keys = Object.keys(result.data[0]);
+            }
+        
             // Initialize the arrays for the datasets values and fill the color array.
             var data = [], color = [];
             keys.forEach((key, i) => {
@@ -412,6 +416,88 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
                         data: data[keys[i+1]],
                         backgroundColor: color[keys[i+1]],
                         borderColor: color[keys[i+1]],
+                        tension: 0.2
+                    };
+                }      
+            });            
+
+            // Update the line chart.
+            const tmp = {
+                labels: data[keys[0]],
+                datasets: datasets
+            };
+            
+            line.data.labels = tmp.labels; 
+            line.data.datasets = tmp.datasets;
+            line.options.plugins.title.text = c.labels[2];    
+            line.update();                   
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
+}
+
+/*
+ * Function:    showActivaCryptoLineChart
+ *
+ * Created on Jan 20, 2025
+ * Updated on Jan 20, 2025
+ *
+ * Description: Show the activa value developement line chart.
+ *
+ * In:  line, c, s, date, action
+ * Out: -
+ *
+ */
+function ShowActivaCryptoLineChart(line, c, date, action) {
+  
+    var request = getAjaxRequest("get_value_lnchart",  "date=" + date + "&action=" + action);
+    request.done(function(result) {
+            
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );
+
+            //var keys = Object.keys(result.data[0]);
+            var keys = [];
+            if (result.data[0]) {
+                keys = Object.keys(result.data[0]);
+            }
+        
+            // Initialize the arrays for the datasets values array.
+            var data = [];
+            keys.forEach((key, i) => {
+                data[key] = [];
+            });   
+            
+            // Fill the chart datasets values.
+            $.each(result.data, function (n, field) {  
+
+                $.each(field, function(key, value) {                    
+
+                    data[key].push(value);
+                });      
+            });    
+                        
+            // Create the datasets.
+            var datasets = [];
+            keys.forEach((key, i) => {
+                                
+                if (i < keys.length - 1) 
+                {
+                    datasets[i] = {
+                        label: keys[i+1].split("_")[1],
+                        data: data[keys[i+1]],
+                        backgroundColor: keys[i+1].split("_")[0],
+                        borderColor: keys[i+1].split("_")[0],
                         tension: 0.2
                     };
                 }      

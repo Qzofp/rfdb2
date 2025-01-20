@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jan 17, 2025
+ * Updated on Jan 20, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -534,7 +534,7 @@ function showDashboardButtonAction(adp, dgc, lnc, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Jan 15, 2025
+ * Updated on Jan 20, 2025
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -555,11 +555,11 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
             break;
         
         case "accounts" :
-            showActivaAccountsContent(dgc, crypto, c, s, $("#input_date span").html());
+            showActivaAccountsContent(dgc, lnc, crypto, c, s, $("#input_date span").html());
             break;
           
         case "crypto"     :
-            showActivaCryptoContent(dgc, c, s, $("#input_date span").html());
+            showActivaCryptoContent(dgc, lnc, c, s, $("#input_date span").html());
             break;
             
         case "expand" :
@@ -577,15 +577,15 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
  * Function:    showdActivaCryptoContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 02, 2025
+ * Updated on Jan 20, 2025
  *
  * Description: Shows the dashboard activa (crypto) slide content.
  *
- * In:  dgc, c, s, date
+ * In:  dgc, lnc, c, s, date
  * Out: -
  *
  */
-function showActivaCryptoContent(dgc, c, s, date) {   
+function showActivaCryptoContent(dgc, lnc, c, s, date) {   
 
     var request = getAjaxRequest("get_entry_date", "date=" + date);    
     request.done(function(result) {
@@ -604,10 +604,8 @@ function showActivaCryptoContent(dgc, c, s, date) {
             // Show the doughnut chart. 
             showActivaCryptoDoughnutChart(dgc, c, result.date, "crypto");
             
-            
-            
-            
-            
+            // Show the line chart.             
+            ShowActivaCryptoLineChart(lnc, c, result.date, "crypto");                
         }
         else {
             showDatabaseError(result); 
