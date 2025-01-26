@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 20, 2025
+ * Updated on Jan 22, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -91,7 +91,7 @@ function initDougnutChart(s) {
  * Function:    initLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 12, 2025
+ * Updated on Jan 22, 2025
  *
  * Description: Initialize the line chart.
  *
@@ -119,6 +119,12 @@ function initLineChart(s) {
             }
         },
         scales: {
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'month'
+                }
+            },
             y: {
                 beginAtZero: true,
                 ticks: {
@@ -128,7 +134,7 @@ function initLineChart(s) {
                         return tick;
                     }
                 }
-            }
+            }       
         },
         plugins: {
             title: {
@@ -151,7 +157,7 @@ function initLineChart(s) {
                     boxHeight: 7,
                     boxWidth: 18       
                 },
-                //onClick: null   
+                onClick: null   
             },
             tooltip: {
                 enabled: true,

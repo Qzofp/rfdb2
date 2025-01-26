@@ -924,3 +924,8 @@ FROM (
 WHERE `date` = '2024-12-23' AND `type` IN ('finance','stock','savings','crypto')
 -- GROUP BY `date`, `hide`, `type`
 ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto');
+
+Graph date tips :
+https://stackoverflow.com/questions/79306502/format-dates-in-chartjs-x-axis
+https://stackoverflow.com/questions/72672841/chartjs-v3-x-limit-the-string-size-of-label-on-canvas-without-changing-toolti
+
