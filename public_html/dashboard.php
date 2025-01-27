@@ -13,7 +13,8 @@
  *               js/ext/air-datepicker.js
  *               js/ext/nice-select2.js
  *               js/ext/chart-4.4.7.js
- *               js/ext/chartjs-adapter-date-fns.bundle.min.js
+ *               js/ext/luxon.min.js
+ *               js/ext/chartjs-adapter-luxon.umd.min.js            
  *               js/config.js
  *               js/common.js 
  *               js/dashboard_chart.js
@@ -21,7 +22,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Jan 22, 2025
+ * Updated on Jan 26, 2025
  *
  * Description: Redirect to the start page.
  * 
@@ -46,8 +47,9 @@ if(!$user){
         <script src="js/ext/jquery-3.7.1.min.js"></script>
         <script src="js/ext/air-datepicker.js"></script> 
         <script src="js/ext/nice-select2.js"></script> 
-        <script src="js/ext/chart-4.4.7.js"></script> 
-        <script src="js/ext/chartjs-adapter-date-fns.bundle.min.js"></script>     
+        <script src="js/ext/chart-4.4.7.js"></script>      
+        <script src="js/ext/luxon.min.js"></script> 
+        <script src="js/ext/chartjs-adapter-luxon.umd.min.js"></script>
         <script src="js/config.js"></script>       
         <script src="js/common.js"></script>  
         <script src="js/dashboard_chart.js"></script>          
@@ -262,7 +264,7 @@ if(!$user){
         </footer>       
                  
         <!-- Script -->
-        <script>
+        <script>       
         $(document).ready(function () {        
             loadMain(); 
         });

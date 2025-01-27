@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 22, 2025
+ * Updated on Jan 27, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -91,7 +91,7 @@ function initDougnutChart(s) {
  * Function:    initLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 22, 2025
+ * Updated on Jan 26, 2025
  *
  * Description: Initialize the line chart.
  *
@@ -100,7 +100,7 @@ function initDougnutChart(s) {
  *
  */
 function initLineChart(s) {
- 
+    
     var set = JSON.parse(s[5].value);
     
     const ctx = document.getElementById('line_chart');    
@@ -119,10 +119,16 @@ function initLineChart(s) {
             }
         },
         scales: {
-            x: {
+            x: {                
+                adapters: {
+                    date: {
+                        locale: getLanguage(s)
+                    }
+                },     
                 type: 'time',
                 time: {
-                    unit: 'month'
+                    tooltipFormat:'DD',
+                    //unit: 'month'
                 }
             },
             y: {
@@ -358,6 +364,48 @@ function showDoughnutChartTooltip(dgc, that) {
     }
     
     dgc.update();
+}
+
+/*
+ * Function:    showLineChartTooltip
+ *
+ * Created on Jan 27, 2025
+ * Updated on Jan 27, 2025
+ *
+ * Description: Show the line chart tooltip for the selected table row.
+ *
+ * In:  dgc, that
+ * Out: -
+ * 
+ * Links: https://stackoverflow.com/questions/53764367/how-to-trigger-hover-programmatically-in-chartjs
+ *
+ */
+function showLineChartTooltip(lnc, that) {
+  
+    // Get the value (index) of the last column of the row.
+    var idx = Number(that.find("td:last-child").html());
+    
+    if (that.find("td").length > 1 && idx > -1) 
+    {                       
+        //Set active element (hover)
+        lnc.setActiveElements([{
+            datasetIndex: idx,
+            index: 11
+        }]);
+
+        // Set active tooltip 
+        lnc.tooltip.setActiveElements([{
+            datasetIndex: idx,
+            index: 11
+        }]);     
+    }
+    else 
+    {
+        lnc.setActiveElements([]);
+        lnc.tooltip.setActiveElements([]);
+    }
+    
+    lnc.update();
 }
 
 /*

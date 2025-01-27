@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Jan 12, 2025
+ * Updated on Jan 26, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1379,4 +1379,34 @@ function getCurrency(s) {
     }       
    
     return currency;
+}
+
+/*
+ * Function:   getLangauge
+ *
+ * Created on Jan 26, 2025
+ * Updated on Jan 26, 2025
+ *
+ * Description: Get the language format. Which can be used in the chart.js functions.
+ *
+ * In:  s
+ * Out: locale
+ *
+ */
+function getLanguage(s) {
+    
+    var set, locale;
+    
+    set = JSON.parse(s[7].value);
+    switch (set.code) {
+        case "EN" :
+            locale = "en-US";        
+            break;
+            
+        case "NL"  :
+            locale = "nl-NL";        
+            break;
+    }       
+   
+    return locale;
 }

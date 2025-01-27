@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jan 20, 2025
+ * Updated on Jan 27, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -30,7 +30,7 @@
  *
  */
 function loadMain() {
-    
+       
     $.when(getAjaxRequest("get_constants", "page=dashboard")).done(function(result) {
 
         if (result.success) {   
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Jan 15, 2025
+ * Updated on Jan 27, 2025
  *
  * Description: Shows the dashboard page.
  *
@@ -105,12 +105,15 @@ function showDashboard(c, s) {
     });    
     
     // Table rows on mouse hover action.
-    $("#table_container").on("mouseover", "tbody tr", function (){
+    $("#table_container").on("mouseover", "tbody tr", function () {
         showDoughnutChartTooltip($dgc, $(this));
+        showLineChartTooltip($lnc, $(this));
     });
-    $("#table_container").mouseleave(function(){
+    $("#table_container").mouseleave(function() {
         $dgc.setActiveElements([]);
         $dgc.tooltip.setActiveElements([]);
+        $lnc.setActiveElements([]);
+        $lnc.tooltip.setActiveElements([]);
     });
      
     // Popup button is pressed.  
@@ -198,7 +201,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 17, 2025
+ * Updated on Jan 27, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -212,6 +215,9 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
     request.done(function(result) {
         if (result.success) {                    
      
+            // Debug
+            //console.log (result);
+            
             $("#activa_main").fadeIn("slow");
             $("#test01").hide();
             $("#test02").hide();
