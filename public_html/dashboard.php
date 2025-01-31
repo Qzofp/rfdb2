@@ -22,7 +22,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Jan 26, 2025
+ * Updated on Jan 29, 2025
  *
  * Description: Redirect to the start page.
  * 
@@ -133,6 +133,7 @@ if(!$user){
                             <div id="input_date">
                                 <u></u><br/>
                                 <span></span>
+                                <input type="hidden" value="">
                             </div>                               
                             
                             <!-- Table label -->

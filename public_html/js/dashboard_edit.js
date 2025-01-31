@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Jan 17, 2025
+ * Updated on Jan 31, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -600,7 +600,7 @@ function showActivaRowAction(adp, c, s, that) {
  * Function:    showActivaAccountRowPopup
  *
  * Created on Oct 27, 2024
- * Updated on Dec 29, 2024
+ * Updated on Jan 31, 2025
  *
  * Description: Shows the popup for the activa account row.
  *
@@ -611,6 +611,7 @@ function showActivaRowAction(adp, c, s, that) {
 function showActivaAccountRowPopup(c, s, that) {
 
     var dash = JSON.parse(s[0].value);
+    var crpt = JSON.parse(s[4].value);
     var set  = JSON.parse(s[5].value);
     var tbl, cells = [];
        
@@ -645,6 +646,12 @@ function showActivaAccountRowPopup(c, s, that) {
         '<td><input class="shw" type="image" name="submit" src="img/show.png" alt="show" style=""></td>'
     );  
     
+    // Check the state of the crypto page (enabled or disabled)
+    var n = 5;
+    if (crpt.page === "true") {
+        n = 6;
+    }
+    
     var crypto = [];
     for (let i = 1; i < cells.length-1; i++) 
     {
@@ -652,9 +659,9 @@ function showActivaAccountRowPopup(c, s, that) {
         let ph = "";
         let disabled = "disabled";
         if (tbl === "expand") 
-        {
-            if (!cells[0].includes("crypto") && i === 6) 
-            {
+        {            
+            if (!cells[0].includes("crypto") && i === n) 
+            {  
                 id = 'id="amount"';
                 ph = 'placeholder="' + c.misc[2] + '" ';
                 disabled = $(that).attr('class').split(" ")[0] === 'hide' ? "disabled" : "";
@@ -771,7 +778,7 @@ function showActivaCryptoRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Jan 17, 2025
+ * Updated on Jan 31, 2025
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
@@ -786,14 +793,14 @@ function modifyActivaAccountRow(dgc, lnc, c, s, btn) {
     var tbl  = $("#table_container table").attr('class').replace("tbl_","");
     var row  = $("#table_container tbody .marked").closest('tr').find('td:first').text();
     var shw  = $(".popup_table_accounts .shw").attr("alt");
-    
+       
     var value, check = true;
     if (tbl === "expand" && btn === "ok") 
     {
         if (!row.includes("crypto")) 
         {
             value = $("#amount").val();
-            check = validateCurrency(c, s, c.misc[2], value);
+            check = validateCurrency(c, s, c.misc[2], value); 
         }
         else 
         {
@@ -808,9 +815,9 @@ function modifyActivaAccountRow(dgc, lnc, c, s, btn) {
         check = validateCurrency(c, s, c.misc[2], value);    
     }
     
-    checkShowHide(btn);
+    checkShowHide(btn);  
     
-    if(btn === "ok" && check)
+    if (btn === "ok" && check)
     {
         // Send and get the ajax results.
         var send = { date:date, tbl:tbl, row:row, shw:shw, value:value };

@@ -201,7 +201,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 27, 2025
+ * Updated on Jan 29, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -216,7 +216,7 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
         if (result.success) {                    
      
             // Debug
-            //console.log (result);
+            //console.log(result);
             
             $("#activa_main").fadeIn("slow");
             $("#test01").hide();
@@ -244,7 +244,8 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
             // Show the entry date. 
             $("#input_date u").html(c.dashmisc[0]);
             $("#input_date span").html(result.date ? result.date : "&nbsp;"); 
-             
+            $("#input_date input").val(result.number);
+            
             // Show the labels.
             showActivaLabels(c, s);
 
