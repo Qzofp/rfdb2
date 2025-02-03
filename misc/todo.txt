@@ -103,16 +103,21 @@ ToDo
 18. Bug: Dashboard Activa slide laat verkeerde ratio zien als één of meerdere pagina's zijn gedisabled. 
     - Opgelost.
 
-19. Bug: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
+19a. Bug: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
+    - Opgelost, zie ook 19b.
+
+19b. Verbetering: Op de Sheet pagina's (Finances, Stocks, Savings en Crypto) ontbreekt de "Delete x?" melding als er een rij wordt gekozen om te verwijderen.
+    - Tekst verbeteren, bv Delete the xxx row?
 
 20. Bug: Op de sheet pagina's klopt de datum niet meer als er iets is toegevoegd en er wordt daarna van jaar gewisseld (controleren of dit zo is).
 
 21. Verbetering: Gebruik voor de tabellen height vh i.p.v. het te berekenen in px, zie ook de Dashboard Activa tabellen.
 
-22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's, values) zien in het doughnut en line diagram (Alleen MariaDB?).
+22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's, values) zien in het doughnut en line diagram.
+    - Opgelost voor MySQL. Testen voor MariaDB!
 
 23. Bug: Op het Dashboard gaat het hidden van rekeningen fout als de crypto pagina is uitgeschakeld. Als alleen de crypto pagina is ingeschakeld dan gaat goed.
-    - Opgelost? (check ook met mysql db)
+    - Opgelost
 
 24. Verbetering: Herstructureer de PHP pagina's, zodat de settings, sheets en dashboard pagina's in een eigen folder komen.
 

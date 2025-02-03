@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Jan 31, 2025
+ * Updated on Feb 01, 2025
  *
  * Description: Javascript chartfunctions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -386,6 +386,9 @@ function showLineChartTooltip(lnc, that) {
     var dsi = Number(that.find("td:last-child").html());
     var idx = Number($("#input_date input").val());
     
+    // Debug
+    //console.log ( dsi, idx );
+      
     if (that.find("td").length > 1 && dsi > -1) 
     {                       
         //Set active element (hover)

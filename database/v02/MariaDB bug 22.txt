@@ -1,0 +1,119 @@
+22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's, values) zien in het doughnut en line diagram.
+    - Opgelost voor MySQL. Testen voor MariaDB!
+
+-- Dashboard expand table query
+SELECT CONCAT(`id`, '_', `type`) AS id, 
+	CASE 
+		WHEN `type` = 'finance' then 'Finances' 
+        WHEN `type` = 'stock' then 'Stocks' 
+        WHEN `type` = 'savings' then 'Savings' 
+        WHEN `type` = 'crypto' then 'Crypto'  
+	END AS `type`, `hide`, `service`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account` ,
+		`amount`, IFNULL(CONCAT(FORMAT(100 * `value` / SUM(`value`) OVER(), 2, 'de_DE'), '%'),'-') AS ratio , 
+        CONCAT('€ ', FORMAT(`value`, 2, 'de_DE')) AS `value`  
+FROM (
+	SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`,
+		'-' AS `amount`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` 
+    FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_value_accounts .`date` = STR_TO_DATE('23-12-2024', '%d-%m-%Y') 
+    UNION 
+    SELECT tbl_amount_wallets.`id` AS `id`, tbl_amount_wallets.`hide` AS hide, `type`, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, 
+		CONCAT(FORMAT(`amount`,8,'de_DE'), ' ', `symbol`) AS `amount` , IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` 
+	FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_value_cryptos.`date` = STR_TO_DATE('23-12-2024', '%d-%m-%Y') 
+) total WHERE `type` IN ('finance','stock','savings','crypto') 
+ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;
+
+-- Dashboard expand account chart (doughnut)
+SELECT `type` AS `id`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `type` , 
+	IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio , FORMAT(`value`, 2) AS `value`  
+FROM (
+	SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, 
+		IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` 
+	FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_value_accounts .`date` = STR_TO_DATE('23-12-2024', '%d-%m-%Y') 
+    UNION 
+    SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, 
+		IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` 
+	FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_value_cryptos.`date` = STR_TO_DATE('23-12-2024', '%d-%m-%Y') 
+) total 
+WHERE `type` IN ('finance','stock','savings','crypto') AND `hide` = 0 
+ORDER BY FIELD(`id`, 'finance', 'stock', 'savings', 'crypto'), `service`, `type`;
+
+-- Dashboard expand value development, part 1 (line)
+SELECT `id`, `hide`, `service`, 
+	CASE 
+		WHEN `type` = 'finance' then 0 
+        WHEN `type` = 'stock'   then 1 
+        WHEN `type` = 'savings' then 2 
+        WHEN `type` = 'crypto'  then 3 
+	END AS `type`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account` 
+FROM (
+	SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, 
+		tbl_accounts.`account` AS `account` 
+        FROM tbl_value_accounts 
+        LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+        LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+        UNION 
+        SELECT tbl_value_cryptos.`date` AS `date`, tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, 
+			tbl_accounts.`account` AS `account` 
+		FROM tbl_value_cryptos 
+        LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+        LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+        LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+        LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+        LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`
+) total 
+WHERE `date` = STR_TO_DATE('23-12-2024', '%d-%m-%Y') AND `type` IN ('','finance','stock','savings','crypto') 
+-- GROUP BY `type`, `id`, `service`, `account` 
+ORDER BY FIELD(`type`, '','finance','stock','savings','crypto'), `service`, `account`;
+
+-- Dashboard expand value development, part 2 (line)
+SELECT `Date`, 
+	IFNULL(SUM(CASE WHEN `id` =2 AND `service` = 'ABN AMRO Bank' THEN `value` END),'NaN') AS `0_NL02 ABNA 000x xxxx 02_2`,
+    IFNULL(SUM(CASE WHEN `id` =1 AND `service` = 'ING Particulier' THEN `value` END),'NaN') AS `0_NL86 INGB 000x xxxx 01_1`,
+    IFNULL(SUM(CASE WHEN `id` =4 AND `service` = 'Bank B' THEN `value` END),'NaN') AS `1_BB-BLG-01_4`,
+    IFNULL(SUM(CASE WHEN `id` =3 AND `service` = 'ING Particulier' THEN `value` END),'NaN') AS `1_ING-BLG-002_3`,
+    IFNULL(SUM(CASE WHEN `id` =5 AND `service` = 'Bank A' THEN `value` END),'NaN') AS `2_BA-SAV-01_5`,
+    IFNULL(SUM(CASE WHEN `id` =6 AND `service` = 'Bank B' THEN `value` END),'NaN') AS `2_BB-SAV-02_6`,
+    IFNULL(SUM(CASE WHEN `id` =2 AND `service` = 'Trezor' THEN `value` END),'NaN') AS `3_Wallet #2_2`,
+    IFNULL(SUM(CASE WHEN `id` =1 AND `service` = 'Trezor' THEN `value` END),'NaN') AS `3_Wallet #1_1`,
+    IFNULL(SUM(CASE WHEN `id` =3 AND `service` = 'Trezor' THEN `value` END),'NaN') AS `3_Wallet #1_3`,
+    IFNULL(SUM(CASE WHEN `id` =4 AND `service` = 'Crypto Exchange A' THEN `value` END),'NaN') AS `3_Wallet #1_4` 
+FROM (
+	SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, 
+		tbl_value_accounts.`value` AS `value` 
+	FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_value_accounts.`aid` IN (0,2,1,4,3,5,6) 
+    UNION 
+    SELECT tbl_value_cryptos.`date` AS `Date`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account`, 
+		`amount`*`value` AS `value` 
+	FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` 
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
+    LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` 
+    WHERE tbl_wallets.`id` IN (0,2,1,3,4) 
+) total 
+GROUP BY `Date` 
+ORDER BY `Date`;
+
+
+

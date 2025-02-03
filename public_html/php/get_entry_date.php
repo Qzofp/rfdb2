@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 26, 2024
- * Updated on Jan 29, 2025
+ * Updated on Feb 02, 2025
  *
  * Description: Check if the user is signed in and get the date from de database tbl_value_accounts table.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetEntryDate
  *
  * Created on Aug 26, 2024
- * Updated on Jan 29, 2025
+ * Updated on Feb 02, 2025
  *
  * Description: Get the entry date and the date row number.
  *
@@ -49,11 +49,32 @@ function GetEntryDate()
         {
             $db = OpenDatabase();
 
-            $date_format = MySqlToDate($response['sign'], "date");   
+            $date_format = MySqlToDate($response['sign'], "date");  
+            
+            // Check if only crypto is true.
+            if ($response['pages'][0] == "false" && // Finance
+                $response['pages'][1] == "false" && // Stocks
+                $response['pages'][2] == "false" && // Savings
+                $response['pages'][3] == "true")    // Crypto
+            {
+                $query = "SELECT ROW_NUMBER() OVER() AS `number`, $date_format AS `tmp` ".
+                         "FROM tbl_value_cryptos ".
+                         "GROUP BY `date` ".
+                         "ORDER BY `date`;";
+            }
+            else 
+            {
+            
             $query = "SELECT ROW_NUMBER() OVER() AS `number`, $date_format AS `tmp` ".
-                     "FROM tbl_value_accounts ".
-                     "GROUP BY `date` ".
-                     "ORDER BY `date`;";     
+                     "FROM ( ".
+                        "SELECT `date` ".
+                        "FROM tbl_value_accounts ".
+                        "UNION ".
+                        "SELECT `date` ".
+                        "FROM tbl_value_cryptos ".
+                     ") total;";            
+            }
+            
             $select = $db->prepare($query);
             $select->execute();    
             
@@ -65,8 +86,7 @@ function GetEntryDate()
                 if ($row['tmp'] == $response['date']) {
                     $number = $row['number'];
                 }
-            }
-            
+            }       
             
             // Remove not needed data from the response array.
             unset($response['sign']);
@@ -75,7 +95,7 @@ function GetEntryDate()
             //unset($response['data']);
             
             // Debug
-            //$response['query']   = $query;
+            $response['query']   = $query;
  
             $response['number']  = $number-1;
             $response['success'] = true;
@@ -97,7 +117,7 @@ function GetEntryDate()
  * Function:    DetermineDate
  *
  * Created on Jan 29, 2025
- * Updated on Jan 29, 2025
+ * Updated on Feb 01, 2025
  *
  * Description: Determine the date. If it's empty get the max date from the database tbl_value_accounts table.
  *
@@ -129,7 +149,14 @@ function DetermineDate($date)
             }    
               
             $query = "SELECT DATE_FORMAT(MAX(`date`),'$format')AS `date` ".
-                     "FROM tbl_value_accounts;";     
+                     "FROM ( ".
+                        "SELECT `date` ".
+                        "FROM tbl_value_accounts ".
+                        "UNION ".
+                        "SELECT `date` ".
+                        "FROM tbl_value_cryptos ".
+                     ") total;"; 
+        
             $select = $db->prepare($query);
             $select->execute();    
             

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Nov 22, 2024
+ * Updated on Feb 03, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -218,7 +218,7 @@ function addPopupSheetHistory(c, name, id) {
  * Function:    changeMessageRow
  *
  * Created on Jun 09, 2024
- * Updated on Jun 09, 2024
+ * Updated on Feb 03, 2025
  *
  * Description: change the sheet popup window message row.
  *
@@ -227,7 +227,7 @@ function addPopupSheetHistory(c, name, id) {
  *
  */
 function changePopupMessageRow(msg, x=0, y=0, z=0) {
-      
+         
     $(".popup_table_finance tr:eq(1)").remove();  
     if (x) {
     
@@ -235,7 +235,7 @@ function changePopupMessageRow(msg, x=0, y=0, z=0) {
             '<tr>' +
                 '<td colspan="' + x + '"></td>' +
                 '<td class="label" colspan="' + y + '">' + msg + '</td>' +
-                '<td colspan="' + z + '"></td>' +
+                '<td class="msg" colspan="' + z + '"></td>' +
             '</tr>');
     }
     else {
@@ -925,7 +925,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Nov 22, 2024
+ * Updated on Feb 03, 2025
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -942,7 +942,7 @@ function modifyFinances(adp, c, s, btn) {
                $("#amount").val(), $("#service").val(), $("#account").val(), $("#description").val());    
     amount = $("#amount").val();
     
-    msg = c.messages[2].replace("#", $("#account option:selected").text());
+    msg = c.messages[2].replace("#", $("#payment option:selected").text());    
     if(!checkEditDelete(btn, msg))
     {     
         let items = [c.payment[1], c.payment[2], c.misc[2] + " " + c.misc[3], c.misc[2], c.payment[6], 

@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Jan 20, 2025
+ * Updated on Feb 02, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -164,7 +164,7 @@ function GetConfigs($data)
  * Function:    CreateCollapseQuery
  *
  * Created on Aug 30, 2024
- * Updated on Jan 18, 2025
+ * Updated on Feb 01, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts for the collapse table.
  *
@@ -181,8 +181,8 @@ function CreateCollapseQuery($date)
     if ($input['success']) 
     {   
         // Create the where clauses
-        $in_accounts = "0,";
-        $in_crypto = "0,";
+        $in_accounts = "1,";
+        $in_crypto = "1,";
         $check = [false,false,false,false];
         foreach ($input['data'] as $key=>$value)
         {
@@ -362,7 +362,7 @@ function GetTypes($date)
  * Function:    CreateExpandQuery
  *
  * Created on Jan 15, 2025
- * Updated on Jan 20, 2025
+ * Updated on Feb 02, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts for the expand table line chart.
  *
@@ -379,8 +379,8 @@ function CreateExpandQuery($date)
     if ($input['success']) 
     {  
         $case  = "";
-        $in_accounts = "0,";
-        $in_crypto = "0,";
+        $in_accounts = "1,";
+        $in_crypto = "1,";
         foreach ($input['data'] as $key=>$value)
         {
             if ($value['hide'] == 0) {
@@ -441,7 +441,7 @@ function CreateExpandQuery($date)
  * Function:    GetAccounts
  *
  * Created on Jan 15, 2025
- * Updated on Jan 19, 2025
+ * Updated on Feb 02, 2025
  *
  * Description: Get the accounts from de database tbl_value_accounts and tbl_amount_wallets tables.
  *
@@ -505,9 +505,8 @@ function GetAccounts($date)
                         "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`".
                      ") total ".
-                     "WHERE `date` = $date_format AND `type` IN ($field);";
-                     //"GROUP BY `type`, `id`, `service`, `account` ".
-                     //"ORDER BY FIELD(`type`, $field), `service`, `account`;";
+                     "WHERE `date` = $date_format AND `type` IN ($field) ".
+                     "ORDER BY FIELD(`type`, $field), `service`, `account`;";
             
             $select = $db->prepare($query);
             $select->execute();
