@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Nov 20, 2024
+ * Updated on Feb 07, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Nov 20, 2024
+ * Updated on Feb 07, 2025
  *
  * Description: Open the sheet page.
  *
@@ -197,6 +197,9 @@ function openSheetPage(c, s, i) {
     $('#table_container tbody').on("mouseover", "td:last-child", function() {
         $(this).attr("title", $(this).text());
     });    
+    
+    // Test Chart
+    testBarGraph(c);
     
     // Close Chart Window.
     closeChartWindow();

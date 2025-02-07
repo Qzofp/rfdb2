@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 26, 2024
- * Updated on Feb 02, 2025
+ * Updated on Feb 05, 2025
  *
  * Description: Check if the user is signed in and get the date from de database tbl_value_accounts table.
  * 
@@ -30,7 +30,7 @@ else {
  * Function:    GetEntryDate
  *
  * Created on Aug 26, 2024
- * Updated on Feb 02, 2025
+ * Updated on Feb 05, 2025
  *
  * Description: Get the entry date and the date row number.
  *
@@ -72,7 +72,8 @@ function GetEntryDate()
                         "UNION ".
                         "SELECT `date` ".
                         "FROM tbl_value_cryptos ".
-                     ") total;";            
+                     ") total ".
+                    "Order BY `date`;";
             }
             
             $select = $db->prepare($query);
@@ -95,7 +96,7 @@ function GetEntryDate()
             //unset($response['data']);
             
             // Debug
-            $response['query']   = $query;
+            //$response['query']   = $query;
  
             $response['number']  = $number-1;
             $response['success'] = true;
@@ -163,7 +164,7 @@ function DetermineDate($date)
             $data = $select->fetchAll(PDO::FETCH_ASSOC); 
             
             // Debug
-            //$response['query']   = $query;
+            $response['query']   = $query;
             
             $response['date']    = $date ? $date : array_values($data[0])[0];
             $response['success'] = true;

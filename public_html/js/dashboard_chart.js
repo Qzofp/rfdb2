@@ -7,9 +7,9 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Feb 01, 2025
+ * Updated on Feb 07, 2025
  *
- * Description: Javascript chartfunctions for the dashboard page.
+ * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
  *
  */
@@ -195,7 +195,7 @@ function initLineChart(s) {
  * Function:    showActivaAccountsDoughnutChart
  *
  * Created on Dec 25, 2024
- * Updated on Dec 30, 2024
+ * Updated on Feb 05, 2025
  *
  * Description: Show the activa accounts doughnut chart.
  *
@@ -215,7 +215,7 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
             
             var set, labels = [], data = [], value = [], color = [];
             $.each(result.data, function (n, field) {  
-                
+                                
                 // Get the theme colors.
                 switch (field.id) {
                     case "finance" :  set = JSON.parse(s[1].value);

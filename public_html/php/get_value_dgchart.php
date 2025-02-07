@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Jan 15, 2025
+ * Updated on Feb 05, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Jan 10, 2025
+ * Updated on Feb 05, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -246,7 +246,7 @@ function CreateQuery($date, $action, $case, $field)
         
             $ratio  = "IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio ";
             $value  = "FORMAT(`value`, 2) AS `value` ";
-            $query = "SELECT `type` AS id, $account, $ratio, $value ".
+            $query = "SELECT `type` AS `id`, $account, $ratio, $value ".
                      "FROM (".
                         "SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
                         "FROM tbl_value_accounts ".

@@ -14,13 +14,15 @@
  *               js/ext/yearpicker.js
  *               js/ext/air-datepicker.js
  *               js/ext/nice-select2.js
+ *               js/ext/chart-4.4.7.js
  *               js/config.js
  *               js/common.js
+ *               js/sheet_chart.js 
  *               js/sheet_edit.js
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Sep 09, 2024
+ * Updated on Feb 07, 2025
  *
  * Description: Sheet framework page.
  *
@@ -46,9 +48,11 @@ if(!$user){
         <script src="js/ext/jquery-3.7.1.min.js"></script>      
 	<script src="js/ext/yearpicker.js"></script>  
         <script src="js/ext/air-datepicker.js"></script>      
-        <script src="js/ext/nice-select2.js"></script>        
+        <script src="js/ext/nice-select2.js"></script>   
+        <script src="js/ext/chart-4.4.7.js"></script>          
         <script src="js/config.js"></script>  
         <script src="js/common.js"></script>   
+        <script src="js/sheet_chart.js"></script>           
         <script src="js/sheet_edit.js"></script>        
         <script src="js/sheet.js"></script>
     </head>
@@ -238,8 +242,9 @@ if(!$user){
                 <!-- Chart slider  -->
                 <div id="chart_slider">
                     <div id="chart_content" >
-                        <a class="close" href="javascript:void(0)">x</a>   
-                        <h1>Chart Content</h1>
+                        <a class="close" href="javascript:void(0)">x</a>                       
+                        <!-- Bar chart -->
+                        <canvas id="bar_chart"></canvas>
                     </div>
                 </div>    
                 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2024 at 03:38 PM
+-- Generation Time: Feb 05, 2025 at 02:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -98,7 +98,11 @@ INSERT INTO `tbl_amount_wallets` (`id`, `hide`, `vid`, `wid`, `amount`) VALUES
 (65, 0, 47, 1, 0.03679673),
 (66, 0, 48, 4, 0.05308090),
 (67, 0, 48, 3, 0.05045750),
-(68, 0, 47, 2, 0.01864570);
+(68, 0, 47, 2, 0.01864570),
+(69, 0, 49, 1, 0.03679673),
+(70, 0, 49, 2, 0.01864570),
+(71, 0, 50, 3, 0.05045750),
+(72, 0, 50, 4, 0.05308090);
 
 -- --------------------------------------------------------
 
@@ -127,7 +131,7 @@ INSERT INTO `tbl_businesses` (`id`, `hide`, `business`, `gid`, `website`, `rad_h
 (3, 0, 'Gemeente Emmen', 2, 'https://www.gemeente-emmen.nl', 2, 'Gemeentelijke belastingen'),
 (4, 0, 'Shell', 3, 'https://www.shell.nl', -1, NULL),
 (5, 0, 'Esso', 3, 'https://www.esso.nl', -1, NULL),
-(6, 0, 'Eneco', 4, 'www.eneoco.nl', 2, 'Augustus');
+(6, 0, 'Eneco', 4, 'www.eneoco.nl', 2, 'Februari');
 
 -- --------------------------------------------------------
 
@@ -269,7 +273,7 @@ INSERT INTO `tbl_dutch` (`id`, `id_config`, `value`) VALUES
 (10, 13, 'Aanmelden,Gebruikersnaam,Wachtwoord,controle,is mislukt!,is niet hetzelfde!,is niet sterk genoeg!'),
 (11, 14, 'Gebruikers,Naam,Wachtwoord Hash Waarde,Aangemeld,Vorige Aanmelding'),
 (12, 15, 'Diensten,Dienst,Financiën,Beleggen,Sparen,Crypto,Website'),
-(13, 16, 'voldoet niet!,bestaat al!,# verwijderen?,kan niet worden verwijderd!,De # lijst,is leeg!,of,en'),
+(13, 16, 'voldoet niet!,bestaat al!,De # rij verwijderen?,kan niet worden verwijderd!,De # lijst,is leeg!,of,en'),
 (14, 17, 'rekeningen,Datum,Dienst,Rekeningnummer,Beschrijving,Betaal,Beleggings,Spaar,Crypto'),
 (15, 18, 'Zondag,Maandag,Dinsdag,Woensdag,Donderdag,Vrijdag,Zaterdag'),
 (16, 19, 'Jan,Feb,Mrt,Apr,Mei,Jun,Jul,Aug,Sep,Okt,Nov,Dec'),
@@ -319,7 +323,7 @@ INSERT INTO `tbl_english` (`id`, `id_config`, `value`) VALUES
 (10, 13, 'Sign In,Username,Password,check,failed!,is not the same!,is not strong enough!'),
 (11, 14, 'Users,Name,Password Hash Value,Signed In,Previous Signed In'),
 (12, 15, 'Services,Service,Finances,Stocks,Savings,Crypto,Website'),
-(13, 16, 'is invalid!,already exists!,Delete #?,cannot be deleted!,The # list,is empty!,or,and'),
+(13, 16, 'is invalid!,already exists!,Delete the # row?,cannot be deleted!,The # list,is empty!,or,and'),
 (14, 17, 'Accounts,Date,Service,Account Number,Description,Payment ,Investment,Savings,Crypto '),
 (15, 18, 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'),
 (16, 19, 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec'),
@@ -365,7 +369,8 @@ INSERT INTO `tbl_finances` (`id`, `date`, `aid`, `income`, `fixed`, `other`, `bi
 (1, '2024-08-05', 1, NULL, 90.00, NULL, 3, 'Gemeentelijke belastingen'),
 (2, '2024-08-05', 1, NULL, 150.00, NULL, 2, 'Bijdrage'),
 (3, '2024-08-08', 1, NULL, 65.00, NULL, 6, 'Augustus'),
-(4, '2024-08-21', 2, 1000.00, NULL, NULL, 1, 'Salaris');
+(4, '2024-08-21', 2, 1000.00, NULL, NULL, 1, 'Salaris'),
+(5, '2025-02-03', 1, NULL, 50.00, NULL, 6, 'Februari');
 
 -- --------------------------------------------------------
 
@@ -429,6 +434,13 @@ CREATE TABLE `tbl_rankings` (
   `bid` int(11) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_rankings`
+--
+
+INSERT INTO `tbl_rankings` (`gid`, `bid`, `timestamp`) VALUES
+(4, 6, '2025-02-05 12:55:11');
 
 -- --------------------------------------------------------
 
@@ -513,7 +525,7 @@ INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 (5, 'crypto', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"2024\", \"theme\": {\"color\": \"#ff8f00\"}}'),
 (6, 'settings', '{\"page\": \"true\", \"rows\": \"25\", \"show\": \"true\", \"sign\": \"€\", \"theme\": {\"color\": \"#536878\"}}'),
 (7, 'logout', '{\"page\": \"true\"}'),
-(8, 'language', '{\"code\": \"EN\", \"language\": \"English\"}'),
+(8, 'language', '{\"code\": \"NL\", \"language\": \"Nederlands\"}'),
 (9, 'salt', '{\"phrase\": \"Please put your SALT pharse here.\"}');
 
 -- --------------------------------------------------------
@@ -552,7 +564,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2024-12-31 10:14:36', '2024-12-30 12:57:53');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-02-05 13:33:58', '2025-01-31 13:05:06');
 
 -- --------------------------------------------------------
 
@@ -645,7 +657,13 @@ INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
 (116, 0, '2024-12-23', 4, 212.00),
 (117, 0, '2024-12-23', 3, 212.50),
 (118, 0, '2024-12-23', 5, 312.00),
-(119, 0, '2024-12-23', 6, 312.50);
+(119, 0, '2024-12-23', 6, 312.50),
+(120, 0, '2025-01-20', 2, 201.00),
+(121, 0, '2025-01-20', 1, 301.00),
+(122, 0, '2025-01-20', 4, 401.00),
+(123, 0, '2025-01-20', 3, 501.00),
+(124, 0, '2025-01-20', 5, 601.00),
+(125, 0, '2025-01-20', 6, 701.00);
 
 -- --------------------------------------------------------
 
@@ -689,7 +707,9 @@ INSERT INTO `tbl_value_cryptos` (`id`, `date`, `cid`, `value`) VALUES
 (45, '2024-11-18', 1, 54011.00),
 (46, '2024-11-18', 2, 2511.00),
 (47, '2024-12-23', 1, 56012.00),
-(48, '2024-12-23', 2, 2612.00);
+(48, '2024-12-23', 2, 2612.00),
+(49, '2025-01-20', 1, 58001.00),
+(50, '2025-01-20', 2, 2701.00);
 
 -- --------------------------------------------------------
 
@@ -855,7 +875,7 @@ ALTER TABLE `tbl_accounts`
 -- AUTO_INCREMENT for table `tbl_amount_wallets`
 --
 ALTER TABLE `tbl_amount_wallets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `tbl_businesses`
@@ -897,7 +917,7 @@ ALTER TABLE `tbl_english`
 -- AUTO_INCREMENT for table `tbl_finances`
 --
 ALTER TABLE `tbl_finances`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_groups`
@@ -945,13 +965,13 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_value_accounts`
 --
 ALTER TABLE `tbl_value_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_cryptos`
 --
 ALTER TABLE `tbl_value_cryptos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `tbl_wallets`
