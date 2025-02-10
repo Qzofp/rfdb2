@@ -128,3 +128,5 @@ ToDo
 26. Verbetering: Kleuren voor de accounts toevoegen, bwt als voor de crypto currenties. Dit voor de grafieken.
 
 27. Verbetering: De tabbladen van de Dashboard pagina onafhankelijk maken, zodat de pagina opnieuw wordt geladen als er een tabblad wordt gekozen.
+
+28. Verbetering / Bug: De inputvelden van het inlogscherm schalen niet mee.

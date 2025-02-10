@@ -927,5 +927,15 @@ ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto');
 
 Graph date tips :
 https://stackoverflow.com/questions/79306502/format-dates-in-chartjs-x-axis
-https://stackoverflow.com/questions/72672841/chartjs-v3-x-limit-the-string-size-of-label-on-canvas-without-changing-toolti
+https://stackoverflow.com/questions/72672841/chartjs-v3-x-limit-the-string-size-of-label-on-canvas-without-changing-tooltip
+
+-- Year Overview (months) query for finances
+SELECT MONTH(`date`) AS `month`, SUM(`income`) AS `income`, SUM(`fixed`) AS `fixed`, SUM(`other`) AS `other`
+FROM tbl_finances
+WHERE YEAR(`date`) = 2025
+GROUP BY YEAR(`date`), MONTH(`date`)
+ORDER BY `month`
+
+
+
 

@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 07, 2025
+ * Updated on Feb 10, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -20,7 +20,7 @@
  * Function:    loadSheet
  *
  * Created on Oct 28, 2023
- * Updated on Apr 12 , 2024
+ * Updated on Apr 12, 2024
  *
  * Description: The sheet.js main function.
  *
@@ -31,7 +31,7 @@
 function loadSheet() {
     
     $.when(getAjaxRequest("get_constants", "page=sheet")).done(function(result) {
-
+    
         if (result.success) {              
             var [c, s] = processSheetConstants(result);        
             showSheetPage(c, s);
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Feb 07, 2025
+ * Updated on Feb 10, 2025
  *
  * Description: Open the sheet page.
  *
@@ -116,7 +116,7 @@ function checkSheetPage(page, s) {
  */
 function openSheetPage(c, s, i) {
     
-    var $adp;
+    var $adp, $bar;
     
     // Show the sheet title and current year.
     showPageTitles(c, i, " <span>" + cDate.getFullYear() + "</span>");
@@ -125,7 +125,10 @@ function openSheetPage(c, s, i) {
     setSlideMenuScale(s[i]);
 
     // Initialize the datepicker.
-    $adp = initAirDatePicker(c, s);       
+    $adp = initAirDatePicker(c, s);
+    
+    // Initialize the bar chart.
+    $bar = initBarChart(s);
     
     // Add Yearpicker popup box and process year selection (also update the slide menu and the sheet table).
     addYearPicker($adp, c, s, i);
@@ -144,7 +147,7 @@ function openSheetPage(c, s, i) {
         
     // Page button is pressed (scale, edit or chart button).
     $("#page_buttons").on('click', 'img', function() {
-        changeSheetContent($adp, c, s, i, this);
+        changeSheetContent($adp, $bar, c, s, i, this);
     });
     
     // Table row is pressed.
@@ -199,7 +202,7 @@ function openSheetPage(c, s, i) {
     });    
     
     // Test Chart
-    testBarGraph(c);
+    testBarGraph($bar, c);
     
     // Close Chart Window.
     closeChartWindow();
@@ -769,15 +772,15 @@ function showTableTotals(result, sign, col) {
  * Function:    changeSheetContent
  *
  * Created on Dec 17, 2023
- * Updated on Jun 04, 2024
+ * Updated on Feb 10, 2025
  *
  * Description: Change sheet content for the page.
  *
- * In:  adp, c, s, i, that
+ * In:  adp, bar, c, s, i, that
  * Out: -
  *
  */
-function changeSheetContent(adp, c, s, i, that) {
+function changeSheetContent(adp, bar, c, s, i, that) {
     
     switch (that.alt) {
         case "months" :
@@ -792,11 +795,7 @@ function changeSheetContent(adp, c, s, i, that) {
             break;
             
         case "chart" : 
-            let bottom = "-100%";
-            if ($("#chart_slider").css("bottom") !== "0px") {
-                bottom = "0";
-            }
-            $("#chart_slider").animate({"bottom":bottom}, 300);
+            showYearOverviewChart(bar, c, i);
             break;
     }    
 }

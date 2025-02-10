@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 05, 2025 at 02:03 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Feb 10, 2025 at 02:04 PM
+-- Server version: 8.0.41-0ubuntu0.22.04.1
+-- PHP Version: 8.1.2-1ubuntu2.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,13 +31,13 @@ USE `rfdb2_empty`;
 
 DROP TABLE IF EXISTS `tbl_accounts`;
 CREATE TABLE `tbl_accounts` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
   `account` varbinary(200) NOT NULL,
   `date` datetime DEFAULT NULL,
-  `sid` int(11) DEFAULT NULL,
-  `type` varchar(10) DEFAULT NULL,
-  `description` varchar(50) DEFAULT NULL
+  `sid` int DEFAULT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -63,10 +63,10 @@ INSERT INTO `tbl_accounts` (`id`, `hide`, `account`, `date`, `sid`, `type`, `des
 
 DROP TABLE IF EXISTS `tbl_amount_wallets`;
 CREATE TABLE `tbl_amount_wallets` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `vid` int(11) NOT NULL,
-  `wid` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `vid` int NOT NULL,
+  `wid` int NOT NULL,
   `amount` decimal(11,8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -75,34 +75,34 @@ CREATE TABLE `tbl_amount_wallets` (
 --
 
 INSERT INTO `tbl_amount_wallets` (`id`, `hide`, `vid`, `wid`, `amount`) VALUES
-(33, 0, 33, 1, 0.03679673),
-(34, 0, 34, 4, 0.05308090),
-(35, 0, 34, 3, 0.00011450),
-(36, 0, 33, 2, 0.01864570),
-(40, 0, 36, 1, 0.03679673),
-(41, 0, 37, 4, 0.05308090),
-(42, 0, 37, 3, 0.05045750),
-(43, 0, 36, 2, 0.01864570),
-(47, 0, 39, 1, 0.03679673),
-(48, 0, 40, 4, 0.05308090),
-(49, 0, 40, 3, 0.05045750),
-(50, 0, 39, 2, 0.01864570),
-(54, 0, 42, 1, 0.03679673),
-(55, 0, 43, 4, 0.05308090),
-(56, 0, 43, 3, 0.05045750),
-(57, 0, 42, 2, 0.01864570),
-(61, 0, 45, 1, 0.03679673),
-(62, 0, 46, 4, 0.05308090),
-(63, 0, 46, 3, 0.05045750),
-(64, 0, 45, 2, 0.01864570),
-(65, 0, 47, 1, 0.03679673),
-(66, 0, 48, 4, 0.05308090),
-(67, 0, 48, 3, 0.05045750),
-(68, 0, 47, 2, 0.01864570),
-(69, 0, 49, 1, 0.03679673),
-(70, 0, 49, 2, 0.01864570),
-(71, 0, 50, 3, 0.05045750),
-(72, 0, 50, 4, 0.05308090);
+(33, 0, 33, 1, '0.03679673'),
+(34, 0, 34, 4, '0.05308090'),
+(35, 0, 34, 3, '0.00011450'),
+(36, 0, 33, 2, '0.01864570'),
+(40, 0, 36, 1, '0.03679673'),
+(41, 0, 37, 4, '0.05308090'),
+(42, 0, 37, 3, '0.05045750'),
+(43, 0, 36, 2, '0.01864570'),
+(47, 0, 39, 1, '0.03679673'),
+(48, 0, 40, 4, '0.05308090'),
+(49, 0, 40, 3, '0.05045750'),
+(50, 0, 39, 2, '0.01864570'),
+(54, 0, 42, 1, '0.03679673'),
+(55, 0, 43, 4, '0.05308090'),
+(56, 0, 43, 3, '0.05045750'),
+(57, 0, 42, 2, '0.01864570'),
+(61, 0, 45, 1, '0.03679673'),
+(62, 0, 46, 4, '0.05308090'),
+(63, 0, 46, 3, '0.05045750'),
+(64, 0, 45, 2, '0.01864570'),
+(65, 0, 47, 1, '0.03679673'),
+(66, 0, 48, 4, '0.05308090'),
+(67, 0, 48, 3, '0.05045750'),
+(68, 0, 47, 2, '0.01864570'),
+(69, 0, 49, 1, '0.03679673'),
+(70, 0, 49, 2, '0.01864570'),
+(71, 0, 50, 3, '0.05045750'),
+(72, 0, 50, 4, '0.05308090');
 
 -- --------------------------------------------------------
 
@@ -112,13 +112,13 @@ INSERT INTO `tbl_amount_wallets` (`id`, `hide`, `vid`, `wid`, `amount`) VALUES
 
 DROP TABLE IF EXISTS `tbl_businesses`;
 CREATE TABLE `tbl_businesses` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `business` varchar(50) NOT NULL,
-  `gid` int(11) NOT NULL,
-  `website` varchar(50) DEFAULT NULL,
-  `rad_history` tinyint(4) DEFAULT -1,
-  `desc_history` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `business` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gid` int NOT NULL,
+  `website` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rad_history` tinyint DEFAULT '-1',
+  `desc_history` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -129,9 +129,9 @@ INSERT INTO `tbl_businesses` (`id`, `hide`, `business`, `gid`, `website`, `rad_h
 (1, 0, 'Menzis', 1, 'https://www.menzis.nl', 1, 'Salaris'),
 (2, 0, 'VVE', 2, 'https://www.myriade.nl', 2, 'Bijdrage'),
 (3, 0, 'Gemeente Emmen', 2, 'https://www.gemeente-emmen.nl', 2, 'Gemeentelijke belastingen'),
-(4, 0, 'Shell', 3, 'https://www.shell.nl', -1, NULL),
-(5, 0, 'Esso', 3, 'https://www.esso.nl', -1, NULL),
-(6, 0, 'Eneco', 4, 'www.eneoco.nl', 2, 'Februari');
+(4, 0, 'Shell', 3, 'https://www.shell.nl', 2, 'Benzine'),
+(5, 0, 'Esso', 3, 'https://www.esso.nl', 3, 'Broodje'),
+(6, 0, 'Eneco', 4, 'www.eneoco.nl', 2, 'Januari');
 
 -- --------------------------------------------------------
 
@@ -141,9 +141,9 @@ INSERT INTO `tbl_businesses` (`id`, `hide`, `business`, `gid`, `website`, `rad_h
 
 DROP TABLE IF EXISTS `tbl_config`;
 CREATE TABLE `tbl_config` (
-  `id` int(11) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `value` varchar(150) DEFAULT NULL
+  `id` int NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -184,7 +184,8 @@ INSERT INTO `tbl_config` (`id`, `name`, `value`) VALUES
 (31, 'DashMisc', NULL),
 (32, 'DashLabels', NULL),
 (33, 'ValueAccounts', NULL),
-(34, 'ValueCryptos', NULL);
+(34, 'ValueCryptos', NULL),
+(35, 'Overview', NULL);
 
 -- --------------------------------------------------------
 
@@ -194,13 +195,13 @@ INSERT INTO `tbl_config` (`id`, `name`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_crypto`;
 CREATE TABLE `tbl_crypto` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `date` date DEFAULT NULL,
-  `wid` int(11) NOT NULL,
+  `wid` int NOT NULL,
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
   `amount` decimal(11,8) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL
+  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -208,16 +209,16 @@ CREATE TABLE `tbl_crypto` (
 --
 
 INSERT INTO `tbl_crypto` (`id`, `date`, `wid`, `deposit`, `withdrawal`, `amount`, `description`) VALUES
-(1, '2024-07-02', 1, 100.00, NULL, 0.00002300, 'Gekocht van Bitonic'),
-(2, '2024-07-04', 4, 50.00, NULL, 0.00786120, 'Gekocht op Exchange A'),
-(3, '2024-07-10', 1, 150.00, NULL, 0.01243253, 'Gekocht van Bitonic'),
-(4, '2024-07-12', 4, NULL, 20.00, -0.00011450, 'Verstuurt naar Trezor Wallet #1, ETH'),
-(5, '2024-07-12', 3, 20.00, NULL, 0.00011450, 'Ontvangen van Exchange A wallet'),
-(6, '2024-07-14', 2, 200.00, NULL, 0.01834340, 'Gekocht van Bitonic'),
-(7, '2024-07-17', 1, 200.00, NULL, 0.02434120, 'Gekocht van Bitonic'),
-(8, '2024-07-20', 4, 150.00, NULL, 0.04533420, 'Gekocht op Exchange A'),
-(9, '2024-07-21', 2, 50.00, NULL, 0.00030230, 'Gekocht van Bitonic'),
-(10, '2024-08-01', 3, 200.00, NULL, 0.05034300, 'Gekocht op Bitvavo');
+(1, '2024-07-02', 1, '100.00', NULL, '0.00002300', 'Gekocht van Bitonic'),
+(2, '2024-07-04', 4, '50.00', NULL, '0.00786120', 'Gekocht op Exchange A'),
+(3, '2024-07-10', 1, '150.00', NULL, '0.01243253', 'Gekocht van Bitonic'),
+(4, '2024-07-12', 4, NULL, '20.00', '-0.00011450', 'Verstuurt naar Trezor Wallet #1, ETH'),
+(5, '2024-07-12', 3, '20.00', NULL, '0.00011450', 'Ontvangen van Exchange A wallet'),
+(6, '2024-07-14', 2, '200.00', NULL, '0.01834340', 'Gekocht van Bitonic'),
+(7, '2024-07-17', 1, '200.00', NULL, '0.02434120', 'Gekocht van Bitonic'),
+(8, '2024-07-20', 4, '150.00', NULL, '0.04533420', 'Gekocht op Exchange A'),
+(9, '2024-07-21', 2, '50.00', NULL, '0.00030230', 'Gekocht van Bitonic'),
+(10, '2024-08-01', 3, '200.00', NULL, '0.05034300', 'Gekocht op Bitvavo');
 
 -- --------------------------------------------------------
 
@@ -227,12 +228,12 @@ INSERT INTO `tbl_crypto` (`id`, `date`, `wid`, `deposit`, `withdrawal`, `amount`
 
 DROP TABLE IF EXISTS `tbl_cryptocurrenties`;
 CREATE TABLE `tbl_cryptocurrenties` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `name` varchar(45) NOT NULL,
-  `symbol` varchar(5) NOT NULL,
-  `color` varchar(10) NOT NULL,
-  `website` varchar(150) DEFAULT NULL
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `symbol` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `color` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -251,9 +252,9 @@ INSERT INTO `tbl_cryptocurrenties` (`id`, `hide`, `name`, `symbol`, `color`, `we
 
 DROP TABLE IF EXISTS `tbl_dutch`;
 CREATE TABLE `tbl_dutch` (
-  `id` int(11) NOT NULL,
-  `id_config` int(11) NOT NULL,
-  `value` varchar(200) NOT NULL
+  `id` int NOT NULL,
+  `id_config` int NOT NULL,
+  `value` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -291,7 +292,8 @@ INSERT INTO `tbl_dutch` (`id`, `id_config`, `value`) VALUES
 (30, 31, 'Datum Waardes,Datum,Deze waardes,Er zijn geen # geselecteerd!,pagina\'s,rekeningen,Selecteer een datum!'),
 (31, 32, 'Waarde Rekeningen,Rekeningendiagram,Waardeontwikkeling,Crypto Waardes,Crypto-diagram,Crypto-ontwikkeling'),
 (32, 33, 'Type,Dienst,Rekeningen,Rekening,Aantal,Ratio,Waarde'),
-(33, 34, 'Naam,Symbool,Ratio,Waarde');
+(33, 34, 'Naam,Symbool,Ratio,Waarde'),
+(34, 35, 'Jaaroverzicht,Jaaroverzicht (kwartalen),Jaaroverzicht (maanden) ');
 
 -- --------------------------------------------------------
 
@@ -301,9 +303,9 @@ INSERT INTO `tbl_dutch` (`id`, `id_config`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_english`;
 CREATE TABLE `tbl_english` (
-  `id` int(11) NOT NULL,
-  `id_config` int(11) NOT NULL,
-  `value` varchar(200) NOT NULL
+  `id` int NOT NULL,
+  `id_config` int NOT NULL,
+  `value` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -341,7 +343,8 @@ INSERT INTO `tbl_english` (`id`, `id_config`, `value`) VALUES
 (28, 31, 'Date Values,Date,these values,There are no # enabled!,pages,accounts,Select a date!'),
 (29, 32, 'Value Accounts,Accounts Chart,Value Development,Crypto Values,Crypto Chart,Crypto Development'),
 (30, 33, 'Type,Service,Accounts,Account,Number,Ratio,Value'),
-(31, 34, 'Name,Symbol,Ratio,Value');
+(31, 34, 'Name,Symbol,Ratio,Value'),
+(32, 35, 'Year Overview,Year Overview (quarters),Year Overview (months)');
 
 -- --------------------------------------------------------
 
@@ -351,14 +354,14 @@ INSERT INTO `tbl_english` (`id`, `id_config`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_finances`;
 CREATE TABLE `tbl_finances` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `date` date NOT NULL,
-  `aid` int(11) DEFAULT NULL,
+  `aid` int DEFAULT NULL,
   `income` decimal(11,2) DEFAULT NULL,
   `fixed` decimal(11,2) DEFAULT NULL,
   `other` decimal(11,2) DEFAULT NULL,
-  `bid` int(11) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL
+  `bid` int DEFAULT NULL,
+  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -366,11 +369,21 @@ CREATE TABLE `tbl_finances` (
 --
 
 INSERT INTO `tbl_finances` (`id`, `date`, `aid`, `income`, `fixed`, `other`, `bid`, `description`) VALUES
-(1, '2024-08-05', 1, NULL, 90.00, NULL, 3, 'Gemeentelijke belastingen'),
-(2, '2024-08-05', 1, NULL, 150.00, NULL, 2, 'Bijdrage'),
-(3, '2024-08-08', 1, NULL, 65.00, NULL, 6, 'Augustus'),
-(4, '2024-08-21', 2, 1000.00, NULL, NULL, 1, 'Salaris'),
-(5, '2025-02-03', 1, NULL, 50.00, NULL, 6, 'Februari');
+(1, '2024-08-05', 1, NULL, '90.00', NULL, 3, 'Gemeentelijke belastingen'),
+(2, '2024-08-05', 1, NULL, '150.00', NULL, 2, 'Bijdrage'),
+(3, '2024-08-08', 1, NULL, '65.00', NULL, 6, 'Augustus'),
+(4, '2024-08-21', 2, '1000.00', NULL, NULL, 1, 'Salaris'),
+(5, '2025-02-03', 1, NULL, '50.00', NULL, 6, 'Februari'),
+(6, '2025-01-02', 1, NULL, '90.00', NULL, 3, 'Gemeentelijke belastingen'),
+(7, '2025-01-02', 2, NULL, '150.00', NULL, 2, 'Bijdrage'),
+(8, '2025-01-08', 1, NULL, '65.00', NULL, 6, 'Januari'),
+(9, '2025-01-20', 1, '1000.00', NULL, NULL, 1, 'Salaris'),
+(10, '2025-01-24', 1, NULL, '48.00', NULL, 4, 'Benzine'),
+(11, '2025-01-15', 2, NULL, NULL, '6.95', 5, 'Broodje'),
+(12, '2025-02-04', 1, NULL, '90.00', NULL, 3, 'Gemeentelijke belastingen'),
+(13, '2025-02-04', 2, NULL, '150.00', NULL, 2, 'Bijdrage'),
+(14, '2025-02-24', 1, '1000.00', NULL, NULL, 1, 'Salaris'),
+(15, '2025-02-12', 2, NULL, NULL, '5.99', 5, 'Broodje');
 
 -- --------------------------------------------------------
 
@@ -380,10 +393,10 @@ INSERT INTO `tbl_finances` (`id`, `date`, `aid`, `income`, `fixed`, `other`, `bi
 
 DROP TABLE IF EXISTS `tbl_groups`;
 CREATE TABLE `tbl_groups` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `group` varchar(50) NOT NULL,
-  `description` varchar(250) DEFAULT NULL
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `group` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -404,10 +417,10 @@ INSERT INTO `tbl_groups` (`id`, `hide`, `group`, `description`) VALUES
 
 DROP TABLE IF EXISTS `tbl_language`;
 CREATE TABLE `tbl_language` (
-  `id` int(11) NOT NULL,
-  `language` varchar(45) NOT NULL,
-  `native` varchar(45) NOT NULL,
-  `code` varchar(2) NOT NULL
+  `id` int NOT NULL,
+  `language` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `native` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -430,9 +443,9 @@ INSERT INTO `tbl_language` (`id`, `language`, `native`, `code`) VALUES
 
 DROP TABLE IF EXISTS `tbl_rankings`;
 CREATE TABLE `tbl_rankings` (
-  `gid` int(11) DEFAULT NULL,
-  `bid` int(11) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+  `gid` int DEFAULT NULL,
+  `bid` int DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -440,7 +453,17 @@ CREATE TABLE `tbl_rankings` (
 --
 
 INSERT INTO `tbl_rankings` (`gid`, `bid`, `timestamp`) VALUES
-(4, 6, '2025-02-05 12:55:11');
+(4, 6, '2025-02-05 12:55:11'),
+(2, 3, '2025-02-08 13:00:37'),
+(2, 2, '2025-02-08 13:00:52'),
+(4, 6, '2025-02-08 13:01:21'),
+(1, 1, '2025-02-08 13:01:36'),
+(3, 4, '2025-02-08 13:02:10'),
+(3, 5, '2025-02-08 13:02:35'),
+(2, 3, '2025-02-08 13:07:13'),
+(2, 2, '2025-02-08 13:07:34'),
+(1, 1, '2025-02-08 13:07:51'),
+(3, 5, '2025-02-08 13:08:14');
 
 -- --------------------------------------------------------
 
@@ -450,12 +473,12 @@ INSERT INTO `tbl_rankings` (`gid`, `bid`, `timestamp`) VALUES
 
 DROP TABLE IF EXISTS `tbl_savings`;
 CREATE TABLE `tbl_savings` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `date` date DEFAULT NULL,
-  `aid` int(11) NOT NULL,
+  `aid` int NOT NULL,
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL
+  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -463,12 +486,12 @@ CREATE TABLE `tbl_savings` (
 --
 
 INSERT INTO `tbl_savings` (`id`, `date`, `aid`, `deposit`, `withdrawal`, `description`) VALUES
-(1, '2024-10-08', 5, 50.00, NULL, 'Van betaalrekening'),
-(2, '2024-10-10', 5, 150.00, NULL, 'Van betaalrekening'),
-(3, '2020-12-14', 5, 50.00, NULL, 'Inleg'),
-(4, '2020-06-15', 5, 50.00, NULL, 'Inleg'),
-(5, '2021-12-20', 5, 50.00, NULL, 'Inleg'),
-(6, '2021-05-17', 5, 50.00, NULL, 'Inleg');
+(1, '2024-10-08', 5, '50.00', NULL, 'Van betaalrekening'),
+(2, '2024-10-10', 5, '150.00', NULL, 'Van betaalrekening'),
+(3, '2020-12-14', 5, '50.00', NULL, 'Inleg'),
+(4, '2020-06-15', 5, '50.00', NULL, 'Inleg'),
+(5, '2021-12-20', 5, '50.00', NULL, 'Inleg'),
+(6, '2021-05-17', 5, '50.00', NULL, 'Inleg');
 
 -- --------------------------------------------------------
 
@@ -478,14 +501,14 @@ INSERT INTO `tbl_savings` (`id`, `date`, `aid`, `deposit`, `withdrawal`, `descri
 
 DROP TABLE IF EXISTS `tbl_services`;
 CREATE TABLE `tbl_services` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `service` varchar(45) NOT NULL,
-  `finance` varchar(10) DEFAULT '&#9744;',
-  `stock` varchar(10) DEFAULT '&#9744;',
-  `savings` varchar(10) DEFAULT '&#9744;',
-  `crypto` varchar(10) DEFAULT '&#9744;',
-  `website` varchar(150) DEFAULT NULL
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `service` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finance` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `stock` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `savings` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `crypto` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '&#9744;',
+  `website` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -508,9 +531,9 @@ INSERT INTO `tbl_services` (`id`, `hide`, `service`, `finance`, `stock`, `saving
 
 DROP TABLE IF EXISTS `tbl_settings`;
 CREATE TABLE `tbl_settings` (
-  `id` int(11) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `value` longtext NOT NULL
+  `id` int NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -525,7 +548,7 @@ INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 (5, 'crypto', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"2024\", \"theme\": {\"color\": \"#ff8f00\"}}'),
 (6, 'settings', '{\"page\": \"true\", \"rows\": \"25\", \"show\": \"true\", \"sign\": \"€\", \"theme\": {\"color\": \"#536878\"}}'),
 (7, 'logout', '{\"page\": \"true\"}'),
-(8, 'language', '{\"code\": \"NL\", \"language\": \"Nederlands\"}'),
+(8, 'language', '{\"code\": \"EN\", \"language\": \"English\"}'),
 (9, 'salt', '{\"phrase\": \"Please put your SALT pharse here.\"}');
 
 -- --------------------------------------------------------
@@ -536,12 +559,12 @@ INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_stocks`;
 CREATE TABLE `tbl_stocks` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `date` date DEFAULT NULL,
-  `aid` int(11) NOT NULL,
+  `aid` int NOT NULL,
   `deposit` decimal(11,2) DEFAULT NULL,
   `withdrawal` decimal(11,2) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL
+  `description` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -552,9 +575,9 @@ CREATE TABLE `tbl_stocks` (
 
 DROP TABLE IF EXISTS `tbl_users`;
 CREATE TABLE `tbl_users` (
-  `id` int(11) NOT NULL,
-  `user` varchar(25) NOT NULL,
-  `password` varchar(75) NOT NULL,
+  `id` int NOT NULL,
+  `user` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(75) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` datetime DEFAULT NULL,
   `last` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -564,7 +587,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-02-05 13:33:58', '2025-01-31 13:05:06');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-02-10 13:00:26', '2025-02-10 11:51:47');
 
 -- --------------------------------------------------------
 
@@ -574,10 +597,10 @@ INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
 
 DROP TABLE IF EXISTS `tbl_value_accounts`;
 CREATE TABLE `tbl_value_accounts` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
   `date` date NOT NULL,
-  `aid` int(11) NOT NULL,
+  `aid` int NOT NULL,
   `value` decimal(11,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -586,84 +609,84 @@ CREATE TABLE `tbl_value_accounts` (
 --
 
 INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
-(38, 0, '2024-01-22', 2, 101.00),
-(39, 0, '2024-01-22', 1, 101.50),
-(40, 0, '2024-01-22', 4, 201.00),
-(41, 0, '2024-01-22', 3, 201.50),
-(42, 0, '2024-01-22', 5, 301.00),
-(43, 0, '2024-01-22', 6, 301.50),
-(45, 0, '2024-02-19', 2, 102.00),
-(46, 0, '2024-02-19', 1, 102.50),
-(47, 0, '2024-02-19', 4, 202.00),
-(48, 0, '2024-02-19', 3, 202.50),
-(49, 0, '2024-02-19', 5, 302.00),
-(50, 0, '2024-02-19', 6, 302.50),
-(52, 0, '2024-03-18', 2, 103.00),
-(53, 0, '2024-03-18', 1, 103.50),
-(54, 0, '2024-03-18', 4, 203.00),
-(55, 0, '2024-03-18', 3, 203.50),
-(56, 0, '2024-03-18', 5, 303.00),
-(57, 0, '2024-03-18', 6, 303.50),
-(59, 0, '2024-04-22', 2, 104.00),
-(60, 0, '2024-04-22', 1, 104.50),
-(61, 0, '2024-04-22', 4, 204.00),
-(62, 0, '2024-04-22', 3, 204.50),
-(63, 0, '2024-04-22', 5, 304.00),
-(64, 0, '2024-04-22', 6, 304.50),
-(66, 0, '2024-05-20', 2, 105.00),
-(67, 0, '2024-05-20', 1, 105.50),
-(68, 0, '2024-05-20', 4, 205.00),
-(69, 0, '2024-05-20', 3, 205.50),
-(70, 0, '2024-05-20', 5, 305.00),
-(71, 0, '2024-05-20', 6, 305.50),
-(73, 0, '2024-06-17', 2, 106.00),
-(74, 0, '2024-06-17', 1, 106.50),
-(75, 0, '2024-06-17', 4, 206.00),
-(76, 0, '2024-06-17', 3, 206.50),
-(77, 0, '2024-06-17', 5, 306.00),
-(78, 0, '2024-06-17', 6, 306.50),
-(80, 0, '2024-07-22', 2, 107.00),
-(81, 0, '2024-07-22', 1, 107.50),
-(82, 0, '2024-07-22', 4, 207.00),
-(83, 0, '2024-07-22', 3, 207.50),
-(84, 0, '2024-07-22', 5, 307.00),
-(85, 0, '2024-07-22', 6, 307.50),
-(87, 0, '2024-08-19', 2, 108.00),
-(88, 0, '2024-08-19', 1, 108.50),
-(89, 0, '2024-08-19', 4, 208.00),
-(90, 0, '2024-08-19', 3, 208.50),
-(91, 0, '2024-08-19', 5, 308.00),
-(92, 0, '2024-08-19', 6, 308.50),
-(94, 0, '2024-09-23', 2, 109.00),
-(95, 0, '2024-09-23', 1, 109.50),
-(96, 0, '2024-09-23', 4, 209.00),
-(97, 0, '2024-09-23', 3, 209.50),
-(98, 0, '2024-09-23', 5, 309.00),
-(99, 0, '2024-09-23', 6, 309.50),
-(101, 0, '2024-10-21', 2, 110.00),
-(102, 0, '2024-10-21', 1, 110.50),
-(103, 0, '2024-10-21', 4, 210.00),
-(104, 0, '2024-10-21', 3, 210.50),
-(105, 0, '2024-10-21', 5, 310.00),
-(106, 0, '2024-10-21', 6, 310.50),
-(108, 0, '2024-11-18', 2, 111.00),
-(109, 0, '2024-11-18', 1, 111.50),
-(110, 0, '2024-11-18', 4, 211.00),
-(111, 0, '2024-11-18', 3, 211.50),
-(112, 0, '2024-11-18', 5, 311.00),
-(113, 0, '2024-11-18', 6, 311.50),
-(114, 0, '2024-12-23', 2, 112.00),
-(115, 0, '2024-12-23', 1, 112.50),
-(116, 0, '2024-12-23', 4, 212.00),
-(117, 0, '2024-12-23', 3, 212.50),
-(118, 0, '2024-12-23', 5, 312.00),
-(119, 0, '2024-12-23', 6, 312.50),
-(120, 0, '2025-01-20', 2, 201.00),
-(121, 0, '2025-01-20', 1, 301.00),
-(122, 0, '2025-01-20', 4, 401.00),
-(123, 0, '2025-01-20', 3, 501.00),
-(124, 0, '2025-01-20', 5, 601.00),
-(125, 0, '2025-01-20', 6, 701.00);
+(38, 0, '2024-01-22', 2, '101.00'),
+(39, 0, '2024-01-22', 1, '101.50'),
+(40, 0, '2024-01-22', 4, '201.00'),
+(41, 0, '2024-01-22', 3, '201.50'),
+(42, 0, '2024-01-22', 5, '301.00'),
+(43, 0, '2024-01-22', 6, '301.50'),
+(45, 0, '2024-02-19', 2, '102.00'),
+(46, 0, '2024-02-19', 1, '102.50'),
+(47, 0, '2024-02-19', 4, '202.00'),
+(48, 0, '2024-02-19', 3, '202.50'),
+(49, 0, '2024-02-19', 5, '302.00'),
+(50, 0, '2024-02-19', 6, '302.50'),
+(52, 0, '2024-03-18', 2, '103.00'),
+(53, 0, '2024-03-18', 1, '103.50'),
+(54, 0, '2024-03-18', 4, '203.00'),
+(55, 0, '2024-03-18', 3, '203.50'),
+(56, 0, '2024-03-18', 5, '303.00'),
+(57, 0, '2024-03-18', 6, '303.50'),
+(59, 0, '2024-04-22', 2, '104.00'),
+(60, 0, '2024-04-22', 1, '104.50'),
+(61, 0, '2024-04-22', 4, '204.00'),
+(62, 0, '2024-04-22', 3, '204.50'),
+(63, 0, '2024-04-22', 5, '304.00'),
+(64, 0, '2024-04-22', 6, '304.50'),
+(66, 0, '2024-05-20', 2, '105.00'),
+(67, 0, '2024-05-20', 1, '105.50'),
+(68, 0, '2024-05-20', 4, '205.00'),
+(69, 0, '2024-05-20', 3, '205.50'),
+(70, 0, '2024-05-20', 5, '305.00'),
+(71, 0, '2024-05-20', 6, '305.50'),
+(73, 0, '2024-06-17', 2, '106.00'),
+(74, 0, '2024-06-17', 1, '106.50'),
+(75, 0, '2024-06-17', 4, '206.00'),
+(76, 0, '2024-06-17', 3, '206.50'),
+(77, 0, '2024-06-17', 5, '306.00'),
+(78, 0, '2024-06-17', 6, '306.50'),
+(80, 0, '2024-07-22', 2, '107.00'),
+(81, 0, '2024-07-22', 1, '107.50'),
+(82, 0, '2024-07-22', 4, '207.00'),
+(83, 0, '2024-07-22', 3, '207.50'),
+(84, 0, '2024-07-22', 5, '307.00'),
+(85, 0, '2024-07-22', 6, '307.50'),
+(87, 0, '2024-08-19', 2, '108.00'),
+(88, 0, '2024-08-19', 1, '108.50'),
+(89, 0, '2024-08-19', 4, '208.00'),
+(90, 0, '2024-08-19', 3, '208.50'),
+(91, 0, '2024-08-19', 5, '308.00'),
+(92, 0, '2024-08-19', 6, '308.50'),
+(94, 0, '2024-09-23', 2, '109.00'),
+(95, 0, '2024-09-23', 1, '109.50'),
+(96, 0, '2024-09-23', 4, '209.00'),
+(97, 0, '2024-09-23', 3, '209.50'),
+(98, 0, '2024-09-23', 5, '309.00'),
+(99, 0, '2024-09-23', 6, '309.50'),
+(101, 0, '2024-10-21', 2, '110.00'),
+(102, 0, '2024-10-21', 1, '110.50'),
+(103, 0, '2024-10-21', 4, '210.00'),
+(104, 0, '2024-10-21', 3, '210.50'),
+(105, 0, '2024-10-21', 5, '310.00'),
+(106, 0, '2024-10-21', 6, '310.50'),
+(108, 0, '2024-11-18', 2, '111.00'),
+(109, 0, '2024-11-18', 1, '111.50'),
+(110, 0, '2024-11-18', 4, '211.00'),
+(111, 0, '2024-11-18', 3, '211.50'),
+(112, 0, '2024-11-18', 5, '311.00'),
+(113, 0, '2024-11-18', 6, '311.50'),
+(114, 0, '2024-12-23', 2, '112.00'),
+(115, 0, '2024-12-23', 1, '112.50'),
+(116, 0, '2024-12-23', 4, '212.00'),
+(117, 0, '2024-12-23', 3, '212.50'),
+(118, 0, '2024-12-23', 5, '312.00'),
+(119, 0, '2024-12-23', 6, '312.50'),
+(120, 0, '2025-01-20', 2, '201.00'),
+(121, 0, '2025-01-20', 1, '301.00'),
+(122, 0, '2025-01-20', 4, '401.00'),
+(123, 0, '2025-01-20', 3, '501.00'),
+(124, 0, '2025-01-20', 5, '601.00'),
+(125, 0, '2025-01-20', 6, '701.00');
 
 -- --------------------------------------------------------
 
@@ -673,9 +696,9 @@ INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_value_cryptos`;
 CREATE TABLE `tbl_value_cryptos` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `date` date NOT NULL,
-  `cid` int(11) NOT NULL,
+  `cid` int NOT NULL,
   `value` decimal(11,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -684,32 +707,32 @@ CREATE TABLE `tbl_value_cryptos` (
 --
 
 INSERT INTO `tbl_value_cryptos` (`id`, `date`, `cid`, `value`) VALUES
-(15, '2024-01-22', 1, 40001.00),
-(16, '2024-01-22', 2, 1501.00),
-(18, '2024-02-19', 1, 42002.00),
-(19, '2024-02-19', 2, 1602.00),
-(21, '2024-03-18', 1, 44003.00),
-(22, '2024-03-18', 2, 1703.00),
-(24, '2024-04-22', 1, 46004.00),
-(25, '2024-04-22', 2, 1804.00),
-(27, '2024-05-20', 1, 48005.00),
-(28, '2024-05-20', 2, 1905.00),
-(30, '2024-06-17', 1, 49006.00),
-(31, '2024-06-17', 2, 2006.00),
-(33, '2024-07-22', 1, 50007.00),
-(34, '2024-07-22', 2, 2107.00),
-(36, '2024-08-19', 1, 51008.00),
-(37, '2024-08-19', 2, 2208.00),
-(39, '2024-09-23', 1, 52009.00),
-(40, '2024-09-23', 2, 2309.00),
-(42, '2024-10-21', 1, 53010.00),
-(43, '2024-10-21', 2, 2410.00),
-(45, '2024-11-18', 1, 54011.00),
-(46, '2024-11-18', 2, 2511.00),
-(47, '2024-12-23', 1, 56012.00),
-(48, '2024-12-23', 2, 2612.00),
-(49, '2025-01-20', 1, 58001.00),
-(50, '2025-01-20', 2, 2701.00);
+(15, '2024-01-22', 1, '40001.00'),
+(16, '2024-01-22', 2, '1501.00'),
+(18, '2024-02-19', 1, '42002.00'),
+(19, '2024-02-19', 2, '1602.00'),
+(21, '2024-03-18', 1, '44003.00'),
+(22, '2024-03-18', 2, '1703.00'),
+(24, '2024-04-22', 1, '46004.00'),
+(25, '2024-04-22', 2, '1804.00'),
+(27, '2024-05-20', 1, '48005.00'),
+(28, '2024-05-20', 2, '1905.00'),
+(30, '2024-06-17', 1, '49006.00'),
+(31, '2024-06-17', 2, '2006.00'),
+(33, '2024-07-22', 1, '50007.00'),
+(34, '2024-07-22', 2, '2107.00'),
+(36, '2024-08-19', 1, '51008.00'),
+(37, '2024-08-19', 2, '2208.00'),
+(39, '2024-09-23', 1, '52009.00'),
+(40, '2024-09-23', 2, '2309.00'),
+(42, '2024-10-21', 1, '53010.00'),
+(43, '2024-10-21', 2, '2410.00'),
+(45, '2024-11-18', 1, '54011.00'),
+(46, '2024-11-18', 2, '2511.00'),
+(47, '2024-12-23', 1, '56012.00'),
+(48, '2024-12-23', 2, '2612.00'),
+(49, '2025-01-20', 1, '58001.00'),
+(50, '2025-01-20', 2, '2701.00');
 
 -- --------------------------------------------------------
 
@@ -719,11 +742,11 @@ INSERT INTO `tbl_value_cryptos` (`id`, `date`, `cid`, `value`) VALUES
 
 DROP TABLE IF EXISTS `tbl_wallets`;
 CREATE TABLE `tbl_wallets` (
-  `id` int(11) NOT NULL,
-  `hide` tinyint(4) DEFAULT 0,
-  `aid` int(11) NOT NULL,
-  `cid` int(11) NOT NULL,
-  `description` varchar(50) DEFAULT NULL
+  `id` int NOT NULL,
+  `hide` tinyint DEFAULT '0',
+  `aid` int NOT NULL,
+  `cid` int NOT NULL,
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -869,115 +892,115 @@ ALTER TABLE `tbl_wallets`
 -- AUTO_INCREMENT for table `tbl_accounts`
 --
 ALTER TABLE `tbl_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_amount_wallets`
 --
 ALTER TABLE `tbl_amount_wallets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `tbl_businesses`
 --
 ALTER TABLE `tbl_businesses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_config`
 --
 ALTER TABLE `tbl_config`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tbl_crypto`
 --
 ALTER TABLE `tbl_crypto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_cryptocurrenties`
 --
 ALTER TABLE `tbl_cryptocurrenties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_dutch`
 --
 ALTER TABLE `tbl_dutch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `tbl_english`
 --
 ALTER TABLE `tbl_english`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tbl_finances`
 --
 ALTER TABLE `tbl_finances`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_groups`
 --
 ALTER TABLE `tbl_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_language`
 --
 ALTER TABLE `tbl_language`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_savings`
 --
 ALTER TABLE `tbl_savings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_services`
 --
 ALTER TABLE `tbl_services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_settings`
 --
 ALTER TABLE `tbl_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_stocks`
 --
 ALTER TABLE `tbl_stocks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_accounts`
 --
 ALTER TABLE `tbl_value_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_cryptos`
 --
 ALTER TABLE `tbl_value_cryptos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `tbl_wallets`
 --
 ALTER TABLE `tbl_wallets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

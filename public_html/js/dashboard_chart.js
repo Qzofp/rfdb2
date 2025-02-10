@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Feb 07, 2025
+ * Updated on Feb 09, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -20,7 +20,7 @@
  * Function:    initDougnutChart
  *
  * Created on Dec 22, 2024
- * Updated on Jan 11, 2025
+ * Updated on Feb 09, 2025
  *
  * Description: Initialize the doughnut chart.
  *
@@ -50,7 +50,7 @@ function initDougnutChart(s) {
                     text: '',
                     /*color: 'black',*/
                     font: {
-                        size: 14,
+                        size: 16,
                         family: 'arial'
                     }                
                 },  
@@ -91,7 +91,7 @@ function initDougnutChart(s) {
  * Function:    initLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 31, 2025
+ * Updated on Feb 09, 2025
  *
  * Description: Initialize the line chart.
  *
@@ -152,7 +152,7 @@ function initLineChart(s) {
                 },
                 text: '',
                 font: {
-                    size: 14,
+                    size: 16,
                     family: 'arial'
                 }                
             },             
