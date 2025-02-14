@@ -7,7 +7,7 @@
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Feb 10, 2025
+ * Updated on Feb 14, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -111,7 +111,7 @@ function initBarChart(s) {
  * Function:    showYearOverviewChart
  *
  * Created on Feb 10, 2025
- * Updated on Feb 10, 2025
+ * Updated on Feb 14, 2025
  *
  * Description: Initialize the bar chart.
  *
@@ -122,19 +122,104 @@ function initBarChart(s) {
 function showYearOverviewChart(bar, c, i) {
     
     var scale = {year: "quarters", quarters: "months", months: "year"};
+    var page = c.pages[i].split("#")[1];
     var year = $("header h1 span").html();
     var n = $("#page_buttons img:first").attr("alt");        
     
-    //console.log( i, year, scale[n] );
-    
-        let bottom = "-100%";
-        if ($("#chart_slider").css("bottom") !== "0px") {
-                bottom = "0";
-        }
-        $("#chart_slider").animate({"bottom":bottom}, 300);    
+    // Debug
+    //console.log( page, year, scale[n] );
 
+    var request = getAjaxRequest("get_overview_year", "page=" + page + "&year=" + year + "&scale=" + scale[n]);
+    request.done(function(result) {
+            
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );
+            
+            var x, t, labels, data = [];
+            var color = ["rgb(74,160,44,0.8)","rgb(193,27,23,0.8)","rgb(135,6,3,0.8)"];
+            //var keys = Object.keys(result.data[0]);
+            
+            var keys = [];
+            if (result.data[0]) {
+                keys = Object.keys(result.data[0]);
+            }
+                
+            // Determine the x scale;
+            switch (scale[n]) {
+                case "months"   : x = c.months;
+                                  t = c.overview[2];
+                                  break;
+
+                case "quarters" : x = c.quarters;
+                                  t = c.overview[1];
+                                  break;
+                
+                case "year"     : x = c.year;
+                                  t = c.overview[0];
+                                  break;                
+            }
+            
+            // Determine the labels for the finance or the other sheets.
+            if (page === "finance") {
+                labels = [c.payment[3],c.payment[4],c.payment[5]];
+            }
+            else {
+                labels = [c.investment[2],c.investment[3]];
+            }
+            
+            //console.log (labels , color);
+
+            // Initialize the arrays for the datasets values.
+            keys.forEach((key, i) => {
+                data[key] = [];
+            });  
+                   
+            // Fill the chart datasets values.
+            $.each(result.data, function (n, field) {
+                $.each(field, function(key, value) {                    
+                    data[key].push(value);
+                });      
+            });           
+            
+            //console.log ( data[keys[0]] );
+            
+            // Create the datasets.
+            var datasets = [];
+            keys.forEach((key, i) => {                               
+                if (i < keys.length) 
+                {
+                    datasets[i] = {
+                        label: labels[i],
+                        data: data[keys[i]],
+                        backgroundColor: color[i],
+                        borderWidth: 1
+                    };
+                }      
+            });                    
+            
+            // Update the line chart.
+            const tmp = {
+                labels: x,
+                datasets: datasets
+            };            
+                   
+            bar.data.labels = tmp.labels; 
+            bar.data.datasets = tmp.datasets;
+            bar.options.plugins.title.text = t; 
+            bar.update();            
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
     
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
     
+    closeErrorMessage();
 }
 
 

@@ -7,7 +7,7 @@
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on Feb 10, 2025
+ * Updated on Feb 14, 2025
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -17,6 +17,10 @@
 // Define constants
 const cVersion = "v0.2";
 const cDate = new Date();
+
+// Sheet table min and max heights.
+const cSheetMin = "18vh";
+const cSheetMax = "62vh";
 
 /*
  * Function:    getAjaxRequest

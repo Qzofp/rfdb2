@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 05, 2025
+ * Updated on Feb 14, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -326,7 +326,7 @@ function setPageButton(s, n, h) {
  * Function:    showTable
  *
  * Created on Jan 06, 2024
- * Updated on Feb 05, 2025
+ * Updated on Feb 14, 2025
  *
  * Description: Show the table.
  *
@@ -347,7 +347,7 @@ function showTable(tblclass, items, s, n, page, send) {
     //$("#table_container").css("height", y);
     
     // Set the table height.
-    $("#table_container").css("height", "62vh");  
+    $("#table_container").css("height", cSheetMax);  
     
     // Remove the old and add the new class.
     $("#table_container table").removeClass().addClass(tblclass);
