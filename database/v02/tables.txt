@@ -11,3 +11,4 @@ Update
 - tbl_dutch
 - tbl_english
 - tbl_settings
+- tbl_cryptocurrenties

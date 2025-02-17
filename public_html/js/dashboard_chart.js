@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Feb 09, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -195,7 +195,7 @@ function initLineChart(s) {
  * Function:    showActivaAccountsDoughnutChart
  *
  * Created on Dec 25, 2024
- * Updated on Feb 05, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Show the activa accounts doughnut chart.
  *
@@ -229,9 +229,9 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
                                     
                     case "crypto" :   set = JSON.parse(s[4].value);
                                       break;
-                }
+                }          
                 
-                labels.push(field.type);
+                labels.push($("<div/>").html(field.type).text()); // Decode the label (HTML entities, such as ` & etc. ).
                 color.push(set.theme.color);
                 data.push(field.ratio);
                 value.push(field.value);                         
@@ -416,7 +416,7 @@ function showLineChartTooltip(lnc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Jan 18, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -464,13 +464,15 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
             });    
                         
             // Create the datasets.
-            var datasets = [];
+            var label, datasets = [];
             keys.forEach((key, i) => {
                                 
                 if (i < keys.length - 1) 
                 {
+                    // Decode the label (HTML entities, such as ` & etc. ).
+                    label = $("<div/>").html(keys[i+1].split("_")[1]).text();                  
                     datasets[i] = {
-                        label: keys[i+1].split("_")[1],
+                        label: label, //keys[i+1].split("_")[1],
                         data: data[keys[i+1]],
                         backgroundColor: color[keys[i+1]],
                         borderColor: color[keys[i+1]],

@@ -25,6 +25,7 @@ define("cPASS",  "Put your password here!");
 define("cDBASE", "rfdb2_empty");
 
 // Encryption and decryption key, which is used on some database table columns for privacy reasons.
+//define("cKEY", "");
 define("cKEY", "Put your encryption key or phrase here!");
 
 /*

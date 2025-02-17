@@ -8,7 +8,7 @@
  * Used in: js\sheet_chart.js
  *
  * Created on Feb 12, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_finances, tbl_stocks
  *              tbl_savings or tbl_crypto table for the sheets bar chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetOverviewYear
  *
  * Created on Feb 12, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Get the data from the database tbl_finances, tbl_stocks, tbl_savings or tbl_crypto table 
  *              for the sheets bar chart.
@@ -97,7 +97,7 @@ function GetOverviewYear()
  * Function:    CreateFinancesQuery
  *
  * Created on Feb 12, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 15, 2025
  *
  * Description: Create the query for the finance data from the tbl_finances table.
  *
@@ -126,7 +126,7 @@ function CreateFinancesQuery($year, $scale)
             break;        
     }
  
-    $query = "SELECT `income`, `fixed`, `other` ".
+    $query = "SELECT SUM(`income`) AS `income`, SUM(`fixed`) AS `fixed`, SUM(`other`) AS `other` ".
              "FROM (".
                 "SELECT $sc AS `row`, SUM(`income`) AS `income`, SUM(`fixed`) AS `fixed`, SUM(`other`) AS `other` ".
                 "FROM tbl_finances ".
@@ -148,7 +148,7 @@ function CreateFinancesQuery($year, $scale)
  * Function:    CreateStocksQuery
  *
  * Created on Feb 14, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 15, 2025
  *
  * Description: Create the query for the stock data from the tbl_stocks table.
  *
@@ -177,7 +177,7 @@ function CreateStocksQuery($year, $scale)
             break;        
     }
     
-    $query = "SELECT `deposit`, `withdrawal` ".
+    $query = "SELECT SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
              "FROM (".
                 "SELECT $sc AS `row`, SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
                 "FROM tbl_stocks ".
@@ -199,7 +199,7 @@ function CreateStocksQuery($year, $scale)
  * Function:    CreateSavingsQuery
  *
  * Created on Feb 14, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 15, 2025
  *
  * Description: Create the query for the savings data from the tbl_savings table.
  *
@@ -228,7 +228,7 @@ function CreateSavingsQuery($year, $scale)
             break;        
     }
     
-    $query = "SELECT `deposit`, `withdrawal` ".
+    $query = "SELECT SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
              "FROM (".
                 "SELECT $sc AS `row`, SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
                 "FROM tbl_savings ".
@@ -250,7 +250,7 @@ function CreateSavingsQuery($year, $scale)
  * Function:    CreateCryptoQuery
  *
  * Created on Feb 14, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 15, 2025
  *
  * Description: Create the query for the crypto data from the tbl_crypto table.
  *
@@ -279,7 +279,7 @@ function CreateCryptoQuery($year, $scale)
             break;        
     }
     
-    $query = "SELECT `deposit`, `withdrawal` ".
+    $query = "SELECT SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
              "FROM (".
                 "SELECT $sc AS `row`, SUM(`deposit`) AS `deposit`, SUM(`withdrawal`) AS `withdrawal` ".
                 "FROM tbl_crypto ".

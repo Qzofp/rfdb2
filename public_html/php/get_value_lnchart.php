@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Feb 02, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -441,7 +441,7 @@ function CreateExpandQuery($date)
  * Function:    GetAccounts
  *
  * Created on Jan 15, 2025
- * Updated on Feb 02, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Get the accounts from de database tbl_value_accounts and tbl_amount_wallets tables.
  *
@@ -460,6 +460,7 @@ function GetAccounts($date)
         try 
         {
             $db = OpenDatabase();
+            $key = cKEY;
             
             // Determine the data format.
             switch ($input['sign'])
@@ -476,10 +477,10 @@ function GetAccounts($date)
             
             $field = "'',";
             $pages = ["finance","stock","savings","crypto"];
-            foreach ($input['pages'] as $key=>$value)
+            foreach ($input['pages'] as $k=>$value)
             {
                 if ($value == "true") {
-                    $field .= "'$pages[$key]',";
+                    $field .= "'$pages[$k]',";
                 }
             }      
             // Remove the last comma.
@@ -490,7 +491,7 @@ function GetAccounts($date)
                              "WHEN `type` = 'stock'   then 1 ".
                              "WHEN `type` = 'savings' then 2 ".
                              "WHEN `type` = 'crypto'  then 3 ".
-                        "END AS `type`, CAST(AES_DECRYPT(`account`, 'Put your encryption key or phrase here!') AS CHAR(45)) AS `account` ".
+                        "END AS `type`, CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ".
                      "FROM (".
                         "SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
                         "FROM tbl_value_accounts ".

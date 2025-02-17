@@ -7,7 +7,7 @@
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -111,7 +111,7 @@ function initBarChart(s) {
  * Function:    showYearOverviewChart
  *
  * Created on Feb 10, 2025
- * Updated on Feb 14, 2025
+ * Updated on Feb 17, 2025
  *
  * Description: Initialize the bar chart.
  *
