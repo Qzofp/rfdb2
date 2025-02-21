@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Jan 27, 2025
+ * Updated on Feb 21, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -55,7 +55,7 @@ function loadMain() {
  * Function:    showDashboard
  *
  * Created on Nov 11, 2023
- * Updated on Jan 27, 2025
+ * Updated on Feb 21, 2025
  *
  * Description: Shows the dashboard page.
  *
@@ -127,7 +127,10 @@ function showDashboard(c, s) {
     });
   
     // Show the page theme.
-    showPageTheme(s[0]); 
+    showPageTheme(s[0]);
+    
+    // Tooltips
+    showDashboardTooltips();  
      
     // Close popup windows.       
     $("#popup_container .close").on("click", function() {
@@ -777,3 +780,31 @@ function changeActivaAccountsTable(dgc, lnc, c, s, action) {
     }        
 }
 
+/*
+ * Function:    showDashboardTooltips
+ *
+ * Created on Feb 21, 2025
+ * Updated on Feb 21, 2025
+ *
+ * Description: Show the tooltips for the dashboard page.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function showDashboardTooltips() {
+    
+    
+    // Tooltip: 
+    $('#table_container tbody').on("mouseover", "td:nth-child(3)", function() {     
+        showTooltipText($(this));
+    });
+    
+    $('#table_container tbody').on("mouseover", "td:nth-child(4)", function() {
+        showTooltipText($(this));
+    });  
+    
+    $('#table_container tbody').on("mouseover", "td:nth-child(5)", function() {
+        showTooltipText($(this));
+    });  
+}

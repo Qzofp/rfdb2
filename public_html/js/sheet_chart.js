@@ -7,7 +7,7 @@
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Feb 17, 2025
+ * Updated on Feb 20, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -222,53 +222,79 @@ function showYearOverviewChart(bar, c, i) {
     closeErrorMessage();
 }
 
-
 /*
- * Function:   testBarGraph 
+ * Function:    closeChartWindow
  *
- * Created on Feb 07, 2025
- * Updated on Feb 10, 2025
+ * Created on Dec 18, 2023
+ * Updated on Feb 20, 2025
  *
- * Description: 
+ * Description: Close the chart window.
  *
- * In:  
- * Out: 
+ * In:  -
+ * Out: -
  *
  */
-function testBarGraph(bar, c) {
-    
-    var labels = c.months;
-    var data = [
-            {
-                label: c.payment[3],
-                data: [10,15,8,3,12,1,7,19,4,10,16,5],
-                backgroundColor:  'rgb(74,160,44,0.8)',
-                borderWidth: 1
-            },
-            {
-                label: c.payment[4],
-                data: [6,11,18,13,2,11,17,9,3,7,6,15],
-                backgroundColor: 'rgb(193,27,23,0.8)',
-                borderWidth: 1
-            },
-            {
-                label: c.payment[5],
-                data: [2,5,13,11,3,6,12,4,3,8,7,14],
-                backgroundColor: ' rgb(135,6,3,0.8)',
-                borderWidth: 1
-            }            
-        ];
-        
-    
+function closeChartWindow() {
   
-    // Update the line chart.
-    const tmp = {
-                labels: labels,
-                datasets: data
-           };
+    // Close or open chart slider when a page button is pressed.
+    $("#page_buttons").on('click', 'img', function() {   
+        switch (this.alt) {
+            case "months" :
+            case "quarters" :
+            case "year"     : // Resize sheet table if the chart slider is open.   
+                if ($("#chart_slider").css("bottom") === "0px") {
+                    $("#table_container").css("height", cSheetMin);
+                }  
+                break;
             
-    bar.data.labels = tmp.labels; 
-    bar.data.datasets = tmp.datasets;
-    bar.options.plugins.title.text = c.overview[2]; 
-    bar.update();
+            case "edit" : // Close chart slider.
+                $("#chart_slider").animate({"bottom":"-100%"}, 300);
+                $("#table_container").css("height", cSheetMax);        
+                break;
+                
+            case "chart" : // Open or close the chart slider.
+                let bottom = "-100%";
+                if ($("#chart_slider").css("bottom") !== "0px") 
+                {  
+                    $("#table_container").css("height", cSheetMin);
+                    bottom = "0";
+                }
+                else {
+                    $("#table_container").css("height", cSheetMax); 
+                }
+                $("#chart_slider").animate({"bottom":bottom}, 300);                 
+                break;       
+        }
+    });    
+    
+    // Slidemenu button is pressed. Resize sheet table if the chart slider is open. 
+    $(".slidemenu input[name='slideItem']").change(function() {      
+        if ($("#chart_slider").css("bottom") === "0px") {
+            $("#table_container").css("height", cSheetMin);
+        }                 
+    });    
+
+    // Close chart slider when the table row is pressed.
+    $("#table_container").on('click', 'tbody tr', function(){        
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+        $("#table_container").css("height", cSheetMax); 
+    });       
+    
+    // Close the chart when the yearpicker button is pressed.
+    $(".picker").on('click', 'img', function() {
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+        $("#table_container").css("height", cSheetMax); 
+    });
+    
+    // Close chart slider when the hamburger menu is pressed.
+    $(".hamburger_menu").click(function(){
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+        $("#table_container").css("height", cSheetMax); 
+    });
+    
+    // Close chart slider when the close button is pressed.
+    $("#chart_content .close").click(function(){
+        $("#chart_slider").animate({"bottom":"-100%"}, 300);
+        $("#table_container").css("height", cSheetMax);
+    });  
 }

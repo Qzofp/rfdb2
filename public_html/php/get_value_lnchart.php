@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Feb 17, 2025
+ * Updated on Feb 19, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -441,7 +441,7 @@ function CreateExpandQuery($date)
  * Function:    GetAccounts
  *
  * Created on Jan 15, 2025
- * Updated on Feb 17, 2025
+ * Updated on Feb 19, 2025
  *
  * Description: Get the accounts from de database tbl_value_accounts and tbl_amount_wallets tables.
  *
@@ -487,18 +487,20 @@ function GetAccounts($date)
             $field = substr_replace($field, '', -1);            
             
             $query = "SELECT `id`, `hide`, `service`, ".
-                        "CASE WHEN `type` = 'finance' then 0 ".
-                             "WHEN `type` = 'stock'   then 1 ".
-                             "WHEN `type` = 'savings' then 2 ".
-                             "WHEN `type` = 'crypto'  then 3 ".
+                        "CASE WHEN `type` = 'finance' THEN 0 ".
+                             "WHEN `type` = 'stock'   THEN 1 ".
+                             "WHEN `type` = 'savings' THEN 2 ".
+                             "WHEN `type` = 'crypto'  THEN 3 ".
                         "END AS `type`, CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ".
                      "FROM (".
-                        "SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, ".
+                            "tbl_accounts.`account` AS `account`, '-' AS `symbol` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "UNION ".
-                        "SELECT tbl_value_cryptos.`date` AS `date`, tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, tbl_accounts.`account` AS `account` ".
+                        "SELECT tbl_value_cryptos.`date` AS `date`, tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, ".
+                            "tbl_accounts.`account` AS `account`, tbl_cryptocurrenties.`symbol` AS `symbol` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
@@ -507,7 +509,7 @@ function GetAccounts($date)
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id`".
                      ") total ".
                      "WHERE `date` = $date_format AND `type` IN ($field) ".
-                     "ORDER BY FIELD(`type`, $field), `service`, `account`;";
+                     "ORDER BY FIELD(`type`, $field), `service`, `account`, `symbol`;";
             
             $select = $db->prepare($query);
             $select->execute();

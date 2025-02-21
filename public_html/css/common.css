@@ -10,7 +10,7 @@
  *          sheet.html 
  *
  * Created on Oct 29, 2023
- * Updated on Sep 29, 2024
+ * Updated on Feb 21, 2025
  *
  * Description: The css common page.
  * Build for: Chromium based and Firefox browsers. 
@@ -623,5 +623,22 @@ footer h3 {
 
 /* Firefox fixes */
 @supports (-moz-appearance:none) {
-    header { height: 7.8em; }  /* fix 1 */
+ header { height: 7.8em; }  /* fix 1 */
+}
+
+/* Tooltips */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: rgba(0,0,0,0.8);    /*black;*/
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;  
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

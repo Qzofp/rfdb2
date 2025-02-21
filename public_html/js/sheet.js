@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 14, 2025
+ * Updated on Feb 21, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Feb 14, 2025
+ * Updated on Feb 20, 2025
  *
  * Description: Open the sheet page.
  *
@@ -191,19 +191,9 @@ function openSheetPage(c, s, i) {
         window.location.reload(true);
     });    
     
-    // Tooltip: account finances sheet
-    $('.tbl_finances tbody').on("mouseover", "td:nth-child(3)", function() {
-        $(this).attr("title", $(this).text());
-    });
-    
-    // Tooltip: description all sheets
-    $('#table_container tbody').on("mouseover", "td:last-child", function() {
-        $(this).attr("title", $(this).text());
-    });    
-    
-    // Test Chart
-    //testBarGraph($bar, c);
-    
+    // Tooltips
+    showSheetTooltips();
+            
     // Close Chart Window.
     closeChartWindow();
     
@@ -867,78 +857,61 @@ function changeSheetContent(adp, bar, c, s, i, that) {
 }
 
 /*
- * Function:    closeChartWindow
+ * Function:    showSheetTooltips
  *
- * Created on Dec 18, 2023
- * Updated on Feb 14, 2025
+ * Created on Feb 20, 2025
+ * Updated on Feb 21, 2025
  *
- * Description: Close the chart window.
+ * Description: Show the tooltips for the sheet pages.
  *
  * In:  -
  * Out: -
  *
  */
-function closeChartWindow() {
-  
-    // Close or open chart slider when a page button is pressed.
-    $("#page_buttons").on('click', 'img', function() {   
-        switch (this.alt) {
-            case "months" :
-            case "quarters" :
-            case "year"     : // Resize sheet table if the chart slider is open.   
-                if ($("#chart_slider").css("bottom") === "0px") {
-                    $("#table_container").css("height", cSheetMin);
-                }  
-                break;
-            
-            case "edit" : // Close chart slider.
-                $("#chart_slider").animate({"bottom":"-100%"}, 300);
-                $("#table_container").css("height", cSheetMax);        
-                break;
-                
-            case "chart" : // Open or close the chart slider.
-                let bottom = "-100%";
-                if ($("#chart_slider").css("bottom") !== "0px") 
-                {  
-                    $("#table_container").css("height", cSheetMin);
-                    bottom = "0";
-                }
-                else {
-                    $("#table_container").css("height", cSheetMax); 
-                }
-                $("#chart_slider").animate({"bottom":bottom}, 300);                 
-                break;       
-        }
-    });    
+function showSheetTooltips() {
     
-    // Slidemenu button is pressed. Resize sheet table if the chart slider is open. 
-    $(".slidemenu input[name='slideItem']").change(function() {      
-        if ($("#chart_slider").css("bottom") === "0px") {
-            $("#table_container").css("height", cSheetMin);
-        }                 
-    });    
-
-    // Close chart slider when the table row is pressed.
-    $("#table_container").on('click', 'tbody tr', function(){        
-        $("#chart_slider").animate({"bottom":"-100%"}, 300);
-        $("#table_container").css("height", cSheetMax); 
-    });       
-    
-    // Close the chart when the yearpicker button is pressed.
-    $(".picker").on('click', 'img', function() {
-        $("#chart_slider").animate({"bottom":"-100%"}, 300);
-        $("#table_container").css("height", cSheetMax); 
+    // Tooltip: account, group and business on the finances sheet.
+    $('.tbl_finances tbody').on("mouseover", "td:nth-child(3)", function() {     
+        showTooltipText($(this));
     });
     
-    // Close chart slider when the hamburger menu is pressed.
-    $(".hamburger_menu").click(function(){
-        $("#chart_slider").animate({"bottom":"-100%"}, 300);
-        $("#table_container").css("height", cSheetMax); 
-    });
-    
-    // Close chart slider when the close button is pressed.
-    $("#chart_content .close").click(function(){
-        $("#chart_slider").animate({"bottom":"-100%"}, 300);
-        $("#table_container").css("height", cSheetMax);
+    $('.tbl_finances tbody').on("mouseover", "td:nth-child(7)", function() {
+        showTooltipText($(this));
     });  
+    
+    $('.tbl_finances tbody').on("mouseover", "td:nth-child(8)", function() {
+        showTooltipText($(this));
+    });  
+    
+    // Tooltip: service and account on the stocks sheet.
+    $('.tbl_stocks tbody').on("mouseover", "td:nth-child(5)", function() {
+        showTooltipText($(this));
+    });  
+    
+    $('.tbl_stocks tbody').on("mouseover", "td:nth-child(6)", function() {
+        showTooltipText($(this));
+    });  
+    
+    // Tooltip: service and account on the savings sheet.
+    $('.tbl_savings tbody').on("mouseover", "td:nth-child(5)", function() {
+        showTooltipText($(this));
+    });  
+    
+    $('.tbl_savings tbody').on("mouseover", "td:nth-child(6)", function() {
+        showTooltipText($(this));
+    });
+    
+    // Tooltip: service and account on the crypto sheet.
+    $('.tbl_crypto tbody').on("mouseover", "td:nth-child(5)", function() {
+        showTooltipText($(this));
+    });  
+    
+    $('.tbl_crypto tbody').on("mouseover", "td:nth-child(6)", function() {
+        showTooltipText($(this));
+    });    
+       
+    // Tooltip: description on all sheets  
+    $('#table_container tbody').on("mouseover", "td:last-child", function() {
+        showTooltipText($(this));
+    });
 }

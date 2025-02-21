@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Aug 28, 2024
- * Updated on Feb 02, 2025
+ * Updated on Feb 19, 2025
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_accounts table.
  * 
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Feb 02, 2025
+ * Updated on Feb 19, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -252,13 +252,15 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
       
             $query = "SELECT CONCAT(`id`, '_', `type`) AS `id`, $type, `hide`, `service`, $account, `amount`, $ratio, $value ".
                      "FROM (".
-                        "SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`, '-' AS `amount`, IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value` ".
+                        "SELECT tbl_value_accounts.`id` AS `id`, tbl_value_accounts.`hide` AS hide, `type`, tbl_services.`service` AS service, tbl_accounts.`account` AS `account`, '-' AS `amount`, ". 
+                            "IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value`, '-' AS `symbol` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_accounts .`date` = $date ".
                         "UNION ".
-                        "SELECT tbl_amount_wallets.`id` AS `id`, tbl_amount_wallets.`hide` AS hide, `type`, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, $amount, IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value` ".
+                        "SELECT tbl_amount_wallets.`id` AS `id`, tbl_amount_wallets.`hide` AS hide, `type`, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, $amount, ". 
+                            "IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value`, `symbol` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
@@ -268,7 +270,7 @@ function CreateQuery($sign, $format, $date, $action, $case, $field)
                         "WHERE tbl_value_cryptos.`date` = $date ".
                      ") total ".
                      "$where".
-                     "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`;";        
+                     "ORDER BY FIELD(`type`, 'finance', 'stock', 'savings', 'crypto'), `service`, `account`, `symbol`;";        
             break;
         
         case "add"      :
