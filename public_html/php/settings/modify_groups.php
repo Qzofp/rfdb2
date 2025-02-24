@@ -2,64 +2,63 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
- * File:    modify_wallets.php
- * Used in: js\settings.js
+ * File:    modify_groups.php
+ * Used in: js\settings_finances.js
  *
- * Created on May 31, 2024
- * Updated on Sep 18, 2024
+ * Created on Apr 01, 2024
+ * Updated on Feb 23, 2025
  *
- * Description: Check if the user is signed in and modify the tbl_wallets table.
+ * Description: Check if the user is signed in and modify the tbl_groups table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {
-    ModifyWallets();
+    ModifyGroup();
 }
 else {
     RedirectAjaxRequest(); 
 }
 
 /*
- * Function:    ModifyWallets
+ * Function:    ModifyGroup
  *
- * Created on May 31, 2024
+ * Created on Apr 01, 2024
  * Updated on Sep 18, 2024
  *
- * Description: Modify (add, edit or delete) the tbl_wallets table if the wallet doesn't exists.
+ * Description: Modify (add, edit or delete) the tbl_groups table if the account doesn't exists.
  *
  * In:  -
  * Out: -
  *
  */
-function ModifyWallets() 
+function ModifyGroup() 
 {
     // Get data from ajax call.
-    $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
-    $cid    = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
-    $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
-    $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $hide   = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $group   = filter_input(INPUT_POST, 'group'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $rank    = filter_input(INPUT_POST, 'ranking' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $hide    = filter_input(INPUT_POST, 'hide'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $response = [];    
     switch ($action)
     {
         case "add" :
-            $response = AddWallet($sid, $aid, $cid, $desc);
+            $response = AddGroup($group, $rank, $desc);
             break;
             
         case "edit" :
-            $response = EditWallet($id, $hide, $sid, $aid, $cid, $desc);
+            $response = EditGroup($id, $hide, $group, $rank, $desc);
             break;
             
         case "delete" :
-            $response = DeleteWallet($id);
+            $response = DeleteGroup($id);
             break;                
     }    
     
@@ -67,37 +66,36 @@ function ModifyWallets()
 }    
     
 /*
- * Function:    AddWallet
+ * Function:    AddGroup
  *
- * Created on May 31, 2024
+ * Created on Apr 01, 2024
  * Updated on Aug 01, 2024
  *
- * Description: Add the input to the tbl_wallet table if the wallet doesn't exists.
+ * Description: Add the input to the tbl_groups table if the account doesn't exists.
  *
- * In:  $sid, $aid, $cid, $desc
+ * In:  $group, $rank, $desc
  * Out: $response
  *
  */    
- function AddWallet($sid, $aid, $cid, $desc)
- {          
-    $response = CheckWallet(0, $aid, $cid);
+ function AddGroup($group, $rank, $desc)
+ {              
+    $response = CheckGroup(0, $group);
     if ($response['success'] && !$response['exists'])
     {  
         try 
         {    
             $db = OpenDatabase();
                  
-            $query = "INSERT INTO tbl_wallets (`aid`,`cid`,`description`) ".
-                     "VALUES ('$aid','$cid','$desc');";        
+            $query = "INSERT INTO tbl_groups (`group`,`description`) ".
+                     "VALUES ('$group', '$desc');";          
             $select = $db->prepare($query);
             $select->execute();
                         
-            $response['id']      = $db->lastInsertId(); 
-            $response['service'] = $sid;            
-            $response['account'] = $aid;
-            $response['crypto']  = $cid;  
+            $response['id']      = $db->lastInsertId();            
+            $response['group']   = $group;
+            $response['ranking'] = $rank;       
             $response['desc']    = $desc;
-            
+
             $response['success'] = true;  
         }
         catch (PDOException $e) 
@@ -114,46 +112,44 @@ function ModifyWallets()
 }
 
 /*
- * Function:    EditWallet
+ * Function:    EditGroup
  *
- * Created on Jun 01, 2024
+ * Created on Apr 02, 2024
  * Updated on Aug 01, 2024
  *
- * Description: Edit the tbl_wallet table with the input if the wallet doesn't exists.
+ * Description: Edit the tbl_groups table with the input if the group doesn't exists.
  *
- * In:  $id, $hide, $sid, $aid, $cid, $desc
+ * In:  $id, $hide, $group, $rank, $desc
  * Out: $response
  *
  */    
- function EditWallet($id, $hide, $sid, $aid, $cid, $desc)
- {   
-    $response = CheckWallet($id, $aid, $cid);    
+ function EditGroup($id, $hide, $group, $rank, $desc)
+ {       
+    $response = CheckGroup($id, $group);    
     if ($response['success'] && !$response['exists'])
-    {             
+    {    
         try 
         {                
             $db = OpenDatabase();
                 
-            $query = "UPDATE tbl_wallets SET `hide`=$hide,`aid`='$aid',`cid`='$cid',".
-                     "`description`='$desc' WHERE `id`=$id";  
+            $query = "UPDATE tbl_groups SET `hide`=$hide,`group`='$group',`description`='$desc' WHERE `id`=$id";
             
             $select = $db->prepare($query);
             $select->execute();
                             
             $response['id']      = $id;
             $response['hide']    = $hide;
-            $response['service'] = $sid;            
-            $response['account'] = $aid;
-            $response['crypto']  = $cid;  
+            $response['group']   = $group;
+            $response['ranking'] = $rank;       
             $response['desc']    = $desc;
-                          
+            
             $response['success'] = true;  
         }
         catch (PDOException $e) 
         {    
             $response['message'] = $e->getMessage();
             $response['success'] = false;
-        }
+        } 
     }
     
     // Close database connection.
@@ -163,20 +159,20 @@ function ModifyWallets()
 }
 
 /*
- * Function:    CheckWallet
+ * Function:    CheckGroup
  *
- * Created on May 31, 2024
+ * Created on Apr 01, 2024
  * Updated on Aug 01, 2024
  *
- * Description: Check if the wallet (aid and cid) exists in the tbl_wallet table.
+ * Description: Check if the group exists in the tbl_groups table.
  *
- * In:  $id, $aid, $cid
+ * In:  $id, $group
  * Out: $response
  *
  */
-function CheckWallet($id, $aid, $cid)
+function CheckGroup($id, $group)
 {
-    $response = [];
+    $response = [];  
     try 
     { 
         $db = OpenDatabase();
@@ -186,8 +182,8 @@ function CheckWallet($id, $aid, $cid)
             $edit = "AND `id` <> $id";
         }
         
-        // Check if the wallet already exists in the tbl_wallets table.
-        $query = "SELECT count(0) FROM `tbl_wallets` WHERE `aid` = '$aid' AND `cid` = '$cid' $edit;";     
+        // Check if user aleready exists in the tbl_accounts table.
+        $query = "SELECT count(0) FROM `tbl_groups` WHERE `group` = '$group' $edit;";        
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();
@@ -212,27 +208,27 @@ function CheckWallet($id, $aid, $cid)
 }
 
 /*
- * Function:    DeleteWallet
+ * Function:    DeleteGroup
  *
- * Created on Jun 01, 2024
- * Updated on Jun 01, 2024
+ * Created on Mar 22, 2024
+ * Updated on Apr 05, 2024
  *
- * Description: Delete the row with id in the tbl_wallet table.
+ * Description: Delete the row with id in the tbl_groups table if it doesn't exists in the tbl_businesses table.
  *
  * In:  $id
  * Out: $response
  *
  */    
- function DeleteWallet($id)
- {   
-    $response = CheckWalletInCrypto($id);
+ function DeleteGroup($id)
+ {       
+    $response = CheckGroupInBusinesses($id);
     if ($response['success'] && !$response['exists'])
-    { 
+    {     
         try 
         {    
             $db = OpenDatabase();
                 
-            $query = "DELETE FROM tbl_wallets WHERE `id` = $id";          
+            $query = "DELETE FROM tbl_groups WHERE `id` = $id";          
             $select = $db->prepare($query);
             $select->execute();
                     
@@ -243,35 +239,35 @@ function CheckWallet($id, $aid, $cid)
             $response['message'] = $e->getMessage();
             $response['success'] = false;
         } 
+
+        // Close database connection.
+        $db = null;
     }
     
-    // Close database connection.
-    $db = null;   
-      
     return $response;
 }
 
 /*
- * Function:    CheckWalletInCrypto
+ * Function:    CheckGroupInBusinesses
  *
- * Created on Jul 25, 2024
+ * Created on Mar 24, 2024
  * Updated on Aug 01, 2024
  *
- * Description: Check if the wallet exists in the tbl_crypto table.
+ * Description: Check if the group exists in the tbl_businesses table.
  *
  * In:  $id
  * Out: $response
  *
  */
-function CheckWalletInCrypto($id)
-{  
-    $response = [];    
+function CheckGroupInBusinesses($id)
+{
+    $response = [];  
     try 
     { 
         $db = OpenDatabase();
                 
-        // Check if the business exists in the tbl_finances table.
-        $query = "SELECT count(0) FROM tbl_crypto WHERE wid = $id;";        
+        // Check if the group exists in the tbl_businesses table.
+        $query = "SELECT count(0) FROM tbl_businesses WHERE gid = $id;";        
         $select = $db->prepare($query);
         $select->execute();        
         $result = $select->fetchColumn();
@@ -292,5 +288,5 @@ function CheckWalletInCrypto($id)
     // Close database connection.
     $db = null;        
     
-    return $response;
+    return $response;    
 }

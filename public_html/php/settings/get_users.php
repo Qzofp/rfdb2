@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    get_users.php
  * Used in: js\settings.js
  *
  * Created on Jan 05, 2024
- * Updated on Sep 18, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check if the user is signed in and get the users from the databases tbl_users table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

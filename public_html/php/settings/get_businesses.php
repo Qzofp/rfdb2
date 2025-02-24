@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    get_businesses.php
  * Used in: js\settings.js
  *
  * Created on Apr 05, 2024
- * Updated on Aug 02, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check if the user is signed in and get the businesses from the databases tbl_businesses table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

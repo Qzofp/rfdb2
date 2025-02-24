@@ -113,15 +113,16 @@ ToDo
     - Kan het niet reproduceren op de MariaDB omgeving. Testen op de MySQL omgeving.
 
 21. Verbetering: Gebruik voor de tabellen height vh i.p.v. het te berekenen in px, zie ook de Dashboard Activa tabellen.
-    - Aangepast.
+    - Uitgevoerd.
 
 22. Bug: Het crypto deel van de expand tabel op de Dashboard pagina laat de verkeerde tooltips (ratio's, values) zien in het doughnut en line diagram.
-    - Opgelost voor MySQL. MariaDB gaat fout, vrij random?!?
+    - Opgelost.
 
 23. Bug: Op het Dashboard gaat het hidden van rekeningen fout als de crypto pagina is uitgeschakeld. Als alleen de crypto pagina is ingeschakeld dan gaat goed.
     - Opgelost.
 
 24. Verbetering: Herstructureer de PHP pagina's, zodat de settings, sheets en dashboard pagina's in een eigen folder komen.
+
 
 25. Verbetering: De kleuren voor de types (financien, aandelen, sparen en crypto) aanpassen bij de settings -> configurations.
 

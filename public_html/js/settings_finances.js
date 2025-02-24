@@ -1,7 +1,7 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    settings_finances.js
  * Used in: settings.php
@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Dec 31, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Aug 07, 2024
+ * Updated on Feb 23, 2025
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -79,7 +79,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     setAirDatePicker(adp, cells[1]);
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], cells[2], 1);
+    addSelectMenu(c, "settings/get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], cells[2], 1);
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
     $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
@@ -103,7 +103,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Aug 09, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -135,7 +135,7 @@ function modifyAccounts(adp, c, btn) {
                        encodeURIComponent(input[2]) + '&desc=' + encodeURIComponent(input[3]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
-            var request = getAjaxRequest("modify_accounts", send);
+            var request = getAjaxRequest("settings/modify_accounts", send);
             request.done(function(result) {  
                 if (result.success) {    
                     if (result.exists) {
@@ -259,7 +259,7 @@ function showFinancesPopupGroups(c, s, h) {
  * Function:    modifyGroups
  *
  * Created on Apr 01, 2024
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the groups input and add, edit or remove the groups in the database.
  *
@@ -289,7 +289,7 @@ function modifyGroups(c, btn) {
             // debug
             //console.log(send);
             
-            var request = getAjaxRequest("modify_groups", send);
+            var request = getAjaxRequest("settings/modify_groups", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
@@ -341,7 +341,7 @@ function modifyGroups(c, btn) {
  * Function:    showFinancesPopupBusinesses
  *
  * Created on Apr 05, 2024
- * Updated on Aug 07, 2024
+ * Updated on Feb 23, 2025
  *
  * Description:  Shows the businesses popup content for the finances page.
  *
@@ -383,7 +383,7 @@ function showFinancesPopupBusinesses(c, s, h) {
     );     
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=group&slide=finance", "groups", c.businesses[1], cells[0].split("_")[1], "", 1);
+    addSelectMenu(c, "settings/get_select_settings", "type=group&slide=finance", "groups", c.businesses[1], cells[0].split("_")[1], "", 1);
     
     $("#popup_content .shw").hide();
     if ($("#table_container tbody .marked").length) {        
@@ -397,7 +397,7 @@ function showFinancesPopupBusinesses(c, s, h) {
  * Function:    modifyBusinesses
  *
  * Created on Apr 06, 2024
- * Updated on Aug 06, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the businesses input and add, edit or remove the businesses in the database.
  *
@@ -428,7 +428,7 @@ function modifyBusinesses(c, btn) {
                        '&ranking=' + input[2] + '&website=' + encodeURIComponent(input[3]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
             
-            var request = getAjaxRequest("modify_businesses", send);
+            var request = getAjaxRequest("settings/modify_businesses", send);
             request.done(function(result) {
                 if (result.success) {    
                     if (result.exists) {
@@ -541,7 +541,7 @@ function showCryptoPopupCurrenties(c, s, h) {
  * Function:    modifyCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Dec 31, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the crypto currenties input and add, edit or remove the crypto currenties in the database.
  *
@@ -570,7 +570,7 @@ function modifyCryptoCurrenties(c, btn) {
                        '&web=' + encodeURIComponent(input[3]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide;
              
-            var request = getAjaxRequest("modify_cryptocurrenties", send);
+            var request = getAjaxRequest("settings/modify_cryptocurrenties", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
@@ -624,7 +624,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Aug 07, 2024
+ * Updated on Feb 23, 2025
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -661,17 +661,17 @@ function showCryptoPopupWallets(c, s, h) {
     );     
     
     removeSelectMenu();
-    addSelectMenu(c, "get_select_settings", "type=service&slide=crypto", "services", c.wallets[1], cells[0].split("_")[1], "", 0);
+    addSelectMenu(c, "settings/get_select_settings", "type=service&slide=crypto", "services", c.wallets[1], cells[0].split("_")[1], "", 0);
     
     if (cells[2]) {
-        addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], cells[2], 1);
+        addSelectMenu(c, "settings/get_select_settings", "type=account&slide=crypto&id=" + cells[0].split("_")[1], "accounts", c.wallets[2], cells[0].split("_")[2], cells[2], 1);
     }
     else {
         disableSelectMenu("accounts", c.wallets[2]);  
     }
     
     if (cells[3]) {
-        addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], cells[0].split("_")[3], cells[3], 1);
+        addSelectMenu(c, "settings/get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], cells[0].split("_")[3], cells[3], 1);
     }
     else {
         disableSelectMenu("cryptos", c.wallets[3]);
@@ -689,7 +689,7 @@ function showCryptoPopupWallets(c, s, h) {
  * Function:    modifyCryptoWallets
  *
  * Created on May 31, 2024
- * Updated on Aug 06, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
  *
@@ -720,7 +720,7 @@ function modifyCryptoWallets(c, btn) {
                        '&desc=' + encodeURIComponent(input[3]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
          
-            var request = getAjaxRequest("modify_wallets", send);
+            var request = getAjaxRequest("settings/modify_wallets", send);
             request.done(function(result) {
                 if (result.success) {    
                     if (result.exists) 

@@ -2,7 +2,7 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    get_accounts.php
  * Used in: js\settings.js
@@ -14,7 +14,7 @@
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

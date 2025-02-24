@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 21, 2025
+ * Updated on Feb 22, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -106,7 +106,7 @@ function checkSheetPage(page, s) {
  * Function:    openSheetPage
  *
  * Created on Nov 03, 2023
- * Updated on Feb 20, 2025
+ * Updated on Feb 22, 2025
  *
  * Description: Open the sheet page.
  *
@@ -192,7 +192,7 @@ function openSheetPage(c, s, i) {
     });    
     
     // Tooltips
-    showSheetTooltips();
+    showTableTooltips();
             
     // Close Chart Window.
     closeChartWindow();
@@ -854,64 +854,4 @@ function changeSheetContent(adp, bar, c, s, i, that) {
             
         default: break;
     }
-}
-
-/*
- * Function:    showSheetTooltips
- *
- * Created on Feb 20, 2025
- * Updated on Feb 21, 2025
- *
- * Description: Show the tooltips for the sheet pages.
- *
- * In:  -
- * Out: -
- *
- */
-function showSheetTooltips() {
-    
-    // Tooltip: account, group and business on the finances sheet.
-    $('.tbl_finances tbody').on("mouseover", "td:nth-child(3)", function() {     
-        showTooltipText($(this));
-    });
-    
-    $('.tbl_finances tbody').on("mouseover", "td:nth-child(7)", function() {
-        showTooltipText($(this));
-    });  
-    
-    $('.tbl_finances tbody').on("mouseover", "td:nth-child(8)", function() {
-        showTooltipText($(this));
-    });  
-    
-    // Tooltip: service and account on the stocks sheet.
-    $('.tbl_stocks tbody').on("mouseover", "td:nth-child(5)", function() {
-        showTooltipText($(this));
-    });  
-    
-    $('.tbl_stocks tbody').on("mouseover", "td:nth-child(6)", function() {
-        showTooltipText($(this));
-    });  
-    
-    // Tooltip: service and account on the savings sheet.
-    $('.tbl_savings tbody').on("mouseover", "td:nth-child(5)", function() {
-        showTooltipText($(this));
-    });  
-    
-    $('.tbl_savings tbody').on("mouseover", "td:nth-child(6)", function() {
-        showTooltipText($(this));
-    });
-    
-    // Tooltip: service and account on the crypto sheet.
-    $('.tbl_crypto tbody').on("mouseover", "td:nth-child(5)", function() {
-        showTooltipText($(this));
-    });  
-    
-    $('.tbl_crypto tbody').on("mouseover", "td:nth-child(6)", function() {
-        showTooltipText($(this));
-    });    
-       
-    // Tooltip: description on all sheets  
-    $('#table_container tbody').on("mouseover", "td:last-child", function() {
-        showTooltipText($(this));
-    });
 }

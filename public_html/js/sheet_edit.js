@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
- * File:    sheet.js
+ * File:    sheet_edit.js
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Feb 03, 2025
+ * Updated on Feb 23, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -99,7 +99,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Aug 08, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -109,7 +109,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  */
 function getPopupSelectAndProcessChoice(c, i, that) {
 
-    var request = getAjaxRequest("get_settings", "");    
+    var request = getAjaxRequest("settings/get_settings", "");    
     request.done(function(result) {
         if (result.success) {   
     
@@ -299,7 +299,7 @@ function setSheetPopupTable(popclass, title, page, n) {
  * Function:    showSheetEditPopup
  *
  * Created on Jun 04, 2024
- * Updated on Jun 20, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the popup when the page edit button is pressed.
  *
@@ -309,7 +309,7 @@ function setSheetPopupTable(popclass, title, page, n) {
  */
 function showSheetEditPopup(adp, c, i, that="") {
 
-    var request = getAjaxRequest("get_settings", "");    
+    var request = getAjaxRequest("settings/get_settings", "");    
     request.done(function(result) {
         if (result.success) {         
                 

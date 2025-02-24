@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 21, 2025
+ * Updated on Feb 22, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1438,7 +1438,7 @@ $.fn.textWidth = function(text, font) {
  * Function:   showTooltipText
  *
  * Created on Feb 20, 2025
- * Updated on Feb 21, 2025
+ * Updated on Feb 22, 2025
  *
  * Description: Show the tooltip text if the "text-overflow:ellipsis" css is detected.
  *
@@ -1450,8 +1450,6 @@ function showTooltipText(that) {
     
     if (that[0].scrollWidth >  that.innerWidth()) 
     {
-        //that.attr("title", that.text());
-  
         that.addClass("tooltip");
         if (that.find(".tooltiptext").length === 0)
         {     
@@ -1460,13 +1458,30 @@ function showTooltipText(that) {
            // Calculate the real text width of the table cell.
            let textwidth = (that.textWidth() / 2 * -1) - 5;      
            that.find(".tooltiptext").css({"margin-left":textwidth});         
-        }     
-        // Debug
-        // console.log( "... detected" );
+        }
     }
     else 
     {
         that.removeClass("tooltip");
         that.find(".tooltiptext").remove();       
     }
+}
+
+/*
+ * Function:    showTableTooltips
+ *
+ * Created on Feb 22, 2025
+ * Updated on Feb 22, 2025
+ *
+ * Description: Show the tooltips in the table.
+ *
+ * In:  -
+ * Out: -
+ *
+ */
+function showTableTooltips() {
+    
+    $('#table_container tbody').on("mouseover", "td", function() {     
+        showTooltipText($(this));
+    });       
 }

@@ -1,7 +1,7 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    settings_general.js
  * Used in: settings.php
@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Oct 28, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -314,7 +314,7 @@ function showLanguage(c, s) {
  * Function:    setLanguage
  *
  * Created on Nov 29, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Set the language in the database en reload the settings page.
  *
@@ -328,7 +328,7 @@ function setLanguage(language, s) {
     if (set.language !== language) {
         
         var send = "language=" + language;
-        var request = getAjaxRequest("change_language", send);      
+        var request = getAjaxRequest("settings/change_language", send);   
         request.done(function(result) {
             if (result.success) {         
                                  
@@ -357,7 +357,7 @@ function setLanguage(language, s) {
  * Function:    setPages
  *
  * Created on Nov 30, 2023
- * Updated on Feb 09, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Set the pages (true, false) in the database en reload the settings page.
  *
@@ -371,7 +371,7 @@ function setPages(p, s) {
     if (changes) {
         
         var send = "pages=" + JSON.stringify(p);
-        var request = getAjaxRequest("change_pages", send);
+        var request = getAjaxRequest("settings/change_pages", send);
         request.done(function(result) {
             if (result.success) {         
                              
@@ -429,7 +429,7 @@ function checkChangedPages(p, s) {
  * Function:    modifyUser
  *
  * Created on Jan 17, 2024
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the user input and add, edit or remove the user in the database.
  *
@@ -452,7 +452,7 @@ function modifyUser(c, btn) {
             var send = 'user='+ data[0] + '&pass=' + hashPassword(data[1], c.salt) + '&action=' + action 
                               + '&id=' + id;
             
-            var request = getAjaxRequest("modify_user", send);
+            var request = getAjaxRequest("settings/modify_user", send);
             request.done(function(result) {
                 if (result.success) {    
                                        
@@ -610,7 +610,7 @@ function showEditUser(result) {
  * Function:    modifyServices
  *
  * Created on Feb 18, 2024
- * Updated on Apr 01, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the services input and add, edit or remove the services in the database.
  *
@@ -649,7 +649,7 @@ function modifyServices(c, btn) {
             var send = 'srv='+ encodeURIComponent(input[0]) + '&web=' + encodeURIComponent(input[1]) + '&opt=' +
                         JSON.stringify(input[2]) + '&action=' + action + '&id=' + id + '&hide=' + hide;
             
-            var request = getAjaxRequest("modify_services", send);
+            var request = getAjaxRequest("settings/modify_services", send);
             request.done(function(result) {
                 if (result.success) {         
                     if (result.exists) {
@@ -896,7 +896,7 @@ function showGeneralPopupConfigs(c, s) {
  * Function:    modifyConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Aug 11, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Check the configs (settings) input and modify it in the tbl_settings table.
  *
@@ -929,7 +929,7 @@ function modifyConfigs(c, s) {
                    '&finance=' + input[3] + '&stock=' + input[4] + '&savings=' + input[5] + 
                    '&crypto=' + input[6]; 
             
-        var request = getAjaxRequest("modify_configs", send);
+        var request = getAjaxRequest("settings/modify_configs", send);
             request.done(function(result) {
                 if (result.success) {      
                                      

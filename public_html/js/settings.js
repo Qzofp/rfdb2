@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    settings.js
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Aug 09, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -122,7 +122,7 @@ function showSettings(c, s) {
  * Function:    showSettingsContent
  *
  * Created on Nov 17, 2023
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the chosen slide.
  *
@@ -132,7 +132,7 @@ function showSettings(c, s) {
  */
 function showSettingsContent(slide, c) {
     
-    var request = getAjaxRequest("get_settings", "");    
+    var request = getAjaxRequest("settings/get_settings", "");  
     request.done(function(result) {
         if (result.success) {         
                 
@@ -170,7 +170,7 @@ function showSettingsContent(slide, c) {
  * Function:    ShowGeneralSettings
  *
  * Created on Nov 17, 2023
- * Updated on Feb 28, 2023
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the general slide.
  *
@@ -205,14 +205,14 @@ function ShowGeneralSettings(c, s) {
     $("#page_buttons img").eq(5).addClass("show");
     
     showLanguage(c, s);
-    showTable("tbl_users", c.users, s, 5, "get_users", "sort=user");
+    showTable("tbl_users", c.users, s, 5, "settings/get_users", "sort=user");
 }
 
 /*
  * Function:    ShowFinancesSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jul 24, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the finances slide.
  *
@@ -246,14 +246,14 @@ function ShowFinancesSettings(c, s) {
     
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 1);
-    showTable("tbl_accounts", items, s, 1, "get_accounts","type=finance&sign=" + set.sign + "&sort=tbl_accounts.`date`");
+    showTable("tbl_accounts", items, s, 1, "settings/get_accounts","type=finance&sign=" + set.sign + "&sort=tbl_accounts.`date`");
 }
 
 /*
  * Function:    ShowStocksSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jul 24, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the stocks slide.
  *
@@ -286,14 +286,14 @@ function ShowStocksSettings(c, s) {
    
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 2);
-    showTable("tbl_accounts", items, s, 2, "get_accounts", "type=stock&sign=" + set.sign + "&sort=tbl_accounts.`date`");   
+    showTable("tbl_accounts", items, s, 2, "settings/get_accounts", "type=stock&sign=" + set.sign + "&sort=tbl_accounts.`date`");   
 }
 
 /*
  * Function:    ShowSavingsSettings
  *
  * Created on Nov 17, 2023
- * Updated on Jul 24, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the savings slide.
  *
@@ -326,14 +326,14 @@ function ShowSavingsSettings(c, s) {
 
     set = JSON.parse(s[5].value);
     items = setAccountItems(c, 3);
-    showTable("tbl_accounts", items, s, 3, "get_accounts", "type=savings&sign=" + set.sign + "&sort=tbl_accounts.`date`");       
+    showTable("tbl_accounts", items, s, 3, "settings/get_accounts", "type=savings&sign=" + set.sign + "&sort=tbl_accounts.`date`");       
 }
 
 /*
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Jul 24, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -366,14 +366,14 @@ function ShowCryptoSettings(c, s) {
       
     set = JSON.parse(s[5].value);  
     items = setAccountItems(c, 4);
-    showTable("tbl_accounts", items, s, 4, "get_accounts", "type=crypto&sign=" + set.sign + "&sort=tbl_accounts.`date`");
+    showTable("tbl_accounts", items, s, 4, "settings/get_accounts", "type=crypto&sign=" + set.sign + "&sort=tbl_accounts.`date`");
 }
 
 /*
  * Function:    showSettingsButton
  *
  * Created on Nov 20, 2023
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the changes when the page button is pressed.
  *
@@ -383,7 +383,7 @@ function ShowCryptoSettings(c, s) {
  */
 function showSettingsButton(adp, c, that) {
 
-    var request = getAjaxRequest("get_settings", "");    
+    var request = getAjaxRequest("settings/get_settings", "");    
     request.done(function(result) {
         if (result.success) {         
                 
@@ -406,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Aug 09, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -435,7 +435,7 @@ function showSettingButtonAction(adp, c, s, that) {
             else 
             {
                 setPageButton(s[5], 2, 5);
-                showTable("tbl_users", c.users, s, 5, "get_users", "sort=user");
+                showTable("tbl_users", c.users, s, 5, "settings/get_users", "sort=user");
             }
             break;
             
@@ -449,7 +449,7 @@ function showSettingButtonAction(adp, c, s, that) {
                 setPageButton(s[5], 3, -1);
                 
                 let services = setServices(c, s);
-                showTable("tbl_services", services, s, 5, "get_services", "sort=service");             
+                showTable("tbl_services", services, s, 5, "settings/get_services", "sort=service");             
             }
             break;              
                        
@@ -479,7 +479,7 @@ function showSettingButtonAction(adp, c, s, that) {
             {     
                 setPageButton(s[slide], 1, -1);
                 let items = setAccountItems(c, slide);    
-                showTable("tbl_accounts", items, s, slide, "get_accounts","type=" + s[slide].name + "&sign=" + set.sign + "&sort=tbl_accounts.`date`");           
+                showTable("tbl_accounts", items, s, slide, "settings/get_accounts","type=" + s[slide].name + "&sign=" + set.sign + "&sort=tbl_accounts.`date`");           
             }      
             break;
         
@@ -489,7 +489,7 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {
                 setPageButton(s[1], 2, -1);
-                showTable("tbl_groups", c.groups, s, slide, "get_groups","");
+                showTable("tbl_groups", c.groups, s, slide, "settings/get_groups","");
             }
             break;
             
@@ -499,7 +499,7 @@ function showSettingButtonAction(adp, c, s, that) {
             }
             else {            
                 setPageButton(s[1], 3, -1);
-                showTable("tbl_businesses", c.businesses, s, slide, "get_businesses","");
+                showTable("tbl_businesses", c.businesses, s, slide, "settings/get_businesses","");
             }
             break;
             
@@ -509,7 +509,7 @@ function showSettingButtonAction(adp, c, s, that) {
             } 
             else {
                 setPageButton(s[4], 2, -1);
-                showTable("tbl_cryptocurrenties", c.cryptos, s, slide, "get_cryptos","sort=name");
+                showTable("tbl_cryptocurrenties", c.cryptos, s, slide, "settings/get_cryptos","sort=name");
             }
             break;
             
@@ -519,7 +519,7 @@ function showSettingButtonAction(adp, c, s, that) {
             } 
             else {            
                 setPageButton(s[4], 3, -1);
-                showTable("tbl_wallets", c.wallets, s, slide, "get_wallets","sort=account");
+                showTable("tbl_wallets", c.wallets, s, slide, "settings/get_wallets","sort=account");
             }
             break;
         
@@ -574,7 +574,7 @@ function setScaleButton(c, scale) {
  * Function:    getAndSetScaleButton
  *
  * Created on Dec 02, 2023
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Get the scale from the settings database and set the scale button.
  *
@@ -585,7 +585,7 @@ function setScaleButton(c, scale) {
 function getAndSetScaleButton(c, name) {
    
     var send = "name=" + name;    
-    var request = getAjaxRequest("get_scale", send);     
+    var request = getAjaxRequest("settings/get_scale", send);     
     request.done(function(result) {
         if (result.success) { 
             setScaleButton(c, result.data[0].scale);            
@@ -677,7 +677,7 @@ function setPopupChoice(adp, e, c, s) {
  * Function:    getSelectAndProcessChoice
  *
  * Created on May 25, 2024
- * Updated on Aug 08, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -696,12 +696,12 @@ function getSelectAndProcessChoice(c, that) {
         if (select === "services") 
         {
             removeSelectMenu("accounts"); 
-            addSelectMenu(c, "get_select_settings", "type=account&slide=crypto&id=" + id, "accounts", c.wallets[2], 0, "", 0);
+            addSelectMenu(c, "settings/get_select_settings", "type=account&slide=crypto&id=" + id, "accounts", c.wallets[2], 0, "", 0);
         }
         else if (select === "accounts" && !$("#table_container tbody .marked").length)
         {
             removeSelectMenu("cryptos");
-            addSelectMenu(c, "get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], 0, "", 1);
+            addSelectMenu(c, "settings/get_select_settings", "type=crypto&slide=crypto", "cryptos", c.wallets[3], 0, "", 1);
         }     
     }     
 }
@@ -775,7 +775,7 @@ function editSettingsTableRow(adp, c, s, that) {
  * Function:   setShowRow
  *
  * Created on Feb 07, 2024
- * Updated on Apr 12, 2024
+ * Updated on Feb 23, 2025
  *
  * Description: Set the show rows (true, false) in the database and show or hide the hidden rows. 
  *
@@ -795,7 +795,7 @@ function setShowRows(that, slide, show) {
     }
      
     var send = 'slide=' + slide + '&show=' + show; 
-    var request = getAjaxRequest("change_showrows", send);
+    var request = getAjaxRequest("settings/change_showrows", send);
     request.done(function(result) {
         if (!result.success) {         
             showDatabaseError(result); 
