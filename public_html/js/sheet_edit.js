@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Feb 23, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -99,7 +99,7 @@ function showPopupRadioButtonLabel(value, c, name) {
  * Function:    getPopupSelectAndProcessChoice
  *
  * Created on Jun 12, 2024
- * Updated on Feb 23, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Get the choosen select value and process that value.
  *
@@ -122,28 +122,28 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                 case "finance" :
                     ph = c.payment[7];
                     set = JSON.parse(s[1].value);
-                    page = "get_select_finances";
+                    page = "sheet/get_select_finances";
                     send = "type=business&rank=" + set.sort.bsn + "&id=" + id;
                     n = 0;
                 break;
             
             case "stock" :
                 ph = c.investment[5];
-                page = "get_select_stocks";
+                page = "sheet/get_select_stocks";
                 send = "type=account&id=" + id;
                 n = 1;
                 break;
             
             case "savings" :
                 ph = c.savings[5];
-                page = "get_select_savings";
+                page = "sheet/get_select_savings";
                 send = "type=account&id=" + id;    
                 n = 1;
                 break;
             
             case "crypto" :
                 ph = c.crypto[5];
-                page = "get_select_crypto";
+                page = "sheet/get_select_crypto";
                 send = "type=account&id=" + id; 
                 n = 0;
                 break;         
@@ -157,7 +157,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
                     }
                     else if (s[i].name === "crypto") {
                         removeSelectMenu("crypto");
-                        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + id, "crypto", c.crypto[7], 0, "", 1); 
+                        addSelectMenu(c, "sheet/get_select_crypto", "type=crypto&id=" + id, "crypto", c.crypto[7], 0, "", 1); 
                     }                    
                     break;
                     
@@ -180,7 +180,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
  * Function:    addPopupSheetHistory
  *
  * Created on Jul 31, 2024
- * Updated on Jul 31, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get the history (radio button and description) and add it to the popup of the sheet.
  *
@@ -191,7 +191,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
 function addPopupSheetHistory(c, name, id) {
     
     var send = "name=" + name + "&id=" + id;
-    var request = getAjaxRequest("get_popup_history", send);    
+    var request = getAjaxRequest("sheet/get_popup_history", send);    
     request.done(function(result) {
         if (result.success) {   
             
@@ -353,7 +353,7 @@ function showSheetEditPopup(adp, c, i, that="") {
  * Function:    showSheetFinancePopup
  *
  * Created on Jun 04, 2024
- * Updated on Aug 08, 2024
+ * Updated on Feb 26, 2024
  *
  * Description:  Shows the popup content for the finances page.
  *
@@ -393,10 +393,10 @@ function showSheetFinancePopup(adp, c, s, i) {
             
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], cells[2], 1);
-    addSelectMenu(c, "get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], cells[6], 0);
+    addSelectMenu(c, "sheet/get_select_finances", "type=account", "payment", c.payment[2], cells[0].split("_")[1], cells[2], 1);
+    addSelectMenu(c, "sheet/get_select_finances", "type=group&rank=" + fin.sort.grp, "service", c.payment[6], cells[0].split("_")[2], cells[6], 0);
     if (cells[7]) {  
-        addSelectMenu(c, "get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], cells[7], 1);
+        addSelectMenu(c, "sheet/get_select_finances", "type=business&rank=" + fin.sort.bsn + "&id=" + cells[0].split("_")[2], "account", c.payment[7], cells[0].split("_")[3], cells[7], 1);
     }
     else {
         disableSelectMenu("account", c.payment[7]);
@@ -411,7 +411,7 @@ function showSheetFinancePopup(adp, c, s, i) {
  * Function:    showSheetStocksPopup
  *
  * Created on Jun 15, 2024
- * Updated on Aug 09, 2024
+ * Updated on Feb 26, 2025
  *
  * Description:  Shows the popup content for the stocks page.
  *
@@ -450,9 +450,9 @@ function showSheetStocksPopup(adp, c, s, i) {
        
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_stocks", "type=service", "service", c.investment[4], cells[0].split("_")[1], cells[4], 0);
+    addSelectMenu(c, "sheet/get_select_stocks", "type=service", "service", c.investment[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_stocks", "type=account&id=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], cells[5], 1);
+        addSelectMenu(c, "sheet/get_select_stocks", "type=account&id=" + cells[0].split("_")[1], "account", c.investment[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.investment[5]);
@@ -467,7 +467,7 @@ function showSheetStocksPopup(adp, c, s, i) {
  * Function:    showSheetSavingsPopup
  *
  * Created on Jun 19, 2024
- * Updated on Aug 09, 2024
+ * Updated on Feb 26, 2025
  *
  * Description:  Shows the popup content for the savings page.
  *
@@ -506,9 +506,9 @@ function showSheetSavingsPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_savings", "type=service", "service", c.savings[4], cells[0].split("_")[1], cells[4], 0);
+    addSelectMenu(c, "sheet/get_select_savings", "type=service", "service", c.savings[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_savings", "type=account&id=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], cells[5], 1);
+        addSelectMenu(c, "sheet/get_select_savings", "type=account&id=" + cells[0].split("_")[1], "account", c.savings[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.savings[5]);
@@ -523,7 +523,7 @@ function showSheetSavingsPopup(adp, c, s, i) {
  * Function:    showSheetCryptoPopup
  *
  * Created on Jun 20, 2024
- * Updated on Aug 09, 2024
+ * Updated on Feb 26, 2025
  *
  * Description:  Shows the popup content for the crypto page.
  *
@@ -560,9 +560,9 @@ function showSheetCryptoPopup(adp, c, s, i) {
     
     // Add Select Menus.
     removeSelectMenu(); 
-    addSelectMenu(c, "get_select_crypto", "type=service", "service", c.crypto[4], cells[0].split("_")[1], cells[4], 0);
+    addSelectMenu(c, "sheet/get_select_crypto", "type=service", "service", c.crypto[4], cells[0].split("_")[1], cells[4], 0);
     if (cells[5]) {
-        addSelectMenu(c, "get_select_crypto", "type=account&id=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], cells[5], 1);
+        addSelectMenu(c, "sheet/get_select_crypto", "type=account&id=" + cells[0].split("_")[1], "account", c.crypto[5], cells[0].split("_")[2], cells[5], 1);
     }
     else {
         disableSelectMenu("account", c.crypto[5]);
@@ -573,7 +573,7 @@ function showSheetCryptoPopup(adp, c, s, i) {
     
     // Add crypto select menu.
     if (cells[7]) {
-        addSelectMenu(c, "get_select_crypto", "type=crypto&id=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[3], cells[7], 1);
+        addSelectMenu(c, "sheet/get_select_crypto", "type=crypto&id=" + cells[0].split("_")[2], "crypto", c.crypto[7], cells[0].split("_")[3], cells[7], 1);
     }
     else {
         disableSelectMenu("crypto", c.crypto[7]);
@@ -619,7 +619,7 @@ function addSortButtons(set) {
  * Function:    setSortButtons
  *
  * Created on Jun 14, 2024
- * Updated on Aug 07, 2024
+ * Updated on Feb 26, 2025
  *
  * Description:  Set the sort buttons for the finances page.
  *
@@ -635,7 +635,7 @@ function setSortButton(c, s, i, btn, e) {
     
     //console.log(send);
     
-    var request = getAjaxRequest("change_sortbutton", send);      
+    var request = getAjaxRequest("sheet/change_sortbutton", send);
     request.done(function(result) {
         if (result.success) 
         {                        
@@ -643,7 +643,7 @@ function setSortButton(c, s, i, btn, e) {
                 case "finance" :
                     phg = c.payment[6];
                     pha = c.payment[7];
-                    page = "get_select_finances";
+                    page = "sheet/get_select_finances";
                 break;
             
             case "stock" :
@@ -925,7 +925,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Feb 03, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -961,7 +961,7 @@ function modifyFinances(adp, c, s, btn) {
                        '&amount=' + correctAmount(s, amount) + '&service=' + input[4] + '&account=' + input[5] + 
                        '&desc=' + encodeURIComponent(input[6]) + '&id=' + id + '&action=' + action; 
             
-            var request = getAjaxRequest("modify_finances_sheet", send);
+            var request = getAjaxRequest("sheet/modify_finances_sheet", send);
             request.done(function(result) {              
                 if (result.success) {    
                     
@@ -1065,7 +1065,7 @@ function modifyFinances(adp, c, s, btn) {
  * Function:    getAndAdjustFinancesTotals
  *
  * Created on Jul 10, 2024
- * Updated on Aug 01, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get and adjust the total(s) of the finances sheet table.
  *
@@ -1081,7 +1081,7 @@ function getAndAdjustFinancesTotals(sign) {
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
            "&sign=" + sign + "&name=finance";    
 
-    var request = getAjaxRequest("get_finances_totals", send);
+    var request = getAjaxRequest("sheet/get_finances_totals", send);
     request.done(function(result) {
         if (result.success) {         
             let n, balance;
@@ -1143,7 +1143,7 @@ function getAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Nov 20, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1179,7 +1179,7 @@ function modifyStocks(adp, c, s, btn) {
                        '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
                        '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
             
-            var request = getAjaxRequest("modify_stocks_sheet", send);
+            var request = getAjaxRequest("sheet/modify_stocks_sheet", send);
             request.done(function(result) {              
                 if (result.success) {    
                    
@@ -1272,7 +1272,7 @@ function modifyStocks(adp, c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Nov 20 10, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1307,7 +1307,7 @@ function modifySavings(adp, c, s, btn) {
                        '&amount=' + correctAmount(s, amount) + '&service=' + input[3] + '&account=' + input[4] + 
                        '&desc=' + encodeURIComponent(input[5]) + '&id=' + id + '&action=' + action; 
                       
-            var request = getAjaxRequest("modify_savings_sheet", send);
+            var request = getAjaxRequest("sheet/modify_savings_sheet", send);
             request.done(function(result) {              
                 if (result.success) {    
                    
@@ -1400,7 +1400,7 @@ function modifySavings(adp, c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Nov 22, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
@@ -1441,7 +1441,7 @@ function modifyCrypto(adp, c, s, btn) {
                        '&number=' + correctAmount(s, crypto[1], 8) + '&crypto=' + input[6] + '&desc=' + encodeURIComponent(input[7]) + 
                        '&id=' + id + '&action=' + action;
             
-            var request = getAjaxRequest("modify_crypto_sheet", send);
+            var request = getAjaxRequest("sheet/modify_crypto_sheet", send);
             request.done(function(result) {              
                 if (result.success) {    
                    
@@ -1552,7 +1552,7 @@ function modifyCrypto(adp, c, s, btn) {
  * Function:    getAndAdjustSheetTotals
  *
  * Created on Jul 12, 2024
- * Updated on Aug 01, 2024
+ * Updated on Feb 26, 2024
  *
  * Description: Get and adjust the total(s) of the stocks, savings or crypto sheet table.
  *
@@ -1568,7 +1568,7 @@ function getAndAdjustSheetTotals(sign, name) {
     send = "scale=" + date.scale + "&year=" + date.year + "&quarter=" + date.quarter + "&month=" + date.month +
            "&sign=" + sign + "&name=" + name;    
   
-    var request = getAjaxRequest("get_finances_totals", send);
+    var request = getAjaxRequest("sheet/get_finances_totals", send);
     request.done(function(result) {
         if (result.success) {         
             let n, balance;

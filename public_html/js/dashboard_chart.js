@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    dashboard_chart.js
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Feb 17, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -195,7 +195,7 @@ function initLineChart(s) {
  * Function:    showActivaAccountsDoughnutChart
  *
  * Created on Dec 25, 2024
- * Updated on Feb 17, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Show the activa accounts doughnut chart.
  *
@@ -205,7 +205,7 @@ function initLineChart(s) {
  */
 function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
     
-    var request = getAjaxRequest("get_value_dgchart", "date=" + date + "&action=" + action);
+    var request = getAjaxRequest("dashboard/get_value_dgchart", "date=" + date + "&action=" + action);
     request.done(function(result) {
             
         if (result.success) {         
@@ -269,7 +269,7 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
  * Function:    showActivaCryptoDoughnutChart
  *
  * Created on Dec 30, 2024
- * Updated on Dec 31, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Show the activa crypto doughnut chart.
  *
@@ -279,7 +279,7 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
  */
 function showActivaCryptoDoughnutChart(doughnut, c, date, action) {
     
-    var request = getAjaxRequest("get_value_dgchart", "date=" + date + "&action=" + action);
+    var request = getAjaxRequest("dashboard/get_value_dgchart", "date=" + date + "&action=" + action);
     request.done(function(result) {
             
         if (result.success) {         
@@ -416,7 +416,7 @@ function showLineChartTooltip(lnc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Feb 17, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -426,7 +426,7 @@ function showLineChartTooltip(lnc, that) {
  */
 function ShowActivaAccountsLineChart(line, c, s, date, action) {
   
-    var request = getAjaxRequest("get_value_lnchart",  "date=" + date + "&action=" + action);
+    var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=" + action);
     request.done(function(result) {
             
         if (result.success) {         
@@ -508,7 +508,7 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
  * Function:    showActivaCryptoLineChart
  *
  * Created on Jan 20, 2025
- * Updated on Jan 20, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -518,7 +518,7 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
  */
 function ShowActivaCryptoLineChart(line, c, date, action) {
   
-    var request = getAjaxRequest("get_value_lnchart",  "date=" + date + "&action=" + action);
+    var request = getAjaxRequest("dashboard/get_value_lnchart",  "date=" + date + "&action=" + action);
     request.done(function(result) {
             
         if (result.success) {         

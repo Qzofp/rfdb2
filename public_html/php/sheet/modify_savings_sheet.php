@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.24
  *
  * File:    modify_savings_sheet.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 13, 2024
- * Updated on Sep 21, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_savings table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

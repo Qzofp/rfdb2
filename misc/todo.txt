@@ -122,7 +122,7 @@ ToDo
     - Opgelost.
 
 24. Verbetering: Herstructureer de PHP pagina's, zodat de settings, sheets en dashboard pagina's in een eigen folder komen.
-
+    - Uitgevoerd. Testen!
 
 25. Verbetering: De kleuren voor de types (financien, aandelen, sparen en crypto) aanpassen bij de settings -> configurations.
 
@@ -131,3 +131,5 @@ ToDo
 27. Verbetering: De tabbladen van de Dashboard pagina onafhankelijk maken, zodat de pagina opnieuw wordt geladen als er een tabblad wordt gekozen.
 
 28. Verbetering / Bug: De inputvelden van het inlogscherm schalen niet mee.
+
+29. Bug: Op het dashboard bij de crypto tabel wordt bij het editen de verkeerde kolom weergegeven, de ratio i.p.v. de value kolom. 

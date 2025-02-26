@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    dashboard_edit.js
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Jan 31, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -21,7 +21,7 @@
  * Function:    showActivaListPopup
  *
  * Created on Nov 13, 2024
- * Updated on Nov 17, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Shows the popup when the page list button is pressed.
  *
@@ -67,7 +67,7 @@ function showActivaListPopup(c, s) {
      
         // Add Select Menu.
         removeSelectMenu(); 
-        addSelectMenu(c, "get_select_date_values", "limit=" + set.rows, "list_dates", c.dashmisc[1], 0, "", 1);    
+        addSelectMenu(c, "dashboard/get_select_date_values", "limit=" + set.rows, "list_dates", c.dashmisc[1], 0, "", 1);    
         
         // Show the popup_table activa class.
         $(".popup_table_list").show();
@@ -145,7 +145,7 @@ function showActivaModifyPopup(adp, btn, c, s) {
  * Function:    fillActivaModifyPopup
  *
  * Created on Sep 11, 2024
- * Updated on Nov 17, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get the value accounts (and optional the cryptos) and fill the add popup.
  *
@@ -166,7 +166,7 @@ function fillActivaModifyPopup(adp, btn, c, s) {
         $("#popup_content .btn").hide();
     }   
       
-    var request = getAjaxRequest("get_value_accounts", "date=" + date + "&action=" + btn);
+    var request = getAjaxRequest("dashboard/get_value_accounts", "date=" + date + "&action=" + btn);
     request.done(function(result) {
              
         if (result.success) {         
@@ -352,7 +352,7 @@ function showActivaListResults(dgc, lnc, c, s, btn) {
  * Function:    modifyActivaValues
  *
  * Created on Sep 15, 2024
- * Updated on Jan 15, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_value_cryptos tables.
  *
@@ -397,7 +397,7 @@ function modifyActivaValues(dgc, lnc, c, s, btn) {
             // Debug
             //console.log(send);
         
-            var request = getAjaxRequest("modify_values", send);
+            var request = getAjaxRequest("dashboard/modify_values", send);
             request.done(function(result) {
             if (result.success) {      
                                     
@@ -778,7 +778,7 @@ function showActivaCryptoRowPopup(c, s, that) {
  * Function:    modifyActivaAccountRow
  *
  * Created on Oct 30, 2024
- * Updated on Jan 31, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Check the input and modify it in the tbl_value_accounts and tbl_amount_wallets tables (hide or show the row).
  *
@@ -825,7 +825,7 @@ function modifyActivaAccountRow(dgc, lnc, c, s, btn) {
         // Debug
         //console.log(send);
         
-        var request = getAjaxRequest("modify_value_row", send);
+        var request = getAjaxRequest("dashboard/modify_value_row", send);
         request.done(function(result) {
             if (result.success) {      
                                     

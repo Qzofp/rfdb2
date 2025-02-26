@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 23, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -406,7 +406,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Feb 23, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -460,7 +460,7 @@ function showSettingButtonAction(adp, c, s, that) {
             else 
             {               
                 setPageButton(s[5], 4, 5);
-                showTable("tbl_config", c.configs, s, 5, "get_configs", "");
+                showTable("tbl_config", c.configs, s, 5, "settings/get_configs", "");
             }
             break;
             

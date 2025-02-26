@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    get_configs.php
  * Used in: js\settings.js
  *
  * Created on Dec 04, 2023
- * Updated on Aug 01, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and get the configs from the databases tbl_config table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

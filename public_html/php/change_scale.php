@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    change_scale.php
- * Used in: js\sheet.js
+ * Used in: js\common.js
  *
  * Created on Nov 15, 2023
- * Updated on Sep 18, 2024
+ * Updated on Feb 26, 2026
  *
  * Description: Check if the user is signed in and change the scale in the tbl_settings table.
  * Dependenties: config.php

@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    sheet_chart.js
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Feb 20, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -111,7 +111,7 @@ function initBarChart(s) {
  * Function:    showYearOverviewChart
  *
  * Created on Feb 10, 2025
- * Updated on Feb 17, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Initialize the bar chart.
  *
@@ -129,7 +129,7 @@ function showYearOverviewChart(bar, c, i) {
     // Debug
     //console.log( page, year, scale[n] );
 
-    var request = getAjaxRequest("get_overview_year", "page=" + page + "&year=" + year + "&scale=" + scale[n]);
+    var request = getAjaxRequest("sheet/get_overview_year", "page=" + page + "&year=" + year + "&scale=" + scale[n]);
     request.done(function(result) {
             
         if (result.success) {         

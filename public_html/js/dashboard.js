@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    dashboard.js
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Feb 22, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -141,8 +141,8 @@ function showDashboard(c, s) {
 /*
  * Function:    removeOldRankings
  *
- * Created on Jul 22, 2023
- * Updated on Jul 22, 2023
+ * Created on Jul 22, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Remove rankings older then n months.
  *
@@ -152,7 +152,7 @@ function showDashboard(c, s) {
  */
 function removeOldRankings(n) {
     
-    var request = getAjaxRequest("delete_rankings", "n=" + n);      
+    var request = getAjaxRequest("dashboard/delete_rankings", "n=" + n);      
     request.done(function(result) {
         if (!result.success) {         
             showDatabaseError(result);                    
@@ -204,7 +204,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 29, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -214,7 +214,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  */
 function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {   
 
-    var request = getAjaxRequest("get_entry_date", "date=" + date);    
+    var request = getAjaxRequest("dashboard/get_entry_date", "date=" + date); 
     request.done(function(result) {
         if (result.success) {                    
      
@@ -361,7 +361,7 @@ function showActivaAccountsTable(c, s, date, action) {
  * Function:    fillActivaAccountsTable
  *
  * Created on Aug 26, 2024
- * Updated on Dec 28, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get the data from the database and fill the dashboard activa accounts table with that data.
  *
@@ -374,7 +374,7 @@ function fillActivaAccountsTable(l, s, date, action) {
     // Show loading spinner.
     $("#loading").show(); 
     
-    var request = getAjaxRequest("get_value_accounts", "date=" + date + "&action=" + action);
+    var request = getAjaxRequest("dashboard/get_value_accounts", "date=" + date + "&action=" + action);
     request.done(function(result) {
 
         // Hide loading spinner.
@@ -445,7 +445,7 @@ function fillActivaAccountsTable(l, s, date, action) {
  * Function:    getAndShowAccountTotals
  *
  * Created on Sep 06, 2024
- * Updated on Dec 28, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get and show the totals of the account table totals.
  *
@@ -455,7 +455,7 @@ function fillActivaAccountsTable(l, s, date, action) {
  */
 function getAndShowAccountTotals(s, date) {
         
-    var request = getAjaxRequest("get_value_totals", "date=" + date);
+    var request = getAjaxRequest("dashboard/get_value_totals", "date=" + date);
     request.done(function(result) {
         if (result.success) {         
             
@@ -587,7 +587,7 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
  * Function:    showdActivaCryptoContent
  *
  * Created on Aug 24, 2024
- * Updated on Jan 20, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Shows the dashboard activa (crypto) slide content.
  *
@@ -597,7 +597,7 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
  */
 function showActivaCryptoContent(dgc, lnc, c, s, date) {   
 
-    var request = getAjaxRequest("get_entry_date", "date=" + date);    
+    var request = getAjaxRequest("dashboard/get_entry_date", "date=" + date);  
     request.done(function(result) {
         if (result.success) {                    
      
@@ -681,7 +681,7 @@ function showActivaCryptoTable(c, s, date) {
  * Function:    fillActivaCryptoTable
  *
  * Created on Sep 06, 2024
- * Updated on Dec 29, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Get the data from the database and fill the dashboard activa cryptos table with that data.
  *
@@ -694,7 +694,7 @@ function fillActivaCryptoTable(l, date) {
     // Show loading spinner.
     $("#loading").show(); 
     
-    var request = getAjaxRequest("get_value_cryptos", "date=" + date);
+    var request = getAjaxRequest("dashboard/get_value_cryptos", "date=" + date);
     request.done(function(result) {
 
         // Hide loading spinner.

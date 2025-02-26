@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    get_select_crypto.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 27, 2024
- * Updated on Sep 18, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and get the select menus for the crypto sheet popup.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

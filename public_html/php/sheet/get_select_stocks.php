@@ -2,19 +2,19 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
- * File:    get_select_savings.php
+ * File:    get_select_stocks.php
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 28, 2024
- * Updated on Sep 18, 2024
+ * Updated on Feb 26, 2025
  *
- * Description: Check if the user is signed in and get the select menus for the savings sheet popup.
+ * Description: Check if the user is signed in and get the select menus for the stocks sheet popup.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {
@@ -30,7 +30,7 @@ else {
  * Created on Jul 28, 2024
  * Updated on Sep 18, 2024
  *
- * Description: Get the select menus for the savings sheet popup.
+ * Description: Get the select menus for the stocks sheet popup.
  *
  * In:  -
  * Out: -
@@ -60,7 +60,7 @@ function GetSelectMenu()
  * Function:    GetServiceMenu
  *
  * Created on Jul 28, 2024
- * Updated on Aug 01, 2024
+ * Updated on Aug 02, 2024
  *
  * Description: Get the select service menu from the databases tbl_services table.
  *
@@ -70,14 +70,14 @@ function GetSelectMenu()
  */
 function GetServiceMenu()
 {
-    $response = [];    
+    $response = [];     
     try 
     {
         $db = OpenDatabase();
-    
+               
         $query = "SELECT `id`,`service` ". 
                  "FROM `tbl_services`  ".
-                 "WHERE savings = '&#9745;' AND hide = 0 ".
+                 "WHERE stock = '&#9745;' AND hide = 0 ".
                  "ORDER BY `service`;";
     
         $select = $db->prepare($query);
@@ -113,17 +113,17 @@ function GetServiceMenu()
  */
 function GetAccountMenu($id)
 {
-    $response = [];      
+    $response = [];     
     try 
     {
         $db = OpenDatabase();
-        $key = cKEY;        
+        $key = cKEY;
         
-        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";           
-        $query = "SELECT tbl_accounts.`id` AS id, $account AS account ". 
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";
+        $query = "SELECT tbl_accounts.`id` AS id, $account AS account ".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
-                 "WHERE tbl_accounts.`hide` = 0 AND tbl_accounts.`type` = 'savings' AND tbl_services.`id` = $id ".
+                 "WHERE tbl_accounts.`hide` = 0 AND tbl_accounts.`type` = 'stock' AND tbl_services.`id` = $id ".
                  "ORDER BY `account`;";
     
         $select = $db->prepare($query);

@@ -2,20 +2,21 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
- * File:    get_select_finances.php
+ * File:    get_select_date_values.php
  * Used in: js\dashboard_edit.js
  *
  * Created on Nov 15, 2024
- * Updated on Nov 17, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and get the select menu for the dashboard popup.
  * Dependenties: config.php
+ *               common.php
  *
  */
-require_once 'config.php';
-require_once 'common.php';
+require_once '../config.php';
+require_once '../common.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {

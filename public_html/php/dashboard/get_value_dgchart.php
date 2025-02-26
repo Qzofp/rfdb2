@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    get_value_dgchart.php
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Feb 19, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -16,8 +16,8 @@
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
-require_once 'common.php';
+require_once '../config.php';
+require_once '../common.php';
 session_start();
 header("Content-Type:application/json");
 if(isset($_SESSION['user'])) {

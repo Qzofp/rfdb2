@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    sheet.js
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 22, 2025
+ * Updated on Feb 26, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -533,7 +533,7 @@ function fillSheetSlideMenu(c, active) {
  * Function:    showSheetContent
  *
  * Created on Apr 26, 2024
- * Updated on Aug 01, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Shows the sheet content for the chosen slide.
  *
@@ -563,27 +563,27 @@ function showSheetContent(adp, c, s, i, sort_date) {
     
     switch (s[i].name) {
         case "finance" :
-            showTable("tbl_finances", c.payment, s, i, "get_finances", send);   
+            showTable("tbl_finances", c.payment, s, i, "sheet/get_finances", send);   
             $(".tbl_finances thead th:nth-child(2)").append(sort_img); 
             break;
             
         case "stock" :
-            showTable("tbl_stocks", c.investment, s, i, "get_finances", send); 
+            showTable("tbl_stocks", c.investment, s, i, "sheet/get_finances", send); 
             $(".tbl_stocks thead th:nth-child(2)").append(sort_img); 
             break;
         
         case "savings" :
-            showTable("tbl_savings", c.savings, s, i, "get_finances", send); 
+            showTable("tbl_savings", c.savings, s, i, "sheet/get_finances", send); 
             $(".tbl_savings thead th:nth-child(2)").append(sort_img);             
             break;
         
         case "crypto" :
-            showTable("tbl_crypto", c.crypto, s, i, "get_finances", send); 
+            showTable("tbl_crypto", c.crypto, s, i, "sheet/get_finances", send); 
             $(".tbl_crypto thead th:nth-child(2)").append(sort_img);                
             break;      
     }
     
-    getAndShowTableTotals("get_finances_totals", send, c, s, i);     
+    getAndShowTableTotals("sheet/get_finances_totals", send, c, s, i);     
 }
 
 /*

@@ -2,21 +2,21 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:    get_value_accounts.php
  * Used in: js\dashboard.js
  *
  * Created on Sep 06, 2024
- * Updated on Dec 30, 2024
+ * Updated on Feb 26, 2025
  *
  * Description: Check if the user is signed in and get the data from de database tbl_value_cryptos table.
  * 
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
-require_once 'common.php';
+require_once '../config.php';
+require_once '../common.php';
 session_start();
 header("Content-Type:application/json");
 if(isset($_SESSION['user'])) {
