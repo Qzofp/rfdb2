@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Feb 26, 2025
+ * Updated on Mar 03, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 
@@ -709,7 +709,7 @@ function showActivaAccountRowPopup(c, s, that) {
  * Function:    showActivaCryptoRowPopup
  *
  * Created on Nov 06, 2024
- * Updated on Dec 29, 2024
+ * Updated on Mar 03, 2025
  *
  * Description: Shows the popup for the activa crypto row.
  *
@@ -750,7 +750,7 @@ function showActivaCryptoRowPopup(c, s, that) {
         let id = 'class="dummy"';
         let ph = "";
         let disabled = "disabled";
-        if (i === 3) 
+        if (i === 4) 
         {
             id = 'id="amount"';
             ph = 'placeholder="' + c.misc[2] + '" ';
