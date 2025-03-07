@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 07, 2025
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -820,7 +820,7 @@ function getShowHideRow() {
  * Function:    showGeneralPopupConfigs
  *
  * Created on Apr 12, 2024
- * Updated on Apr 27, 2024
+ * Updated on Mar 07, 2025
  *
  * Description:  Shows the configs (settings) popup content for the general page.
  *
@@ -857,8 +857,13 @@ function showGeneralPopupConfigs(c, s) {
             '<td><input id="sign" type="text" name="sign" placeholder="' + c.setconfigs[3] + '" value="' + set.sign + '" /></td>' +
         '</tr>'
     );    
-      
-    // Start year for finance pages.
+    
+    // Empty row.
+    $(".popup_table_setting").append( 
+        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+    );    
+         
+    // Start year for sheet pages.
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);
         if(set.page === "true") {       
@@ -875,7 +880,32 @@ function showGeneralPopupConfigs(c, s) {
                 '</tr>'
             );
         }
-    }        
+    }    
+    
+    // Empty row.
+    $(".popup_table_setting").append( 
+        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+    );     
+    
+    // Color themes dashboard, sheet pages and settings page.
+    set = JSON.parse(s[0].value);
+    for (let i = 0; i < c.pages.length - 1; i++) {        
+        set = JSON.parse(s[i].value);
+        if(set.page === "true") {       
+            
+            start = set.start;
+            if (set.start === 0) {
+                start = "";
+            }
+            
+            $(".popup_table_setting").append(
+                '<tr>' +
+                    '<td>' + c.titles[i] + ' ' + c.misc[5] + '</td>' + 
+                    '<td><input id="' + s[i].name + '_' + i + '" type="text" name="' + s[i].name + '" placeholder="' + c.misc[6] + '" value="' + set.theme.color + '" /></td>' +
+                '</tr>'
+            );
+        }
+    }    
      
     // Salt phrase.  
     salt = JSON.parse(s[8].value);
