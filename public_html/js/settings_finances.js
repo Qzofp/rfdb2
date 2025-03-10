@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 09, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -493,7 +493,7 @@ function modifyBusinesses(c, btn) {
  * Function:    showCryptoPopupCurrenties
  *
  * Created on May 20, 2024
- * Updated on Dec 31, 2024
+ * Updated on Mar 09, 2024
  *
  * Description:  Shows the crypto currenties popup content for the crypto page.
  *
@@ -513,16 +513,17 @@ function showCryptoPopupCurrenties(c, s, h) {
     if (h) { 
         shw = 'img/hide.png" alt="hide';
     }    
-    
+               
     set = JSON.parse(s[4].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
     
+    var $color = (cells[3].split('</span>')[1] !== undefined)?cells[3].split('</span>')[1]:"";
     $(".popup_table_setting").append(
         '<tr>' +
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><input id="name" type="text" name="name" placeholder="' + c.cryptos[1] + '" value="' + cells[1] + '" /></td>' +
             '<td><input id="crypto" type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
-            '<td><input id="color" type="text" name="color" placeholder="' + c.cryptos[3] + '" value="' + cells[3] + '" /></td>' +
+            '<td><input id="color" type="text" name="color" placeholder="' + c.cryptos[3] + '" value="' + $color + '" /></td>' +
             '<td><input id="website" type="text" name="website" placeholder="' + c.cryptos[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +

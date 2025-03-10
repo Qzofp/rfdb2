@@ -8,7 +8,7 @@
  * Used in: js\settings_finances.js
  *
  * Created on May 28, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 09, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_cryptocurrenties table.
  * Dependenties: config.php
@@ -70,7 +70,7 @@ function ModifyCryptoCurrenties()
  * Function:    AddCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Dec 31, 2024
+ * Updated on Mar 09, 2025
  *
  * Description: Add the input to the tbl_cryptocurrenties table if the name or symbol doesn't exists.
  *
@@ -95,7 +95,7 @@ function ModifyCryptoCurrenties()
             $response['id']     = $db->lastInsertId();            
             $response['name']   = $name;
             $response['symbol'] = $symbol;   
-            $response['color']  = $color;  
+            $response['color']  = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color";  
             $response['web']    = $web;
 
             $response['success'] = true;  
@@ -117,11 +117,11 @@ function ModifyCryptoCurrenties()
  * Function:    EditCryptoCurrenties
  *
  * Created on May 29, 2024
- * Updated on Dec 31, 2024
+ * Updated on Mar 09, 2025
  *
  * Description: Edit the tbl_cryptocurrenties table with the input if the name or symbol doesn't exists.
  *
- * In:  $id, $hide,  $name, $symbol, $color, $web
+ * In:  $id, $hide, $name, $symbol, $color, $web
  * Out: $response
  *
  */    
@@ -143,7 +143,7 @@ function ModifyCryptoCurrenties()
             $response['hide']   = $hide;
             $response['name']   = $name;
             $response['symbol'] = $symbol;  
-            $response['color']  = $color; 
+            $response['color']  = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color"; 
             $response['web']    = $web;
             
             $response['success'] = true;  

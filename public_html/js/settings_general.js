@@ -9,7 +9,7 @@
  * 
  *
  * Created on Jan 29, 2024
- * Updated on Mar 07, 2025
+ * Updated on Mar 08, 2025
  *
  * Description: Javascript functions for the settings general page.
  * Dependenties: js/config.js
@@ -820,7 +820,7 @@ function getShowHideRow() {
  * Function:    showGeneralPopupConfigs
  *
  * Created on Apr 12, 2024
- * Updated on Mar 07, 2025
+ * Updated on Mar 08, 2025
  *
  * Description:  Shows the configs (settings) popup content for the general page.
  *
@@ -845,7 +845,7 @@ function showGeneralPopupConfigs(c, s) {
     // Number of sheet rows.
     $(".popup_table_setting").append(
         '<tr>' +
-            '<td>' + c.setconfigs[0] + '</td>' + 
+            '<td colspan="2">' + c.setconfigs[0] + '</td>' + 
             '<td><input id="rows" type="text" name="rows" placeholder="' + c.setconfigs[1] + '" value="' + set.rows + '" /></td>' +
         '</tr>'
     );
@@ -853,14 +853,14 @@ function showGeneralPopupConfigs(c, s) {
     // Currency sign
     $(".popup_table_setting").append(
         '<tr>' +
-            '<td>' + c.setconfigs[2] + '</td>' + 
+            '<td colspan="2">' + c.setconfigs[2] + '</td>' + 
             '<td><input id="sign" type="text" name="sign" placeholder="' + c.setconfigs[3] + '" value="' + set.sign + '" /></td>' +
         '</tr>'
     );    
     
     // Empty row.
     $(".popup_table_setting").append( 
-        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+        '<tr><td colspan="3">&nbsp;<td></tr>'
     );    
          
     // Start year for sheet pages.
@@ -875,7 +875,7 @@ function showGeneralPopupConfigs(c, s) {
             
             $(".popup_table_setting").append(
                 '<tr>' +
-                    '<td>' + c.setconfigs[4] + c.titles[i] + '</td>' + 
+                    '<td colspan="2">' + c.setconfigs[4] + c.titles[i] + '</td>' + 
                     '<td><input id="' + s[i].name + '" type="text" name="' + s[i].name + '" placeholder="' + c.setconfigs[5] + cDate.getFullYear() +'" value="' + start + '" /></td>' +
                 '</tr>'
             );
@@ -884,7 +884,7 @@ function showGeneralPopupConfigs(c, s) {
     
     // Empty row.
     $(".popup_table_setting").append( 
-        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+        '<tr><td colspan="3">&nbsp;<td></tr>'
     );     
     
     // Color themes dashboard, sheet pages and settings page.
@@ -901,6 +901,7 @@ function showGeneralPopupConfigs(c, s) {
             $(".popup_table_setting").append(
                 '<tr>' +
                     '<td>' + c.titles[i] + ' ' + c.misc[5] + '</td>' + 
+                    '<td class="color" bgcolor="' + set.theme.color + '">&nbsp;</td>' + 
                     '<td><input id="' + s[i].name + '_' + i + '" type="text" name="' + s[i].name + '" placeholder="' + c.misc[6] + '" value="' + set.theme.color + '" /></td>' +
                 '</tr>'
             );
@@ -910,13 +911,13 @@ function showGeneralPopupConfigs(c, s) {
     // Salt phrase.  
     salt = JSON.parse(s[8].value);
     $(".popup_table_setting").append(  
-        '<tr><td colspan="2">&nbsp;<td></tr>' +
-        '<tr><td class="warning" colspan="2">' + c.setconfigs[6] + '<td></tr>' +
+        '<tr><td colspan="3">&nbsp;<td></tr>' +
+        '<tr><td class="warning" colspan="3">' + c.setconfigs[6] + '<td></tr>' +
         '<tr>' +
-            '<td>' + c.setconfigs[7] + '</td>' + 
+            '<td colspan="2">' + c.setconfigs[7] + '</td>' + 
             '<td><input id="salt" type="text" name="salt" placeholder="' + c.setconfigs[8] + '" value="' + salt.phrase + '" /></td>' +
         '</tr>' +
-        '<tr><td class="msg" colspan="2">&nbsp;<td></tr>'
+        '<tr><td class="msg" colspan="3">&nbsp;<td></tr>'
     ); 
   
     $("#popup_container").fadeIn("slow");  
@@ -926,7 +927,7 @@ function showGeneralPopupConfigs(c, s) {
  * Function:    modifyConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 08, 2025
  *
  * Description: Check the configs (settings) input and modify it in the tbl_settings table.
  *
@@ -939,7 +940,9 @@ function modifyConfigs(c, s) {
     var set, id, check, input = [];
     
     // Get the input values.
-    input.push($("#rows").val(), $("#sign").val(), $("#salt").val());   
+    input.push($("#rows").val(), $("#sign").val(), $("#salt").val());  
+    
+    // Get the start year input values.
     for (let i = 1; i < c.pages.length - 2; i++) {        
         set = JSON.parse(s[i].value);
         id = "#" + s[i].name;
@@ -949,15 +952,29 @@ function modifyConfigs(c, s) {
         else {
            input.push("");
         }
-    }     
+    }
     
+    // Get the theme input values.
+    for (let i = 0; i < c.pages.length - 1; i++) {        
+        set = JSON.parse(s[i].value);
+        id = "#" + s[i].name + "_" + i;
+        if(set.page === "true") {       
+           input.push($(id).val()); 
+        }
+        else {
+           input.push("");
+        }
+    }
+        
     // Validate and send data.
     [check, input] = validateConfigs(c, s, input); 
     if (check)
     {          
         var send = 'rows=' + input[0] + '&sign=' + input[1] + '&salt=' + encodeURIComponent(input[2]) + 
                    '&finance=' + input[3] + '&stock=' + input[4] + '&savings=' + input[5] + 
-                   '&crypto=' + input[6]; 
+                   '&crypto=' + input[6] + '&dashclr=' + input[7] + '&finclr=' + input[8] +
+                   '&stkclr=' + input[9] + '&savclr=' + input[10] + '&cryclr=' + input[11] +
+                   '&setclr=' + input[12]; 
             
         var request = getAjaxRequest("settings/modify_configs", send);
             request.done(function(result) {
@@ -965,7 +982,7 @@ function modifyConfigs(c, s) {
                                      
                     closePopupWindow(); 
                     
-                    // Reload page if the number of rows or salt phrase is changes.
+                    // Reload page if the number of rows or salt phrase is changes.                  
                     if (input[0] || input[2]) {       
                         setTimeout(function(){
                             window.location.reload();
@@ -989,7 +1006,7 @@ function modifyConfigs(c, s) {
  * Function:    validateConfigs
  *
  * Created on Apr 19, 2024
- * Updated on Apr 27, 2024
+ * Updated on Mar 08, 2025
  *
  * Description: Validate the configs (settings) input.
  *
@@ -1034,6 +1051,18 @@ function validateConfigs(c, s, input) {
                 $(".msg").html(c.setconfigs[4] + " " + c.titles[i-2] + " " + c.messages[0]);
                 check = false;
                 i = 6;
+            }
+        }
+    }
+    
+    // Check the theme color.
+    var reg = /^#[0-9A-F]{6}$/i;
+    for (let i = 7; i <= 12; i++) {      
+        if (input[i] !== 0 && input[i] !== "" ) {           
+            if (!reg.test(input[i])) {
+                $(".msg").html(c.titles[i-7] + " " + c.misc[5] + " " + c.messages[0]);
+                check = false;
+                i = 12;
             }
         }
     }

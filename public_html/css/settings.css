@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Dec 31, 2024
+ * Updated on Mar 08, 2025
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -202,6 +202,11 @@
 .popup_table_setting td,
 .popup_table_finance td {
  padding: 0px 5px;
+}
+
+.popup_table_setting .color {
+ width: 3%;
+ border: 2px solid #f5f5f5;
 }
 
 .popup_table_finance td:nth-child(3) {

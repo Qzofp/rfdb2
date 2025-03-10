@@ -8,7 +8,7 @@
  * Used in: js\settings_general.js
  *
  * Created on Apr 21, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 08, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_settings table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyConfigs
  *
  * Created on Apr 21, 2024
- * Updated on Nov 16, 2024
+ * Updated on Mar 08, 2025
  *
  * Description: Modify (edit) the tbl_settings table.
  *
@@ -46,6 +46,12 @@ function ModifyConfigs()
     $stock   = filter_input(INPUT_POST, 'stock'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $savings = filter_input(INPUT_POST, 'savings' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $crypto  = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $dasclr  = filter_input(INPUT_POST, 'dasclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $finclr  = filter_input(INPUT_POST, 'finclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $stkclr  = filter_input(INPUT_POST, 'stkclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);   
+    $savclr  = filter_input(INPUT_POST, 'savclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);   
+    $cryclr  = filter_input(INPUT_POST, 'cryclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $setclr  = filter_input(INPUT_POST, 'setclr'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);       
     
     $response['success'] = true;
     if ($rows) {
@@ -75,6 +81,30 @@ function ModifyConfigs()
     if ($response['success'] && $crypto) {
         $response = EditSetting("crypto", "start", $crypto);
     }     
+    
+    if ($response['success'] && $dasclr) {
+        $response = EditSetting("dashboard", "theme.color", $dasclr);
+    }     
+    
+    if ($response['success'] && $finclr) {
+        $response = EditSetting("finance", "theme.color", $finclr);
+    } 
+    
+    if ($response['success'] && $stkclr) {
+        $response = EditSetting("stock", "theme.color", $stkclr);
+    } 
+
+    if ($response['success'] && $savclr) {
+        $response = EditSetting("savings", "theme.color", $savclr);
+    } 
+
+    if ($response['success'] && $cryclr) {
+        $response = EditSetting("crypto", "theme.color", $cryclr);
+    }    
+    
+    if ($response['success'] && $setclr) {
+        $response = EditSetting("settings", "theme.color", $setclr);
+    }
     
     echo $json = json_encode($response);
 }

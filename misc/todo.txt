@@ -125,6 +125,7 @@ ToDo
     - Uitgevoerd. Testen!
 
 25. Verbetering: De kleuren voor de types (financien, aandelen, sparen en crypto) aanpassen bij de settings -> configurations.
+    - Uitgevoerd.
 
 26. Verbetering: Kleuren voor de accounts toevoegen, net als voor de crypto currenties. Dit voor de grafieken.
 
@@ -134,3 +135,5 @@ ToDo
 
 29. Bug: Op het dashboard bij de crypto tabel wordt bij het editen de verkeerde kolom weergegeven, de ratio i.p.v. de value kolom. 
     - Opgelost.
+
+30. Verbetering: Input validate verbeteren.
