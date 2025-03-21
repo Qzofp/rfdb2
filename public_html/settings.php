@@ -2,7 +2,7 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:         settings.php
  * Dependencies: css/common.css
@@ -20,7 +20,7 @@
  *               js/settings.js
  *
  * Created on Oct 29, 2023
- * Updated on Mar 19, 2024
+ * Updated on Mar 21, 2025
  *
  * Description: Settings framework page.
  * 
@@ -157,11 +157,12 @@ if(!$user){
                                     <td><input id="date" type="text" name="date" placeholder="" value="" /></td>                                   
                                     <td><select id="serv" placeholder=""></select></td>      
                                     <td><input id="acct" type="text" name="account" placeholder="" value="" /></td>
+                                    <td><input id="color" type="text" name="color" placeholder="" value="" /></td>
                                     <td><input id="desc" type="text" name="desc" placeholder="" value="" /></td>
                                     <td><input class="btn" type="image" name="submit" src="" /></td>                 
                                 </tr>
                                 <tr>
-                                    <td class="msg" colspan="5">&nbsp;<td>
+                                    <td class="msg" colspan="6">&nbsp;<td>
                                 </tr>
                             </table>
                             

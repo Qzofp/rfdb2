@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 19, 2025
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Sep 18, 2024
+ * Updated on Mar 19, 2025
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -55,11 +55,19 @@ function GetAccounts()
         else {
             $date = "DATE_FORMAT(tbl_accounts.`date`,'%d-%m-%Y') AS `date`";   
         }
-                
+        
+        // Color column.
+        if ($type == "crypto") {
+            $color = "";
+        }
+        else {
+            $color = "tbl_accounts.`color`,";
+        }
+        
         $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
         $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";    
-        $query = "SELECT $id AS id,tbl_accounts.`hide`,". 
-                    "$date, tbl_services.`service`,$account AS account, tbl_accounts.`description`".
+        $query = "SELECT $id AS id,tbl_accounts.`hide`, $date, tbl_services.`service`,$account AS account, ".
+                    "$color tbl_accounts.`description`".
                  "FROM tbl_accounts ".
                  "INNER JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                  "WHERE tbl_accounts.`type` = '$type' ".

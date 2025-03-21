@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Feb 26, 2025
+ * Updated on Mar 19, 2025
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -333,7 +333,7 @@ function ShowSavingsSettings(c, s) {
  * Function:    ShowCryptoSettings
  *
  * Created on Dec 01, 2023
- * Updated on Feb 23, 2025
+ * Updated on Mar 19, 2025
  *
  * Description: Shows the settings content for the crypto slide.
  *
@@ -367,6 +367,9 @@ function ShowCryptoSettings(c, s) {
     set = JSON.parse(s[5].value);  
     items = setAccountItems(c, 4);
     showTable("tbl_accounts", items, s, 4, "settings/get_accounts", "type=crypto&sign=" + set.sign + "&sort=tbl_accounts.`date`");
+    
+    // Hide the color column.
+    $(".tbl_accounts td:nth-child(5),th:nth-child(5)").hide();
 }
 
 /*

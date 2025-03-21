@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 09, 2025
+ * Updated on Mar 21, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -22,7 +22,7 @@
  * Function:    setAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 01, 2024
+ * Updated on Mar 19, 2025
  *
  * Description: Set the account items.
  *
@@ -33,8 +33,8 @@
 function setAccountItems(c, n) {
     
     var items = [];  
-    items.push(c.accounts[n+4] + c.accounts[0]);
-    for (let i = 1; i <= 4; i++) {
+    items.push(c.accounts[n+5] + c.accounts[0]);
+    for (let i = 1; i <= 5; i++) {
        items.push(c.accounts[i]); 
     }    
     
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 21, 2025
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -56,7 +56,7 @@ function setAccountItems(c, n) {
 function showFinancesPopupAccounts(adp, c, s, slide, h) {
     
     var shw, btn, cells, set;
-    [btn, cells] = setPopupTable("fin_accounts", c.accounts[slide+4] + c.accounts[0], 5);    
+    [btn, cells] = setPopupTable("fin_accounts", c.accounts[slide+5] + c.accounts[0], 5);    
   
     $("#popup_content .popup_table_finance").show();
   
@@ -82,7 +82,20 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     addSelectMenu(c, "settings/get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], cells[2], 1);
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
-    $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[4]).val(cells[4]);
+    $("#popup_content .popup_table_finance #color").attr("placeholder", c.accounts[4]).val(cells[4]);
+    $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[5]).val(cells[5]);
+    
+    // Hide crypto account color input.
+    if (slide === 4) 
+    {
+        $(".popup_table_finance td:nth-child(5)").hide();
+        $(".popup_table_finance td:nth-child(6)").css({"width":"46%"});
+    }
+    else 
+    {
+        $(".popup_table_finance td:nth-child(5)").show();
+        $(".popup_table_finance td:nth-child(6)").css({"width":"34%"});
+    }
            
     $("#popup_content .popup_table_finance .btn").attr({
                 src: "img/" + btn + ".png",
