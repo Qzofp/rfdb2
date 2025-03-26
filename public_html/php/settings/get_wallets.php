@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on May 19, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 26, 2025
  *
  * Description: Check if the user is signed in and get the wallets from the databases tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetWallets
  *
  * Created on May 19, 2024
- * Updated on Sep 18, 2024
+ * Updated on Mar 26, 2025
  *
  * Description: Get the wallets from the databases tbl_wallets table. The account column is encrypted.
  *
@@ -46,9 +46,10 @@ function GetWallets()
         $db = OpenDatabase();
         $key = cKEY;
         
-        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";        
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";  
+        $color = "CONCAT('<span style=\"color:',tbl_wallets.`color`,';\">&#9608;&nbsp;</span>',tbl_wallets.`color`) AS `color`";
         $id = "CONCAT(tbl_wallets.`id`, '_',tbl_services.`id`, '_', tbl_accounts.`id`, '_', tbl_cryptocurrenties.`id`) "; 
-        $query = "SELECT $id AS id,tbl_wallets.`hide` AS hide,`service`,$account,`symbol`,tbl_wallets.`description` ". 
+        $query = "SELECT $id AS id,tbl_wallets.`hide` AS hide,`service`,$account,`symbol`,$color,tbl_wallets.`description` ". 
                  "FROM tbl_wallets ".
                  "LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
                  "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".

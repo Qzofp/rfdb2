@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 19, 2025
+ * Updated on Mar 26, 2025
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -409,7 +409,7 @@ function showSettingsButton(adp, c, that) {
  * Function:    showSettingButtonAction
  *
  * Created on Feb 12, 2024
- * Updated on Feb 26, 2025
+ * Updated on Mar 26, 2025
  *
  * Description: Shows the action when the page button is pressed.
  *
@@ -482,7 +482,12 @@ function showSettingButtonAction(adp, c, s, that) {
             {     
                 setPageButton(s[slide], 1, -1);
                 let items = setAccountItems(c, slide);    
-                showTable("tbl_accounts", items, s, slide, "settings/get_accounts","type=" + s[slide].name + "&sign=" + set.sign + "&sort=tbl_accounts.`date`");           
+                showTable("tbl_accounts", items, s, slide, "settings/get_accounts","type=" + s[slide].name + "&sign=" + set.sign + "&sort=tbl_accounts.`date`");  
+                
+                // Hide the crypto account color column.
+                if (slide === 4) {
+                    $(".tbl_accounts td:nth-child(5),th:nth-child(5)").hide();              
+                }
             }      
             break;
         

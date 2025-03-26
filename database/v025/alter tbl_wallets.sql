@@ -1,1 +1,1 @@
-ALTER TABLE `tbl_wallets` ADD `color` VARCHAR(10) NULL DEFAULT NULL AFTER `cid`;
+ALTER TABLE `tbl_wallets` ADD `color` VARCHAR(10) NULL DEFAULT '' AFTER `cid`; 

@@ -8,7 +8,7 @@
  * Used in: js\settings_finances.js
  *
  * Created on Mar 19, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 25, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on Sep 18, 2024
+ * Updated on Mar 25, 2025
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -43,6 +43,7 @@ function ModifyAccount()
     $serv    = filter_input(INPUT_POST, 'serv'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $type    = filter_input(INPUT_POST, 'type'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     $account = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $color   = filter_input(INPUT_POST, 'color'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $desc    = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $action  = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $id      = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -59,7 +60,7 @@ function ModifyAccount()
                 break;
             
             case "edit" :
-                $response = EditAccount($id, $hide, $date, $format, $serv, $type, $account, $desc);
+                $response = EditAccount($id, $hide, $date, $format, $serv, $type, $account, $color, $desc);
                 break;
             
             case "delete" :
@@ -185,15 +186,15 @@ function GetDateFormat()
  * Function:    EditAccount
  *
  * Created on Mar 23, 2024
- * Updated on Aug 12, 2024
+ * Updated on Mar 25, 2025
  *
  * Description: Edit the tbl_accounts table with the input if the service doesn't exists.
  *
- * In:  $id, $hide, $date, $format, $serv, $type, $account, $desc
+ * In:  $id, $hide, $date, $format, $serv, $type, $account, $color, $desc
  * Out: $response
  *
  */    
- function EditAccount($id, $hide, $date, $format, $serv, $type, $account, $desc)
+ function EditAccount($id, $hide, $date, $format, $serv, $type, $account, $color, $desc)
  {   
     $aTypes   = ["","finance","stock","savings","crypto"];    
     
@@ -207,17 +208,23 @@ function GetDateFormat()
                 
             $query = "UPDATE tbl_accounts SET `hide`=$hide,`account`=AES_ENCRYPT('$account','$key'),"
                     ."`date`=CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),".
-                     "`sid`='$serv',`type`='$aTypes[$type]',`description`='$desc' WHERE `id`=$id";  
+                     "`sid`='$serv',`type`='$aTypes[$type]',`color`='$color',`description`='$desc' ".
+                     "WHERE `id`=$id";
             
             $select = $db->prepare($query);
             $select->execute();          
                     
-            $response['id']   = $id;
-            $response['hide'] = $hide;
-            $response['date'] = $date;
-            $response['serv'] = $serv;
-            $response['acct'] = $account;
-            $response['desc'] = $desc;
+            $response['id']    = $id;
+            $response['hide']  = $hide;
+            $response['date']  = $date;
+            $response['serv']  = $serv;
+            $response['acct']  = $account;
+            
+            if ($type != "4") {
+                $response['color'] = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color";
+            }
+            
+            $response['desc']  = $desc;
             
             $response['success'] = true;  
         }

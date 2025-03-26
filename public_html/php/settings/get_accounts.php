@@ -8,7 +8,7 @@
  * Used in: js\settings.js
  *
  * Created on Feb 26, 2024
- * Updated on Mar 19, 2025
+ * Updated on Mar 25, 2025
  *
  * Description: Check if the user is signed in and get the accounts from the databases tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    GetAccounts
  *
  * Created on Feb 26, 2024
- * Updated on Mar 19, 2025
+ * Updated on Mar 25, 2025
  *
  * Description: Get the accounts from the databases tbl_accounts table.
  *
@@ -61,11 +61,11 @@ function GetAccounts()
             $color = "";
         }
         else {
-            $color = "tbl_accounts.`color`,";
+            $color = "CONCAT('<span style=\"color:',tbl_accounts.`color`,';\">&#9608;&nbsp;</span>',tbl_accounts.`color`) AS `color`,";
         }
         
         $id = "CONCAT(tbl_accounts.`id`, '_',tbl_accounts.`sid`) ";
-        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";    
+        $account = "CAST(AES_DECRYPT(tbl_accounts.`account`,'$key') AS CHAR(45))";        
         $query = "SELECT $id AS id,tbl_accounts.`hide`, $date, tbl_services.`service`,$account AS account, ".
                     "$color tbl_accounts.`description`".
                  "FROM tbl_accounts ".

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2025 at 04:11 PM
+-- Generation Time: Mar 26, 2025 at 04:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,7 +37,7 @@ CREATE TABLE `tbl_accounts` (
   `date` datetime DEFAULT NULL,
   `sid` int(11) DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
-  `color` varchar(10) DEFAULT NULL,
+  `color` varchar(10) NOT NULL DEFAULT '',
   `description` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -46,15 +46,15 @@ CREATE TABLE `tbl_accounts` (
 --
 
 INSERT INTO `tbl_accounts` (`id`, `hide`, `account`, `date`, `sid`, `type`, `color`, `description`) VALUES
-(1, 0, 0xaf4625a6843646707b0f5f09e5992d1bc69ff9e57288fd858c0f1889eeccec17, '2001-04-04 13:53:34', 1, 'finance', NULL, 'ING betaalrekening van Rizzo'),
-(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 13:29:49', 2, 'finance', NULL, 'ABN AMRO 2de betaalrekening van Rizzo'),
-(3, 0, 0xf88222f64335d3d233895fb2919b2b34, '2005-09-22 10:32:37', 1, 'stock', NULL, 'ING beleggingsrekening'),
-(4, 0, 0xb20fed245787d866d957497b4c301e36, '2016-03-10 10:34:05', 4, 'stock', NULL, 'Bank B belegginsrekening'),
-(5, 0, 0x1a813d0f78e1d93eb79ad3f4661b6dc4, '2008-07-15 15:16:51', 3, 'savings', NULL, 'Bank A spaarrekening'),
-(6, 0, 0x03a4d441647a290e6638cd2e18744b80, '2012-12-14 14:59:19', 4, 'savings', NULL, 'Bank B spaarrekening'),
-(7, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2018-10-17 10:37:51', 6, 'crypto', NULL, 'Trezor Wallet #1'),
-(8, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2020-01-16 14:50:15', 5, 'crypto', NULL, 'Exchange A Wallet #1'),
-(9, 0, 0xb90d0dc9d300c028e5de721a2bbd725d, '2022-08-18 10:40:06', 6, 'crypto', NULL, 'Trezor Wallet #2');
+(1, 0, 0xaf4625a6843646707b0f5f09e5992d1bc69ff9e57288fd858c0f1889eeccec17, '2001-04-04 16:07:45', 1, 'finance', '#fdd835', 'ING betaalrekening van Rizzo'),
+(2, 0, 0x7e8893523f6fb08b2b09adce75818f4145433232d6d151a81b2b0230661a3f5c, '2014-08-14 16:05:08', 2, 'finance', '#fff59d', 'ABN AMRO 2de betaalrekening van Rizzo'),
+(3, 0, 0xf88222f64335d3d233895fb2919b2b34, '2005-09-22 16:06:11', 1, 'stock', '#689f38', 'ING beleggingsrekening'),
+(4, 0, 0xb20fed245787d866d957497b4c301e36, '2016-03-10 16:06:29', 4, 'stock', '#76ff03', 'Bank B belegginsrekening'),
+(5, 0, 0x1a813d0f78e1d93eb79ad3f4661b6dc4, '2008-07-15 16:08:09', 3, 'savings', '#01579b', 'Bank A spaarrekening'),
+(6, 0, 0x03a4d441647a290e6638cd2e18744b80, '2012-12-14 16:08:38', 4, 'savings', '#80d8ff', 'Bank B spaarrekening'),
+(7, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2018-10-17 10:37:51', 6, 'crypto', '', 'Trezor Wallet #1'),
+(8, 0, 0xc45c341b91a61fb78553024f06cabc1c, '2020-01-16 14:50:15', 5, 'crypto', '', 'Exchange A Wallet #1'),
+(9, 0, 0xb90d0dc9d300c028e5de721a2bbd725d, '2022-08-18 10:40:06', 6, 'crypto', '', 'Trezor Wallet #2');
 
 -- --------------------------------------------------------
 
@@ -297,7 +297,7 @@ INSERT INTO `tbl_dutch` (`id`, `id_config`, `value`) VALUES
 (23, 26, 'Spaarrekeningen,Datum,Storting,Onttrekking,Dienst,Rekening,Beschrijving'),
 (24, 27, 'Cryptorekeningen,Datum,Storting,Onttrekking,Dienst,Rekening,Aantal,Crypto,Beschrijving'),
 (25, 28, 'Cryptomunten,Naam,Symbool,Kleur,Website'),
-(26, 29, 'Wallets,Dienst,Rekening,Crypto,Beschrijving'),
+(26, 29, 'Wallets,Dienst,Rekening,Crypto,Kleur,Beschrijving'),
 (27, 30, 'Activa,Test 1,Test 2'),
 (30, 31, 'Datum Waardes,Datum,Deze waardes,Er zijn geen # geselecteerd!,pagina\'s,rekeningen,Selecteer een datum!'),
 (31, 32, 'Waarde Rekeningen,Rekeningendiagram,Waardeontwikkeling,Crypto Waardes,Crypto-diagram,Crypto-ontwikkeling'),
@@ -348,7 +348,7 @@ INSERT INTO `tbl_english` (`id`, `id_config`, `value`) VALUES
 (23, 26, 'Savings Accounts,Date,Deposit,Withdrawal,Service,Account,Description'),
 (24, 27, 'Crypto Accounts,Date,Deposit,Withdrawal,Service,Account,Number,Crypto,Description'),
 (25, 28, 'Crypto Currencies,Name,Symbol,Color,Website'),
-(26, 29, 'Wallets,Service,Account,Crypto,Description'),
+(26, 29, 'Wallets,Service,Account,Crypto,Color,Description'),
 (27, 30, 'Activa,Test 1,Test 2'),
 (28, 31, 'Date Values,Date,these values,There are no # enabled!,pages,accounts,Select a date!'),
 (29, 32, 'Value Accounts,Accounts Chart,Value Development,Crypto Values,Crypto Chart,Crypto Development'),
@@ -598,7 +598,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-03-21 14:19:34', '2025-03-09 11:43:59');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-03-26 16:00:39', '2025-03-21 14:19:34');
 
 -- --------------------------------------------------------
 
@@ -773,7 +773,7 @@ CREATE TABLE `tbl_wallets` (
   `hide` tinyint(4) DEFAULT 0,
   `aid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
-  `color` varchar(10) DEFAULT NULL,
+  `color` varchar(10) DEFAULT '',
   `description` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -782,10 +782,10 @@ CREATE TABLE `tbl_wallets` (
 --
 
 INSERT INTO `tbl_wallets` (`id`, `hide`, `aid`, `cid`, `color`, `description`) VALUES
-(1, 0, 7, 1, NULL, 'Trezor Wallet #1, BTC'),
-(2, 0, 9, 1, NULL, 'Trezor Wallet #2, BTC'),
-(3, 0, 7, 2, NULL, 'Trezor Wallet #1, ETH'),
-(4, 0, 8, 2, NULL, 'Exchange A Wallet #1, ETH');
+(1, 0, 7, 1, '', 'Trezor Wallet #1, BTC'),
+(2, 0, 9, 1, '', 'Trezor Wallet #2, BTC'),
+(3, 0, 7, 2, '', 'Trezor Wallet #1, ETH'),
+(4, 0, 8, 2, '', 'Exchange A Wallet #1, ETH');
 
 --
 -- Indexes for dumped tables

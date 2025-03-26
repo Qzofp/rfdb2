@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 21, 2025
+ * Updated on Mar 26, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -45,7 +45,7 @@ function setAccountItems(c, n) {
  * Function:    showFinancesPopupAccounts
  *
  * Created on Mar 01, 2024
- * Updated on Mar 21, 2025
+ * Updated on Mar 25, 2025
  *
  * Description:  Shows the accounts popup content for the finances pages.
  *
@@ -82,19 +82,23 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
     addSelectMenu(c, "settings/get_select_settings", "type=service&slide=" + s[slide].name, "serv", c.accounts[2], cells[0].split("_")[1], cells[2], 1);
         
     $("#popup_content .popup_table_finance #acct").attr("placeholder", c.accounts[3]).val(cells[3]);
-    $("#popup_content .popup_table_finance #color").attr("placeholder", c.accounts[4]).val(cells[4]);
-    $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[5]).val(cells[5]);
+    //$("#popup_content .popup_table_finance #color").attr("placeholder", c.accounts[4]).val(cells[4]);
+    //$("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[5]).val(cells[5]);
     
     // Hide crypto account color input.
     if (slide === 4) 
     {
         $(".popup_table_finance td:nth-child(5)").hide();
         $(".popup_table_finance td:nth-child(6)").css({"width":"46%"});
+        $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[5]).val(cells[4]);
     }
     else 
     {
+        let color = (cells[4].split('</span>')[1] !== undefined)?cells[4].split('</span>')[1]:"";
         $(".popup_table_finance td:nth-child(5)").show();
         $(".popup_table_finance td:nth-child(6)").css({"width":"34%"});
+        $("#popup_content .popup_table_finance #color").attr("placeholder", c.accounts[4]).val(color);
+        $("#popup_content .popup_table_finance #desc").attr("placeholder", c.accounts[5]).val(cells[5]);
     }
            
     $("#popup_content .popup_table_finance .btn").attr({
@@ -116,7 +120,7 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 25, 2025
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
@@ -127,9 +131,22 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
 function modifyAccounts(adp, c, btn) {
     
     var msg, input = [];
+    var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
+    
     
     // Get the input values.
-    input.push($("#date").val(), $("#serv").val(), $("#acct").val(), $("#desc").val());
+    input.push($("#date").val(), $("#serv").val(), $("#acct").val());
+    if (type !== 4) {
+        input.push($("#color").val());
+    }
+    else { // No color for the crypto accounts.
+        input.push("-");
+    }
+    input.push($("#desc").val());
+    
+    // Debug
+    //console.log(input);
+    
     
     msg = c.messages[2].replace("#", input[2]);   
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
@@ -142,11 +159,16 @@ function modifyAccounts(adp, c, btn) {
                 id = id.split("_")[0];
             }
             
-            var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
+            //var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
             var hide = getShowHideRow();
             var send = 'date='+ input[0] + '&serv=' + input[1] + '&type=' + type + '&account=' + 
-                       encodeURIComponent(input[2]) + '&desc=' + encodeURIComponent(input[3]) + 
-                       '&id=' + id + '&action=' + action + '&hide=' + hide; 
+                       encodeURIComponent(input[2]) + '&color=' + input[3] + 
+                       '&desc=' + encodeURIComponent(input[4]) + '&id=' + id + '&action=' + action + 
+                       '&hide=' + hide; 
+               
+            // Debug
+            //console.log( send );
+               
             
             var request = getAjaxRequest("settings/modify_accounts", send);
             request.done(function(result) {  
@@ -167,7 +189,7 @@ function modifyAccounts(adp, c, btn) {
                             case "edit"   :
                                 // Correct the id and service values.
                                 result.id += "_" + result.serv;
-                                result.serv = $(".nice-select .current:first").html();        
+                                result.serv = $(".nice-select .current:first").html();
                                 showEditRow(result);
                                 break;
                                 
@@ -506,7 +528,7 @@ function modifyBusinesses(c, btn) {
  * Function:    showCryptoPopupCurrenties
  *
  * Created on May 20, 2024
- * Updated on Mar 09, 2024
+ * Updated on Mar 25, 2024
  *
  * Description:  Shows the crypto currenties popup content for the crypto page.
  *
@@ -530,13 +552,13 @@ function showCryptoPopupCurrenties(c, s, h) {
     set = JSON.parse(s[4].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
     
-    var $color = (cells[3].split('</span>')[1] !== undefined)?cells[3].split('</span>')[1]:"";
+    var color = (cells[3].split('</span>')[1] !== undefined)?cells[3].split('</span>')[1]:"";
     $(".popup_table_setting").append(
         '<tr>' +
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><input id="name" type="text" name="name" placeholder="' + c.cryptos[1] + '" value="' + cells[1] + '" /></td>' +
             '<td><input id="crypto" type="text" name="crypto" placeholder="' + c.cryptos[2] + '" value="' + cells[2] + '" /></td>' +
-            '<td><input id="color" type="text" name="color" placeholder="' + c.cryptos[3] + '" value="' + $color + '" /></td>' +
+            '<td><input id="color" type="text" name="color" placeholder="' + c.cryptos[3] + '" value="' + color + '" /></td>' +
             '<td><input id="website" type="text" name="website" placeholder="' + c.cryptos[4] + '" value="' + cells[4] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
@@ -638,7 +660,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 26, 2025
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -662,13 +684,15 @@ function showCryptoPopupWallets(c, s, h) {
     set = JSON.parse(s[4].value);
     $("#popup_content h2").css("text-decoration-color", set.theme.color);      
     
+    var color = (cells[4].split('</span>')[1] !== undefined)?cells[4].split('</span>')[1]:"";
     $(".popup_table_setting").append(
         '<tr>' +
             '<td><input class="shw" type="image" name="submit" src="' + shw + '" /></td>' +        
             '<td><select id="services" placeholder=""></select></td>' +
             '<td><select id="accounts" placeholder=""></select></td>' +
-            '<td><select id="cryptos" placeholder=""></select></td>' +            
-            '<td><input id="desc" type="text" name="desc" placeholder="' + c.wallets[4] + '" value="' + cells[4] + '" /></td>' +
+            '<td><select id="cryptos" placeholder=""></select></td>' +    
+            '<td><input id="color" type="text" name="color" placeholder="' + c.wallets[4] + '" value="' + color + '" /></td>' +
+            '<td><input id="desc" type="text" name="desc" placeholder="' + c.wallets[5] + '" value="' + cells[5] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
         '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'

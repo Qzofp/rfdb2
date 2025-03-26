@@ -8,7 +8,7 @@
  * Used in: settings.html
  *
  * Created on Oct 18, 2023
- * Updated on Mar 21, 2025
+ * Updated on Mar 26, 2025
  *
  * Description: The css settings page.
  * Build for: Chromium based and Firefox browsers. 
@@ -128,7 +128,7 @@
 
 .tbl_wallets th:nth-child(2), 
 .tbl_wallets th:nth-child(3) {
- width: 20%;  
+ width: 19%;  
 }
 
 .tbl_wallets th:nth-child(4) {
@@ -136,7 +136,11 @@
 }
 
 .tbl_wallets th:nth-child(5) {
- width: 49%;  
+ width: 12%;  
+}
+
+.tbl_wallets th:nth-child(6) {
+ width: 39%;  
 }
 
 /* Settings popups */
@@ -251,7 +255,7 @@
 
 .gen_wallets .popup_table_setting td:nth-child(2),
 .gen_wallets .popup_table_setting td:nth-child(3) {
- width: 24%;
+ width: 20%;
 }
 
 .gen_wallets .popup_table_setting td:nth-child(4) {
@@ -259,7 +263,11 @@
 }
 
 .gen_wallets .popup_table_setting td:nth-child(5) {
- width: 38%;
+ width: 12%;
+}
+
+.gen_wallets .popup_table_setting td:nth-child(6) {
+ width: 36%;
 }
 
 /* Radio and checkbox buttons */

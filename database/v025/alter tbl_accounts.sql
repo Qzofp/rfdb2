@@ -1,1 +1,1 @@
-ALTER TABLE `tbl_accounts` ADD `color` VARCHAR(10) NULL DEFAULT NULL AFTER `type`; 
+ALTER TABLE `tbl_accounts` ADD `color` VARCHAR(10) NOT NULL DEFAULT '' AFTER `type`;
