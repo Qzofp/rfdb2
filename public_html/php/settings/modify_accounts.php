@@ -8,7 +8,7 @@
  * Used in: js\settings_finances.js
  *
  * Created on Mar 19, 2024
- * Updated on Mar 25, 2025
+ * Updated on Mar 31, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_accounts table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyAccount
  *
  * Created on Mar 19, 2024
- * Updated on Mar 25, 2025
+ * Updated on Mar 31, 2025
  *
  * Description: Modify (add, edit or delete) the tbl_accounts table if the account doesn't exists.
  *
@@ -56,7 +56,7 @@ function ModifyAccount()
         switch ($action)
         {
             case "add" :
-                $response = AddAccount($date, $format, $serv, $type, $account, $desc);
+                $response = AddAccount($date, $format, $serv, $type, $account, $color, $desc);
                 break;
             
             case "edit" :
@@ -135,15 +135,15 @@ function GetDateFormat()
  * Function:    AddAccount
  *
  * Created on Mar 19, 2024
- * Updated on Aug 12, 2024
+ * Updated on Mar 31, 2025
  *
  * Description: Add the input to the tbl_accounts table if the account doesn't exists.
  *
- * In:  $date, $format, $serv, $type, $account, $desc
+ * In:  $date, $format, $serv, $type, $account, $color, $desc
  * Out: $response
  *
  */    
- function AddAccount($date, $format, $serv, $type, $account, $desc)
+ function AddAccount($date, $format, $serv, $type, $account, $color, $desc)
  {          
     $aTypes   = ["","finance","stock","savings","crypto"];
     
@@ -155,9 +155,9 @@ function GetDateFormat()
             $db = OpenDatabase();
             $key = cKEY;
             
-            $query = "INSERT INTO tbl_accounts (`account`,`date`,`sid`,`type`,`description`) ".
+            $query = "INSERT INTO tbl_accounts (`account`,`date`,`sid`,`type`,`color`,`description`) ".
                      "VALUES (AES_ENCRYPT('$account', '$key'), CONCAT(STR_TO_DATE('$date','$format'),' ',CURTIME()),"
-                           ."'$serv', '$aTypes[$type]', '$desc');";
+                           ."'$serv', '$aTypes[$type]', '$color', '$desc');";
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -165,6 +165,11 @@ function GetDateFormat()
             $response['date']  = $date;
             $response['serv']  = $serv;
             $response['acct']  = $account;
+            
+            if ($type != "4") {
+                $response['color'] = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color";
+            }            
+            
             $response['desc']  = $desc;
             
             $response['success'] = true;  

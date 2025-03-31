@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 26, 2025
+ * Updated on Mar 31, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -660,7 +660,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Mar 26, 2025
+ * Updated on Mar 31, 2025
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -671,7 +671,7 @@ function modifyCryptoCurrenties(c, btn) {
 function showCryptoPopupWallets(c, s, h) {
     
     var shw, btn, cells, set;
-    [btn, cells] = setPopupTable("gen_wallets", c.wallets[0], 5);
+    [btn, cells] = setPopupTable("gen_wallets", c.wallets[0], 6);
     
     $(".popup_table_finance").hide();
     
@@ -727,7 +727,7 @@ function showCryptoPopupWallets(c, s, h) {
  * Function:    modifyCryptoWallets
  *
  * Created on May 31, 2024
- * Updated on Feb 23, 2025
+ * Updated on Mar 31, 2025
  *
  * Description: Check the crypto wallets input and add, edit or remove the crypto wallets in the database.
  *
@@ -740,7 +740,7 @@ function modifyCryptoWallets(c, btn) {
     var msg, input = [];
     
     // Get the input values.
-    input.push($("#services").val(),$("#accounts").val(), $("#cryptos").val(), $("#desc").val());
+    input.push($("#services").val(),$("#accounts").val(), $("#cryptos").val(), $("#color").val(), $("#desc").val());
         
     msg = c.messages[2].replace("#", $("#accounts option:selected").text());
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
@@ -755,8 +755,11 @@ function modifyCryptoWallets(c, btn) {
             
             var hide = getShowHideRow();
             var send = 'service=' + input[0] + '&account=' + input[1] + '&crypto=' + input[2] + 
-                       '&desc=' + encodeURIComponent(input[3]) + 
+                       '&color=' + input[3] + '&desc=' + encodeURIComponent(input[4]) + 
                        '&id=' + id + '&action=' + action + '&hide=' + hide; 
+         
+            // Debug
+            //console.log ( send );
          
             var request = getAjaxRequest("settings/modify_wallets", send);
             request.done(function(result) {

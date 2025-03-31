@@ -8,7 +8,7 @@
  * Used in: js\settings_finances.js
  *
  * Created on May 31, 2024
- * Updated on Sep 23, 2025
+ * Updated on Mar 31, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_wallets table.
  * Dependenties: config.php
@@ -28,7 +28,7 @@ else {
  * Function:    ModifyWallets
  *
  * Created on May 31, 2024
- * Updated on Sep 18, 2024
+ * Updated on Mar 31, 2025
  *
  * Description: Modify (add, edit or delete) the tbl_wallets table if the wallet doesn't exists.
  *
@@ -42,6 +42,7 @@ function ModifyWallets()
     $sid    = filter_input(INPUT_POST, 'service' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $aid    = filter_input(INPUT_POST, 'account' , FILTER_SANITIZE_FULL_SPECIAL_CHARS);    
     $cid    = filter_input(INPUT_POST, 'crypto'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+    $color  = filter_input(INPUT_POST, 'color'   , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $desc   = filter_input(INPUT_POST, 'desc'    , FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
     $action = filter_input(INPUT_POST, 'action'  , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $id     = filter_input(INPUT_POST, 'id'      , FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -51,11 +52,11 @@ function ModifyWallets()
     switch ($action)
     {
         case "add" :
-            $response = AddWallet($sid, $aid, $cid, $desc);
+            $response = AddWallet($sid, $aid, $cid, $color, $desc);
             break;
             
         case "edit" :
-            $response = EditWallet($id, $hide, $sid, $aid, $cid, $desc);
+            $response = EditWallet($id, $hide, $sid, $aid, $cid, $color, $desc);
             break;
             
         case "delete" :
@@ -70,15 +71,15 @@ function ModifyWallets()
  * Function:    AddWallet
  *
  * Created on May 31, 2024
- * Updated on Aug 01, 2024
+ * Updated on Mar 31, 2025
  *
  * Description: Add the input to the tbl_wallet table if the wallet doesn't exists.
  *
- * In:  $sid, $aid, $cid, $desc
+ * In:  $sid, $aid, $cid, $color, $desc
  * Out: $response
  *
  */    
- function AddWallet($sid, $aid, $cid, $desc)
+ function AddWallet($sid, $aid, $cid, $color, $desc)
  {          
     $response = CheckWallet(0, $aid, $cid);
     if ($response['success'] && !$response['exists'])
@@ -87,8 +88,8 @@ function ModifyWallets()
         {    
             $db = OpenDatabase();
                  
-            $query = "INSERT INTO tbl_wallets (`aid`,`cid`,`description`) ".
-                     "VALUES ('$aid','$cid','$desc');";        
+            $query = "INSERT INTO tbl_wallets (`aid`,`cid`,`color`,`description`) ".
+                     "VALUES ('$aid','$cid','$color','$desc');";      
             $select = $db->prepare($query);
             $select->execute();
                         
@@ -96,6 +97,7 @@ function ModifyWallets()
             $response['service'] = $sid;            
             $response['account'] = $aid;
             $response['crypto']  = $cid;  
+            $response['color']   = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color";
             $response['desc']    = $desc;
             
             $response['success'] = true;  
@@ -117,15 +119,15 @@ function ModifyWallets()
  * Function:    EditWallet
  *
  * Created on Jun 01, 2024
- * Updated on Aug 01, 2024
+ * Updated on Mar 31, 2025
  *
  * Description: Edit the tbl_wallet table with the input if the wallet doesn't exists.
  *
- * In:  $id, $hide, $sid, $aid, $cid, $desc
+ * In:  $id, $hide, $sid, $aid, $cid, $color, $desc
  * Out: $response
  *
  */    
- function EditWallet($id, $hide, $sid, $aid, $cid, $desc)
+ function EditWallet($id, $hide, $sid, $aid, $cid, $color, $desc)
  {   
     $response = CheckWallet($id, $aid, $cid);    
     if ($response['success'] && !$response['exists'])
@@ -135,7 +137,7 @@ function ModifyWallets()
             $db = OpenDatabase();
                 
             $query = "UPDATE tbl_wallets SET `hide`=$hide,`aid`='$aid',`cid`='$cid',".
-                     "`description`='$desc' WHERE `id`=$id";  
+                     "`color`='$color', `description`='$desc' WHERE `id`=$id";  
             
             $select = $db->prepare($query);
             $select->execute();
@@ -144,10 +146,11 @@ function ModifyWallets()
             $response['hide']    = $hide;
             $response['service'] = $sid;            
             $response['account'] = $aid;
-            $response['crypto']  = $cid;  
+            $response['crypto']  = $cid; 
+            $response['color']   = "<span style=\"color:$color;\">&#9608;&nbsp;</span>$color";
             $response['desc']    = $desc;
                           
-            $response['success'] = true;  
+            $response['success'] = true;
         }
         catch (PDOException $e) 
         {    
