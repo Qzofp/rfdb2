@@ -128,6 +128,7 @@ ToDo
     - Uitgevoerd.
 
 26. Verbetering: Kleuren voor de accounts toevoegen, net als voor de crypto currenties. Dit voor de grafieken.
+    - Uitgevoerd.
 
 27. Verbetering: De tabbladen van de Dashboard pagina onafhankelijk maken, zodat de pagina opnieuw wordt geladen als er een tabblad wordt gekozen.
 

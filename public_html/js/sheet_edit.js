@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -180,7 +180,7 @@ function getPopupSelectAndProcessChoice(c, i, that) {
  * Function:    addPopupSheetHistory
  *
  * Created on Jul 31, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Get the history (radio button and description) and add it to the popup of the sheet.
  *
@@ -199,7 +199,7 @@ function addPopupSheetHistory(c, name, id) {
             {
                 $("#mny-" + result.data[0].rad_history).prop("checked", true);
                 showPopupRadioButtonLabel(result.data[0].rad_history, c, name);
-                $("#description").val(result.data[0].desc_history);
+                $("#description").val(decodeHTML(result.data[0].desc_history));
             }
             else {
                 $("#description").val("");

@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -362,7 +362,7 @@ function GetTypes($date)
  * Function:    CreateExpandQuery
  *
  * Created on Jan 15, 2025
- * Updated on Feb 02, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts for the expand table line chart.
  *
@@ -384,7 +384,9 @@ function CreateExpandQuery($date)
         foreach ($input['data'] as $key=>$value)
         {
             if ($value['hide'] == 0) {
-                $case .= "IFNULL(SUM(CASE WHEN `id` =".$value['id']." AND `service` = '".$value['service']."' THEN `value` END),'NaN') AS `".$value['type']."_".$value['account']."_".$value['id']."`,";       
+                $case .= "IFNULL(SUM(CASE WHEN `id` =".$value['id']." AND `service` = '".$value['service'].
+                         "' THEN `value` END),'NaN') AS `".$value['type']."_".$value['account']."_".$value['id'].
+                         "_".$value['color']."`,";     
             }
             
             if ($value['type'] !== 3) {
@@ -441,7 +443,7 @@ function CreateExpandQuery($date)
  * Function:    GetAccounts
  *
  * Created on Jan 15, 2025
- * Updated on Feb 19, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Get the accounts from de database tbl_value_accounts and tbl_amount_wallets tables.
  *
@@ -486,7 +488,7 @@ function GetAccounts($date)
             // Remove the last comma.
             $field = substr_replace($field, '', -1);            
             
-            $query = "SELECT `id`, `hide`, `service`, ".
+            $query = "SELECT `id`, `hide`, `service`, `color`, ".
                         "CASE WHEN `type` = 'finance' THEN 0 ".
                              "WHEN `type` = 'stock'   THEN 1 ".
                              "WHEN `type` = 'savings' THEN 2 ".
@@ -494,13 +496,13 @@ function GetAccounts($date)
                         "END AS `type`, CAST(AES_DECRYPT(`account`, '$key') AS CHAR(45)) AS `account` ".
                      "FROM (".
                         "SELECT tbl_value_accounts.`date` AS `date`, tbl_value_accounts.`hide` AS `hide`, tbl_value_accounts.`aid` AS `id`, tbl_services.`service` AS `service`, `type`, ".
-                            "tbl_accounts.`account` AS `account`, '-' AS `symbol` ".
+                            "tbl_accounts.`account` AS `account`, '-' AS `symbol`, tbl_accounts.`color` AS `color` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "UNION ".
                         "SELECT tbl_value_cryptos.`date` AS `date`, tbl_amount_wallets.`hide` AS `hide`, tbl_amount_wallets.`wid` AS `id`, tbl_services.`service` AS `service`, `type`, ".
-                            "tbl_accounts.`account` AS `account`, tbl_cryptocurrenties.`symbol` AS `symbol` ".
+                            "tbl_accounts.`account` AS `account`, tbl_cryptocurrenties.`symbol` AS `symbol`, tbl_wallets.`color` AS `color` ".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".

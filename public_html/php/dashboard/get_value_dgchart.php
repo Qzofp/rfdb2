@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Dec 24, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the doughnut chart.
@@ -184,7 +184,7 @@ function GetConfigs($data)
  * Function:    CreateQuery
  *
  * Created on Aug 30, 2024
- * Updated on Feb 19, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Create the query to get the rows from the tbl_value_accounts.
  *
@@ -246,17 +246,17 @@ function CreateQuery($date, $action, $case, $field)
         
             $ratio  = "IFNULL(FORMAT(100 * `value` / SUM(`value`) OVER(), 2),'0') AS ratio ";
             $value  = "FORMAT(`value`, 2) AS `value` ";
-            $query = "SELECT `type` AS `id`, $account, $ratio, $value ".
+            $query = "SELECT `type` AS `id`, $account, `symbol`, `color`, $ratio, $value ".
                      "FROM (".
                         "SELECT `type`, tbl_value_accounts.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, ". 
-                            "IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value`, '-' AS `symbol` ".
+                            "IF(tbl_value_accounts.`hide` = 0, `value`, 0) AS `value`, '-' AS `symbol`, tbl_accounts.`color` AS `color` ".
                         "FROM tbl_value_accounts ".
                         "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
                         "LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
                         "WHERE tbl_value_accounts .`date` = $date ".
                         "UNION ".
                         "SELECT `type`, tbl_amount_wallets.`hide` AS hide, tbl_services.`service` AS `service`, tbl_accounts.`account` AS `account`, ". 
-                            "IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value`, tbl_cryptocurrenties.`symbol` AS `symbol` ".
+                            "IF(tbl_amount_wallets.`hide` = 0, `amount`*`value`, 0) AS `value`, tbl_cryptocurrenties.`symbol` AS `symbol`, tbl_wallets.`color` AS `color`".
                         "FROM tbl_value_cryptos ".
                         "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
                         "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".

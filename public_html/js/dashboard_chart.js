@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -195,7 +195,7 @@ function initLineChart(s) {
  * Function:    showActivaAccountsDoughnutChart
  *
  * Created on Dec 25, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Show the activa accounts doughnut chart.
  *
@@ -213,26 +213,43 @@ function showActivaAccountsDoughnutChart(doughnut, c, s, date, action) {
             // Debug
             //console.log( result.query );
             
-            var set, labels = [], data = [], value = [], color = [];
+            var set, label, labels = [], data = [], value = [], color = [];
             $.each(result.data, function (n, field) {  
                                 
                 // Get the theme colors.
                 switch (field.id) {
                     case "finance" :  set = JSON.parse(s[1].value);
+                                      label = field.type;
                                       break;
                                         
                     case "stock" :    set = JSON.parse(s[2].value);
+                                      label = field.type;
                                       break;
                                         
                     case "savings" :  set = JSON.parse(s[3].value);
+                                      label = field.type;
                                       break;
                                     
                     case "crypto" :   set = JSON.parse(s[4].value);
+                                      if (action === "expand") {
+                                        label = field.type + ', ' + field.symbol;
+                                      }
+                                      else {
+                                        label = field.type;
+                                      }
                                       break;
                 }          
                 
-                labels.push($("<div/>").html(field.type).text()); // Decode the label (HTML entities, such as ` & etc. ).
-                color.push(set.theme.color);
+                labels.push($("<div/>").html(label).text()); // Decode the label (HTML entities, such as ` & etc. ).
+                
+                // Select colors for the collapse or expand chart.
+                if (action === "collapse") {
+                    color.push(set.theme.color);
+                }
+                else {
+                    color.push(field.color);
+                }
+                
                 data.push(field.ratio);
                 value.push(field.value);                         
             });       
@@ -416,7 +433,7 @@ function showLineChartTooltip(lnc, that) {
  * Function:    showActivaAccountsLineChart
  *
  * Created on Jan 03, 2025
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Show the activa value developement line chart.
  *
@@ -450,7 +467,14 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
                 {
                     let n = Number(key.split("_")[0]) + 1;
                     let set = JSON.parse(s[n].value);            
-                    color[key] = set.theme.color;                   
+                    
+                    // Select colors for the collapse or expand lines.
+                    if (action === "collapse") {
+                        color[key] = set.theme.color; 
+                    }
+                    else {
+                        color[key] = key.split("_")[3];                   
+                    }
                 }
             });   
             

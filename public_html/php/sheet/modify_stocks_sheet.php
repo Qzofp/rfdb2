@@ -8,13 +8,13 @@
  * Used in: js\sheet_edit.js
  *
  * Created on Jul 12, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 02, 2025
  *
  * Description: Check if the user is signed in and modify the tbl_stocks table.
  * Dependenties: config.php
  *
  */
-require_once 'config.php';
+require_once '../config.php';
 session_start();
 header("Content-Type:application/json");
 if (isset($_SESSION['user'])) {
