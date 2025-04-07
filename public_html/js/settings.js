@@ -7,7 +7,7 @@
  * Used in: settings.php
  *
  * Created on Oct 29, 2023
- * Updated on Mar 26, 2025
+ * Updated on Apr 07, 2025
  *
  * Description: Javascript functions for the general settings page slide (tab).
  * Dependenties: js/config.js
@@ -614,7 +614,7 @@ function getAndSetScaleButton(c, name) {
  * Function:    setPopupChoice
  *
  * Created on Nov 28, 2023
- * Updated on May 31, 2024
+ * Updated on Apr 07, 2025
  *
  * Description: Set the choice made in the settings popup window.
  *
@@ -655,7 +655,7 @@ function setPopupChoice(adp, e, c, s) {
                 break;
                 
             case "fin_accounts" :
-                modifyAccounts(adp, c, btn);
+                modifyAccounts(adp, c, s, btn);
                 break;
             
             case "gen_groups" :

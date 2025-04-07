@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Mar 31, 2025
+ * Updated on Apr 07, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -120,20 +120,19 @@ function showFinancesPopupAccounts(adp, c, s, slide, h) {
  * Function:    modifyAccounts
  *
  * Created on Mar 18, 2024
- * Updated on Mar 25, 2025
+ * Updated on Apr 07, 2025
  *
  * Description: Check the accounts input and add, edit or remove the accounts in the database.
  *
- * In:  adp, c, btn
+ * In:  adp, c, s, btn
  * Out: -
  *
  */
-function modifyAccounts(adp, c, btn) {
+function modifyAccounts(adp, c, s, btn) {
     
     var msg, input = [];
     var type = Number($(".slidemenu input[name='slideItem']:checked")[0].value); // Get the active slide.
-    
-    
+       
     // Get the input values.
     input.push($("#date").val(), $("#serv").val(), $("#acct").val());
     if (type !== 4) {
@@ -145,14 +144,17 @@ function modifyAccounts(adp, c, btn) {
     input.push($("#desc").val());
     
     // Debug
-    //console.log(input);
-    
+    //console.log(input);  
     
     msg = c.messages[2].replace("#", input[2]);   
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the input to account table if the account doesn´t exists.
-        if (validateInput(c.messages, c.accounts, input, true))
+        if (       
+            validateInput(c.messages, c.accounts, input, true) && 
+            validateDate(c, s, c.accounts[1], input[0]) &&  
+            validateColor(type, c.messages, c.accounts[4], input[3])
+        )
         {            
             var [id, action] = getRowIdAndAction();            
             if (id) {
@@ -167,8 +169,7 @@ function modifyAccounts(adp, c, btn) {
                        '&hide=' + hide; 
                
             // Debug
-            //console.log( send );
-               
+            //console.log( send );             
             
             var request = getAjaxRequest("settings/modify_accounts", send);
             request.done(function(result) {  
@@ -847,4 +848,34 @@ function modifyCryptoWallets(c, btn) {
             closeErrorMessage();            
         }                        
     } 
+}
+
+/*
+ * Function:    validateColor
+ *
+ * Created on Apr 06, 2025
+ * Updated on Apr 06, 2025
+ *
+ * Description: Validate the color input, check if it is a valid color code (e.g. #ffffff).
+ *
+ * In:  type, msg, name, input
+ * Out: check
+ *
+ */
+function validateColor(type, msg, name, input) {
+    
+    var reg   = /^#[0-9A-F]{6}$/i;
+    var check = true;
+     
+    // Only check the finance, stock and savings colors. Skip the crypto account color.
+    if (type !== 4) 
+    {
+        if (!reg.test(input)) 
+        {
+            $("#popup_content .msg").html(name + " " + msg[0]); 
+            check = false;
+        }     
+    }
+    
+    return check;
 }
