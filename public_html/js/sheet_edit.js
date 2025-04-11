@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Jun 04, 2023
- * Updated on Apr 02, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the sheet page.
  * Dependenties: js/config.js
@@ -925,7 +925,7 @@ function correctAmount(s, amount, n=2) {
  * Function:    modifyFinances
  *
  * Created on Jun 24, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Check the finances sheet input and add, edit or remove the finances in the database.
  *
@@ -949,7 +949,10 @@ function modifyFinances(adp, c, s, btn) {
                      c.payment[7], c.payment[8]];
         
         // Add, edit or delete the finances table row.
-        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+        if (validateSheetInput(c.messages[5], items, input) && 
+            validateDate(c, s, items[0], input[0]) &&
+            validateSheetCurrency(c, s, amount)
+        ) {
            
             var [id, action] = getRowIdAndAction();               
             if (id) {
@@ -1143,7 +1146,7 @@ function getAndAdjustFinancesTotals(sign) {
  * Function:    modifyStocks
  *
  * Created on Jul 12, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Check the stock sheet input and add, edit or remove the stocks in the database.
  *
@@ -1167,7 +1170,10 @@ function modifyStocks(adp, c, s, btn) {
                      c.investment[5], c.investment[6]];
         
         // Add, edit or delete the stocks table row.
-        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+        if (validateSheetInput(c.messages[5], items, input) && 
+            validateDate(c, s, items[0], input[0]) &&    
+            validateSheetCurrency(c, s, amount)
+        ) {
            
             var [id, action] = getRowIdAndAction();               
             if (id) {
@@ -1272,7 +1278,7 @@ function modifyStocks(adp, c, s, btn) {
  * Function:    modifySavings
  *
  * Created on Jul 13, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Check the savings sheet input and add, edit or remove the savings in the database.
  *
@@ -1295,7 +1301,10 @@ function modifySavings(adp, c, s, btn) {
         let items = [c.savings[1], c.misc[2] + " " + c.misc[3], c.misc[2], c.savings[4], c.savings[5], c.savings[6]];
         
         // Add, edit or delete the savings table row.
-        if (validateSheetInput(c.messages[5], items, input) && validateSheetCurrency(c, s, amount)) {
+        if (validateSheetInput(c.messages[5], items, input) && 
+            validateDate(c, s, items[0], input[0]) &&       
+            validateSheetCurrency(c, s, amount)
+        ) {
            
             var [id, action] = getRowIdAndAction();               
             if (id) {
@@ -1400,7 +1409,7 @@ function modifySavings(adp, c, s, btn) {
  * Function:    modifyCrypto
  *
  * Created on Jul 17, 2024
- * Updated on Feb 26, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Check the crypto sheet input and add, edit or remove the savings in the database.
  *
@@ -1428,7 +1437,10 @@ function modifyCrypto(adp, c, s, btn) {
                      c.crypto[6], c.crypto[7], c.crypto[8]];
                 
         // Add, edit or delete the crypto table row.
-        if (validateSheetInput(c.messages[5], items, input) && validateSheetCrypto(c, s, crypto)) {
+        if (validateSheetInput(c.messages[5], items, input) && 
+            validateDate(c, s, items[0], input[0]) &&  
+            validateSheetCrypto(c, s, crypto)
+        ) {
            
             var [id, action] = getRowIdAndAction();               
             if (id) {

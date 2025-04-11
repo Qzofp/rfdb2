@@ -9,7 +9,7 @@
  * 
  *
  * Created on Mar 01, 2024
- * Updated on Apr 07, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Javascript functions for the settings finances pages.
  * Dependenties: js/config.js
@@ -578,7 +578,7 @@ function showCryptoPopupCurrenties(c, s, h) {
  * Function:    modifyCryptoCurrenties
  *
  * Created on May 28, 2024
- * Updated on Feb 23, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Check the crypto currenties input and add, edit or remove the crypto currenties in the database.
  *
@@ -597,7 +597,9 @@ function modifyCryptoCurrenties(c, btn) {
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the input to account table if the account doesn´t exists.
-        if (validateInput(c.messages, c.cryptos, input, true))
+        if (validateInput(c.messages, c.cryptos, input, true) &&
+            validateColor(0, c.messages, c.cryptos[3], input[2])
+        )
         {            
             var [id, action] = getRowIdAndAction();            
             var hide = getShowHideRow();
@@ -661,7 +663,7 @@ function modifyCryptoCurrenties(c, btn) {
  * Function:    showCryptoPopupWallets
  *
  * Created on May 20, 2024
- * Updated on Mar 31, 2025
+ * Updated on Apr 08, 2025
  *
  * Description:  Shows the crypto wallets popup content for the crypto page.
  *
@@ -696,7 +698,7 @@ function showCryptoPopupWallets(c, s, h) {
             '<td><input id="desc" type="text" name="desc" placeholder="' + c.wallets[5] + '" value="' + cells[5] + '" /></td>' +
             '<td><input class="btn" type="image" name="submit" src="img/' + btn + '.png" alt="' + btn + '" /></td>' +          
         '</tr>' +
-        '<tr><td class="msg" colspan="5">&nbsp;<td></tr>'
+        '<tr><td class="msg" colspan="6">&nbsp;<td></tr>'
     );     
     
     removeSelectMenu();
@@ -747,7 +749,9 @@ function modifyCryptoWallets(c, btn) {
     if(!checkEditDelete(btn, msg) && !checkShowHide(btn)) 
     {     
         // Add the input to businesses table if the business doesn´t exists.
-        if (validateInput(c.messages, c.wallets, input, true))
+        if (validateInput(c.messages, c.wallets, input, true) &&
+            validateColor(0, c.messages, c.wallets[4], input[3])
+        )
         {            
             var [id, action] = getRowIdAndAction();               
             if (id) {

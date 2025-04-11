@@ -7,7 +7,7 @@
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 22, 2025
+ * Updated on Apr 08, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -579,7 +579,7 @@ function validateInput(msg, items, input, last) {
  * Function:    validateDate
  *
  * Created on Sep 18, 2024
- * Updated on Oct 02, 2024
+ * Updated on Apr 08, 2025
  *
  * Description: Validate the date, check if it is not empty and the date is valid.
  *
@@ -588,7 +588,7 @@ function validateInput(msg, items, input, last) {
  *
  */
 function validateDate(c, s, name, date) {
-
+   
     var check = true;   
     if (!date) 
     {
@@ -601,11 +601,11 @@ function validateDate(c, s, name, date) {
         switch (set.sign) {
             case "$" :
             case "£" :
-                regex = /(0[1-9]|1[0,1,2])(\/|-)(0[1-9]|[12][0-9]|3[01])(\/|-)(19|20)\d{2}/;         
+                regex = /^(0[1-9]|1[0,1,2])(\/|-)(0[1-9]|[12][0-9]|3[01])(\/|-)(19|20)\d{2}$/;         
                 break;
             
             case "€"  :
-                regex = /(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0,1,2])-(19|20)\d{2}/;
+                regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0,1,2])-(19|20)\d{2}$/;
                 break;
         }
         
