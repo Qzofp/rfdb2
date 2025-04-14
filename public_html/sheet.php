@@ -2,7 +2,7 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.2
+ * Version: 0.25
  *
  * File:         sheet.php
  * Dependencies: css/common.css
@@ -22,7 +22,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Feb 07, 2025
+ * Updated on Apr 13, 2025
  *
  * Description: Sheet framework page.
  *
@@ -158,6 +158,7 @@ if(!$user){
                     <img src="img/quarters.png" alt="quarters"/>
                     <img src="img/addrow.png" alt="edit"/>
                     <img src="img/chart.png" alt="chart"/>
+                    <img src="img/next.png" alt="next"/>
 		</div>
             
                 <!-- Display the balance under the slides. -->

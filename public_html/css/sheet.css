@@ -2,13 +2,13 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.1
+ * Version: 0.25
  *
  * File:    sheet.css
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Feb 14, 2025
+ * Updated on Apr 13, 2025
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -59,8 +59,13 @@
  padding: 3px;
 }
 
+/* Page Buttons */
+#page_buttons img:last-child {
+ display: none;
+}
+
 /* Sheet popups */
-#popup_content  {
+#popup_content {
  width: 85% !important;
 }
 

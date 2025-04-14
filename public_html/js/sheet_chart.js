@@ -7,7 +7,7 @@
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Feb 26, 2025
+ * Updated on Apr 13, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -111,7 +111,7 @@ function initBarChart(s) {
  * Function:    showYearOverviewChart
  *
  * Created on Feb 10, 2025
- * Updated on Feb 26, 2025
+ * Updated on Apr 13, 2025
  *
  * Description: Initialize the bar chart.
  *
@@ -124,7 +124,7 @@ function showYearOverviewChart(bar, c, i) {
     var scale = {year: "quarters", quarters: "months", months: "year"};
     var page = c.pages[i].split("#")[1];
     var year = $("header h1 span").html();
-    var n = $("#page_buttons img:first").attr("alt");        
+    var n = $("#page_buttons img:first").attr("alt");     
     
     // Debug
     //console.log( page, year, scale[n] );
@@ -135,7 +135,7 @@ function showYearOverviewChart(bar, c, i) {
         if (result.success) {         
         
             // Debug
-            //console.log( result.query );
+            //console.log( result.query );            
             
             var x, t, labels, data = [];
             var color = ["rgb(74,160,44,0.8)","rgb(193,27,23,0.8)","rgb(135,6,3,0.8)"];
@@ -145,8 +145,8 @@ function showYearOverviewChart(bar, c, i) {
             if (result.data[0]) {
                 keys = Object.keys(result.data[0]);
             }
-                
-            // Determine the x scale;
+                            
+            // Determine the x scale.
             switch (scale[n]) {
                 case "months"   : x = c.months;
                                   t = c.overview[2];
@@ -226,7 +226,7 @@ function showYearOverviewChart(bar, c, i) {
  * Function:    closeChartWindow
  *
  * Created on Dec 18, 2023
- * Updated on Feb 20, 2025
+ * Updated on Apr 13, 2025
  *
  * Description: Close the chart window.
  *
@@ -247,20 +247,23 @@ function closeChartWindow() {
                 }  
                 break;
             
-            case "edit" : // Close chart slider.
+            case "edit" : // Close chart slider.             
                 $("#chart_slider").animate({"bottom":"-100%"}, 300);
-                $("#table_container").css("height", cSheetMax);        
+                $("#table_container").css("height", cSheetMax);  
+                $("#page_buttons img:last").css('display','none'); 
                 break;
                 
             case "chart" : // Open or close the chart slider.
                 let bottom = "-100%";
                 if ($("#chart_slider").css("bottom") !== "0px") 
-                {  
-                    $("#table_container").css("height", cSheetMin);
+                {      
+                    $("#table_container").css("height", cSheetMin); 
+                    $("#page_buttons img:last").css('display','inline'); // Show next graph icon.
                     bottom = "0";
                 }
                 else {
-                    $("#table_container").css("height", cSheetMax); 
+                    $("#table_container").css("height", cSheetMax);        
+                    $("#page_buttons img:last").css('display','none'); // Hide next graph icon.    
                 }
                 $("#chart_slider").animate({"bottom":bottom}, 300);                 
                 break;       
@@ -284,17 +287,20 @@ function closeChartWindow() {
     $(".picker").on('click', 'img', function() {
         $("#chart_slider").animate({"bottom":"-100%"}, 300);
         $("#table_container").css("height", cSheetMax); 
+        $("#page_buttons img:last").css('display','none');
     });
     
     // Close chart slider when the hamburger menu is pressed.
     $(".hamburger_menu").click(function(){
         $("#chart_slider").animate({"bottom":"-100%"}, 300);
-        $("#table_container").css("height", cSheetMax); 
+        $("#table_container").css("height", cSheetMax);
+        $("#page_buttons img:last").css('display','none');
     });
     
     // Close chart slider when the close button is pressed.
     $("#chart_content .close").click(function(){
         $("#chart_slider").animate({"bottom":"-100%"}, 300);
         $("#table_container").css("height", cSheetMax);
-    });  
+        $("#page_buttons img:last").css('display','none');
+    });
 }
