@@ -22,7 +22,7 @@
  *               js/sheet.js
  *
  * Created on Oct 28, 2023
- * Updated on Apr 13, 2025
+ * Updated on Apr 18, 2025
  *
  * Description: Sheet framework page.
  *
@@ -158,7 +158,7 @@ if(!$user){
                     <img src="img/quarters.png" alt="quarters"/>
                     <img src="img/addrow.png" alt="edit"/>
                     <img src="img/chart.png" alt="chart"/>
-                    <img src="img/next.png" alt="next"/>
+                    <img src="img/chart_years.png" alt="cyears"/>
 		</div>
             
                 <!-- Display the balance under the slides. -->
