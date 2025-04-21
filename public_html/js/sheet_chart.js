@@ -7,7 +7,7 @@
  * Used in: sheet.php
  *
  * Created on Feb 07, 2025
- * Updated on Apr 13, 2025
+ * Updated on Apr 21, 2025
  *
  * Description: Javascript chart functions for the sheet page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -111,11 +111,11 @@ function initBarChart(s) {
  * Function:    showYearOverviewChart
  *
  * Created on Feb 10, 2025
- * Updated on Apr 13, 2025
+ * Updated on Apr 19, 2025
  *
- * Description: Initialize the bar chart.
+ * Description: Show the year overview bar chart (months, quarters or year).
  *
- * In:  bar, c, i
+ * In:  bar, c, i, that
  * Out: -
  *
  */
@@ -126,6 +126,10 @@ function showYearOverviewChart(bar, c, i) {
     var year = $("header h1 span").html();
     var n = $("#page_buttons img:first").attr("alt");     
     
+    // Set the chart years button.
+    $("#page_buttons img:last").attr("src","img/chart_years.png");
+    $("#page_buttons img:last").attr("alt", "cyears");
+      
     // Debug
     //console.log( page, year, scale[n] );
 
@@ -149,15 +153,15 @@ function showYearOverviewChart(bar, c, i) {
             // Determine the x scale.
             switch (scale[n]) {
                 case "months"   : x = c.months;
-                                  t = c.overview[2];
+                                  t = c.overview[0] + " " + year + " " + c.overview[2];
                                   break;
 
                 case "quarters" : x = c.quarters;
-                                  t = c.overview[1];
+                                  t = c.overview[0] + " " + year + " " + c.overview[1];
                                   break;
                 
                 case "year"     : x = c.year;
-                                  t = c.overview[0];
+                                  t = c.overview[0] + " " + year;
                                   break;                
             }
             
@@ -220,6 +224,101 @@ function showYearOverviewChart(bar, c, i) {
     });  
     
     closeErrorMessage();
+}
+
+/*
+ * Function:    showAllYearsOverviewChart
+ *
+ * Created on Apr 18, 2025
+ * Updated on Apr 19, 2025
+ *
+ * Description: Show the bar char overview in years (all years).
+ *
+ * In:  bar, c, i, that
+ * Out: -
+ *
+ */
+function showAllYearsOverviewChart(bar, c, i, that) {
+    
+    var scale = {year: "quarters", quarters: "months", months: "year"};
+    var page = c.pages[i].split("#")[1];
+    var n = $("#page_buttons img:first").attr("alt");       
+        
+    $(that).attr("src","img/chart_" + scale[n] + ".png");
+    $(that).attr("alt", "c" + scale[n]);
+    
+    var request = getAjaxRequest("sheet/get_overview_all_years", "page=" + page);
+    request.done(function(result) {
+            
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );            
+            
+            var labels, x = [], data = [];
+            var color = ["rgb(74,160,44,0.8)","rgb(193,27,23,0.8)","rgb(135,6,3,0.8)"];
+            //var keys = Object.keys(result.data[0]);
+            
+            var keys = [];
+            if (result.data[0]) {
+                keys = Object.keys(result.data[0]);
+            }
+                                        
+            // Determine the labels for the finance or the other sheets.
+            if (page === "finance") {
+                labels = [c.payment[3],c.payment[4],c.payment[5]];
+            }
+            else {
+                labels = [c.investment[2],c.investment[3]];
+            }
+
+            // Initialize the arrays for the datasets values.
+            keys.forEach((key, i) => {
+                data[key] = [];
+            });  
+                   
+            // Fill the chart datasets values.
+            $.each(result.data, function (n, field) {
+                $.each(field, function(key, value) {
+                    data[key].push(value);
+                });
+            });           
+            
+            // Create the datasets.
+            var datasets = [];
+            keys.forEach((key, i) => {                               
+                if (i < keys.length - 1)
+                {
+                    datasets[i] = {
+                        label: labels[i],
+                        data: data[keys[i+1]],
+                        backgroundColor: color[i],
+                        borderWidth: 1
+                    };
+                }      
+            });                    
+            
+            // Update the line chart.
+            const tmp = {
+                labels: data[keys[0]],
+                datasets: datasets
+            };            
+                   
+            bar.data.labels = tmp.labels; 
+            bar.data.datasets = tmp.datasets;
+            bar.options.plugins.title.text = c.overview[3]; 
+            bar.update();            
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();    
 }
 
 /*

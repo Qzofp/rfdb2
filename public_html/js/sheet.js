@@ -7,7 +7,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 28, 2023
- * Updated on Feb 26, 2025
+ * Updated on Apr 18, 2025
  *
  * Description: Javascript functions for the sheet page.
  * Dependenties: js/config.js
@@ -762,7 +762,7 @@ function showTableTotals(result, sign, col) {
  * Function:    changeSheetContent
  *
  * Created on Dec 17, 2023
- * Updated on Feb 14, 2025
+ * Updated on Apr 18, 2025
  *
  * Description: Change sheet content for the page.
  *
@@ -772,8 +772,11 @@ function showTableTotals(result, sign, col) {
  */
 function changeSheetContent(adp, bar, c, s, i, that) {
     
+    // Debug.
+    //console.log( that.alt );
+    
     switch (that.alt) {
-        case "months" :
+        case "months"   :
         case "quarters" :
         case "year"     :    
             changeSlideMenuScale(c, s[i].name, that);  
@@ -784,7 +787,7 @@ function changeSheetContent(adp, bar, c, s, i, that) {
                 showYearOverviewChart(bar, c, i);
             }
             
-            break;
+            break;    
             
         case "edit" :
             showSheetEditPopup(adp, c, i);
@@ -792,6 +795,16 @@ function changeSheetContent(adp, bar, c, s, i, that) {
             
         case "chart" : 
             showYearOverviewChart(bar, c, i);
+            break;
+            
+        case "cmonths"   :
+        case "cquarters" :
+        case "cyear"     :
+            showYearOverviewChart(bar, c, i);
+            break;
+        
+        case "cyears" :
+            showAllYearsOverviewChart(bar, c, i, that);
             break;
     }    
 }

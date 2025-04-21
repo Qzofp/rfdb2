@@ -8,7 +8,7 @@
  * Used in: sheet.html
  *
  * Created on Oct 18, 2023
- * Updated on Apr 13, 2025
+ * Updated on Apr 18, 2025
  *
  * Description: The css tabs demo 1 page.
  * Build for: Chromium based and Firefox browsers. 
@@ -61,6 +61,9 @@
 
 /* Page Buttons */
 #page_buttons img:last-child {
+ width: 28px;
+ height: 28px; 
+ margin-bottom: 3px;
  display: none;
 }
 
