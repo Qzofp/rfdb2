@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.25
+ * Version: 0.3
  *
  * File:    dashboard_chart.js
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on Apr 02, 2025
+ * Updated on May 02, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js

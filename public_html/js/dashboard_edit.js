@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.25
+ * Version: 0.3
  *
  * File:    dashboard_edit.js
  * Used in: dashboard.php
  *
  * Created on Sep 29, 2024
- * Updated on Mar 03, 2025
+ * Updated on May 02, 2025
  *
  * Description: Javascript edit (popup, modify data, etc.) functions for the dashboard page.
  * Dependenties: 

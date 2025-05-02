@@ -2,7 +2,7 @@
 /*
  * Title:   Rizzo's Finances Database 2
  * Author:  Rizzo Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:         dashboard.php
  * Dependencies: css/common.css
@@ -22,7 +22,7 @@
  *               js/dashboard.js
  *
  * Created on Sep 22, 2023
- * Updated on Jan 29, 2025
+ * Updated on May 02, 2025
  *
  * Description: Redirect to the start page.
  * 
@@ -126,6 +126,7 @@ if(!$user){
                                 <img src="img/add.png" alt="add"/>
                                 <img src="img/crypto.png" alt="crypto"/>
                                 <img src="img/expand.png" alt="expand"/>
+                                <img src="img/chart_accounts.png" alt="chart_accounts"/>
                                 <img src="img/pencil.png" alt="edit"/>
                             </div>                            
                             

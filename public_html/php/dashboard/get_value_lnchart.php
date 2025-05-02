@@ -2,13 +2,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.25
+ * Version: 0.3
  *
  * File:    get_value_lnchart.php
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on Apr 02, 2025
+ * Updated on May 02, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.

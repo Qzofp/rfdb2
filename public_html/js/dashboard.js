@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.25
+ * Version: 0.3
  *
  * File:    dashboard.js
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on Feb 26, 2025
+ * Updated on May 02, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -204,7 +204,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on Feb 26, 2025
+ * Updated on May 02, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -233,12 +233,15 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
                 $("#page_buttons img").eq(2).css("display", "none"); 
             }
     
+            // Show chart button.
+            $("#page_buttons img").eq(4).show();
+    
             // Show edit button if date exists.
             if (result.date) {
-                $("#page_buttons img").eq(4).show();
+                $("#page_buttons img").eq(5).show();
             }
             else {
-                $("#page_buttons img").eq(4).hide(); 
+                $("#page_buttons img").eq(5).hide(); 
             }
     
             // Reset button(s).
@@ -544,7 +547,7 @@ function showDashboardButtonAction(adp, dgc, lnc, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on Jan 20, 2025
+ * Updated on May 02, 2025
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -579,6 +582,18 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
         case "collapse" : 
             changeActivaAccountsTable(dgc, lnc, c, s, "collapse");
             break;
+            
+        case "chart_accounts" :   
+            // Test
+            $("#page_buttons img").eq(4).attr({src:"img/chart_total.png", alt:"chart_total"});
+            
+            break;
+            
+        case "chart_total" :  
+            // Test
+            $("#page_buttons img").eq(4).attr({src:"img/chart_accounts.png", alt:"chart_accounts"});
+            
+            break;            
     }     
 }
 
@@ -587,7 +602,7 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
  * Function:    showdActivaCryptoContent
  *
  * Created on Aug 24, 2024
- * Updated on Feb 26, 2025
+ * Updated on May 02, 2025
  *
  * Description: Shows the dashboard activa (crypto) slide content.
  *
@@ -604,6 +619,7 @@ function showActivaCryptoContent(dgc, lnc, c, s, date) {
             // Reset buttons.
             $("#page_buttons img").eq(2).attr({src:"img/accounts.png", alt:"accounts"});
             $("#page_buttons img").eq(3).hide();  
+            $("#page_buttons img").eq(4).hide();
                 
             // Show the labels.
             showActivaLabels(c, s);
