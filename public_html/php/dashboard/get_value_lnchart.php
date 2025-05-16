@@ -8,7 +8,7 @@
  * Used in: js\dashboard.js
  *
  * Created on Jan 10, 2025
- * Updated on May 02, 2025
+ * Updated on May 16, 2025
  *
  * Description: Check if the user is signed in and get the data from the database tbl_value_accounts table
  *              for the line chart.
@@ -31,7 +31,7 @@ else {
  * Function:    GetValueLineChart
  *
  * Created on Jan 10, 2025
- * Updated on Jan 20, 2025
+ * Updated on May 16, 2025
  *
  * Description: Get the data from de database tbl_value_accounts table for the line chart.
  *
@@ -51,6 +51,10 @@ function GetValueLineChart()
                           
         switch ($action) 
         {
+            case "total" :
+                $query = CreateTotalQuery($date);
+                break;
+            
             case "collapse" :
                 $query = CreateCollapseQuery($date);  
                 break;
@@ -158,6 +162,91 @@ function GetConfigs($data)
     $db = null;        
     
     return $data;    
+}
+
+/*
+ * Function:    CreateTotalQuery
+ *
+ * Created on May 16, 2025
+ * Updated on May 16, 2025
+ *
+ * Description: Create the query to get the rows from the tbl_value_accounts for the total line chart.
+ *
+ * In:  $date
+ * Out: $query
+ *
+ */
+function CreateTotalQuery($date) 
+{
+    $query = "Empty Query!";
+    
+    // Get the accounts for the the line chart.
+    $input = GetAccounts($date);
+    if ($input['success']) 
+    {  
+        $case  = "";
+        $in_accounts = "0,";
+        $in_crypto = "0,";
+        foreach ($input['data'] as $key=>$value)
+        {
+            /*
+            if ($value['hide'] == 0) {
+                $case .= "IFNULL(SUM(CASE WHEN `id` =".$value['id']." AND `service` = '".$value['service'].
+                         "' THEN `value` END),'NaN') AS `".$value['type']."_".$value['account']."_".$value['id'].
+                         "_".$value['color']."`,";     
+            }*/
+            
+            if ($value['hide'] == 0) 
+            {     
+                if ($value['type'] !== 3) {
+                    $in_accounts .= $value['id'].",";
+                }
+                else {
+                    $in_crypto .= $value['id'].",";
+                }        
+            }
+        }
+        
+        // Remove the last comma.
+        //$case = substr_replace($case, '', -1);  
+        
+        //$date = "`Date`";    
+        //if ($case) {
+        //    $date .= ",";
+        //}
+        
+        // Remove the last commas.
+        $in_accounts = substr_replace($in_accounts, '', -1);
+        $in_crypto = substr_replace($in_crypto, '', -1);
+        
+        $where_accounts = "WHERE tbl_value_accounts.`aid` IN ($in_accounts) ";
+        $where_crypto   = "WHERE tbl_wallets.`id` IN ($in_crypto) ";      
+        
+        $query = "SELECT `Date`, SUM(`value`) AS `total` ".
+                 "FROM (".
+                    "SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`value` AS `value` ".
+                    "FROM tbl_value_accounts ".
+                    "LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` ".
+                    //"LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                    $where_accounts.
+                    "UNION ".
+                    "SELECT tbl_value_cryptos.`date` AS `Date`, `amount`*`value` AS `value` ".
+                    "FROM tbl_value_cryptos ".
+                    "LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` ".
+                    "LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` ".
+                    //"LEFT JOIN tbl_cryptocurrenties ON tbl_wallets.`cid` = tbl_cryptocurrenties.`id` ".
+                    //"LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` ".
+                    //"LEFT JOIN tbl_services ON tbl_accounts.`sid` = tbl_services.`id` ".
+                    $where_crypto.
+                 ") total ".                
+                 "GROUP BY `Date` ".
+                 "ORDER BY `Date`;";     
+    }
+    
+    // Debug
+    //$query = $input['query'];
+      
+    return $query;
 }
 
 /*

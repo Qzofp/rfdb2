@@ -937,7 +937,7 @@ GROUP BY YEAR(`date`), MONTH(`date`)
 ORDER BY `month`
 
 
--- Total value activa
+-- Total value activa based on types
 SELECT `Date`, SUM(`value`) AS `total`
 FROM (
     SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`value` AS `value` 
@@ -951,6 +951,23 @@ FROM (
     LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
     LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id` 
     WHERE tbl_wallets.`id` IN (1,1,4,3,2) 
+) total 
+GROUP BY `Date` 
+ORDER BY `Date`;
+
+-- Total value activa based on accounts
+SELECT `Date`, SUM(`value`) AS `total`   
+FROM (
+    SELECT tbl_value_accounts.`date` AS `Date`, tbl_value_accounts.`value` AS `value` 
+    FROM tbl_value_accounts 
+    LEFT JOIN tbl_accounts ON tbl_value_accounts.`aid` = tbl_accounts.`id` 
+    WHERE tbl_value_accounts.`aid` IN (1,2,1,4,3,5,6) 
+    UNION 
+    SELECT tbl_value_cryptos.`date` AS `Date`, `amount`*`value` AS `value` 
+    FROM tbl_value_cryptos 
+    LEFT JOIN tbl_amount_wallets ON tbl_value_cryptos.`id` = tbl_amount_wallets.`vid` 
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id` 
+    WHERE tbl_wallets.`id` IN (1,4,1,3,2) 
 ) total 
 GROUP BY `Date` 
 ORDER BY `Date`;

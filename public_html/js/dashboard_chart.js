@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on May 02, 2025
+ * Updated on May 16, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -526,6 +526,43 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
     });  
     
     closeErrorMessage();    
+}
+
+/*
+ * Function:    ShowActivaAccountsTotalLineChart
+ *
+ * Created on May 16, 2025
+ * Updated on May 16, 2025
+ *
+ * Description: Show the activa total value developement line chart.
+ *
+ * In:  line, c, s, date
+ * Out: -
+ *
+ */
+function ShowActivaAccountsTotalLineChart(lnc, c, s, date) {
+    
+    var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=total");
+    request.done(function(result) {
+            
+        if (result.success) {         
+        
+            // Debug
+            //console.log( result.query );    
+            
+            console.log( result );
+    
+        }
+        else {
+            showDatabaseError(result);         
+        }
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        showAjaxError(jqXHR, textStatus);
+    });  
+    
+    closeErrorMessage();      
 }
 
 /*
