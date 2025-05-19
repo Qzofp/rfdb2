@@ -141,3 +141,4 @@ ToDo
     - Verbeteringen zijn uitgevoerd.
 
 31. Bug: Als met de muis over hidden velden in de tabel wordt gegaan dan verschijnen deze velden in de tooltip. Geldt met name voor het eerste kolom.
+    - Opgelost.

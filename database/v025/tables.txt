@@ -1,0 +1,12 @@
+Table V025
+----------
+
+Alter
+- tbl_accounts
+- tbl_wallets
+
+Update
+- tbl_config
+- tbl_dutch
+- tbl_english
+

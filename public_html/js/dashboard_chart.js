@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Dec 02, 2024
- * Updated on May 16, 2025
+ * Updated on May 18, 2025
  *
  * Description: Javascript chart functions for the dashboard page.
  * Dependenties: js/ext/chart-4.4.7.js
@@ -387,7 +387,7 @@ function showDoughnutChartTooltip(dgc, that) {
  * Function:    showLineChartTooltip
  *
  * Created on Jan 27, 2025
- * Updated on Jan 31, 2025
+ * Updated on May 18, 2025
  *
  * Description: Show the line chart tooltip for the selected table row.
  *
@@ -405,8 +405,9 @@ function showLineChartTooltip(lnc, that) {
     
     // Debug
     //console.log ( dsi, idx );
-      
-    if (that.find("td").length > 1 && dsi > -1) 
+    
+    var lc = $("#page_buttons img").eq(4).attr("alt");     
+    if (that.find("td").length > 1 && dsi > -1 && lc === "chart_total")
     {                       
         //Set active element (hover)
         lnc.setActiveElements([{
@@ -442,43 +443,130 @@ function showLineChartTooltip(lnc, that) {
  *
  */
 function ShowActivaAccountsLineChart(line, c, s, date, action) {
-  
-    var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=" + action);
+    
+    var lc = $("#page_buttons img").eq(4).attr("alt");
+    if (lc === "chart_total") 
+    {
+        var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=" + action);
+        request.done(function(result) {
+          
+            if (result.success) {         
+        
+                // Debug
+                //console.log( result.query );
+
+                //var keys = Object.keys(result.data[0]);
+                var keys = [];
+                if (result.data[0]) {
+                    keys = Object.keys(result.data[0]);
+                }
+        
+                // Initialize the arrays for the datasets values and fill the color array.
+                var data = [], color = [];
+                keys.forEach((key, i) => {
+                    data[key] = [];
+                
+                    // Fill the color array.
+                    if (i > 0) 
+                    {
+                        let n = Number(key.split("_")[0]) + 1;
+                        let set = JSON.parse(s[n].value);            
+                    
+                        // Select colors for the collapse or expand lines.
+                        if (action === "collapse") {
+                            color[key] = set.theme.color; 
+                        }
+                        else {
+                            color[key] = key.split("_")[3];                   
+                        }
+                    }
+                });   
+            
+                // Fill the chart datasets values (finance, stock, savings and crypto).
+                $.each(result.data, function (n, field) {  
+
+                    $.each(field, function(key, value) {                    
+
+                        data[key].push(value);
+                    });      
+                });    
+                        
+                // Create the datasets.
+                var label, datasets = [];
+                keys.forEach((key, i) => {
+                                
+                    if (i < keys.length - 1) 
+                    {
+                        // Decode the label (HTML entities, such as ` & etc. ).
+                        label = $("<div/>").html(keys[i+1].split("_")[1]).text();                  
+                        datasets[i] = {
+                            label: label, //keys[i+1].split("_")[1],
+                            data: data[keys[i+1]],
+                            backgroundColor: color[keys[i+1]],
+                            borderColor: color[keys[i+1]],
+                            tension: 0.2
+                        };
+                    }      
+                });            
+
+                // Update the line chart.
+                const tmp = {
+                    labels: data[keys[0]],
+                    datasets: datasets
+                };
+            
+                line.data.labels = tmp.labels; 
+                line.data.datasets = tmp.datasets;
+                line.options.plugins.title.text = c.labels[2];    
+                line.update();                   
+            }
+            else {
+                showDatabaseError(result);         
+            }
+        });
+    
+        request.fail(function(jqXHR, textStatus) {
+            showAjaxError(jqXHR, textStatus);
+        });  
+    
+        closeErrorMessage();
+    }
+}
+
+/*
+ * Function:    ShowActivaAccountsTotalLineChart
+ *
+ * Created on May 16, 2025
+ * Updated on May 18, 2025
+ *
+ * Description: Show the activa total value developement line chart.
+ *
+ * In:  line, c, s, date
+ * Out: -
+ *
+ */
+function ShowActivaAccountsTotalLineChart(line, c, s, date) {
+    
+    var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=total");
     request.done(function(result) {
             
         if (result.success) {         
         
             // Debug
             //console.log( result.query );
-
-            //var keys = Object.keys(result.data[0]);
+                       
             var keys = [];
             if (result.data[0]) {
                 keys = Object.keys(result.data[0]);
             }
         
-            // Initialize the arrays for the datasets values and fill the color array.
-            var data = [], color = [];
+            // Initialize the arrays for the datasets values array.
+            var data = [];
             keys.forEach((key, i) => {
                 data[key] = [];
-                
-                // Fill the color array.
-                if (i > 0) 
-                {
-                    let n = Number(key.split("_")[0]) + 1;
-                    let set = JSON.parse(s[n].value);            
-                    
-                    // Select colors for the collapse or expand lines.
-                    if (action === "collapse") {
-                        color[key] = set.theme.color; 
-                    }
-                    else {
-                        color[key] = key.split("_")[3];                   
-                    }
-                }
             });   
             
-            // Fill the chart datasets values (finance, stock, savings and crypto).
+            // Fill the chart datasets values.
             $.each(result.data, function (n, field) {  
 
                 $.each(field, function(key, value) {                    
@@ -486,25 +574,19 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
                     data[key].push(value);
                 });      
             });    
-                        
+            
+            var set = JSON.parse(s[0].value); 
+            
             // Create the datasets.
-            var label, datasets = [];
-            keys.forEach((key, i) => {
-                                
-                if (i < keys.length - 1) 
-                {
-                    // Decode the label (HTML entities, such as ` & etc. ).
-                    label = $("<div/>").html(keys[i+1].split("_")[1]).text();                  
-                    datasets[i] = {
-                        label: label, //keys[i+1].split("_")[1],
-                        data: data[keys[i+1]],
-                        backgroundColor: color[keys[i+1]],
-                        borderColor: color[keys[i+1]],
-                        tension: 0.2
-                    };
-                }      
-            });            
-
+            var datasets = [];
+            datasets[0] = {
+                label: c.misc[7],
+                data: data[keys[1]],
+                backgroundColor: set.theme.color,
+                borderColor: set.theme.color,
+                tension: 0.2
+            };    
+           
             // Update the line chart.
             const tmp = {
                 labels: data[keys[0]],
@@ -514,44 +596,7 @@ function ShowActivaAccountsLineChart(line, c, s, date, action) {
             line.data.labels = tmp.labels; 
             line.data.datasets = tmp.datasets;
             line.options.plugins.title.text = c.labels[2];    
-            line.update();                   
-        }
-        else {
-            showDatabaseError(result);         
-        }
-    });
-    
-    request.fail(function(jqXHR, textStatus) {
-        showAjaxError(jqXHR, textStatus);
-    });  
-    
-    closeErrorMessage();    
-}
-
-/*
- * Function:    ShowActivaAccountsTotalLineChart
- *
- * Created on May 16, 2025
- * Updated on May 16, 2025
- *
- * Description: Show the activa total value developement line chart.
- *
- * In:  line, c, s, date
- * Out: -
- *
- */
-function ShowActivaAccountsTotalLineChart(lnc, c, s, date) {
-    
-    var request = getAjaxRequest("dashboard/get_value_lnchart", "date=" + date + "&action=total");
-    request.done(function(result) {
-            
-        if (result.success) {         
-        
-            // Debug
-            //console.log( result.query );    
-            
-            console.log( result );
-    
+            line.update();
         }
         else {
             showDatabaseError(result);         

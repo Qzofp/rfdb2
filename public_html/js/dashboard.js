@@ -7,7 +7,7 @@
  * Used in: dashboard.php
  *
  * Created on Oct 28, 2023
- * Updated on May 16, 2025
+ * Updated on May 18, 2025
  *
  * Description: Javascript functions for the index page.
  * Dependenties: js/config.js, js/dashboard_edit.js, js/dashboard_chart.js
@@ -204,7 +204,7 @@ function showDashboardContent(dgc, lnc, slide, c, s) {
  * Function:    showActivaAccountsContent
  *
  * Created on Aug 24, 2024
- * Updated on May 16, 2025
+ * Updated on May 18, 2025
  *
  * Description: Shows the dashboard activa (account) slide content.
  *
@@ -264,9 +264,14 @@ function showActivaAccountsContent(dgc, lnc, crypto, c, s, date) {
             // Show the doughnut chart.            
             showActivaAccountsDoughnutChart(dgc, c, s, result.date, "collapse");
             
-            // Show the total line chart.             
-            ShowActivaAccountsLineChart(lnc, c, s, result.date, "collapse");
-            //ShowActivaAccountsTotalLineChart(lnc, c, s, result.date);
+            // Show the total line chart.
+            var lc = $("#page_buttons img").eq(4).attr("alt");
+            if (lc === "chart_total") {                  
+                ShowActivaAccountsLineChart(lnc, c, s, result.date, "collapse");
+            }
+            else {
+                ShowActivaAccountsTotalLineChart(lnc, c, s, result.date);
+            }
         }
         else {
             showDatabaseError(result); 
@@ -548,7 +553,7 @@ function showDashboardButtonAction(adp, dgc, lnc, c, s, that) {
  * Function:    showActivaButtonAction
  *
  * Created on Sep 09, 2024
- * Updated on May 02, 2025
+ * Updated on May 18, 2025
  *
  * Description: Shows the action when the page button is pressed for the dashboard activa page.
  *
@@ -584,16 +589,12 @@ function showActivaButtonAction(adp, dgc, lnc, c, s, that, crypto) {
             changeActivaAccountsTable(dgc, lnc, c, s, "collapse");
             break;
             
-        case "chart_accounts" :   
-            // Test
-            $("#page_buttons img").eq(4).attr({src:"img/chart_total.png", alt:"chart_total"});
-            
+        case "chart_accounts" :       
+            changeActivaAccountsLineChart(lnc, c, s, "accounts");       
             break;
             
         case "chart_total" :  
-            // Test
-            $("#page_buttons img").eq(4).attr({src:"img/chart_accounts.png", alt:"chart_accounts"});
-            
+            changeActivaAccountsLineChart(lnc, c, s, "total");
             break;            
     }     
 }
@@ -795,4 +796,39 @@ function changeActivaAccountsTable(dgc, lnc, c, s, action) {
         
         $("#page_buttons img").eq(3).attr({src:"img/collapse.png", alt:"collapse"});
     }        
+}
+
+/*
+ * Function:    changeActivaAccountsLineChart
+ *
+ * Created on May 18, 2024
+ * Updated on May 18, 2025
+ *
+ * Description: Change the dashboard activa line chart.
+ *
+ * In:  dgc, lnc, c, s, action
+ * Out: -
+ *
+ */
+function changeActivaAccountsLineChart(lnc, c, s, action) {
+
+    var date = $("#input_date span").html();
+    if (action === "accounts") 
+    {
+        let tbl;
+        if ($("#page_buttons img").eq(3).attr("alt") === "expand"){
+            tbl = "collapse";
+        }
+        else {
+            tbl = "expand";
+        }
+        
+        $("#page_buttons img").eq(4).attr({src:"img/chart_total.png", alt:"chart_total"});
+        ShowActivaAccountsLineChart(lnc, c, s, date, tbl);
+    }
+    else 
+    {
+        $("#page_buttons img").eq(4).attr({src:"img/chart_accounts.png", alt:"chart_accounts"});
+        ShowActivaAccountsTotalLineChart(lnc, c, s, date);
+    }
 }

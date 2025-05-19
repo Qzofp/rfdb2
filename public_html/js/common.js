@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.2
+ * Version: 0.3
  *
  * File:    common.js
  * Used in: index.html
  *
  * Created on Oct 28, 2023
- * Updated on Apr 08, 2025
+ * Updated on May 19, 2025
  *
  * Description: Common functions.
  * Dependenties: Javascript common functions.
@@ -1471,7 +1471,7 @@ function showTooltipText(that) {
  * Function:    showTableTooltips
  *
  * Created on Feb 22, 2025
- * Updated on Feb 22, 2025
+ * Updated on May 19, 2025
  *
  * Description: Show the tooltips in the table.
  *
@@ -1482,6 +1482,9 @@ function showTooltipText(that) {
 function showTableTooltips() {
     
     $('#table_container tbody').on("mouseover", "td", function() {     
-        showTooltipText($(this));
+        
+        if ($(this).index() > 0) {
+            showTooltipText($(this));
+        }
     });       
 }
