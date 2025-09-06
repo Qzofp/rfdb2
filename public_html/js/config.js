@@ -1,13 +1,13 @@
 /*
  * Title: Rizzo's Finances Database
  * Author: Rizzo Productions
- * Version: 0.3
+ * Version: 0.4
  *
  * File:    config.js
  * Used in: sheet.js
  *
  * Created on Oct 02, 2023
- * Updated on May 02, 2025
+ * Updated on Sep 06, 2025
  *
  * Description: Javascript config functions.
  * Dependenties: -
@@ -15,7 +15,7 @@
  */
 
 // Define constants
-const cVersion = "v0.3";
+const cVersion = "v0.4";
 const cDate = new Date();
 
 // Sheet table min and max heights.

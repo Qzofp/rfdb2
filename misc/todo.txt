@@ -142,3 +142,5 @@ ToDo
 
 31. Bug: Als met de muis over hidden velden in de tabel wordt gegaan dan verschijnen deze velden in de tooltip. Geldt met name voor het eerste kolom.
     - Opgelost.
+
+32. Bug: Laat de tooltip niet zien in het Dashboard Crypto Grafiek als bij de Accounts de totale waarde is gekozen.
