@@ -144,3 +144,5 @@ ToDo
     - Opgelost.
 
 32. Bug: Laat de tooltip niet zien in het Dashboard Crypto Grafiek als bij de Accounts de totale waarde is gekozen.
+
+33. Bug: Bij het toevoegen van een volgend account (financïen, beleggen, sparen of crypto) wordt de kleur niet gewist.
