@@ -3,4 +3,13 @@ Queries
 
 https://www.raisin.nl/kennisbank/rendement-berekenen/
 
+-- Get the first date of every year
+SET @k = 'Put your encryption key or phrase here!';
+SELECT tbl_value_accounts.id, 
+       tbl_value_accounts.`date`,
+       CAST(AES_DECRYPT(tbl_accounts.`account`, @k) AS CHAR(45)) AS `account`, 
+       tbl_value_accounts.`value` 
+FROM tbl_value_accounts
+LEFT JOIN tbl_accounts ON tbl_value_accounts.aid = tbl_accounts.id
+WHERE tbl_value_accounts.aid = 1 AND MONTH(tbl_value_accounts.`date`) = 1
 

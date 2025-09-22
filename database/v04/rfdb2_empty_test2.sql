@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 22, 2025 at 10:54 AM
+-- Generation Time: Sep 22, 2025 at 01:55 PM
 -- Server version: 8.0.43-0ubuntu0.22.04.2
 -- PHP Version: 8.1.2-1ubuntu2.22
 
@@ -128,7 +128,9 @@ INSERT INTO `tbl_amount_wallets` (`id`, `hide`, `vid`, `wid`, `amount`) VALUES
 (75, 0, 77, 1, '0.09257434'),
 (76, 0, 78, 2, '2.71290666'),
 (78, 0, 80, 1, '0.09377646'),
-(79, 0, 81, 2, '2.76030362');
+(79, 0, 81, 2, '2.76030362'),
+(80, 0, 82, 1, '0.09257434'),
+(81, 0, 83, 2, '2.65358307');
 
 -- --------------------------------------------------------
 
@@ -1165,7 +1167,7 @@ CREATE TABLE `tbl_settings` (
 INSERT INTO `tbl_settings` (`id`, `name`, `value`) VALUES
 (1, 'dashboard', '{\"page\": \"true\", \"theme\": {\"color\": \"#6c3483\"}}'),
 (2, 'finance', '{\"page\": \"true\", \"show\": \"true\", \"sort\": {\"bsn\": \"false\", \"grp\": \"false\"}, \"scale\": \"quarters\", \"start\": \"2020\", \"theme\": {\"color\": \"#ffd700\"}}'),
-(3, 'stock', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"quarters\", \"start\": \"2020\", \"theme\": {\"color\": \"#228b22\"}}'),
+(3, 'stock', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"2020\", \"theme\": {\"color\": \"#228b22\"}}'),
 (4, 'savings', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"2020\", \"theme\": {\"color\": \"#4169e1\"}}'),
 (5, 'crypto', '{\"page\": \"true\", \"show\": \"true\", \"scale\": \"year\", \"start\": \"2020\", \"theme\": {\"color\": \"#ff8f00\"}}'),
 (6, 'settings', '{\"page\": \"true\", \"rows\": \"25\", \"show\": \"true\", \"sign\": \"€\", \"theme\": {\"color\": \"#536878\"}}'),
@@ -1263,7 +1265,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `user`, `password`, `time`, `last`) VALUES
-(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-09-21 12:04:08', '2025-09-20 13:47:27');
+(1, 'Admin', '9e71af2675ef9d36c6d23b737d0be7c1bd828c6cea289f91f7199478d8bcf46e', '2025-09-22 11:50:46', '2025-09-22 10:56:55');
 
 -- --------------------------------------------------------
 
@@ -1424,7 +1426,12 @@ INSERT INTO `tbl_value_accounts` (`id`, `hide`, `date`, `aid`, `value`) VALUES
 (187, 0, '2025-06-30', 1, '1169.80'),
 (188, 0, '2025-06-30', 2, '2436.00'),
 (189, 0, '2025-06-30', 3, '669.33'),
-(190, 0, '2025-06-30', 4, '1342.65');
+(190, 0, '2025-06-30', 4, '1342.65'),
+(191, 0, '2025-01-07', 6, '100.00'),
+(192, 0, '2025-01-07', 1, '100.00'),
+(193, 0, '2025-01-07', 2, '100.00'),
+(194, 0, '2025-01-07', 3, '100.00'),
+(195, 0, '2025-01-07', 4, '100.00');
 
 -- --------------------------------------------------------
 
@@ -1500,7 +1507,9 @@ INSERT INTO `tbl_value_cryptos` (`id`, `date`, `cid`, `value`) VALUES
 (77, '2025-03-31', 1, '71174.86'),
 (78, '2025-03-31', 2, '1434.82'),
 (80, '2025-06-30', 1, '92730.60'),
-(81, '2025-06-30', 2, '2182.80');
+(81, '2025-06-30', 2, '2182.80'),
+(82, '2025-01-07', 1, '100.00'),
+(83, '2025-01-07', 2, '100.00');
 
 -- --------------------------------------------------------
 
@@ -1665,7 +1674,7 @@ ALTER TABLE `tbl_accounts`
 -- AUTO_INCREMENT for table `tbl_amount_wallets`
 --
 ALTER TABLE `tbl_amount_wallets`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `tbl_businesses`
@@ -1755,13 +1764,13 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_value_accounts`
 --
 ALTER TABLE `tbl_value_accounts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
 
 --
 -- AUTO_INCREMENT for table `tbl_value_cryptos`
 --
 ALTER TABLE `tbl_value_cryptos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `tbl_wallets`
