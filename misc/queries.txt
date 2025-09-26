@@ -13,3 +13,37 @@ FROM tbl_value_accounts
 LEFT JOIN tbl_accounts ON tbl_value_accounts.aid = tbl_accounts.id
 WHERE tbl_value_accounts.aid = 1 AND MONTH(tbl_value_accounts.`date`) = 1
 
+-- With help from Co-Pilot
+SELECT *
+FROM tbl_value_accounts va
+WHERE `date` IN (
+    SELECT MIN(`date`)
+    FROM tbl_value_accounts
+    GROUP BY YEAR(`date`)
+) AND va.aid = 1
+ORDER BY `date`;
+
+SELECT YEAR(va.`date`) AS `year`, SUM(`value`) AS total
+FROM tbl_value_accounts va
+WHERE `date` IN (
+    SELECT MIN(`date`)
+    FROM tbl_value_accounts
+    GROUP BY YEAR(`date`)
+) AND va.aid = 1
+GROUP BY YEAR(`date`)
+ORDER BY `date`;
+
+SELECT tva.id, tva.`date`, tva.`value`
+FROM (
+    SELECT *, YEAR(`date`) AS `year`
+    FROM tbl_value_accounts
+) tva
+JOIN (
+    SELECT YEAR(`date`) AS `year`, MIN(`date`) AS first_date
+    FROM tbl_value_accounts
+    GROUP BY YEAR(`date`)
+) every_year
+ON tva.`year` = every_year.`year` AND tva.`date` = every_year.first_date
+WHERE tva.aid = 1
+ORDER BY tva.`year`;
+
