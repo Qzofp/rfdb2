@@ -3,6 +3,48 @@ Queries
 
 https://www.raisin.nl/kennisbank/rendement-berekenen/
 
+-- 1. Haal op de totale waarde per jaar. --
+
+SELECT `year`, SUM(`value`) AS `value`
+FROM (
+   SELECT YEAR(tva.`date`) AS `year`, SUM(`value`) AS `value`
+   FROM tbl_value_accounts tva
+   LEFT JOIN tbl_accounts ON tva.`aid` = tbl_accounts.`id`
+   WHERE tva.`date` IN (
+       SELECT MIN(`date`)
+       FROM tbl_value_accounts
+       GROUP BY YEAR(`date`)
+   )
+   AND `type` IN ("finance","stock","savings")
+   GROUP BY YEAR(tva.`date`)
+   UNION
+   SELECT YEAR(tvc.`date`) AS `year`, SUM(`amount`*`value`) AS `value`
+   FROM tbl_value_cryptos tvc
+   LEFT JOIN tbl_amount_wallets ON tvc.`id` = tbl_amount_wallets.`vid`
+   LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+   LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+   WHERE tvc.`date` IN (
+       SELECT MIN(`date`)
+       FROM tbl_value_cryptos
+       GROUP BY YEAR(`date`)
+   )
+   AND `type` IN ("crypto")
+   GROUP BY YEAR(tvc.`date`)
+) total
+GROUP BY `year`
+
+-- 2. Haal de totale groei/krimp per jaar van financiën?, beleggen, sparen en crypto. --
+
+
+
+
+-- 3. Bereken met deze gegeven het jaarlijkse rendement. --
+-- 4. Doe hetzelfde maar dan per onderdeel (beleggen, sparen en crypto (financiën?). Wat is het jaarlijkse rendement van een onderdeel. --
+-- 5. De onderdelen kunnen verder per rekening worden opgesplitst. Wat is het jaarlijkse rendement van een rekening. --
+
+
+
+-- Klad --
 -- Get the first date of every year
 SET @k = 'Put your encryption key or phrase here!';
 SELECT tbl_value_accounts.id, 
@@ -31,7 +73,7 @@ WHERE `date` IN (
     GROUP BY YEAR(`date`)
 ) AND va.aid = 1
 GROUP BY YEAR(`date`)
-ORDER BY `date`;
+-- ORDER BY `date`;
 
 SELECT tva.id, tva.`date`, tva.`value`
 FROM (
@@ -47,3 +89,8 @@ ON tva.`year` = every_year.`year` AND tva.`date` = every_year.first_date
 WHERE tva.aid = 1
 ORDER BY tva.`year`;
 
+-- Get the total values per year
+SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS total
+FROM tbl_stocks
+WHERE aid = 1
+GROUP BY YEAR(`date`)
