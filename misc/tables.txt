@@ -1,0 +1,7 @@
+tbl_profits
+-----------
+year    aid    value     deposit     withdrawal  (fixed + other for finances)
+
+
+
+
