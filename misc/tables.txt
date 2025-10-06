@@ -1,7 +1,11 @@
-tbl_profits
+tbl_profits (temp table?)
 -----------
-year    aid    value     deposit     withdrawal  (fixed + other for finances)
+year    x    y    s   
 
 
 
-
+Formule: r = (y – x – s)/abs(-s)
+r = rendement
+x = jaar
+y = jaar + 1
+s = stortingen / ontrekkingen

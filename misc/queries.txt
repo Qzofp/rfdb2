@@ -4,7 +4,6 @@ Queries
 https://www.raisin.nl/kennisbank/rendement-berekenen/
 
 -- 1. Haal op de totale waarde per jaar. --
-
 SELECT `year`, SUM(`value`) AS `value`
 FROM (
    SELECT YEAR(tva.`date`) AS `year`, SUM(`value`) AS `value`
@@ -33,8 +32,54 @@ FROM (
 ) total
 GROUP BY `year`
 
--- 2. Haal de totale groei/krimp per jaar van financiën?, beleggen, sparen en crypto. --
+-- 2. Haal de totale groei/krimp per jaar van financiën, beleggen, sparen en crypto. --
+-- Versie 1
+SELECT `year`, SUM(`value`) AS `value`
+FROM (
+    SELECT YEAR(tfin.`date`) AS `year`, SUM(IFNULL(`income`,0)) - SUM(IFNULL(`fixed`,0)) - SUM(IFNULL(`other`,0)) AS `value`
+    FROM tbl_finances tfin
+    LEFT JOIN tbl_accounts ON tfin.`aid` = tbl_accounts.`id`
+    GROUP BY YEAR(tfin.`date`)
+    UNION
+    SELECT YEAR(tstk.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_stocks tstk
+    LEFT JOIN tbl_accounts ON tstk.`aid` = tbl_accounts.`id`
+    GROUP BY YEAR(tstk.`date`)
+    UNION
+    SELECT YEAR(tsav.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_savings tsav
+    LEFT JOIN tbl_accounts ON tsav.`aid` = tbl_accounts.`id`
+    GROUP BY YEAR(tsav.`date`)
+    UNION
+    SELECT YEAR(tcrp.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_crypto tcrp
+    LEFT JOIN tbl_amount_wallets ON tcrp.`id` = tbl_amount_wallets.`vid`
+    LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+    GROUP BY YEAR(tcrp.`date`)
+) total
+GROUP BY `year`
 
+-- Versie 2, bepaal met PHP welke types (finance, stock, savings, crypto) worden getoond. 
+SELECT `year`, SUM(`value`) AS `value`
+FROM (
+    SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`income`,0)) - SUM(IFNULL(`fixed`,0)) - SUM(IFNULL(`other`,0)) AS `value`
+    FROM tbl_finances
+    GROUP BY YEAR(`date`)
+    UNION
+    SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_stocks
+    GROUP BY YEAR(`date`)
+    UNION
+    SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_savings
+    GROUP BY YEAR(`date`)
+    UNION
+    SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`
+    FROM tbl_crypto
+    GROUP BY YEAR(`date`)
+) total
+GROUP BY `year`
 
 
 
