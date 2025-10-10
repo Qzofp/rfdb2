@@ -1,11 +1,31 @@
-tbl_profits (temp table?)
------------
+tbl_profits
+--------------------
 year    x    y    s   
 
+tbl_profits_type
+--------------------
+year    x    y    s    type
 
+tbl_profits_accounts (finance, stockm savings)
+--------------------
+year    x    y    s    aid
+
+tbl_profits_cryptos (crypto)
+--------------------
+year    x    y    s    wid
 
 Formule: r = (y – x – s)/abs(-s)
 r = rendement
 x = jaar
 y = jaar + 1
-s = stortingen / ontrekkingen
+s = stortingen / onttrekkingen
+
+-- Testing profit table
+CREATE TABLE tbl_profits (
+    `year` YEAR,
+    x DECIMAL(11, 2),
+    y DECIMAL(11, 2),
+    s DECIMAL(11, 2)
+);
+
+
