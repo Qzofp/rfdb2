@@ -32,6 +32,33 @@ FROM (
 ) total
 GROUP BY `year`
 
+-- Versie 2, met aid/wid en type
+SELECT `year`, `value`, `awid`, `type`
+FROM (
+   SELECT YEAR(tva.`date`) AS `year`, SUM(`value`) AS `value`, CONCAT(`aid`,"_","0") AS `awid`, `type`
+   FROM tbl_value_accounts tva
+   LEFT JOIN tbl_accounts ON tva.`aid` = tbl_accounts.`id`
+   WHERE tva.`date` IN (
+       SELECT MIN(`date`)
+       FROM tbl_value_accounts
+       GROUP BY YEAR(`date`)
+   )
+   GROUP BY `year`, `aid`
+   UNION
+   SELECT YEAR(tvc.`date`) AS `year`, SUM(`amount`*`value`) AS `value`, CONCAT(`aid`,"_",`wid`) AS `awid`, `type`
+   FROM tbl_value_cryptos tvc
+   RIGHT JOIN tbl_amount_wallets ON tvc.`id` = tbl_amount_wallets.`vid`
+   LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+   LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+   WHERE tvc.`date` IN (
+       SELECT MIN(`date`)
+       FROM tbl_value_cryptos
+       GROUP BY YEAR(`date`)
+   ) -- AND `wid` IS NOT NULL
+   GROUP BY `year`, `aid`, `wid`
+) total
+ORDER BY `year`, `awid`, `type`
+
 -- 2. Haal de totale groei/krimp per jaar van financiën, beleggen, sparen en crypto. --
 -- Versie 1
 SELECT `year`, SUM(`value`) AS `value`
@@ -81,6 +108,88 @@ FROM (
 ) total
 GROUP BY `year`
 
+Versie 3, met aid/wid en type
+SELECT `year`, `value`, `awid`, `type`
+FROM (
+    SELECT YEAR(tbl_finances.`date`) AS `year`, SUM(IFNULL(`income`,0)) - SUM(IFNULL(`fixed`,0)) - SUM(IFNULL(`other`,0)) AS `value`, CONCAT(`aid`,"_","0") AS `awid`, `type`
+	FROM tbl_finances
+    LEFT JOIN tbl_accounts ON tbl_finances.`aid` = tbl_accounts.`id`
+	GROUP BY YEAR(tbl_finances.`date`), `aid`
+	UNION
+    SELECT YEAR(tbl_stocks.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_","0")  AS `awid`, `type`
+	FROM tbl_stocks
+    LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id`
+	GROUP BY YEAR(tbl_stocks.`date`), `aid`
+	UNION
+    SELECT YEAR(tbl_savings.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_","0")  AS `awid`, `type`
+	FROM tbl_savings
+    LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id`
+	GROUP BY YEAR(tbl_savings.`date`), `aid`
+    UNION
+    SELECT YEAR(tbl_crypto.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_",`wid`) AS `awid`, `type`
+	FROM tbl_crypto
+    LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id`
+    LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+	GROUP BY YEAR(tbl_crypto.`date`), `aid`, `wid`    
+) total
+ORDER BY `year`, `awid`
+
+
+-- 1 en 2 gecombineerd.
+SELECT B.`year`, A.`value` AS `gains`, B.`value` AS `trade`, B.`awid`, B.`type`
+FROM (
+   SELECT `year`, `value`, `awid`, `type`
+   FROM (
+      SELECT YEAR(tva.`date`) AS `year`, SUM(`value`) AS `value`, CONCAT(`aid`,"_","0") AS `awid`, `type`
+      FROM tbl_value_accounts tva
+      LEFT JOIN tbl_accounts ON tva.`aid` = tbl_accounts.`id`
+      WHERE tva.`date` IN (
+         SELECT MIN(`date`)
+         FROM tbl_value_accounts
+         GROUP BY YEAR(`date`)
+      )
+      GROUP BY `year`, `aid`
+      UNION
+      SELECT YEAR(tvc.`date`) AS `year`, SUM(`amount`*`value`) AS `value`, CONCAT(`aid`,"_",`wid`) AS `awid`, `type`
+      FROM tbl_value_cryptos tvc
+      RIGHT JOIN tbl_amount_wallets ON tvc.`id` = tbl_amount_wallets.`vid`
+      LEFT JOIN tbl_wallets ON tbl_amount_wallets.`wid` = tbl_wallets.`id`
+      LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+      WHERE tvc.`date` IN (
+         SELECT MIN(`date`)
+         FROM tbl_value_cryptos
+         GROUP BY YEAR(`date`)
+      )
+      GROUP BY `year`, `aid`, `wid`
+   ) total_a
+) A
+JOIN (
+   SELECT `year`, `value`, `awid`, `type`
+   FROM (
+      SELECT YEAR(tbl_finances.`date`) AS `year`, SUM(IFNULL(`income`,0)) - SUM(IFNULL(`fixed`,0)) - SUM(IFNULL(`other`,0)) AS `value`, CONCAT(`aid`,"_","0") AS `awid`, `type`
+	  FROM tbl_finances
+      LEFT JOIN tbl_accounts ON tbl_finances.`aid` = tbl_accounts.`id`
+	  GROUP BY YEAR(tbl_finances.`date`), `aid`
+	  UNION
+      SELECT YEAR(tbl_stocks.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_","0")  AS `awid`, `type`
+	  FROM tbl_stocks
+      LEFT JOIN tbl_accounts ON tbl_stocks.`aid` = tbl_accounts.`id`
+	  GROUP BY YEAR(tbl_stocks.`date`), `aid`
+	  UNION
+      SELECT YEAR(tbl_savings.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_","0")  AS `awid`, `type`
+	  FROM tbl_savings
+      LEFT JOIN tbl_accounts ON tbl_savings.`aid` = tbl_accounts.`id`
+	  GROUP BY YEAR(tbl_savings.`date`), `aid`
+      UNION
+      SELECT YEAR(tbl_crypto.`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal`,0)) AS `value`, CONCAT(`aid`,"_",`wid`) AS `awid`, `type`
+	  FROM tbl_crypto
+      LEFT JOIN tbl_wallets ON tbl_crypto.`wid` = tbl_wallets.`id`
+      LEFT JOIN tbl_accounts ON tbl_wallets.`aid` = tbl_accounts.`id`
+	  GROUP BY YEAR(tbl_crypto.`date`), `aid`, `wid`    
+   ) total_b
+) B
+ON A.`year` = B.`year` AND A.`awid` = B.`awid`
+ORDER BY `year`, `awid` -- , `type`
 
 
 -- 3. Bereken met deze gegeven het jaarlijkse rendement. --
