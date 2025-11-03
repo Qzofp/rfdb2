@@ -248,3 +248,6 @@ SELECT YEAR(`date`) AS `year`, SUM(IFNULL(`deposit`,0)) - SUM(IFNULL(`withdrawal
 FROM tbl_stocks
 WHERE aid = 1
 GROUP BY YEAR(`date`)
+
+
+https://dev.mysql.com/doc/connector-odbc/en/connector-odbc-usagenotes-functionality-last-insert-id.html
